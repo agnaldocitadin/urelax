@@ -1,0 +1,17 @@
+{
+  "name": "honeybee-api",
+  "version": "1.0.0",
+  "description": "An API used on the app and server to provide a communication between them.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
