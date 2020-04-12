@@ -1,3 +1,3 @@
-Projects that will be here:\n
-- honeybee-app\n
+Projects that will be here:
+- honeybee-app
 - honeybee-app-server
