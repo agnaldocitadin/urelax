@@ -1,0 +1,17 @@
+{
+  "name": "auxiliary-functions",
+  "version": "1.0.0",
+  "description": "A lib that provides common functions to any javascript project.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
