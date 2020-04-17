@@ -1,2 +1,3 @@
 honeybee-api/node_modules/*
+honeybee-api/lib/*
 auxiliary-functions/node_modules/*
