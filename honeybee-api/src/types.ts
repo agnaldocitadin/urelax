@@ -5,6 +5,7 @@ export type GroupBy = "day" | "week" | "month" | "year"
 export interface Preferences {
     receiveTradeNotification: boolean
     receiveBalanceNotification: boolean
+    addStockTrackerPaused: boolean
 }
 
 export interface UserAccount {

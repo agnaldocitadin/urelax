@@ -1,6 +1,7 @@
 import { timedPromise } from "./functions"
-import { gql, mutation, query } from "./graphql"
-import { Activity, UserAccount } from "./types"
+import { activateSimulationAccount, createBee, createBrokerAccount, createUserAccount, updateBee, updateBrokerAccount, updateUserAccount, updateUserPreferences } from './mutations'
+import { fetchActiveBeesQuery, fetchActiveBrokers, fetchAvailableFrequencies, fetchAvailableStrategies, fetchAvailableSymbols, fetchBalanceSheet, fetchBalanceSheetByUserQuery, fetchBalanceSheetHistoriesByUserQuery, fetchBeeActivitiesQuery, fetchBrokerAccountByUserQuery, fetchBrokerAccountQuery, fetchBrokerByCode, fetchUserAccountQuery, fetchUserActivitiesQuery } from './queries'
+import { UserAccount } from "./types"
 
 interface APIConfiguration {
     serverURI: string
@@ -13,7 +14,6 @@ const configure = (conf: APIConfiguration) => {
     CONFIG["serverURI"] = conf.serverURI,
     CONFIG["graphqlURI"] = conf.graphqlURI
 }
-
 
 /**
  *
@@ -75,33 +75,6 @@ const destroyStockTracker = async (id: string) => {
     return handleResponse(res)
 }
 
-/**
- *
- *
- * @param {UserAccount} [userAccount]
- * @returns {Promise<boolean>}
- */
-const updateUserAccount = async (userAccount?: UserAccount): Promise<boolean> => {
-    const name = "updateUserAccount"
-    return gql(name, mutation(name, { userAccount }))
-}
-
-// ---------------
-const fetchLastUserActivity = async (userAccountId?: string): Promise<Activity> => {
-    const name = "fetchUserActivitiesQuery"
-    return (await gql(name, query(name, { userAccountId, page: 0, qty: 1 }, `
-        icon
-        dateTime
-        title
-        details{
-            title
-            description
-            hidden
-        }
-    `)))[0]
-}
-// ---------------
-
 export const API = {
     configure,
 
@@ -110,8 +83,32 @@ export const API = {
     playStockTracker,
     pauseStockTracker,
     destroyStockTracker,
+
+    // query
+    fetchAvailableSymbols,
+    fetchActiveBrokers,
+    fetchBrokerByCode,
+    fetchAvailableStrategies,
+    fetchAvailableFrequencies,
+    fetchUserAccountQuery,
+    fetchActiveBeesQuery,
+    fetchBeeActivitiesQuery,
+    fetchUserActivitiesQuery,
+    fetchBrokerAccountQuery,
+    fetchBrokerAccountByUserQuery,
+    fetchBalanceSheet,
+    fetchBalanceSheetByUserQuery,
+    fetchBalanceSheetHistoriesByUserQuery,
+
+    // mutation
+    createUserAccount,
+    createBee,
+    createBrokerAccount,
     updateUserAccount,
-    fetchLastUserActivity
+    updateUserPreferences,
+    updateBrokerAccount,
+    updateBee,
+    activateSimulationAccount
 }
 
 const handleResponse = async (res: Response) => {
