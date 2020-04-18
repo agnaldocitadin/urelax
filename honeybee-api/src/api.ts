@@ -1,15 +1,19 @@
 import { timedPromise } from "./functions"
-import { UserAccount } from "./types"
+import { gql, mutation, query } from "./graphql"
+import { Activity, UserAccount } from "./types"
 
-const URL_REST_SERVER = "http://192.168.0.219:3002"
-
-const handleResponse = async (res: any) => {
-    let json = await res.json()
-    if (res.status !== 200) {
-        throw new Error(json.error)
-    }
-    return json
+interface APIConfiguration {
+    serverURI: string
+    graphqlURI: string
 }
+
+export const CONFIG = {} as APIConfiguration
+
+const configure = (conf: APIConfiguration) => {
+    CONFIG["serverURI"] = conf.serverURI,
+    CONFIG["graphqlURI"] = conf.graphqlURI
+}
+
 
 /**
  *
@@ -19,12 +23,11 @@ const handleResponse = async (res: any) => {
  * @param {boolean} [simulation=false]
  * @returns {Promise<UserAccount>}
  */
-const authenticate = (email?: string, passwd?: string, simulation: boolean = false): Promise<UserAccount> => {
-    return timedPromise(fetch(`${URL_REST_SERVER}/authenticate?email=${email}&passwd=${passwd}&simulation=${simulation}`)
-        .then(res => {
-            if (res.ok) return res.json()
-            throw new Error("Forbidden 403")
-        }), "Server offline")
+const authenticate = async (email?: string, passwd?: string, simulation: boolean = false): Promise<UserAccount> => {
+    let url = `${CONFIG.serverURI}/authenticate?email=${email}&passwd=${passwd}&simulation=${simulation}`
+    let res: Response = await timedPromise(fetch(url), "Server API was not found!")
+    if (res.ok) return res.json()
+    throw new Error("Forbidden 403")
 }
 
 /**
@@ -33,12 +36,13 @@ const authenticate = (email?: string, passwd?: string, simulation: boolean = fal
  * @param {string} id
  * @returns
  */
-const playStockTracker = (id: string) => {
-    return timedPromise(fetch(`${URL_REST_SERVER}/playBee`, {
+const playStockTracker = async (id: string) => {
+    let res: Response = await timedPromise(fetch(`${CONFIG.serverURI}/playBee`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
-    }).then(res => handleResponse(res)), "Server offline")
+    }), "Server offline")
+    return handleResponse(res)
 }
 
 /**
@@ -47,13 +51,13 @@ const playStockTracker = (id: string) => {
  * @param {string} id
  * @returns
  */
-const pauseStockTracker = (id: string) => {
-    return timedPromise(fetch(`${URL_REST_SERVER}/pauseBee`, {
+const pauseStockTracker = async (id: string) => {
+    let res: Response = await timedPromise(fetch(`${CONFIG.serverURI}/pauseBee`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
-    })
-    .then(res => handleResponse(res)), "Server offline")
+    }), "Server offline")
+    return handleResponse(res)
 }
 
 /**
@@ -62,22 +66,56 @@ const pauseStockTracker = (id: string) => {
  * @param {string} id
  * @returns
  */
-const destroyStockTracker = (id: string) => {
-    return timedPromise(fetch(`${URL_REST_SERVER}/destroyBee`, {
+const destroyStockTracker = async (id: string) => {
+    let res: Response = await timedPromise(fetch(`${CONFIG.serverURI}/destroyBee`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
-    }).then(res => handleResponse(res)), "Server offline")
+    }), "Server offline")
+    return handleResponse(res)
 }
 
+/**
+ *
+ *
+ * @param {UserAccount} [userAccount]
+ * @returns {Promise<boolean>}
+ */
+const updateUserAccount = async (userAccount?: UserAccount): Promise<boolean> => {
+    const name = "updateUserAccount"
+    return gql(name, mutation(name, { userAccount }))
+}
 
-
-
-
+// ---------------
+const fetchLastUserActivity = async (userAccountId?: string): Promise<Activity> => {
+    const name = "fetchUserActivitiesQuery"
+    return (await gql(name, query(name, { userAccountId, page: 0, qty: 1 }, `
+        icon
+        dateTime
+        title
+        details{
+            title
+            description
+            hidden
+        }
+    `)))[0]
+}
+// ---------------
 
 export const API = {
+    configure,
+
+    // API
     authenticate,
     playStockTracker,
     pauseStockTracker,
-    destroyStockTracker
+    destroyStockTracker,
+    updateUserAccount,
+    fetchLastUserActivity
+}
+
+const handleResponse = async (res: Response) => {
+    let json = await res.json()
+    if (res.status !== 200) throw new Error(json.error)
+    return json
 }
