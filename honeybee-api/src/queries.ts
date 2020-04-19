@@ -36,12 +36,12 @@ export const fetchActiveBeesQuery = (userAccountId: string, fields: string): Pro
      return gql(name, query(name, { userAccountId }, fields))
 }
 
-export const fetchBeeActivitiesQuery = (beeId: string, date: string, page: number, qty: number, fields: string): Promise<Activity[]> => {
+export const fetchBeeActivitiesQuery = (beeId: string, date: Date, page: number, qty: number, fields: string): Promise<Activity[]> => {
      const name = "fetchBeeActivitiesQuery"
      return gql(name, query(name, { beeId, date, page, qty }, fields))
 }
 
-export const fetchUserActivitiesQuery = (userAccountId: string, date: string, page: number, qty: number, fields: string): Promise<Activity[]> => {
+export const fetchUserActivitiesQuery = (userAccountId: string, date: Date, page: number, qty: number, fields: string): Promise<Activity[]> => {
      const name = "fetchUserActivitiesQuery"
      return gql(name, query(name, { userAccountId, date, page, qty }, fields))
 }
@@ -66,7 +66,7 @@ export const fetchBalanceSheetByUserQuery = (userAccountId: string, fields: stri
      return gql(name, query(name, { userAccountId }, fields))
 }
 
-export const fetchBalanceSheetHistoriesByUserQuery = (userAccountId: string, date: string, page: number, qty: number, groupBy: GroupBy, fields: string): Promise<BalanceSheetHistorySummary[]> => {
+export const fetchBalanceSheetHistoriesByUserQuery = (userAccountId: string, date: Date, page: number, qty: number, groupBy: GroupBy, fields: string): Promise<BalanceSheetHistorySummary[]> => {
      const name = "fetchBalanceSheetHistoriesByUserQuery"
      return gql(name, query(name, { userAccountId, date, page, qty, groupBy }, fields))
 }

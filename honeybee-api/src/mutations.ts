@@ -16,27 +16,27 @@ export const createBrokerAccount = (brokerAccount: BrokerAccount, fields: string
     return gql(name, mutation(name, { brokerAccount }, fields))
 }
 
-export const updateUserAccount = (_id: string, userAccount: UserAccount, fields: string): Promise<boolean> => {
+export const updateUserAccount = (_id: string, userAccount: UserAccount): Promise<boolean> => {
     const name = "updateUserAccount"
-    return gql(name, mutation(name, { _id, userAccount }, fields))
+    return gql(name, mutation(name, { _id, userAccount }))
 }
 
-export const updateUserPreferences = (_id: string, preferences: Preferences, fields: string): Promise<boolean> => {
+export const updateUserPreferences = (_id: string, preferences: Preferences): Promise<boolean> => {
     const name = "updateUserPreferences"
-    return gql(name, mutation(name, { _id, preferences }, fields))
+    return gql(name, mutation(name, { _id, preferences }))
 }
 
-export const updateBrokerAccount = (_id: string, brokerAccount: BrokerAccount, fields: string): Promise<boolean> => {
+export const updateBrokerAccount = (_id: string, brokerAccount: BrokerAccount): Promise<boolean> => {
     const name = "updateBrokerAccount"
-    return gql(name, mutation(name, { _id, brokerAccount }, fields))
+    return gql(name, mutation(name, { _id, brokerAccount }))
 }
 
-export const updateBee = (_id: string, bee: StockTracker, fields: string): Promise<boolean> => {
+export const updateBee = (_id: string, bee: StockTracker): Promise<boolean> => {
     const name = "updateBee"
-    return gql(name, mutation(name, { _id, bee }, fields))
+    return gql(name, mutation(name, { _id, bee }))
 }
 
-export const activateSimulationAccount = (userAccountId: string, fields: string): Promise<string> => {
+export const activateSimulationAccount = (userAccountId: string): Promise<string> => {
     const name = "activateSimulationAccount"
-    return gql(name, mutation(name, { userAccountId }, fields))
+    return gql(name, mutation(name, { userAccountId }))
 }
