@@ -1,0 +1,4259 @@
+import "bcl.proto";
+
+message Contract {
+	message Messaging {
+		message StockHistory {
+			message Response {
+				message GetQuoteHistoryResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.StockHistory.QuoteHistoryInfo Info = 2;
+				}
+				
+				message GetRangeResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.StockHistory.StockHistoryInfo Info = 2;
+				}
+				
+				message GetStockHistoryResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.StockHistory.StockHistoryInfo Info = 2;
+				}
+			}
+
+			message Request {
+				message GetQuoteHistoryRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				   optional int32 Period = 3 [default = 0];
+				   optional int64 Begin = 4 [default = 0];
+				   optional int64 End = 5 [default = 0];
+				}
+				
+				message GetRangeRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				   optional int32 Days = 3 [default = 0];
+				}
+				
+				message GetStockHistoryRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				   optional int32 Days = 3 [default = 0];
+				}
+			}
+
+		}
+
+		message Security {
+			message Response {
+				message AuthenticationResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Account.AuthenticationResponseStatus Result = 2 [default = Undefined];
+				   optional string Error = 3;
+				   optional Contract.Entities.Account.User User = 4;
+				}
+			}
+
+			message Request {
+				message RegisterAccessRequest {
+				   optional string RequestID = 1;
+				   optional string Path = 2;
+				   optional string Platform = 3;
+				}
+				
+				message PongRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message AuthenticationRequest {
+				   optional string RequestID = 1;
+				   optional string Token = 2;
+				   optional string PlatformUID = 3;
+				   optional string RemoteAddress = 4;
+				   optional string SessionId = 5;
+				   optional Contract.Enumeration.Account.AuthSource Origin = 6 [default = Undefiend];
+				}
+			}
+
+		}
+
+		message MarketData {
+			message Response {
+				message SignDigitalOptionsQuoteResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.MarketData.QuoteInfo QuoteInfo = 2;
+				}
+				
+				message SignDigitalOptionsInstrumentResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.MarketData.InstrumentInfo InstrumentInfo = 2;
+				}
+				
+				message ListSymbolsResponse {
+				   optional string RequestID = 1;
+				   repeated string Symbols = 2;
+				}
+				
+				message GetQuoteResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.MarketData.QuoteInfo QuoteInfo = 2;
+				}
+				
+				message GetInstrumentResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.MarketData.InstrumentInfo InstrumentInfo = 2;
+				}
+			}
+
+			message Request {
+				message ListSymbolsRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message GetQuoteRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				}
+				
+				message GetInstrumentRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				}
+				
+				message SignDigitalOptionsQuoteRequest {
+				   optional string RequestID = 1;
+				   optional bool Sign = 3 [default = false];
+				}
+				
+				message SignDigitalOptionsInstrumentRequest {
+				   optional string RequestID = 1;
+				   optional bool Sign = 3 [default = false];
+				}
+				
+				message SignInstrumentRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				   optional bool Sign = 3 [default = false];
+				}
+				
+				message SignBookRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				   optional bool Aggregated = 3 [default = false];
+				   optional bool Sign = 4 [default = false];
+				}
+				
+				message SignQuoteRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				   optional bool Sign = 3 [default = false];
+				}
+			}
+
+		}
+
+		message Mail {
+			message Response {
+				message CountUnreadMessagesResponse {
+				   optional string RequestID = 1;
+				   optional int32 UnreadMessages = 2 [default = 0];
+				}
+				
+				message GetMessageResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Mail.MessageInfo Messages = 2;
+				}
+			}
+
+			message Request {
+				message CountUnreadMessagesRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message GetMessageRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message MarkAsReadRequest {
+				   optional string RequestID = 1;
+				}
+			}
+
+		}
+
+		message Trade {
+			message Request {
+				message CancelScheduledRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional int32 CodeSchedule = 3 [default = 0];
+				   optional string TraderCpf = 4;
+				   optional string OperatorAction = 5;
+				   optional string CodeTypeSchedule = 6;
+				}
+				
+				message GetConfigurationRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				}
+				
+				message GetExcelOrdersRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Type = 2 [default = Undefined];
+				   optional int64 Start = 3;
+				   optional int64 End = 4;
+				   optional Contract.Enumeration.Trade.OrderStatusGroup StatusGroup = 5 [default = Undefined];
+				   optional string Symbol = 6;
+				   optional bool isScheduled = 7 [default = false];
+				}
+				
+				message GetInstrumentCompositionRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string Symbol = 3;
+				}
+				
+				message GetMarginPowerRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				}
+				
+				message GetModuleLegRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional Contract.Enumeration.Trade.StrategyType Strategy = 3 [default = Undefined];
+				   optional string Underlying = 4;
+				}
+				
+				message GetModuleUnderlyingRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional Contract.Enumeration.Trade.StrategyType Strategy = 3 [default = Undefined];
+				   optional string Symbol = 4;
+				}
+				
+				message GetModuleInstrumentsRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				}
+				
+				message GetOrderDetailsRequest {
+				   optional string RequestID = 1;
+				   optional string OrderID = 2;
+				   optional Contract.Enumeration.Trade.Module Module = 3 [default = Undefined];
+				   optional bool isScheduled = 4 [default = false];
+				}
+				
+				message GetRatesForBtcRequest {
+				   optional string RequestID = 1;
+				   optional string Underlying = 2;
+				}
+				
+				message GetRatesRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				}
+				
+				message GetRolloverInfoRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string OperationId = 3;
+				   optional string RateId = 4;
+				}
+				
+				message ListFundPerformanceRequest {
+				   optional string RequestID = 1;
+				   optional int32 FundCode = 2 [default = 0];
+				   optional int32 Months = 3;
+				   optional int64 StartDate = 4;
+				   optional int64 EndDate = 5;
+				}
+				
+				message ListFundsCategoriesRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message OperationDetailRequest {
+				   optional int32 CodeBond = 1 [default = 0];
+				   optional int32 CodBondsREAP = 2 [default = 0];
+				   optional string EScheduleTypeEvent = 3;
+				   optional double ReinvestmentPercentual = 4 [default = 0];
+				}
+				
+				message ReinvestmentOrderRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				   optional int64 InitialDateOperation = 4 [default = 0];
+				   repeated Contract.Messaging.Trade.Request.OperationDetailRequest OperationDetails = 6;
+				}
+				
+				message SearchDigitalOptionsOperationRequest {
+				   optional string RequestID = 1;
+				   optional int64 StartDate = 2;
+				   optional int64 EndDate = 3;
+				}
+				
+				message RolloverRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				}
+				
+				message RevertRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				}
+				
+				message RelocateRequest {
+				   optional string RequestID = 1;
+				   optional double AveragePrice = 2 [default = 0];
+				   optional Contract.Enumeration.Trade.Module Destination = 3 [default = Undefined];
+				   optional Contract.Enumeration.Trade.Module Origin = 4 [default = Undefined];
+				   optional double Quantity = 5 [default = 0];
+				   optional Contract.Enumeration.Trade.RelocateType Type = 6 [default = None];
+				   optional string Symbol = 8;
+				   optional string ESignature = 9;
+				}
+				
+				message GetRelocateInfoRequest {
+				   optional string RequestID = 1;
+				   optional string Symbol = 2;
+				   optional Contract.Enumeration.Trade.RelocateType Type = 3 [default = None];
+				}
+				
+				message ListOrderRequest {
+				   optional string RequestID = 1;
+				   repeated Contract.Enumeration.Trade.Module Types = 2;
+				   optional Contract.Enumeration.Trade.OrderStatusGroup StatusGroup = 3 [default = Undefined];
+				   optional int64 StartDate = 4;
+				   optional int64 EndDate = 5;
+				   optional string OrderID = 6;
+				   optional bool isScheduled = 7 [default = false];
+				}
+				
+				message FlipOperationRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				}
+				
+				message ReplaceOrderRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				}
+				
+				message SignContractRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string ESignature = 3;
+				   optional string Symbol = 5;
+				}
+				
+				message StopSingleOperationRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				}
+				
+				message StopAllOperationsRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				}
+				
+				message CancelAllOrdersRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				}
+				
+				message CancelOrderRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				}
+				
+				message NewOrderRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.OrderBase Info = 2;
+				   optional string ESignature = 3;
+				}
+			}
+
+			message Response {
+				message GetStatusSentEmailResponse {
+				   optional string RequestID = 1;
+				   optional bool Status = 2 [default = false];
+				}
+				
+				message GetConfigurationResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Trade.OptionsStrategies.OptionsStrategy Strategies = 2;
+				}
+				
+				message GetExcelOrdersResponse {
+				   optional string RequestID = 1;
+				   optional string Data = 2;
+				}
+				
+				message GetInstrumentCompositionResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.MarketData.CoreInstrumentListInfo InstrumentList = 2;
+				}
+				
+				message GetMarginPowerResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.BackOffice.MarginPowerInfo MarginPower = 2;
+				}
+				
+				message GetModuleLegResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Trade.OptionsStrategies.LegInfo Legs = 2;
+				}
+				
+				message GetModuleUnderlyingResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.MarketData.UnderlyingInfo Underlyings = 2;
+				}
+				
+				message GetRatesForBtcResponse {
+				   optional string RequestID = 1;
+				   optional string Underlying = 2;
+				   optional double Rate = 3 [default = 0];
+				}
+				
+				message GetRatesResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Trade.Forward.ForwardProviderRateInfo Rates = 2;
+				}
+				
+				message GetModuleInstrumentsResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.MarketData.CoreInstrumentInfo Instruments = 2;
+				}
+				
+				message GetRelocateInfoResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.ResponseCode ResponseCode = 2 [default = None];
+				   optional Contract.Enumeration.Trade.RelocateType Type = 3 [default = None];
+				   optional int64 Timestamp = 4 [default = 0];
+				   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 5;
+				   optional double Price = 6 [default = 0];
+				   optional double PriceDivisor = 7 [default = 0];
+				   optional double RoundLot = 8 [default = 0];
+				   optional double Amount = 9 [default = 0];
+				   optional double MarginAccount = 10 [default = 0];
+				}
+				
+				message GetRolloverInfoResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Trade.Forward.ForwardRolloverInfo RolloverInfo = 2;
+				}
+				
+				message ListFundPerformanceResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Trade.InvestmentFund.InvestmentFundPerformance Candles = 2;
+				}
+				
+				message ListFundsCategoriesResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Trade.InvestmentFund.InvestmentFundCategory Categories = 2;
+				}
+				
+				message CancelScheduledResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.ResponseCode ResponseCode = 2 [default = None];
+				   optional string ValidationError = 3;
+				   optional Contract.Entities.Abstraction.OrderBase Order = 4;
+				}
+				
+				message ReinvestmentOrderResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.ResponseCode ResponseCode = 2 [default = None];
+				   optional string ValidationError = 3;
+				   optional string OrderID = 4;
+				   repeated int32 ArrayReinvestmentBuyInsert = 5;
+				   optional string Message = 6;
+				}
+				
+				message SearchDigitalOptionsOperationResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Trade.DigitalOptions.DigitalOptionsOperation Operations = 2;
+				   optional string Message = 3;
+				}
+				
+				message RelocateResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.ResponseCode ResponseCode = 2 [default = None];
+				   optional string ValidationError = 3;
+				}
+				
+				message GetOrderDetailsResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Trade.DisplayOrderInfo Order = 2;
+				   optional Contract.Entities.Trade.DisplayOrderGwInfo OrderGw = 3;
+				}
+				
+				message ListOrderResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Abstraction.OrderBase Orders = 2;
+				   optional bool Staff = 3 [default = false];
+				}
+				
+				message GetReportResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Abstraction.ReportBase Report = 2;
+				}
+				
+				message ImmediateOrderResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.ResponseCode ResponseCode = 2 [default = None];
+				   optional string ValidationError = 3;
+				   optional string OrderID = 4;
+				   optional bool IsFederalBonds = 5 [default = false];
+				   optional Contract.Entities.Abstraction.OrderBase Order = 6;
+				}
+			}
+
+		}
+
+		message BackOffice {
+			message Response {
+				message ListGroupedHeritageDetailedResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.BackOffice.HeritageCandleDetail Candles = 2;
+				}
+				
+				message ListFinancialStatementResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.BackOffice.FinancialStatementEntry Entries = 2;
+				}
+				
+				message ListGroupedHeritageResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.BackOffice.HeritageCandle Candles = 2;
+				}
+				
+				message ListHeritageModulesResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.BackOffice.HeritageModule Modules = 2;
+				}
+				
+				message GetReportListResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Abstraction.ReportBase Report = 2;
+				}
+			}
+
+			message Request {
+				message BalanceProjectionReportRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message BalanceReportRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message BmfFeeReceiptRequest {
+				   optional string RequestID = 1;
+				   optional int64 CreatedAt = 2 [default = 0];
+				   optional bool IN_DOLMER = 3 [default = false];
+				}
+				
+				message BrokerageFeeReceiptRequest {
+				   optional string RequestID = 1;
+				   optional int64 CreatedAt = 2 [default = 0];
+				   optional string MarketType = 3;
+				}
+				
+				message BalanceSummaryReportRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message ReceiptByDateRequest {
+				   optional string RequestID = 1;
+				   optional int64 Start = 2 [default = 0];
+				   optional int64 End = 3 [default = 0];
+				}
+				
+				message ReceiptRequestHistoryFilterByDateRequest {
+				   optional string RequestID = 1;
+				   optional int64 Start = 2 [default = 0];
+				   optional int64 End = 3 [default = 0];
+				}
+				
+				message SinacorStatementDaysWithEventRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.BackOffice.StatementDayEvent EventType = 2 [default = None];
+				   optional int64 Start = 3 [default = 0];
+				   optional int64 End = 4 [default = 0];
+				}
+				
+				message ClearStatementDaysWithEventRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.BackOffice.StatementDayEvent EventType = 2 [default = None];
+				   optional int64 Start = 3 [default = 0];
+				   optional int64 End = 4 [default = 0];
+				}
+				
+				message ClearStatementExpandEntryRequest {
+				   optional string RequestID = 1;
+				   optional string Id = 2;
+				}
+				
+				message ClearStatementExpandDayRequest {
+				   optional string RequestID = 1;
+				   optional string Id = 2;
+				}
+				
+				message SinacorStatementFilterByDateRequest {
+				   optional string RequestID = 1;
+				   optional int64 Start = 2 [default = 0];
+				   optional int64 End = 3 [default = 0];
+				}
+				
+				message ClearStatementFilterByDateRequest {
+				   optional string RequestID = 1;
+				   optional int64 Start = 2 [default = 0];
+				   optional int64 End = 3 [default = 0];
+				}
+				
+				message ConsolidatedCollateralReportRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message CurrentTradingCalendarRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message ListGroupedHeritageDetailedRequest {
+				   optional string RequestID = 1;
+				   optional int64 StartDate = 2 [default = 0];
+				   optional int64 EndDate = 3 [default = 0];
+				   repeated int32 ModuleID = 4;
+				   optional Contract.Enumeration.BackOffice.HeritageListPeriod Period = 5 [default = Undefined];
+				}
+				
+				message ListFinancialStatementRequest {
+				   optional string RequestID = 1;
+				   optional int64 StartDate = 2 [default = 0];
+				   optional int64 EndDate = 3 [default = 0];
+				}
+				
+				message ListGroupedHeritageRequest {
+				   optional string RequestID = 1;
+				   optional int64 StartDate = 2 [default = 0];
+				   optional int64 EndDate = 3 [default = 0];
+				   repeated int32 ModuleID = 4;
+				   optional Contract.Enumeration.BackOffice.HeritageListPeriod Period = 5 [default = Undefined];
+				}
+				
+				message ListHeritageModulesRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message NetOverviewRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message NetSnapshotFilterRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string Id = 3;
+				}
+				
+				message NetSnapshotRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string Id = 3;
+				   optional string Symbol = 4;
+				}
+				
+				message ProfitLossReportRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string Symbol = 3;
+				   optional Contract.Enumeration.Trade.ExchangeOrderSide Side = 4 [default = Undefined];
+				   optional Contract.Enumeration.Trade.StrategyType Strategy = 5 [default = Undefined];
+				   repeated string Legs = 6;
+				}
+				
+				message CollateralDepositCashRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional double Amount = 3 [default = 0];
+				}
+				
+				message CollateralDepositPortfolioRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string Symbol = 3;
+				   optional double Quantity = 4 [default = 0];
+				}
+				
+				message CollateralSummaryReportRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				}
+				
+				message CollateralWithdrawCashRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional double Amount = 3 [default = 0];
+				}
+				
+				message CollateralWithdrawPortfolioRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string Symbol = 3;
+				   optional double Quantity = 4 [default = 0];
+				}
+				
+				message CustodyReportRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				}
+				
+				message WarrantiesReportRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string Symbol = 3;
+				   optional Contract.Enumeration.Trade.ExchangeOrderSide Side = 4 [default = Undefined];
+				   optional Contract.Enumeration.Trade.StrategyType Strategy = 5 [default = Undefined];
+				   repeated string Legs = 6;
+				}
+				
+				message DetailedReportRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional string Symbol = 3;
+				}
+				
+				message AggregatedSummaryRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				}
+			}
+
+		}
+
+		message Account {
+			message Response {
+				message BuyBrokeragePackageResponse {
+				   optional string RequestID = 1;
+				   optional string Response = 2;
+				   optional bool Sucess = 3 [default = false];
+				}
+				
+				message BuyProductResponse {
+				   optional string RequestID = 1;
+				   optional string Response = 2;
+				   optional bool Sucess = 3 [default = false];
+				}
+				
+				message ChangeInvestorProfileResponse {
+				   optional string RequestID = 1;
+				   optional string Response = 2;
+				   optional bool Sucess = 3 [default = false];
+				}
+				
+				message ChangePasswordResponse {
+				   optional string RequestID = 1;
+				   optional string Response = 2;
+				}
+				
+				message ChangeSignatureResponse {
+				   optional string RequestID = 1;
+				   optional string Response = 2;
+				}
+				
+				message CreateNicknameResponse {
+				   optional string RequestID = 1;
+				   optional string Nickname = 2;
+				   optional bool Error = 3 [default = false];
+				}
+				
+				message OptRlpResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Account.OptRlpStatus Status = 2 [default = OptRlpIn];
+				   optional bool Ok = 3 [default = false];
+				   optional int32 Result = 4 [default = 0];
+				   optional string Message = 5;
+				}
+				
+				message GetBlackboardAccessResponse {
+				   optional string RequestID = 1;
+				   optional string Address = 2;
+				   optional bool IsInactive = 3 [default = false];
+				   optional bool IsIncognito = 4 [default = false];
+				   optional string Room = 5;
+				}
+				
+				message GetAddressResponse {
+				   optional string RequestID = 1;
+				   optional string Address = 2;
+				   optional bool AccessDenied = 3 [default = false];
+				}
+				
+				message GetBlackboardRoomsResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Account.BlackBoardSettings BlackBoardSettingList = 2;
+				}
+				
+				message GetBrokeragePackageResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Account.BrokeragePackages.BrokeragePackageDefinition Defs = 2;
+				   repeated Contract.Entities.Account.BrokeragePackages.BrokeragePackage Packages = 3;
+				}
+				
+				message GetLatestAgreementResponse {
+				   optional string RequestID = 1;
+				   optional string FileName = 2;
+				   optional string Issuer = 3;
+				   optional int32 MarketSegment = 4;
+				   optional int32 OrderType = 5 [default = 0];
+				   optional string Type = 6;
+				   optional bcl.DateTime CreatedAt = 7;
+				   optional bcl.DateTime UpdatedAt = 8;
+				   optional int32 Version = 9;
+				}
+				
+				message GetMyDataBastterResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Account.MyData.RegistrationDataFromSinacor DataFromSinacor = 2;
+				}
+				
+				message GetMyDataResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Account.MyData.RegistrationDataFromSinacor DataFromSinacor = 2;
+				}
+				
+				message GetProductResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Account.Tools.Product Products = 2;
+				   repeated Contract.Entities.Account.Tools.ProductOrders ProductOrders = 3;
+				   repeated Contract.Entities.Account.Plans.ProductPlan ProductPlan = 4;
+				   repeated Contract.Entities.Account.Plans.ProductPlanOrders ProductPlanOrder = 5;
+				   repeated Contract.Entities.Account.Plans.ProductPlanItem ProductPlanItem = 6;
+				}
+				
+				message GetProfileInvestor {
+				   optional string RequestID = 1;
+				   optional string RiskProfile = 2;
+				}
+				
+				message GetAvailableReportsResponse {
+				   optional string RequestID = 1;
+				   repeated int32 Indexes = 2;
+				   repeated Contract.Entities.Account.MyTaxes.ReportWrapper AvailableReports = 3;
+				}
+				
+				message GetTradingAccountResponse {
+				   optional string RequestID = 1;
+				   optional string TradingAccount = 2;
+				}
+				
+				message GetSuitabilityResponse {
+				   optional string RequestID = 1;
+				   optional string ClearInvestment = 2;
+				   optional string CreditFunds = 3;
+				   optional string Education = 4;
+				   optional string Equity = 5;
+				   optional string FixedIncome = 6;
+				   optional string Id = 7;
+				   optional string InvestmentFund = 8;
+				   optional string LossRisk = 9;
+				   optional string OperatingLeverage = 10;
+				   optional string ReturnGoal = 11;
+				   optional Contract.Enumeration.Account.RiskProfile RiskProfile = 12 [default = Undefined];
+				   optional string Term = 13;
+				}
+				
+				message ListBankFromSinacorResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Account.Withdraw.Bank Banks = 2;
+				}
+				
+				message ListLogsResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Account.Tools.LogEntry Logs = 2;
+				}
+				
+				message HistoryWithdrawResponse {
+				   optional string RequestID = 1;
+				   repeated Contract.Entities.Account.Withdraw.HistoryWithdraw HistoryWithdraw = 2;
+				}
+				
+				message RecoverSignatureResponse {
+				   optional string RequestID = 1;
+				   optional string Response = 2;
+				   optional bool Sucess = 3 [default = false];
+				}
+				
+				message ProductOrderMT5Response {
+				   optional string RequestID = 1;
+				   optional bool IsEngaged = 2 [default = false];
+				   optional bool Demo = 3 [default = false];
+				   optional bool Live = 4 [default = false];
+				}
+				
+				message UpdateSuitabilityResponse {
+				   optional string RequestID = 1;
+				   optional bool Sucess = 2 [default = false];
+				   optional string Response = 3;
+				}
+				
+				message WithdrawResponse {
+				   optional string RequestID = 1;
+				   optional string Response = 2;
+				   optional bool Sucess = 3 [default = false];
+				}
+				
+				message RecoveryMetaTraderAccountResponse {
+				   optional string RequestID = 1;
+				   optional string Response = 2;
+				   optional bool Sucess = 3 [default = false];
+				}
+				
+				message GetProfileResponse {
+				   optional string RequestID = 1;
+				   optional string Data = 2;
+				   optional bool UseDefault = 3 [default = false];
+				}
+				
+				message GetServerTimeResponse {
+				   optional string RequestID = 1;
+				   optional int64 DateTime = 2 [default = 0];
+				}
+				
+				message NonComplianceResponse {
+				   optional string RequestID = 1;
+				   optional Contract.Entities.Account.NonComplianceRisk.NonCompliantRiskFlag NonComplianceRiskFlag = 2;
+				}
+			}
+
+			message Request {
+				message AuditContentOpenedRequest {
+				   optional string RequestID = 1;
+				   optional string Message = 2;
+				}
+				
+				message BuyBrokeragePackageRequest {
+				   optional string RequestID = 1;
+				   optional string Account = 2;
+				   optional string OwnnerAccount = 3;
+				   optional string PackageId = 4;
+				   optional bool Renovation = 5 [default = false];
+				   optional string StaffAccount = 6;
+				   optional string ESignature = 7;
+				}
+				
+				message ChangeInvestorProfileRequest {
+				   optional string RequestID = 1;
+				   optional string NewInvestorProfile = 2;
+				   optional string OldInvestorProfile = 3;
+				   optional string Signature = 4;
+				}
+				
+				message ChangePasswordRequest {
+				   optional string RequestID = 1;
+				   optional string OldPassword = 2;
+				   optional string ConfPassword = 3;
+				   optional string Password = 4;
+				}
+				
+				message ChangeSignatureRequest {
+				   optional string RequestID = 1;
+				   optional string OldSignature = 2;
+				   optional string ConfSignature = 3;
+				   optional string Signature = 4;
+				}
+				
+				message CheckSignedAgreementRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 3;
+				   optional string Issuer = 4;
+				   optional string Type = 5;
+				}
+				
+				message CreateNicknameRequest {
+				   optional string RequestID = 1;
+				   optional string Nickname = 2;
+				}
+				
+				message GetOptRlpRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message GetAvailableReportsRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message GetBlackboardAccessRequest {
+				   optional string RequestID = 1;
+				   optional bool Analysis = 2 [default = false];
+				   optional string RoomId = 3;
+				}
+				
+				message GetAddressRequest {
+				   optional string RequestID = 1;
+				   optional string Address = 2;
+				}
+				
+				message GetBlackboardRoomsRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message GetBrokeragePackageRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message GetLatestAgreementRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Trade.Module Module = 2 [default = Undefined];
+				   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 3;
+				   optional string Issuer = 4;
+				   optional string Type = 5;
+				}
+				
+				message GetMyDataBastterRequest {
+				   optional string RequestID = 1;
+				   optional string TradingAccountCode = 2;
+				}
+				
+				message GetMyDataRequest {
+				   optional string RequestID = 1;
+				   optional string TradingAccountCode = 2;
+				}
+				
+				message GetProductsRequest {
+				   optional string RequestID = 1;
+				   optional string Category = 2;
+				}
+				
+				message BuyProductRequest {
+				   optional string RequestID = 1;
+				   optional string Account = 2;
+				   optional string OwnnerAccount = 3;
+				   optional string ProductId = 4;
+				   optional bool Renovation = 5 [default = false];
+				   optional string StaffAccount = 6;
+				   optional string ESignature = 7;
+				}
+				
+				message GetTradingAccountRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message GetSuitabilityRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message ListBankFromSinacorRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message ListLogsRequest {
+				   optional string RequestID = 1;
+				   optional string Category = 2;
+				   repeated Contract.Entities.Account.Tools.Product Products = 3;
+				   repeated Contract.Entities.Account.Tools.ProductOrders ProductOrders = 4;
+				}
+				
+				message HistoryWithdrawRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message RecoverSignatureRequest {
+				   optional string RequestID = 1;
+				   optional string Url = 2;
+				}
+				
+				message ProductOrderMT5Request {
+				   optional string RequestID = 1;
+				}
+				
+				message SignAgreementRequest {
+				   optional string RequestID = 1;
+				   optional string ESignature = 2;
+				   optional Contract.Enumeration.Trade.Module Module = 3 [default = Undefined];
+				   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 4;
+				   optional string Issuer = 5;
+				   optional string Type = 6;
+				}
+				
+				message UpdateOptRlpRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Account.OptRlpStatus Status = 2 [default = OptRlpIn];
+				   optional string ESignature = 3;
+				   optional bool WithSignature = 4 [default = false];
+				}
+				
+				message UpdateSuitabilityRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Account.Education Education = 2 [default = JuniorHigh];
+				   optional Contract.Enumeration.Account.Equity Equity = 3 [default = High];
+				   optional Contract.Enumeration.Account.OperatingLeverage OperatingLeverage = 4 [default = High];
+				   optional Contract.Enumeration.Account.InvestmentFund InvestmentFund = 5 [default = High];
+				   optional Contract.Enumeration.Account.CreditFunds CreditFunds = 6 [default = High];
+				   optional Contract.Enumeration.Account.FixedIncome FixedIncome = 7 [default = High];
+				   optional Contract.Enumeration.Account.Term Term = 8 [default = DayTrade];
+				   optional Contract.Enumeration.Account.ClearInvestment ClearInvestment = 9 [default = GreaterThan70];
+				   optional Contract.Enumeration.Account.ReturnGoal ReturnGoal = 10 [default = DayTrade];
+				   optional Contract.Enumeration.Account.LossRisk LossRisk = 11 [default = SkyHigh];
+				   optional string Signature = 12;
+				   optional Contract.Enumeration.Account.RiskProfile RiskProfile = 13 [default = Undefined];
+				}
+				
+				message WithdrawRequest {
+				   optional string TradingAccount = 1;
+				   optional string Key = 2;
+				   optional double Amount = 3 [default = 0];
+				   optional string RequestID = 4;
+				   optional string ESignature = 5;
+				}
+				
+				message RecoveryMetaTraderAccountRequest {
+				   optional string RequestID = 1;
+				   optional string Product = 2;
+				   optional string ESignature = 3;
+				}
+				
+				message GetProfileRequest {
+				   optional string RequestID = 1;
+				   optional string Name = 2;
+				   optional string Module = 3;
+				}
+				
+				message SaveProfileRequest {
+				   optional string RequestID = 1;
+				   optional string Name = 2;
+				   optional string Module = 3;
+				   optional string Data = 4;
+				}
+				
+				message GetServerTimeRequest {
+				   optional string RequestID = 1;
+				}
+				
+				message NonComplianceRequest {
+				   optional string RequestID = 1;
+				   optional Contract.Enumeration.Account.RiskProfile RiskProfile = 2 [default = Undefined];
+				}
+			}
+
+		}
+
+		message Abstraction {
+			message IEvaluatable {
+			   // the following represent sub-types; at most 1 should have a value
+			   optional Contract.Entities.BackOffice.AssetInfo AssetInfo = 100;
+			   optional Contract.Entities.BackOffice.CollateralInfo CollateralInfo = 200;
+			   optional Contract.Entities.BackOffice.BalanceInfo BalanceInfo = 300;
+			}
+		}
+
+		message Envelop {
+		   required string Identifier = 1;
+		   required bytes Content = 2;
+		}
+		
+		message KeepAliveRequest {
+		}
+		
+		message KeepAlivePublication {
+		}
+		
+		message SystemResponse {
+		   optional string RequestID = 1;
+		   optional int32 Result = 2 [default = 0];
+		   optional string Message = 3;
+		}
+	}
+
+	message Enumeration {
+		message Trade {
+			enum BondType {
+			   Undefined = 0;
+			   LCA = 1;
+			   LCI = 2;
+			   CDB = 3;
+			   Debentures = 4;
+			   LTN = 5;
+			   LFT = 6;
+			   NTN = 7;
+			   FIDC = 8;
+			   CRI = 9;
+			   LC = 10;
+			}
+			
+			enum DebitOrCredit {
+			   Undefined = 0;
+			   Debit = 1;
+			   Credit = 2;
+			}
+			
+			enum DigitalOptionsOperationStatus {
+			   Undefined = 0;
+			   Pending = 1;
+			   Active = 2;
+			   Rejected = 3;
+			   Exercised = 4;
+			   ExpiredNotExercised = 5;
+			   Removed = 6;
+			}
+			
+			enum ExchangeOrderSide {
+			   Undefined = 0;
+			   Buy = 1;
+			   Sell = 2;
+			   Cross = 3;
+			   Reinvestment = 4;
+			}
+			
+			enum ExchangeOrderStatus {
+			   None = 0;
+			   New = 48;
+			   PartiallyFilled = 49;
+			   Filled = 50;
+			   Canceled = 52;
+			   Replaced = 53;
+			   PendingCancel = 54;
+			   Stopped = 55;
+			   Rejected = 56;
+			   Suspended = 57;
+			   PendingNew = 65;
+			   Expired = 67;
+			   PendingReplace = 69;
+			   Undefined = 85;
+			   Busted = 87;
+			   ReplaceRejected = 88;
+			   Waiting = 89;
+			   PreviousFinalState = 90;
+			}
+			
+			enum ExchangeOrderType {
+			   None = 0;
+			   Undefined = 48;
+			   Market = 49;
+			   Limit = 50;
+			   Stop = 51;
+			   StopLimit = 52;
+			   Cross = 57;
+			   OnClose = 65;
+			   Digital = 68;
+			   CrossForward = 82;
+			   OneTriggerOtherScalper = 83;
+			   OneTriggerOther = 87;
+			   SimultaneousStop = 88;
+			   StopMarket = 89;
+			   MarketWithLeftover = 107;
+			}
+			
+			enum ExchangeOrderValidityType {
+			   Undefined = 0;
+			   Day = 48;
+			   GoodTillCancel = 49;
+			   ImmediateOrCancel = 51;
+			   FillOrKill = 52;
+			   GoodTillDate = 54;
+			   AtTheClose = 55;
+			   GoodForAuction = 65;
+			}
+			
+			enum ExerciseStyle {
+			   Undefined = 0;
+			   American = 1;
+			   European = 2;
+			}
+			
+			enum ForwardRateType {
+			   None = 0;
+			   For16Days = 16;
+			   For30Days = 30;
+			   For60Days = 60;
+			   For90Days = 90;
+			   For120Days = 120;
+			   For180Days = 180;
+			   For360Days = 360;
+			}
+			
+			enum InstrumentCompositionType {
+			   Undefined = 0;
+			   Single = 1;
+			   Pair = 2;
+			   Triplet = 3;
+			   Quadruplet = 4;
+			   Basket = 5;
+			}
+			
+			enum DepreciationType {
+			   Undefined = 0;
+			   Yearly = 1;
+			   Biannual = 2;
+			   Bimonthly = 3;
+			   Quarterly = 4;
+			   Monthly = 5;
+			   Maturity = 6;
+			}
+			
+			enum InterestType {
+			   Undefined = 0;
+			   Yearly = 1;
+			   Biannual = 2;
+			   Bimonthly = 3;
+			   Quarterly = 4;
+			   Monthly = 5;
+			   Maturity = 6;
+			}
+			
+			enum MarketSegmentType {
+			   Undefined = 0;
+			   Stocks = 1;
+			   Options = 2;
+			   Terms = 3;
+			   ExchangeDefinedStrategies = 4;
+			   CustomerDefinedStrategies = 5;
+			   CorporateIssuedBonds = 6;
+			   Futures = 11;
+			   OptionsOnFutures = 12;
+			   TermsOnFutures = 13;
+			   Spot = 14;
+			   CashMarket = 21;
+			   CMEFutures = 31;
+			   CBOTFutures = 32;
+			   GovernmentBonds = 41;
+			   FederalBonds = 42;
+			   Index = 43;
+			   Optexc = 44;
+			   SOPT = 45;
+			   Etf = 46;
+			   Btc = 47;
+			}
+			
+			enum Module {
+			   Undefined = 0;
+			   StandardBuySell = 1;
+			   Forward = 2;
+			   DayTrade = 3;
+			   FederalBonds = 4;
+			   BearSpread = 5;
+			   BullSpread = 6;
+			   Butterfly = 7;
+			   IronCondor = 8;
+			   Btc = 9;
+			   OptionStrategy = 10;
+			   CoveredCall = 11;
+			   LongShort = 12;
+			   ShortButterfly = 13;
+			   ShortIronCondor = 14;
+			   BuyWrite = 15;
+			   Commodity = 16;
+			   Main = 17;
+			   Exotic = 18;
+			   FixedIncome = 19;
+			   MetaTrader = 20;
+			   PutOrCall = 21;
+			   BearCallSpread = 22;
+			   BearPutSpread = 23;
+			   BullCallSpread = 24;
+			   BullPutSpread = 25;
+			   OptionStrategyRollover = 26;
+			   InvestmentFund = 27;
+			   StructuredByQuantity = 28;
+			   StructuredByAmount = 29;
+			   Structured = 30;
+			   IPO = 31;
+			   Foreclosure = 32;
+			   DigitalOptions = 33;
+			   BlockedCollateralBag = 34;
+			   Platforms = 35;
+			   SwingTrade = 101;
+			}
+			
+			enum OptionStrategyWorkflow {
+			   Undefined = 0;
+			   Created = 1;
+			   Assembling = 2;
+			   Assembled = 3;
+			   Failed = 4;
+			   Canceled = 5;
+			   Canceling = 6;
+			   RolloverOrder = 7;
+			   StopTriggered = 8;
+			}
+			
+			enum OrderActionType {
+			   Undefined = 0;
+			   New = 1;
+			   Revert = 2;
+			   Rollover = 3;
+			   Placement = 4;
+			   Relocate = 5;
+			   Exercise = 6;
+			   RevertOnMargin = 7;
+			}
+			
+			enum OrderKind {
+			   Undefined = 0;
+			   New = 1;
+			   Cancel = 2;
+			   Replace = 3;
+			   Rollover = 4;
+			   Relocate = 5;
+			   Rollback = 6;
+			   CancelAll = 7;
+			   Flip = 8;
+			   StopAll = 9;
+			   StopSingle = 10;
+			}
+			
+			enum OrderStatus {
+			   None = 0;
+			   New = 48;
+			   Open = 49;
+			   Filled = 50;
+			   PartialFilled = 51;
+			   Canceled = 52;
+			   Rejected = 53;
+			   PendingCancel = 54;
+			   PendingReplace = 55;
+			   Stopping = 56;
+			   Rollbacking = 57;
+			   PendingClose = 65;
+			   Scheduled = 66;
+			   Replaced = 67;
+			   Suspended = 84;
+			   Busted = 87;
+			   Undefined = 88;
+			   Waiting = 89;
+			   PartialCanceled = 90;
+			}
+			
+			enum OrderStatusGroup {
+			   Undefined = 0;
+			   All = 1;
+			   Open = 2;
+			   Canceled = 3;
+			   WithExecutions = 4;
+			   AllButCancelled = 5;
+			}
+			
+			enum PriceLimitType {
+			   PriceUnit = 0;
+			   Ticks = 1;
+			   Percentage = 2;
+			}
+			
+			enum PriceType {
+			   Undefined = 0;
+			   Percentage = 1;
+			   PerUnit = 2;
+			   FixedAmount = 3;
+			   ProductTicksInFullTicks = 12;
+			   ProductTicksInHalfs = 13;
+			   ProductTicksInFourths = 14;
+			   ProductTicksInEights = 15;
+			   ProductTicksInSixteenths = 16;
+			   ProductTicksInThirtySeconds = 17;
+			   ProductTicksInSixtyFourths = 18;
+			   ProductTicksInHalfThirtySeconds = 20;
+			   ProductTicksInQuarterThirtySeconds = 21;
+			   ProductTicksInHalfSixtyFourths = 22;
+			   Pre = 9001;
+			   IPCA = 9002;
+			   IGPM = 9003;
+			   Selic = 9004;
+			   CDI = 9005;
+			   PTAX800VENDA = 9006;
+			   TR = 9007;
+			   DOLAR = 9008;
+			   INCCDI = 9009;
+			   VCP = 9010;
+			   DI = 9011;
+			}
+			
+			enum PutOrCall {
+			   Undefined = 0;
+			   Put = 1;
+			   Call = 2;
+			}
+			
+			enum Rating {
+			   Undefined = 0;
+			   AAA = 1;
+			   AAPlus = 2;
+			   AA = 3;
+			   AAMinus = 4;
+			   APLus = 5;
+			   A = 6;
+			   AMinus = 7;
+			   BBBPlus = 8;
+			   BBB = 9;
+			   BBBMinus = 10;
+			   BBPlus = 11;
+			   BB = 12;
+			   BBMinus = 13;
+			   BPlus = 14;
+			   B = 15;
+			   BMinus = 16;
+			   CCCPlus = 17;
+			   CCC = 18;
+			   CCCMinus = 19;
+			   CC = 20;
+			   C = 21;
+			   D = 22;
+			   UnRated = 23;
+			}
+			
+			enum RelocateType {
+			   None = 0;
+			   Buy = 1;
+			   Sell = 2;
+			}
+			
+			enum ResponseCode {
+			   Unknown = -1000;
+			   NoAuthentication = -101;
+			   CoreException = -100;
+			   InvalidESignature = -10;
+			   None = 0;
+			   OK = 1;
+			   VoidOK = 100;
+			}
+			
+			enum RobotExitType {
+			   Undefined = 0;
+			   Market = 1;
+			   WaitforExecution = 2;
+			   UpgradeRatioPrice = 3;
+			   UpgradePrice = 4;
+			}
+			
+			enum SettlementStatus {
+			   Undefined = 0;
+			   Pending = 1;
+			   Success = 2;
+			   Failure = 9;
+			}
+			
+			enum SituationTesouro {
+			   All = 0;
+			   Settlement = 1;
+			   Finished = 2;
+			   Canceled = 3;
+			   Pending = 4;
+			}
+			
+			enum StrategyType {
+			   Undefined = 0;
+			   BearSpread = 1;
+			   BullSpread = 2;
+			   BearCallSpread = 3;
+			   BearPutSpread = 4;
+			   BullCallSpread = 5;
+			   BullPutSpread = 6;
+			   LongButterfly = 7;
+			   LongIronCondor = 8;
+			   ShortButterfly = 9;
+			   ShortIronCondor = 10;
+			   CoveredCall = 11;
+			   BuyWrite = 12;
+			   PutOrCall = 13;
+			   LongPutOrCallRollover = 14;
+			   ShortPutOrCallRollover = 15;
+			   BuyWriteRollover = 16;
+			   StructuredByAmount = 17;
+			   StructuredByQuantity = 18;
+			}
+			
+			enum UpOrDown {
+			   Undefined = 0;
+			   Down = 1;
+			   Up = 2;
+			}
+		}
+
+		message System {
+			enum BrandTag {
+			   Undefined = 0;
+			   XP = 1;
+			   Clear = 2;
+			}
+		}
+
+		message MarketData {
+			enum OptionStyles {
+			   Undefined = -1;
+			   European = 0;
+			   American = 1;
+			}
+			
+			enum OptionTypes {
+			   Undefined = -1;
+			   Put = 0;
+			   Call = 1;
+			}
+		}
+
+		message Mail {
+			enum MessageType {
+			   Undefined = 0;
+			   Default = 1;
+			   Call = 2;
+			   Warning = 3;
+			}
+		}
+
+		message BackOffice {
+			enum CollateralTransactionType {
+			   Deposit = 0;
+			   Withdraw = 1;
+			}
+			
+			enum CollateralAssetType {
+			   Cash = 0;
+			   Symbol = 1;
+			}
+			
+			enum HeritageListPeriod {
+			   Undefined = 0;
+			   Daily = 2;
+			   Weekly = 3;
+			   Monthly = 4;
+			}
+			
+			enum NetResultType {
+			   Undefined = 0;
+			   Credit = 1;
+			   Debit = 2;
+			}
+			
+			enum PerformanceGroupType {
+			   Undefined = 0;
+			   Flow = 1;
+			   VariableIncome = 2;
+			   FixedIncome = 3;
+			   Funds = 4;
+			}
+			
+			enum PerformanceReportType {
+			   Undefined = 0;
+			   Overview = 1;
+			   StandardBuySell = 2;
+			   DayTrade = 3;
+			   Options = 4;
+			   Cash = 5;
+			   CoveredCall = 6;
+			   BuyWrite = 7;
+			   Forward = 8;
+			   FederalBonds = 9;
+			   Btc = 10;
+			   LongShort = 11;
+			   Commodity = 12;
+			   FixedIncome = 13;
+			   MetaTrader = 14;
+			   InvestmentFund = 15;
+			   Structured = 16;
+			   DigitalOptions = 17;
+			   Platforms = 18;
+			}
+			
+			enum ProfitLossType {
+			   Undefined = 0;
+			   Limited = 1;
+			   Unlimited = 2;
+			}
+			
+			enum StatementDayEvent {
+			   None = 0;
+			   MarginCall = 2;
+			   NewEntry = 4;
+			   Earning = 8;
+			   Movements = 16;
+			}
+			
+			enum StatementEntryCategory {
+			   Undefined = 0;
+			   Billing = 1;
+			   Trading = 2;
+			   Taxes = 3;
+			   Withdraw = 4;
+			   Deposit = 5;
+			   BtcLiquidation = 6;
+			   ForwardLiquidation = 7;
+			   DayTradeLiquidation = 8;
+			   Emoluments = 9;
+			   RegisterFee = 10;
+			   Fixup = 11;
+			   ExchangeFee = 12;
+			   Remuneration = 13;
+			   RefundBilling = 14;
+			   LiquidationFee = 15;
+			   Option_FutureFee = 16;
+			   TradeNoticeFee = 17;
+			   ServiceTax = 18;
+			   IncomeTaxesWithHold = 19;
+			   Others = 20;
+			   MarginCall = 21;
+			   MarginReturn = 22;
+			   RefundMistakenEntry = 24;
+			   IOF = 25;
+			   LateSettlementFine = 26;
+			   RefundLateSettlementFine = 27;
+			   OrderPlacement = 28;
+			   MarginAccountFee = 29;
+			   RefundMarginAccountFee = 30;
+			   Adjustment = 31;
+			   Payment = 32;
+			   BillingManual = 33;
+			   WithdrawRequest = 34;
+			   RefundIOF = 35;
+			   Credit = 36;
+			   IRFixedIncome = 37;
+			   IOFFixedIncome = 38;
+			   MetaTradeLiquidation = 39;
+			   Redemption = 40;
+			   DigitalOptionLiquidation = 41;
+			   DigitalOption = 42;
+			   DigitalOptionsEmoluments = 43;
+			   FinanceTreasuryDirectEntry = 44;
+			   IOFFinanceTreasuryDirectEntry = 45;
+			   IRFinanceTreasuryDirectEntry = 46;
+			   FeeFinanceTreasuryDirectEntry = 47;
+			   RedemptionFinanceTreasuryDirectEntry = 48;
+			   EntryFinancialCheckingAccount = 49;
+			   BuyTreasuryDirectEntry = 50;
+			   FeeDebtorBalanceFinanceEntry = 51;
+			   ReversalFinanceEntry = 52;
+			   CommercialChordFinanceEntry = 53;
+			   WithdrawalReturned = 54;
+			   PlatformLiquidation = 55;
+			}
+		}
+
+		message Account {
+			enum AccountType {
+			   Undefined = 0;
+			   Customer = 1;
+			   Staff = 2;
+			}
+			
+			enum AuthenticationResponseStatus {
+			   Undefined = 0;
+			   Sucess = 1;
+			   PendingNonComplianceRisk = 2;
+			   PendingRegistrationData = 3;
+			   PendindBrokerageAgreement = 4;
+			   PendindChangePassword = 5;
+			   InvalidSessionId = 6;
+			}
+			
+			enum AuthSource {
+			   Undefiend = 0;
+			   Pit = 1;
+			   Intranet = 2;
+			   Mobile = 3;
+			   Api = 4;
+			}
+			
+			enum BlockType {
+			   LoginFailed = 0;
+			   InvalidData = 1;
+			   Investigation = 2;
+			   Inactive = 3;
+			}
+			
+			enum BrokeragePackageDefinitionType {
+			   Undefined = 0;
+			   Contracts = 1;
+			   Orders = 2;
+			}
+			
+			enum BrokeragePlan {
+			   Private = 0;
+			   Express = 1;
+			   Universitario = 2;
+			}
+			
+			enum ClearInvestment {
+			   GreaterThan70 = 0;
+			   Between50And70 = 1;
+			   Between20And50 = 2;
+			   Until20 = 3;
+			}
+			
+			enum CreditFunds {
+			   High = 0;
+			   Medium = 1;
+			   Low = 2;
+			   None = 3;
+			}
+			
+			enum Education {
+			   JuniorHigh = 0;
+			   HighSchool = 1;
+			   Graduate = 2;
+			   PostGraduate = 3;
+			}
+			
+			enum Equity {
+			   High = 0;
+			   Medium = 1;
+			   Low = 2;
+			   None = 3;
+			}
+			
+			enum FixedIncome {
+			   High = 0;
+			   Medium = 1;
+			   Low = 2;
+			   None = 3;
+			}
+			
+			enum InvestmentFund {
+			   High = 0;
+			   Medium = 1;
+			   Low = 2;
+			   None = 3;
+			}
+			
+			enum LossRisk {
+			   SkyHigh = 0;
+			   High = 1;
+			   Medium = 2;
+			   Low = 3;
+			}
+			
+			enum OperatingLeverage {
+			   High = 0;
+			   Medium = 1;
+			   Low = 2;
+			   None = 3;
+			}
+			
+			enum OptRlpStatus {
+			   Undefined = -1;
+			   OptRlpIn = 0;
+			   OptRlpOut = 1;
+			}
+			
+			enum PlatformIntegration {
+			   Undefined = 0;
+			   FlashTrader = 1;
+			   Nelogica = 2;
+			   Outras = 3;
+			   TradeZone = 4;
+			   MetaTrader = 5;
+			   Enfoque = 6;
+			   FlashChart = 7;
+			   Smarttbot = 8;
+			   Tryd = 9;
+			   ProTrader = 10;
+			}
+			
+			enum PlatformVersion {
+			   Undefined = 0;
+			   ProfitChartPro = 1;
+			   ProfitChartRt = 2;
+			   ProfitChartLite = 3;
+			   ProTraderDesktop = 4;
+			   ProTraderWeb = 5;
+			   ProTraderMobile = 6;
+			   TrydPro = 7;
+			   TrydTrader = 8;
+			   DowJones = 9;
+			}
+			
+			enum ReturnGoal {
+			   DayTrade = 0;
+			   Short = 1;
+			   Medium = 2;
+			   Long = 3;
+			}
+			
+			enum RiskProfile {
+			   Undefined = 0;
+			   Conservative = 1;
+			   Moderate = 2;
+			   Bold = 3;
+			}
+			
+			enum RoomTypeBlackBoard {
+			   Undefined = 0;
+			   Client = 1;
+			   Visitor = 2;
+			   Both = 3;
+			}
+			
+			enum StaffAccountType {
+			   Undefined = 0;
+			   Employee = 1;
+			   Application = 2;
+			}
+			
+			enum Term {
+			   DayTrade = 0;
+			   Short = 1;
+			   Medium = 2;
+			   Long = 3;
+			}
+			
+			enum TradingAccountStatus {
+			   Active = 0;
+			   Hibernating = 1;
+			   Inactive = 2;
+			}
+		}
+
+	}
+
+	message Entities {
+		message Trade {
+			message SwingTrade {
+				message SwingTradeOrderInfo {
+				   optional double AveragePrice = 1;
+				   optional Contract.Enumeration.Trade.Module Destination = 2;
+				   optional int64 ExpiresAt = 3;
+				   optional double GainPx = 4;
+				   optional bool IsPlacement = 5;
+				   optional bool IsRelocation = 6;
+				   optional Contract.Enumeration.Trade.Module Origin = 7;
+				   optional int32 OwnerAccountCode = 8;
+				   optional string RoutingKey = 9;
+				   optional double StopPx = 10;
+				   optional Contract.Enumeration.Trade.ExchangeOrderValidityType Validity = 11;
+				}
+			}
+
+			message Platforms {
+				message PlatformOrderInfo {
+				   optional double AveragePrice = 1;
+				   optional double CloserPrice = 2;
+				   optional Contract.Enumeration.Trade.Module Destination = 3;
+				   optional int64 ExpiresAt = 4;
+				   optional double GainPx = 5;
+				   optional bool IsPlacement = 6;
+				   optional bool IsRelocation = 7;
+				   optional double OpenerStopPx = 8;
+				   optional Contract.Enumeration.Trade.Module Origin = 9;
+				   optional int32 OwnerAccountCode = 10;
+				   optional string RoutingKey = 11;
+				   optional double StopPx = 12;
+				   optional Contract.Enumeration.Trade.ExchangeOrderValidityType Validity = 13;
+				}
+			}
+
+			message Forward {
+				message ForwardOrderInfo {
+				   optional string Operation = 1;
+				   optional Contract.Entities.Trade.Forward.ForwardProviderRateInfo Rate = 2;
+				   optional double StopPx = 3;
+				}
+				
+				message ForwardProviderRateInfo {
+				   optional int64 CreatedAt = 1 [default = 0];
+				   optional int32 Days = 2 [default = 0];
+				   optional int64 ExpiresAt = 3 [default = 0];
+				   optional string Id = 4;
+				   optional double Rate = 7 [default = 0];
+				   optional Contract.Enumeration.Trade.ForwardRateType RateType = 8;
+				   optional int64 Reference = 9 [default = 0];
+				}
+				
+				message ForwardRolloverInfo {
+				   optional double ForwardPrice = 1 [default = 0];
+				   optional int32 MaxQuantity = 2 [default = 0];
+				   optional double PriceDivisor = 3 [default = 0];
+				   optional double RoundLot = 4 [default = 0];
+				   optional double AmountAvailableToRollover = 5 [default = 0];
+				   optional double CrossOrderPrice = 6 [default = 0];
+				   optional bool IsRollover = 7 [default = false];
+				   optional double PriceAfterRollover = 8;
+				   optional int64 RolloverAt = 9 [default = 0];
+				}
+			}
+
+			message FixedIncome {
+				message FixedIncomeOrderInfo {
+				   optional double AveragePrice = 1;
+				   optional string Exchange = 2;
+				   optional bool IsPlacement = 3;
+				   optional bool IsRelocation = 4;
+				   optional double Rate = 5 [default = 0];
+				   optional int64 ScheduledAt = 6;
+				   optional bool SkipProtectionOverflowCheck = 7 [default = false];
+				   optional string IconURL = 8;
+				   optional string ScheduleDurationDescription = 9;
+				   optional double ScheduleFinancialValue = 10;
+				   optional string ScheduleSituation = 11;
+				   optional double PercentualReinvestimento = 12;
+				   optional string CodigoTipoEvento = 13;
+				}
+			}
+
+			message DayTrade {
+				message DayTradeOrderInfo {
+				   optional double AveragePrice = 1;
+				   optional double CloserPrice = 2;
+				   optional Contract.Enumeration.Trade.Module Destination = 3;
+				   optional int64 ExpiresAt = 4;
+				   optional double GainPx = 5;
+				   optional bool IsPlacement = 6;
+				   optional bool IsRelocation = 7;
+				   optional double OpenerStopPx = 8;
+				   optional Contract.Enumeration.Trade.Module Origin = 9;
+				   optional int32 OwnerAccountCode = 10;
+				   optional string RoutingKey = 11;
+				   optional double StopPx = 12;
+				   optional Contract.Enumeration.Trade.ExchangeOrderValidityType Validity = 13;
+				}
+			}
+
+			message OptionsStrategies {
+				message OptionsStrategy {
+				   optional Contract.Enumeration.Trade.ExchangeOrderSide DefaultSide = 1 [default = Undefined];
+				   optional int32 Id = 2 [default = 0];
+				   optional bool IsComposite = 3 [default = false];
+				   optional int32 LegCount = 4 [default = 0];
+				   repeated Contract.Entities.Trade.OptionsStrategies.OptionsStrategyLegDescriptor LegDescriptors = 5;
+				   optional string Name = 6;
+				   optional Contract.Enumeration.Trade.StrategyType ParentType = 7;
+				   optional string ParentTypeName = 8;
+				   optional Contract.Enumeration.Trade.StrategyType Type = 9 [default = Undefined];
+				   optional string TypeName = 10;
+				   // the following represent sub-types; at most 1 should have a value
+				   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategyDecorator OptionsStrategyDecorator = 100;
+				}
+				
+				message OptionsStrategyDecorator {
+				   optional bool CanRollover = 1 [default = false];
+				   optional Contract.Enumeration.Trade.DebitOrCredit DebitOrCredit = 2 [default = Undefined];
+				   optional int64 ExpiresAt = 3 [default = 0];
+				   optional bool IsEntering = 4 [default = false];
+				   optional bool IsReverting = 5 [default = false];
+				   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategyLeg K1 = 6;
+				   repeated Contract.Entities.Trade.OptionsStrategies.OptionsStrategyLeg Legs = 7;
+				   optional double NetPremium = 8 [default = 0];
+				   optional bool RequiresMargin = 10 [default = false];
+				   optional Contract.Enumeration.Trade.ExchangeOrderSide Side = 11 [default = Undefined];
+				   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategy RolloverStrategy = 12;
+				}
+				
+				message OptionsStrategyLeg {
+				   optional int32 Index = 1 [default = 0];
+				   optional double Ratio = 2 [default = 0];
+				   optional Contract.Enumeration.Trade.ExchangeOrderSide Side = 3 [default = Undefined];
+				   optional double Strike = 4 [default = 0];
+				   optional string Symbol = 5;
+				}
+				
+				message OptionsStrategyLegDescriptor {
+				   optional bool AllowCall = 1 [default = false];
+				   optional bool AllowPut = 2 [default = false];
+				   optional bool AllowUnderlying = 3 [default = false];
+				   optional string DisplayRatio = 4;
+				   optional double Ratio = 5 [default = 0];
+				   optional double RoundLot = 6 [default = 0];
+				   optional Contract.Enumeration.Trade.ExchangeOrderSide Side = 7 [default = Undefined];
+				}
+				
+				message LegInfo {
+				   optional string AssetId = 1;
+				   optional string Symbol = 2;
+				   optional string Label = 3;
+				   optional double Strike = 4;
+				   optional int64 ExpiresAt = 5;
+				   optional bool IsUnderlying = 6 [default = false];
+				   optional Contract.Enumeration.Trade.PutOrCall PutOrCall = 7 [default = Undefined];
+				   optional Contract.Enumeration.Trade.ExerciseStyle ExerciseStyle = 8 [default = Undefined];
+				   optional string Underlying = 9;
+				}
+				
+				message OptionsStrategyOrderInfo {
+				   optional Contract.Messaging.Abstraction.IEvaluatable Asset = 1;
+				   optional double AveragePrice = 2;
+				   optional int64 ExpiresAt = 3;
+				   optional double GainPrice = 4;
+				   optional bool IsRollback = 5 [default = false];
+				   optional bool NeedsCanceling = 6 [default = false];
+				   optional Contract.Messaging.Abstraction.IEvaluatable RolledAsset = 7;
+				   optional double Stop = 8;
+				   optional Contract.Enumeration.Trade.StrategyType StrategyType = 9 [default = Undefined];
+				   optional string Underlying = 10;
+				   optional Contract.Enumeration.Trade.OptionStrategyWorkflow WorkflowStep = 11 [default = Undefined];
+				   optional Contract.Entities.MarketData.CoreInstrumentCompositionInfo InstrumentDefinition = 12;
+				   optional int32 RolloverDebitOrCredit = 13 [default = 0];
+				   optional string RolloverSymbol = 14;
+				}
+			}
+
+			message MetaTrader {
+				message MetaTraderOrderInfo {
+				   optional double AveragePrice = 1;
+				}
+			}
+
+			message InvestmentFund {
+				message InvestmentFundPerformance {
+				   optional int64 Date = 1 [default = 0];
+				   optional double FundPerformance = 2;
+				   optional double IndexerPerformance = 3;
+				}
+				
+				message InvestmentFundCategory {
+				   optional double CategoryID = 1 [default = 0];
+				   optional string DisplayName = 2;
+				   optional string Name = 3;
+				   optional string Initials = 4;
+				}
+				
+				message InvestmentFundOrderInfo {
+				   optional int64 ScheduledAt = 1;
+				}
+			}
+
+			message DigitalOptions {
+				message DigitalOptionsOperation {
+				   optional string Id = 1;
+				   optional int32 Timer = 2 [default = 0];
+				   optional double StartPrice = 3 [default = 0];
+				   optional double FinalPrice = 4 [default = 0];
+				   optional int64 CreatedAt = 5 [default = 0];
+				   optional string Symbol = 6;
+				   optional double PotentialPnL = 7 [default = 0];
+				   optional double Price = 8 [default = 0];
+				   optional double Quantity = 9 [default = 0];
+				   optional double BrokerageFee = 10 [default = 0];
+				   optional double Tax = 11 [default = 0];
+				   optional string OwnerAccount = 12;
+				   optional int64 UpdatedAt = 13;
+				   optional string AssetId = 14;
+				   optional Contract.Enumeration.Trade.PutOrCall PutOrCall = 15 [default = Undefined];
+				   optional double Strike = 16 [default = 0];
+				   optional int64 ExercisesAt = 17;
+				   optional Contract.Enumeration.Trade.DigitalOptionsOperationStatus Status = 18 [default = Undefined];
+				}
+				
+				message DigitalOptionsOrderInfo {
+				   optional Contract.Entities.Trade.DigitalOptions.DigitalOptionsOperation DigitalOperation = 1;
+				   optional int64 ExpiresAt = 2;
+				}
+			}
+
+			message DisplayOrderGwInfo {
+			   optional string Code = 1;
+			   optional string Product = 2;
+			   optional string Side = 3;
+			   optional string AveragePrice = 4;
+			   optional string CreatedAt = 5;
+			   optional string CanceledAt = 6;
+			   optional string Symbol = 7;
+			   optional string Market = 8;
+			   optional string Open = 9;
+			   optional string Type = 10;
+			   optional string Amount = 11;
+			   optional string Executed = 12;
+			   optional string Status = 13;
+			   optional string OpenAmount = 14;
+			   optional string ExpiresAt = 15;
+			   optional string SenderStaff = 16;
+			   optional string ExecutedAmount = 17;
+			   optional string PriceLabel = 18;
+			   optional string DisplayPrice = 19;
+			   optional string StopLabel = 20;
+			   optional string DisplayStopPrice = 21;
+			   optional string CancelerStaff = 22;
+			   optional string DisplayQuantity = 23;
+			   optional string FormatSlim = 24;
+			   optional string FormatExtended = 25;
+			   repeated Contract.Entities.Trade.DisplayOrderEventInfo Events = 26;
+			   repeated Contract.Entities.Trade.DisplayOrderExecutionInfo Executions = 27;
+			   optional string Id = 28;
+			}
+			
+			message DisplayOrderGwEventInfo {
+			   optional string DateTime = 1;
+			   optional string Description = 2;
+			}
+			
+			message DisplayOrderGwExecutionInfo {
+			   optional string Symbol = 1;
+			   optional string Quantity = 2;
+			   optional string Price = 3;
+			   optional string DateTime = 4;
+			}
+			
+			message DisplayOrderInfo {
+			   optional string Code = 1;
+			   optional string Product = 2;
+			   optional string Side = 3;
+			   optional string AveragePrice = 4;
+			   optional string CreatedAt = 5;
+			   optional string CanceledAt = 6;
+			   optional string Symbol = 7;
+			   optional string Market = 8;
+			   optional string Open = 9;
+			   optional string Type = 10;
+			   optional string Amount = 11;
+			   optional string Executed = 12;
+			   optional string Status = 13;
+			   optional string OpenAmount = 14;
+			   optional string ExpiresAt = 15;
+			   optional string SenderStaff = 16;
+			   optional string ExecutedAmount = 17;
+			   optional string PriceLabel = 18;
+			   optional string DisplayPrice = 19;
+			   optional string StopLabel = 20;
+			   optional string DisplayStopPrice = 21;
+			   optional string CancelerStaff = 22;
+			   optional string DisplayQuantity = 23;
+			   optional string FormatSlim = 24;
+			   optional string FormatExtended = 25;
+			   repeated Contract.Entities.Trade.DisplayOrderEventInfo Events = 26;
+			   repeated Contract.Entities.Trade.DisplayOrderExecutionInfo Executions = 27;
+			   optional string Id = 28;
+			}
+			
+			message DisplayOrderEventInfo {
+			   optional string DateTime = 1;
+			   optional string Description = 2;
+			}
+			
+			message DisplayOrderExecutionInfo {
+			   optional string Symbol = 1;
+			   optional string Quantity = 2;
+			   optional string Price = 3;
+			   optional string DateTime = 4;
+			}
+			
+			message ExchangeOrderInfo {
+			   optional double AveragePrice = 1;
+			   optional string ClOrdID = 2;
+			   optional int32 Code = 3 [default = 0];
+			   optional int64 CreatedAt = 4 [default = 0];
+			   optional double CumQty = 5 [default = 0];
+			   optional string ExchangeAssignedOrderID = 7;
+			   optional double ExecutedAmount = 9 [default = 0];
+			   optional int64 ExpiresAt = 11;
+			   optional bool HasLeftovers = 12 [default = false];
+			   optional string Id = 13;
+			   optional bool IsBuy = 14 [default = false];
+			   optional bool IsCanceled = 15 [default = false];
+			   optional bool IsFilled = 16 [default = false];
+			   optional bool IsModificable = 17 [default = false];
+			   optional bool IsOpen = 18 [default = false];
+			   optional bool IsPendingCancel = 19 [default = false];
+			   optional bool IsPendingNew = 20 [default = false];
+			   optional bool IsPendingReplace = 21 [default = false];
+			   optional bool IsRejected = 22 [default = false];
+			   optional bool IsReplaced = 23 [default = false];
+			   optional bool IsSell = 24 [default = false];
+			   optional bool IsWaiting = 25 [default = false];
+			   optional double LeavesQty = 26 [default = 0];
+			   optional double Leftovers = 27 [default = 0];
+			   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 28 [default = Undefined];
+			   optional bool MustNotPublishEvents = 29 [default = false];
+			   optional string OrigClOrdID = 31;
+			   optional string OwnerAccountId = 33;
+			   optional double PreviousPrice = 34;
+			   optional double PreviousQuantity = 35;
+			   optional Contract.Enumeration.Trade.ExchangeOrderStatus PreviousStatus = 36;
+			   optional double PreviousStopPx = 37;
+			   optional double Price = 38 [default = 0];
+			   optional double PriceDivisor = 39 [default = 0];
+			   optional double Quantity = 40 [default = 0];
+			   optional double Rate = 41;
+			   optional bool ReplaceWasRejected = 42 [default = false];
+			   optional string SecondaryOrderID = 43;
+			   optional Contract.Enumeration.Trade.ExchangeOrderSide Side = 45 [default = Undefined];
+			   optional Contract.Enumeration.Trade.ExchangeOrderStatus Status = 46 [default = None];
+			   optional double StopPx = 47;
+			   optional string Symbol = 48;
+			   optional string Text = 49;
+			   optional Contract.Enumeration.Trade.ExchangeOrderValidityType TimeInForce = 50 [default = Undefined];
+			   optional int64 TransactTime = 51 [default = 0];
+			   optional Contract.Enumeration.Trade.ExchangeOrderType Type = 52 [default = None];
+			}
+			
+			message RejectedOrderInfo {
+			}
+		}
+
+		message StockHistory {
+			message QuoteHistoryInfo {
+			   optional int64 Date = 1 [default = 0];
+			   optional double Open = 2 [default = 0];
+			   optional double High = 3 [default = 0];
+			   optional double Low = 4 [default = 0];
+			   optional double Close = 5 [default = 0];
+			}
+			
+			message QuoteHistoryInfoPublication {
+			   repeated Contract.Entities.StockHistory.QuoteHistoryInfo Info = 1;
+			}
+			
+			message StockData {
+			   optional int64 Date = 1 [default = 0];
+			   optional double Price = 2 [default = 0];
+			}
+			
+			message StockHistoryInfo {
+			   optional double Max = 1 [default = 0];
+			   optional double Min = 2 [default = 0];
+			   repeated Contract.Entities.StockHistory.StockData Data = 3;
+			}
+			
+			message YearlyStockInfo {
+			   optional double AverageVolume = 1 [default = 0];
+			   optional int64 EndsAt = 2 [default = 0];
+			   optional double High = 3 [default = 0];
+			   optional string Id = 4;
+			   optional double Low = 5 [default = 0];
+			   optional int64 StartsAt = 6 [default = 0];
+			   optional string Symbol = 7;
+			}
+		}
+
+		message Security {
+			message Ping {
+			   optional string ServerName = 1;
+			   optional int64 Time = 2 [default = 0];
+			   optional bool Disconnect = 3 [default = false];
+			}
+		}
+
+		message MarketData {
+			message CoreFundInstrumentInfo {
+			   optional string Id = 1;
+			   optional double AdministrationFee = 2;
+			   optional string ANBIDClassification = 3;
+			   optional string ANBIDCode = 4;
+			   optional int64 ApplyBlockedAt = 5;
+			   optional string ApplyBlockedReason = 6;
+			   optional string AuditingCompany = 7;
+			   optional string Benchmark = 8;
+			   optional string Code = 9;
+			   optional string CustodyCompany = 10;
+			   optional string DelayApplicationQuota = 11;
+			   optional string DelayWithdrawNet = 12;
+			   optional string DelayWithdrawQuota = 13;
+			   optional string FundDailyPerf = 14;
+			   optional int32 IndexerCode = 15;
+			   optional string IndexerDailyPerf = 16;
+			   optional string IndexerName = 17;
+			   optional string IOFExplanation = 18;
+			   optional bool IsBlockedToApply = 19 [default = false];
+			   optional bool IsBlockedToWithdraw = 20 [default = false];
+			   optional string ManagerPolicy = 21;
+			   optional string MaxAdministrationFee = 22;
+			   optional int32 MorningStarRating = 23;
+			   optional string Name = 24;
+			   optional double NetWorth = 25;
+			   optional double NetWorthLastYear = 26;
+			   optional double PerformanceFee = 27;
+			   optional double PermanencyBalance = 28;
+			   optional int64 WithdrawBlockedAt = 29;
+			   optional string WithdrawBlockedReason = 30;
+			   optional string Symbol = 31;
+			   optional string TaxingExplanation = 32;
+			   optional int32 XPRiskRating = 33 [default = 0];
+			   optional int32 CategoryID = 34 [default = 0];
+			   optional string TargetPublic = 35;
+			   optional string Objectives = 36;
+			   optional string DelayWithdrawQuotaDetailed = 37;
+			   optional int64 LimitTime = 38;
+			   optional double InitialApplication = 39;
+			   optional double MinimumMovement = 40;
+			   optional int64 StartsAt = 41 [default = 0];
+			   optional int64 LastQuotaAt = 42;
+			   optional string FactSheetDownloadURL = 43;
+			   optional string PerformanceDownloadURL = 44;
+			   optional string ProspectusDownloadURL = 45;
+			   optional string SummaryDownloadURL = 46;
+			   optional string TermsAndConditionsDownloadURL = 47;
+			   optional bool RequireQualifiedInvestor = 48 [default = false];
+			   optional bool ClientCanApply = 49 [default = false];
+			}
+			
+			message CoreRealtimeInstrumentInfo {
+			   optional double BuyPrice = 1;
+			   optional double ClosingPrice = 2 [default = 0];
+			   optional string Exchange = 3;
+			   optional Contract.Enumeration.Trade.ExerciseStyle ExerciseStyle = 4 [default = Undefined];
+			   optional double HighLimitPrice = 5;
+			   optional double LastPrice = 6 [default = 0];
+			   optional double LowLimitPrice = 7;
+			   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 8 [default = Undefined];
+			   optional int64 MaturityAt = 9;
+			   optional double MinIncrement = 10 [default = 0];
+			   optional string Name = 11;
+			   optional double PriceDivisor = 12 [default = 0];
+			   optional Contract.Enumeration.Trade.PriceLimitType PriceLimitType = 13;
+			   optional Contract.Enumeration.Trade.PutOrCall PutOrCall = 14 [default = Undefined];
+			   optional double RoundLot = 15 [default = 0];
+			   optional double SellPrice = 16;
+			   optional double SettlementPrice = 17;
+			   optional int64 StartsAt = 18 [default = 0];
+			   optional double Strike = 19;
+			   optional string Symbol = 20;
+			   optional double TradeCount = 21;
+			   optional double TradedShare = 22;
+			   optional string Underlying = 23;
+			   optional double Variation = 24 [default = 0];
+			}
+			
+			message BookInfoBase {
+			   optional string Symbol = 1;
+			   optional double TopAskPrice = 2;
+			   optional double TopAskQuantity = 3;
+			   optional double TopBidPrice = 4;
+			   optional double TopBidQuantity = 5;
+			   // the following represent sub-types; at most 1 should have a value
+			   optional Contract.Entities.MarketData.BookInfo BookInfo = 100;
+			   optional Contract.Entities.MarketData.AggregatedBookInfo AggregatedBookInfo = 200;
+			}
+			
+			message BookInfo {
+			   repeated Contract.Entities.MarketData.BookEntry Asks = 1;
+			   repeated Contract.Entities.MarketData.BookEntry Bids = 2;
+			}
+			
+			message AggregatedBookInfo {
+			   repeated Contract.Entities.MarketData.AggregatedBookEntry AggregatedAsks = 1;
+			   repeated Contract.Entities.MarketData.AggregatedBookEntry AggregatedBids = 2;
+			}
+			
+			message BookEntry {
+			   optional string Broker = 2;
+			   optional int32 Position = 3 [default = 0];
+			   optional double Price = 4;
+			   optional double Quantity = 5;
+			}
+			
+			message AggregatedBookEntry {
+			   optional int32 NumberOfOrders = 1;
+			   optional int32 Position = 2 [default = 0];
+			   optional double Price = 3;
+			   optional double Quantity = 4;
+			}
+			
+			message CoreBondInstrumentInfo {
+			   optional string BondId = 1;
+			   optional Contract.Enumeration.Trade.BondType BondType = 2 [default = Undefined];
+			   optional int32 Duration = 3 [default = 0];
+			   optional Contract.Entities.MarketData.BondIssuer Issuer = 4;
+			   optional Contract.Enumeration.Trade.Rating Rating = 5 [default = Undefined];
+			   optional bool ShouldCalcIncomeTaxRate = 6 [default = false];
+			   optional int64 StartsAt = 7 [default = 0];
+			   repeated Contract.Entities.MarketData.TradingSpecifications TradingSpec = 8;
+			   optional int32 GracePeriod = 9 [default = 0];
+			   optional int32 DaysToSettlement = 10 [default = 0];
+			   optional bool HasLiquidity = 11 [default = false];
+			   optional bool RequireQualifiedInvestor = 12 [default = false];
+			   optional bool ClientCanApply = 13 [default = false];
+			}
+			
+			message BondIssuer {
+			   optional int32 Code = 1 [default = 0];
+			   optional string Id = 2;
+			   optional string Name = 3;
+			   optional string IconURL = 4;
+			}
+			
+			message TradingSpecifications {
+			   optional double BuyMinimumAmount = 1 [default = 0];
+			   optional double BuyReferenceValue = 2 [default = 0];
+			   optional string SpecificationID = 3;
+			   optional double Price = 4 [default = 0];
+			   optional double Rate = 5 [default = 0];
+			   optional string Symbol = 6;
+			   optional string InstrumentID = 7;
+			   optional double FixedRate = 9 [default = 0];
+			   optional Contract.Enumeration.Trade.InterestType InterestType = 10 [default = Undefined];
+			   optional Contract.Enumeration.Trade.DepreciationType DepreciationType = 11 [default = Undefined];
+			}
+			
+			message CoreInstrumentCompositionInfo {
+			   optional string Description = 1;
+			   optional string DisplayName = 2;
+			   optional Contract.Enumeration.Trade.RobotExitType ExitType = 3 [default = Undefined];
+			   optional double ExitUpgradeValue = 4 [default = 0];
+			   optional string Id = 5;
+			   optional bool ImproveIfBest = 6;
+			   optional bool IsActive = 7 [default = false];
+			   optional bool IsNonDefaultExchange = 8 [default = false];
+			   optional string MarketDataFeed = 9;
+			   optional double MaxFishingValue = 10;
+			   optional double MaxLossRatio = 11 [default = 0];
+			   optional string Name = 12;
+			   optional string TargetExchange = 13;
+			   optional Contract.Enumeration.Trade.InstrumentCompositionType Type = 14 [default = Undefined];
+			   optional string UnderlyingSymbol = 15;
+			}
+			
+			message CoreInstrumentInfo {
+			   optional int64 CreatedAt = 1 [default = 0];
+			   optional string Description = 2;
+			   optional string Exchange = 3;
+			   optional int64 ExpiresAt = 4;
+			   optional string InstrumentID = 5;
+			   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 6 [default = Undefined];
+			   optional double PriceDivisor = 7 [default = 0];
+			   optional Contract.Enumeration.Trade.PriceType PriceType = 8 [default = Undefined];
+			   optional Contract.Enumeration.Trade.PutOrCall PutOrCall = 9 [default = Undefined];
+			   optional double RoundLot = 10 [default = 0];
+			   optional string SecurityId = 11;
+			   optional double Strike = 12;
+			   optional string Symbol = 13;
+			   optional string Underlying = 14;
+			   optional int64 UpdatedAt = 15 [default = 0];
+			   // the following represent sub-types; at most 1 should have a value
+			   optional Contract.Entities.MarketData.CoreBondInstrumentInfo CoreBondInstrumentInfo = 100;
+			   optional Contract.Entities.MarketData.CoreFundInstrumentInfo CoreFundInstrumentInfo = 200;
+			}
+			
+			message CoreInstrumentListInfo {
+			   optional string Id = 1;
+			   repeated Contract.Entities.MarketData.CoreInstrumentCompositionInfo Instruments = 2;
+			   optional Contract.Enumeration.Trade.Module TargetOrder = 3 [default = Undefined];
+			   optional int64 UpdatedAt = 4;
+			}
+			
+			message InstrumentInfo {
+			   required string Symbol = 1;
+			   required Contract.Entities.MarketData.SecurityInfo SecurityInfo = 2;
+			   optional double OpeningPrice = 3;
+			   optional double ClosingPrice = 4;
+			   optional double PreviousClosingPrice = 5;
+			   optional double TheoreticalOpeningPrice = 6;
+			   optional double TheoreticalOpeningQuantity = 7;
+			   optional double TheoreticalOpeningNetChange = 8;
+			   optional int64 TradingOpenTime = 9;
+			   optional double TradingOpenCountdown = 10;
+			   optional double SettlementPrice = 11;
+			   optional string SecurityStatus = 12;
+			   optional string GroupStatus = 13;
+			   optional string IconURL = 14;
+			   required int64 LastUpdate = 15;
+			}
+			
+			message QuoteInfo {
+			   optional string TradeID = 1;
+			   optional string TradeCondition = 2;
+			   required string Symbol = 3;
+			   optional double Price = 4;
+			   optional double Quantity = 5;
+			   optional int64 TradeDate = 6;
+			   optional string Buyer = 7;
+			   optional string Seller = 8;
+			   optional string SellerDays = 9;
+			   optional string TickDirection = 10;
+			   optional double NetChange = 11;
+			   optional double NumberOfTrades = 12;
+			   optional double FinancialVolume = 13;
+			   optional double TradeVolume = 14;
+			   optional double VWAPPrice = 15;
+			   optional double HighestPrice = 16;
+			   optional double LowestPrice = 17;
+			   optional double OptPayoutAmount = 18;
+			}
+			
+			message SecurityInfo {
+			   required string Symbol = 1;
+			   optional string CFI = 2;
+			   optional double ContractMultiplier = 3;
+			   optional int64 ContractSettlementMonth = 4;
+			   optional string CountryOfIssue = 5;
+			   optional string Currency = 6;
+			   optional int64 IssueDate = 7;
+			   optional int64 MaturityDate = 8;
+			   optional double MaximumOrderQuantity = 9;
+			   optional double MinimumOrderQuantity = 10;
+			   optional double MinimumPriceIncrement = 11;
+			   optional double MinimumTradeVolume = 12;
+			   optional int32 PriceType = 13;
+			   optional double RoundLot = 14;
+			   optional string SecurityDescription = 15;
+			   optional string SecurityExchange = 16;
+			   optional string SecurityGroup = 17;
+			   optional string SecurityID = 18;
+			   optional int32 SecuritySubType = 19;
+			   optional string SecurityType = 20;
+			   optional int64 SecurityValidityTimestamp = 21;
+			   optional int64 SettlementDate = 22;
+			   optional string SettlementType = 23;
+			   optional string StrikeCurency = 24;
+			   optional double StrikePrice = 25;
+			   optional int32 TickSizeDenominator = 26;
+			   required string Market = 27;
+			   optional Contract.Enumeration.MarketData.OptionStyles ExerciseStyle = 28 [default = Undefined];
+			   optional Contract.Enumeration.MarketData.OptionTypes PutOrCall = 29 [default = Undefined];
+			   optional double PriceDivisor = 30;
+			}
+			
+			message UnderlyingInfo {
+			   optional string Symbol = 1;
+			   optional bool HasAsset = 2 [default = false];
+			}
+			
+			message UnderlyingInfoEqualityComparer {
+			}
+		}
+
+		message Mail {
+			message MessageInfo {
+			   optional int64 CreatedAt = 1 [default = 0];
+			   optional string Description = 2;
+			   optional int64 ExpiredAt = 3;
+			   optional bool HasSeen = 4 [default = false];
+			   optional int64 HasSeenAt = 5;
+			   optional string Id = 6;
+			   optional string Account = 7;
+			   optional string Staff = 8;
+			   optional Contract.Enumeration.Mail.MessageType Type = 9 [default = Undefined];
+			   optional int64 UpdatedAt = 10 [default = 0];
+			   optional int64 Version = 11;
+			}
+		}
+
+		message BackOffice {
+			message SwingTrade {
+				message StandardBuySellSnapshotReportInfo {
+				   optional double ActualValue = 1 [default = 0];
+				   optional double AveragePrice = 2 [default = 0];
+				   optional double BuyValue = 3 [default = 0];
+				   optional Contract.Entities.BackOffice.SwingTrade.StandardBuySellSnapshotCostsSummary Costs = 4;
+				   optional Contract.Entities.BackOffice.SwingTrade.StandardBuySellSnapshotDistributionPercentages Distribution = 5;
+				   optional int64 EndedAt = 6 [default = 0];
+				   optional Contract.Entities.MarketData.CoreRealtimeInstrumentInfo Instrument = 7;
+				   optional bool IsShort = 8 [default = false];
+				   optional Contract.Entities.BackOffice.SwingTrade.StandardBuySellSnapshotPerformanceSummary Performance = 9;
+				   optional int64 Previous = 10 [default = 0];
+				   optional double Quantity = 11 [default = 0];
+				   optional double RawActualValue = 12 [default = 0];
+				   optional double Spread = 13 [default = 0];
+				   optional int64 StartedAt = 14 [default = 0];
+				}
+				
+				message StandardBuySellSnapshotCostsSummary {
+				   optional double Earnings = 1 [default = 0];
+				   optional Contract.Entities.BackOffice.SwingTrade.StandardBuySellSnapshotCostsSummaryPeriod Net = 2;
+				   optional Contract.Enumeration.Trade.ExchangeOrderSide NetPosition = 3 [default = Undefined];
+				   optional Contract.Entities.BackOffice.SwingTrade.StandardBuySellSnapshotCostsSummaryPeriod Start = 4;
+				   optional double Taxes = 5 [default = 0];
+				}
+				
+				message StandardBuySellSnapshotCostsSummaryPeriod {
+				   optional double Amount = 1 [default = 0];
+				   optional double AveragePrice = 2 [default = 0];
+				   optional double Quantity = 3 [default = 0];
+				}
+				
+				message StandardBuySellSnapshotDistributionPercentages {
+				   optional double Available = 1 [default = 0];
+				   optional double Blocked = 2 [default = 0];
+				   optional double Margin = 3 [default = 0];
+				}
+				
+				message StandardBuySellSnapshotPerformanceSummary {
+				   optional Contract.Entities.BackOffice.SwingTrade.StandardBuySellSnapshotPerformanceSummaryPosition Current = 1;
+				   optional Contract.Entities.BackOffice.SwingTrade.StandardBuySellSnapshotPerformanceSummaryPosition Net = 2;
+				   optional double PnL = 3 [default = 0];
+				}
+				
+				message StandardBuySellSnapshotPerformanceSummaryPosition {
+				   optional double Amount = 1 [default = 0];
+				   optional double Quantity = 2 [default = 0];
+				}
+				
+				message SwingTradePerformanceReportInfo {
+				   optional double AveragePrice = 1 [default = 0];
+				}
+				
+				message CommoditySnapshotReportInfo {
+				   optional double AdjustedAmount = 1 [default = 0];
+				   optional double AveragePrice = 2 [default = 0];
+				   optional double CurrentAmount = 3 [default = 0];
+				   optional string Id = 4;
+				   optional double LastPrice = 5 [default = 0];
+				   optional double PnL = 6 [default = 0];
+				   optional double Quantity = 7 [default = 0];
+				   optional string Symbol = 8;
+				}
+				
+				message SwingTradeDetailedReportInfo {
+				   optional double AveragePrice = 1 [default = 0];
+				   optional double BaselineAmount = 2 [default = 0];
+				   optional double LastPrice = 3 [default = 0];
+				   optional double PnL = 4 [default = 0];
+				   optional double Quantity = 5 [default = 0];
+				   optional double TotalAmount = 6 [default = 0];
+				   optional string Symbol = 7;
+				}
+				
+				message SwingTradeSummaryReportInfo {
+				   optional double CurrentAmount = 1 [default = 0];
+				   optional double BaselineAmount = 2 [default = 0];
+				   optional double PnL = 3 [default = 0];
+				}
+				
+				message SwingTradeWarrantiesReportInfo {
+				   optional double BuyAmount = 1 [default = 0];
+				   optional double CreditLimit = 2 [default = 0];
+				   optional double MarginAvailable = 3 [default = 0];
+				   optional double MarginCall = 4 [default = 0];
+				   optional double MarginTotal = 5 [default = 0];
+				   optional double SellAmount = 6 [default = 0];
+				   optional double TotalAmount = 7 [default = 0];
+				   optional double BtcRate = 8 [default = 0];
+				}
+			}
+
+			message OptionsStrategies {
+				message MarginCall {
+				   optional double Initial = 1 [default = 0];
+				   optional double Maintenance = 2 [default = 0];
+				}
+				
+				message OptionsStrategyDetailedReportInfo {
+				   optional double AssembleCost = 1 [default = 0];
+				   optional double Assembled = 2 [default = 0];
+				   optional string Asset = 3;
+				   optional bool CanRevert = 4 [default = false];
+				   optional double CurrentCost = 5 [default = 0];
+				   optional bool IsNonDefaultExchange = 6 [default = false];
+				   repeated Contract.Entities.Trade.OptionsStrategies.OptionsStrategyLeg Legs = 7;
+				   optional string MarketDataFeed = 8;
+				   optional Contract.Enumeration.Trade.Module OrderType = 9 [default = Undefined];
+				   optional double PnL = 10 [default = 0];
+				   optional int32 Quantity = 11 [default = 0];
+				   optional double Rollback = 12 [default = 0];
+				   optional string Symbol = 13;
+				   optional string Underlying = 14;
+				}
+				
+				message OptionsStrategyPerformanceReportInfo {
+				   optional double AssembleCost = 1 [default = 0];
+				   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategy Strategy = 2;
+				}
+				
+				message OptionsStrategyProfitLossReportInfo {
+				   optional Contract.Entities.BackOffice.OptionsStrategies.MarginCall MarginCall = 1;
+				   optional Contract.Entities.BackOffice.OptionsStrategies.ProfitLoss PnL = 2;
+				   optional double Price = 3 [default = 0];
+				   optional bool IsCredit = 4 [default = false];
+				}
+				
+				message OptionsStrategySnapshotReportInfo {
+				   repeated Contract.Entities.BackOffice.OptionsStrategies.OptionsStrategySnapshotPiece Composition = 1;
+				   optional Contract.Entities.Abstraction.ReportBase Details = 2;
+				   optional int64 ExpiresAt = 3 [default = 0];
+				   optional double MarginCall = 4 [default = 0];
+				   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategy Strategy = 5;
+				}
+				
+				message OptionsStrategySnapshotPiece {
+				   optional int32 Quantity = 1 [default = 0];
+				   optional string Symbol = 2;
+				}
+				
+				message StructuredPerformanceReportInfo {
+				   optional double AssembleCost = 1 [default = 0];
+				   optional string Description = 2;
+				   optional string ImageURL = 3;
+				   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategy Strategy = 4;
+				   optional double Payoff = 5 [default = 0];
+				   optional double ValueCost = 6 [default = 0];
+				}
+				
+				message OptionsStrategyReportInfo {
+				   optional double Amount = 1 [default = 0];
+				   optional string Asset = 2;
+				   optional bool CanRevert = 3 [default = false];
+				   optional bool CanRollover = 4 [default = false];
+				   optional double CurrentAmount = 5 [default = 0];
+				   optional double CurrentPrice = 6 [default = 0];
+				   optional string Id = 7;
+				   optional bool IsNonDefaultExchange = 8 [default = false];
+				   optional string MarketDataFeed = 9;
+				   optional Contract.Enumeration.Trade.Module OrderType = 10 [default = Undefined];
+				   optional double PnL = 11 [default = 0];
+				   optional double Price = 12 [default = 0];
+				   optional double Quantity = 13 [default = 0];
+				   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategy Strategy = 14;
+				   optional double Strike = 15 [default = 0];
+				   optional string Symbol = 16;
+				   optional string Underlying = 17;
+				}
+				
+				message OptionsStrategyWarrantiesReportInfo {
+				   optional double AllocatedCollateral = 1 [default = 0];
+				   optional double AvailableCollateral = 2 [default = 0];
+				   optional double CurrentAsset = 3 [default = 0];
+				   optional string Description = 4;
+				   optional Contract.Entities.BackOffice.OptionsStrategies.MarginCall MarginCall = 5;
+				   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 7;
+				   optional double MaxExposure = 8 [default = 0];
+				   optional int64 MaxValidity = 9 [default = 0];
+				   optional Contract.Entities.BackOffice.OptionsStrategies.ProfitLoss PnL = 10;
+				   optional double Price = 11 [default = 0];
+				   optional double PriceDivisor = 12 [default = 0];
+				   optional int32 RemainingSessions = 13 [default = 0];
+				   optional double RoundLot = 14 [default = 0];
+				   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategy Strategy = 15;
+				   optional string Symbol = 16;
+				   optional Contract.Entities.StockHistory.YearlyStockInfo YearlyInfo = 17;
+				}
+				
+				message ProfitLoss {
+				   optional bool IsLossUnlimited = 1 [default = false];
+				   optional bool IsProfitUnlimited = 2 [default = false];
+				   optional Contract.Enumeration.BackOffice.ProfitLossType LossType = 3 [default = Undefined];
+				   optional double MaximumLoss = 4 [default = 0];
+				   optional double MaximumProfit = 5 [default = 0];
+				   optional Contract.Enumeration.BackOffice.ProfitLossType ProfitType = 6 [default = Undefined];
+				}
+			}
+
+			message MetaTrader {
+				message MetaTraderPerformanceReportInfo {
+				   optional double AssetCount = 1 [default = 0];
+				}
+				
+				message MetaTraderSnapshotReportInfo {
+				   repeated Contract.Messaging.Abstraction.IEvaluatable Assets = 1;
+				   optional double AvailableMargin = 2 [default = 0];
+				   optional double BuyAmount = 3 [default = 0];
+				   optional double Exposure = 4 [default = 0];
+				   optional double MarginCall = 5 [default = 0];
+				   optional double MaximumLoss = 6 [default = 0];
+				   optional double PortfolioCount = 7 [default = 0];
+				   optional double ProfitAndLoss = 8 [default = 0];
+				   optional double SellAmount = 9 [default = 0];
+				   optional double TilStop = 10 [default = 0];
+				   optional double TotalAmount = 11 [default = 0];
+				   optional double Cost = 12 [default = 0];
+				}
+			}
+
+			message InvestmentFunds {
+				message InvestmentFundsWarrantiesReportInfo {
+				   optional double BuyAmount = 1 [default = 0];
+				}
+				
+				message InvestmentFundsPerformanceReportInfo {
+				   optional double NetAmount = 1 [default = 0];
+				   optional double QuotaPrice = 2 [default = 0];
+				   optional double RawAmount = 3 [default = 0];
+				   optional double StartAmount = 4 [default = 0];
+				   optional double TaxAmount = 5 [default = 0];
+				   optional double TaxIncome = 6 [default = 0];
+				   optional double TaxIOF = 7 [default = 0];
+				}
+				
+				message InvestmentFundsDetailedReportInfo {
+				   optional double AveragePrice = 1 [default = 0];
+				   optional double BaselineAmount = 2 [default = 0];
+				   optional double LastPrice = 3 [default = 0];
+				   optional string Name = 4;
+				   optional double PnL = 5 [default = 0];
+				   optional double Quantity = 6 [default = 0];
+				   optional string Symbol = 7;
+				   optional double TaxIncome = 8 [default = 0];
+				   optional double TaxIOF = 9 [default = 0];
+				   optional double TotalAmount = 10 [default = 0];
+				   optional double TotalTaxes = 11 [default = 0];
+				   optional double AvailableAmount = 12 [default = 0];
+				   optional bool InSettlement = 13 [default = false];
+				}
+			}
+
+			message Forward {
+				message ForwardPerformanceReportInfo {
+				   optional int64 ExpiresAt = 1 [default = 0];
+				}
+				
+				message ForwardSnapshotReportInfo {
+				   optional int64 ExpiresAt = 1 [default = 0];
+				   optional Contract.Entities.BackOffice.Forward.ForwardSnapshotValueSummary ForwardValue = 2;
+				   optional double PnL = 3 [default = 0];
+				   optional Contract.Entities.BackOffice.Forward.ForwardSnapshotValueSummary PriceValue = 4;
+				   optional double Quantity = 5 [default = 0];
+				   optional double Rate = 6 [default = 0];
+				   optional int64 RolloverDeadline = 7 [default = 0];
+				   optional int64 StartedAt = 8 [default = 0];
+				   optional string Symbol = 9;
+				}
+				
+				message ForwardSnapshotValueSummary {
+				   optional double Amount = 1 [default = 0];
+				   optional double Price = 2 [default = 0];
+				}
+				
+				message ForwardDetailedReportInfo {
+				   optional double AvailableToRollover = 1 [default = 0];
+				   optional bool CanRollover = 2 [default = false];
+				   optional bool CanSettle = 3 [default = false];
+				   optional int64 CreatedAt = 4 [default = 0];
+				   optional int64 ExpiresAt = 5 [default = 0];
+				   optional double ForwardAmount = 6 [default = 0];
+				   optional double ForwardPrice = 7 [default = 0];
+				   optional string Id = 8;
+				   optional double LastAmount = 9 [default = 0];
+				   optional double LastPrice = 10 [default = 0];
+				   optional bool MustScheduleRollover = 11 [default = false];
+				   optional double PnL = 12 [default = 0];
+				   optional int32 Quantity = 13 [default = 0];
+				   optional double Rate = 14 [default = 0];
+				   optional int64 RolloverDeadline = 15 [default = 0];
+				   optional string Symbol = 16;
+				}
+				
+				message ForwardSummaryReportInfo {
+				   optional double CurrentAmount = 1 [default = 0];
+				   optional double ForwardAmount = 2 [default = 0];
+				   optional double PnL = 3 [default = 0];
+				}
+				
+				message ForwardWarrantiesReportInfo {
+				   optional double Allocated = 1 [default = 0];
+				   optional double Available = 2 [default = 0];
+				   optional double MarginPercent = 3 [default = 0];
+				   optional double MaxExposure = 4 [default = 0];
+				}
+			}
+
+			message FixedIncome {
+				message FixedIncomeBondTaxes {
+				   optional double CblcAmount = 1 [default = 0];
+				   optional double CustodianAmount = 2 [default = 0];
+				   optional double Income = 3 [default = 0];
+				   optional double IncomeRatio = 4 [default = 0];
+				   optional double IOF = 5 [default = 0];
+				   optional double IOFRatio = 6 [default = 0];
+				   optional double Total = 7 [default = 0];
+				}
+				
+				message FixedIncomeDetailedReportInfo {
+				   optional double Available = 1 [default = 0];
+				   optional double BuyAmount = 2 [default = 0];
+				   optional double CurrentAmount = 3 [default = 0];
+				   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 5 [default = Undefined];
+				   optional double NetAmount = 6 [default = 0];
+				   optional double PnL = 7 [default = 0];
+				   repeated Contract.Entities.BackOffice.FixedIncome.FixedIncomeEvaluatedPortfolio Portfolio = 8;
+				   optional double Quantity = 9 [default = 0];
+				   optional string Symbol = 10;
+				   optional Contract.Entities.BackOffice.FixedIncome.FixedIncomeBondTaxes Taxes = 11;
+				   optional double Total = 12 [default = 0];
+				   optional string Type = 13;
+				   optional string CodeBonds = 14;
+				   optional bool IsUsingNewFederalBonds = 15;
+				}
+				
+				message FixedIncomeEvaluatedPortfolio {
+				   optional double Available = 1 [default = 0];
+				   optional double BuyAmount = 2 [default = 0];
+				   optional double CblcAmount = 3 [default = 0];
+				   optional int64 CreatedAt = 4 [default = 0];
+				   optional double CumulativeReturn = 5 [default = 0];
+				   optional double CurrentAmount = 6 [default = 0];
+				   optional double CustodianAmount = 7 [default = 0];
+				   optional double Duration = 8 [default = 0];
+				   optional int64 ExpiresAt = 9 [default = 0];
+				   optional bool IsWaiting = 12 [default = false];
+				   optional double Month12Return = 13 [default = 0];
+				   optional double MonthReturn = 14 [default = 0];
+				   optional double NetAmount = 15 [default = 0];
+				   optional double PnL = 16 [default = 0];
+				   optional string PriceType = 17;
+				   optional double Quantity = 18 [default = 0];
+				   optional double Rate = 19 [default = 0];
+				   optional Contract.Enumeration.Trade.SettlementStatus SettlementStatus = 20 [default = Undefined];
+				   optional string SettlementStatusText = 21;
+				   optional double StartingPrice = 22 [default = 0];
+				   optional int64 StartsAt = 23 [default = 0];
+				   optional string Symbol = 24;
+				   optional Contract.Entities.BackOffice.FixedIncome.FixedIncomeBondTaxes Taxes = 25;
+				   optional string Type = 26;
+				   optional double YearReturn = 27 [default = 0];
+				   optional Contract.Entities.MarketData.CoreInstrumentInfo BondInstrument = 28;
+				   optional double FixedRate = 29 [default = 0];
+				}
+				
+				message FixedIncomePerformanceReportInfo {
+				   optional string BondType = 1;
+				   optional Contract.Entities.Abstraction.ReportBase ReportData = 2;
+				}
+				
+				message FixedIncomeSnapshotReportInfo {
+				   optional Contract.Entities.Abstraction.ReportBase Report = 1;
+				   optional string Symbol = 2;
+				}
+				
+				message FixedIncomeWarrantiesReportInfo {
+				   optional double BuyAmount = 1 [default = 0];
+				   optional bool MissingContract = 2 [default = false];
+				   optional string IssuerContractURL = 3;
+				   optional string FgcContractURL = 4;
+				}
+			}
+
+			message DayTrade {
+				message DayTradePerformanceReportInfo {
+				   optional double AssetCount = 1 [default = 0];
+				}
+				
+				message DayTradeSnapshotReportInfo {
+				   repeated Contract.Entities.Abstraction.ReportBase Assets = 1;
+				   optional double AvailableMargin = 2 [default = 0];
+				   optional double BuyAmount = 3 [default = 0];
+				   optional double Exposure = 4 [default = 0];
+				   optional double MarginCall = 5 [default = 0];
+				   optional double MaximumLoss = 6 [default = 0];
+				   optional double PortfolioCount = 7 [default = 0];
+				   optional double ProfitAndLoss = 8 [default = 0];
+				   optional double SellAmount = 9 [default = 0];
+				   optional double TilStop = 10 [default = 0];
+				   optional double TotalAmount = 11 [default = 0];
+				   optional double Cost = 12 [default = 0];
+				}
+				
+				message DayTradeSummaryReportInfo {
+				   optional double AssetAmount = 1 [default = 0];
+				   optional double Exposure = 2 [default = 0];
+				   optional double MaximumLoss = 3 [default = 0];
+				   optional double ProfitAndLoss = 4 [default = 0];
+				   optional double TilStop = 5 [default = 0];
+				   optional double TotalAmount = 6 [default = 0];
+				   optional double TotalBrokerage = 7 [default = 0];
+				}
+				
+				message DayTradeWarrantiesReportInfo {
+				   optional double Allocated = 1 [default = 0];
+				   optional double Available = 2 [default = 0];
+				   optional double AveragePrice = 3 [default = 0];
+				   optional double BuyLeverage = 4 [default = 0];
+				   optional bool IsCommodity = 5 [default = false];
+				   optional bool IsOption = 6 [default = false];
+				   optional double OperationNet = 7 [default = 0];
+				   optional double SellLeverage = 8 [default = 0];
+				   optional double TotalExposure = 9 [default = 0];
+				   optional double MarginPercent = 10 [default = 0];
+				   optional double MaxExposure = 11 [default = 0];
+				}
+				
+				message DayTradeDetailedReportInfo {
+				   optional double AssetAmount = 1 [default = 0];
+				   optional Contract.Entities.BackOffice.SideSummary Buy = 2;
+				   optional bool IsCommodity = 3 [default = false];
+				   optional bool IsOption = 4 [default = false];
+				   optional Contract.Entities.BackOffice.SideSummary Net = 5;
+				   optional double PnL = 6 [default = 0];
+				   optional Contract.Entities.BackOffice.SideSummary Sell = 7;
+				   optional string Symbol = 8;
+				   optional double TotalAmount = 9 [default = 0];
+				}
+			}
+
+			message Platform {
+				message PlatformPerformanceReportInfo {
+				   optional double AssetCount = 1 [default = 0];
+				}
+				
+				message PlatformSnapshotReportInfo {
+				   repeated Contract.Messaging.Abstraction.IEvaluatable Assets = 1;
+				   optional double AvailableMargin = 2 [default = 0];
+				   optional double BuyAmount = 3 [default = 0];
+				   optional double Exposure = 4 [default = 0];
+				   optional double MarginCall = 5 [default = 0];
+				   optional double MaximumLoss = 6 [default = 0];
+				   optional double PortfolioCount = 7 [default = 0];
+				   optional double ProfitAndLoss = 8 [default = 0];
+				   optional double SellAmount = 9 [default = 0];
+				   optional double TilStop = 10 [default = 0];
+				   optional double TotalAmount = 11 [default = 0];
+				   optional double Cost = 12 [default = 0];
+				}
+			}
+
+			message DigitalOptions {
+				message DigitalOptionsDetailedReportInfo {
+				   optional Contract.Messaging.Abstraction.IEvaluatable Asset = 1;
+				   repeated Contract.Entities.Trade.DigitalOptions.DigitalOptionsOperation Operations = 2;
+				}
+				
+				message DigitalOptionsPerformanceReportInfo {
+				   optional string Underlying = 1;
+				   optional Contract.Enumeration.Trade.PutOrCall PutOrCall = 2 [default = Undefined];
+				   optional double Strike = 3 [default = 0];
+				   optional int32 NumberOfOpenedPositions = 4 [default = 0];
+				   optional double PotentialPnL = 5 [default = 0];
+				   optional int64 ExercisesAt = 6;
+				   repeated Contract.Entities.Trade.DigitalOptions.DigitalOptionsOperation Operations = 7;
+				}
+			}
+
+			message BTC {
+				message BtcPerformanceReportInfo {
+				   optional int64 ExpiresAt = 1 [default = 0];
+				   optional double Rent = 2 [default = 0];
+				}
+				
+				message BtcReportInfo {
+				   optional double Amount = 1 [default = 0];
+				   optional int32 Available = 2 [default = 0];
+				   optional int64 CantReturnUntil = 3 [default = 0];
+				   optional int64 CreatedAt = 4 [default = 0];
+				   optional double CurrentRent = 5 [default = 0];
+				   optional int64 ExpiresAt = 6 [default = 0];
+				   optional string Id = 7;
+				   optional bool IsPending = 8 [default = false];
+				   optional double MarginCall = 9;
+				   optional int32 OverallQuantity = 10 [default = 0];
+				   optional double Price = 11 [default = 0];
+				   optional int32 Quantity = 12 [default = 0];
+				   optional double Rate = 13 [default = 0];
+				   optional double RateWeightedAmount = 14 [default = 0];
+				   optional string Symbol = 15;
+				}
+				
+				message BtcSnapshotReportInfo {
+				   repeated Contract.Entities.BackOffice.BTC.BtcSnapshotEntry Entries = 1;
+				   optional Contract.Entities.Abstraction.ReportBase Summary = 2;
+				   optional string Symbol = 3;
+				   optional double TotalMarginCall = 4 [default = 0];
+				}
+				
+				message BtcSnapshotEntry {
+				   optional int64 ExpiresAt = 1 [default = 0];
+				   optional string Id = 2;
+				}
+			}
+
+			message AccountStatement {
+			   repeated Contract.Entities.BackOffice.StatementDaySummary Days = 1;
+			   optional string Id = 2;
+			   optional string Account = 3;
+			}
+			
+			message AccountStatementMonth {
+			   optional int64 End = 1 [default = 0];
+			   optional bool IsFuture = 2 [default = false];
+			   optional int64 Start = 3 [default = 0];
+			   repeated Contract.Entities.BackOffice.StatementDaySummary Statements = 4;
+			}
+			
+			message AssetChangeInfo {
+			   optional Contract.Enumeration.Trade.Module Module = 1 [default = Undefined];
+			   optional string Account = 2;
+			   optional string Id = 3;
+			   optional string RoutingKey = 4;
+			}
+			
+			message AssetInfo {
+			   optional double AppliedRate = 1 [default = 0];
+			   optional double AverageBuyPrice = 2 [default = 0];
+			   optional double AverageSellPrice = 3 [default = 0];
+			   optional int64 CreatedAt = 4 [default = 0];
+			   optional double EvaluatedAmount = 5 [default = 0];
+			   optional string Id = 6;
+			   optional bool IsActive = 7 [default = false];
+			   optional bool IsLong = 8 [default = false];
+			   optional bool IsShort = 9 [default = false];
+			   optional bool ShouldComputeOverall = 10 [default = false];
+			   optional Contract.Entities.BackOffice.PortfolioSummaryInfo Summary = 11;
+			   optional double Price = 12 [default = 0];
+			   optional string Symbol = 13;
+			   optional string Underlying = 14;
+			   optional string IconURL = 15;
+			   optional double RoundLot = 16 [default = 0];
+			   optional double ProfitAndLoss = 17 [default = 0];
+			}
+			
+			message AssetPerformanceReportInfo {
+			   optional Contract.Enumeration.Trade.Module OrderType = 1 [default = Undefined];
+			   optional double Quantity = 2 [default = 0];
+			   optional double Value = 3 [default = 0];
+			   optional double ConsideredPosition = 4 [default = 0];
+			   // the following represent sub-types; at most 1 should have a value
+			   optional Contract.Entities.BackOffice.BTC.BtcPerformanceReportInfo BtcPerformanceReportInfo = 100;
+			   optional Contract.Entities.BackOffice.DayTrade.DayTradePerformanceReportInfo DayTradePerformanceReportInfo = 200;
+			   optional Contract.Entities.BackOffice.FixedIncome.FixedIncomePerformanceReportInfo FixedIncomePerformanceReportInfo = 300;
+			   optional Contract.Entities.BackOffice.Forward.ForwardPerformanceReportInfo ForwardPerformanceReportInfo = 400;
+			   optional Contract.Entities.BackOffice.MetaTrader.MetaTraderPerformanceReportInfo MetaTraderPerformanceReportInfo = 500;
+			   optional Contract.Entities.BackOffice.OptionsStrategies.OptionsStrategyPerformanceReportInfo OptionsStrategyPerformanceReportInfo = 600;
+			   optional Contract.Entities.BackOffice.SwingTrade.SwingTradePerformanceReportInfo SwingTradePerformanceReportInfo = 700;
+			   optional Contract.Entities.BackOffice.InvestmentFunds.InvestmentFundsPerformanceReportInfo InvestmentFundsPerformanceReportInfo = 800;
+			   optional Contract.Entities.BackOffice.OptionsStrategies.StructuredPerformanceReportInfo StructuredPerformanceReportInfo = 900;
+			   optional Contract.Entities.BackOffice.DigitalOptions.DigitalOptionsPerformanceReportInfo DigitalOptionsPerformanceReportInfo = 1000;
+			   optional Contract.Entities.BackOffice.Platform.PlatformPerformanceReportInfo PlatformPerformanceReportInfo = 1100;
+			}
+			
+			message BalanceAvailableAmountInfo {
+			   optional double D1 = 2 [default = 0];
+			   optional double D2 = 3 [default = 0];
+			   optional double D3 = 4 [default = 0];
+			}
+			
+			message BalanceChangeInfo {
+			   optional Contract.Enumeration.Trade.Module Module = 1 [default = Undefined];
+			   optional string Account = 2;
+			   optional string Id = 3;
+			   optional string RoutingKey = 4;
+			}
+			
+			message BmfFeeReceiptResult {
+			   optional string CDADMINCVM = 1;
+			   optional int32 CDAGECOM = 2 [default = 0];
+			   optional string CDCEP = 3;
+			   optional int32 CDCLIENTE = 4 [default = 0];
+			   optional string CDCPFCGC = 5;
+			   optional int32 CDTIPONOTA = 6 [default = 0];
+			   optional string DSTIPNOTA = 7;
+			   optional int64 DTDATLIQ = 8 [default = 0];
+			   optional int64 DTDATMOV = 9 [default = 0];
+			   optional int64 DTFINAL = 10 [default = 0];
+			   optional int64 DTINICIAL = 11 [default = 0];
+			   optional string Id = 12;
+			   optional string INAGRUPAPERIODO = 13;
+			   optional string INDESCARREGAIR = 14;
+			   optional string INDOLMER = 15;
+			   optional string INSEGREGAGER = 16;
+			   optional string INSEGREGAWTR = 17;
+			   optional string NMCIDADE = 18;
+			   optional string NMCLIENTE = 19;
+			   optional string NMCONTRAPAR = 20;
+			   optional string NMLOGRADOURO = 21;
+			   optional string NMRESIDE = 22;
+			   optional string NMSEGREGAGER = 23;
+			   optional int32 NRNOTCOR = 24 [default = 0];
+			   optional string NRTELEFONE = 25;
+			   optional int32 TPCLIENTE = 26 [default = 0];
+			   optional string TPPESSOA = 27;
+			   optional int32 TradingCode = 28 [default = 0];
+			   optional double VALACRECORT = 29 [default = 0];
+			   optional double VALTOTISS = 30 [default = 0];
+			   optional int64 Version = 31;
+			   optional double VLAJUSTEDT = 32 [default = 0];
+			   optional double VLAJUSTENM = 33 [default = 0];
+			   optional double VLBASEIR = 34 [default = 0];
+			   optional double VLCONTAINV = 35 [default = 0];
+			   optional double VLCONTANOR = 36 [default = 0];
+			   optional double VLCORTOTBRO = 37 [default = 0];
+			   optional double VLCUSTMC = 38 [default = 0];
+			   optional double VLDESPTOT = 39 [default = 0];
+			   optional double VLDISCOM = 40 [default = 0];
+			   optional double VLDISVEN = 41 [default = 0];
+			   optional double VLEMOFDOTOT = 42 [default = 0];
+			   optional double VLIRRFCORRET = 43 [default = 0];
+			   optional double VLIRRFDT = 44 [default = 0];
+			   optional double VLISENIMF = 45 [default = 0];
+			   optional double VLLIQNOT = 46 [default = 0];
+			   optional double VLLIQTOT = 47 [default = 0];
+			   optional double VLOPCCOM = 48 [default = 0];
+			   optional double VLOPCVEN = 49 [default = 0];
+			   optional double VLPISCOFINS = 50 [default = 0];
+			   optional double VLTAXTOT = 51 [default = 0];
+			   optional double VLTOTNEG = 52 [default = 0];
+			   optional double VLVLRTOT = 53 [default = 0];
+			}
+			
+			message BmfFeeReceiptBody {
+			   optional int32 CDCLIENTE = 1 [default = 0];
+			   optional string CDCOMMOD = 2;
+			   optional string CDCOTCPA = 3;
+			   optional string CDCOTVAR = 4;
+			   optional string CDCOTVDA = 5;
+			   optional string CDMERCAD = 6;
+			   optional string CDNATOPE = 7;
+			   optional string CDSERIE = 8;
+			   optional string DSVALOR = 9;
+			   optional string DSVARCPA = 10;
+			   optional string DSVARVDA = 11;
+			   optional int64 DTDATBAS = 12 [default = 0];
+			   optional int64 DTDATMOV = 13 [default = 0];
+			   optional int64 DTDATPGO = 14 [default = 0];
+			   optional int64 DTDATVCT = 15 [default = 0];
+			   optional int64 DTNEGOCIO = 16 [default = 0];
+			   optional int64 DTVENC = 17 [default = 0];
+			   optional string Id = 18;
+			   optional string INCONTRAPARPESSVINC = 19;
+			   optional string INDOLMER = 20;
+			   optional string INGARANT = 21;
+			   optional string INNEGVIRT = 22;
+			   optional string INPERCPA = 23;
+			   optional string INPERVDA = 24;
+			   optional string INTIPOPC = 25;
+			   optional int32 NRNEGOCIO = 26 [default = 0];
+			   optional double PRNEGOCIO = 27 [default = 0];
+			   optional double PUVARCPA = 28 [default = 0];
+			   optional double PUVARVDA = 29 [default = 0];
+			   optional int32 QTQTDDET = 30 [default = 0];
+			   optional string TPCONINV = 31;
+			   optional string TPNEGOCIO = 32;
+			   optional int32 TradingCode = 33 [default = 0];
+			   optional int64 Version = 34;
+			   optional double VLCORNEG = 35 [default = 0];
+			   optional double VLCOTNEG = 36 [default = 0];
+			   optional double VLEMONEG = 37 [default = 0];
+			   optional double VLJURCPA = 38 [default = 0];
+			   optional double VLJURVDA = 39 [default = 0];
+			   optional double VLPREBAR = 40 [default = 0];
+			   optional double VLPREEXE = 41 [default = 0];
+			   optional double VLPSTCPA = 42 [default = 0];
+			   optional double VLPSTVDA = 43 [default = 0];
+			   optional double VLTAMBAS = 44 [default = 0];
+			   optional double VLTAXREG = 45 [default = 0];
+			   optional double VLVALCOT = 46 [default = 0];
+			   optional double VLVALOPE = 47 [default = 0];
+			   optional double VLVLRLIQ = 48 [default = 0];
+			   optional double VLVLRNEG = 49 [default = 0];
+			}
+			
+			message BmfFeeReceiptReportInfo {
+			   optional string MarketType = 1;
+			   optional Contract.Entities.BackOffice.BmfFeeReceipt FeeReceipt = 2;
+			}
+			
+			message BmfFeeReceipt {
+			   repeated Contract.Entities.BackOffice.BmfFeeReceiptBody Body = 1;
+			   repeated Contract.Entities.BackOffice.BmfFeeReceiptResult Result = 2;
+			}
+			
+			message BrokerageMarketType {
+			   optional bool BMF = 1 [default = false];
+			   optional bool BM2 = 2 [default = false];
+			   optional bool FUT = 3 [default = false];
+			   optional bool D3C = 4 [default = false];
+			   optional bool NOR = 5 [default = false];
+			   optional bool SOM = 6 [default = false];
+			   optional bool D2S = 7 [default = false];
+			}
+			
+			message BrokerageFeeReceiptReportInfo {
+			   optional string MarketType = 1;
+			   optional Contract.Entities.BackOffice.BrokerageFeeReceipt FeeReceipt = 2;
+			}
+			
+			message BalanceReportInfo {
+			   optional Contract.Messaging.Abstraction.IEvaluatable Balance = 1;
+			   optional Contract.Entities.BackOffice.TradingCalendarInfo Calendar = 2;
+			}
+			
+			message BrokerageFeeReceipt {
+			   repeated Contract.Entities.BackOffice.BrokerageFeeReceiptBody Body = 1;
+			   optional Contract.Entities.BackOffice.BrokerageFeeReceiptFooter Footer = 2;
+			   optional Contract.Entities.BackOffice.BrokerageFeeReceiptHead Head = 3;
+			}
+			
+			message BrokerageFeeReceiptHead {
+			   optional string ASS = 1;
+			   optional string CDACIONISTA = 2;
+			   optional string CDADMINCVM = 3;
+			   optional string CDAGENTECOMP = 4;
+			   optional string CDBANCO = 5;
+			   optional int32 CDBOLFAT = 6 [default = 0];
+			   optional string CDCEP = 7;
+			   optional int32 CDCLIENTECC = 8 [default = 0];
+			   optional string CDCUSTODIANTE = 9;
+			   optional string CLIAGENTE = 10;
+			   optional string CLIECUST = 11;
+			   optional string CLIENTE = 12;
+			   optional string CPFCGC = 13;
+			   optional int64 DTNEGOCIO = 14 [default = 0];
+			   optional string FISJUR = 15;
+			   optional string Id = 16;
+			   optional string INCONTAINV = 17;
+			   optional string INPESSVINC = 18;
+			   optional string NMBAIRRO = 19;
+			   optional string NMCIDADE = 20;
+			   optional string NMCOMPENDE = 21;
+			   optional string NMCOMPLNOME = 22;
+			   optional string NMLOGRADOURO = 23;
+			   optional string NOMASS = 24;
+			   optional string NOME = 25;
+			   optional string NRAGENCIA = 26;
+			   optional string NRCTACORR = 27;
+			   optional int32 NRNOTA = 28 [default = 0];
+			   optional string NRPREDIO = 29;
+			   optional string QUALIFICADO = 30;
+			   optional string SGESTADO = 31;
+			   optional string StringId = 32;
+			   optional string TPNEGOCIO = 33;
+			   optional int32 TradingCode = 34 [default = 0];
+			   optional string USUACUST = 35;
+			   optional int64 Version = 36;
+			   optional double VLAGENTE = 37 [default = 0];
+			}
+			
+			message BrokerageFeeReceiptFooter {
+			   optional int32 CDBOLFAT = 1 [default = 0];
+			   optional int32 CDCLIENTECC = 2 [default = 0];
+			   optional int64 D3DATA = 3 [default = 0];
+			   optional string DCDESCON = 4;
+			   optional string DCIROPER = 5;
+			   optional string DCLIQFAT = 6;
+			   optional string DCLIQNOT = 7;
+			   optional string DCSUBTOT = 8;
+			   optional double DESCON = 9 [default = 0];
+			   optional int64 DTNEGOCIO = 10 [default = 0];
+			   optional string Id = 11;
+			   optional double IRRETIDO = 12 [default = 0];
+			   optional double LIQFAT = 13 [default = 0];
+			   optional double LIQNOT = 14 [default = 0];
+			   optional double LIQNOTBV = 15 [default = 0];
+			   optional double LIQNOTCB = 16 [default = 0];
+			   optional string StringId = 17;
+			   optional double SUBTOT = 18 [default = 0];
+			   optional double TOTBOVSOMA = 19 [default = 0];
+			   optional string TPNEGOCIO = 20;
+			   optional int32 TradingCode = 21 [default = 0];
+			   optional double VALDES = 22 [default = 0];
+			   optional int64 Version = 23;
+			   optional double VLAJUDIA = 24 [default = 0];
+			   optional double VLBASEIRDT = 25 [default = 0];
+			   optional double VLBASEIROPER = 26 [default = 0];
+			   optional double VLCORTOT = 27 [default = 0];
+			   optional double VLCPAFUT = 28 [default = 0];
+			   optional double VLCPAOPC = 29 [default = 0];
+			   optional double VLCPAVIS = 30 [default = 0];
+			   optional double VLDEBENT = 31 [default = 0];
+			   optional double VLEMOLUM = 32 [default = 0];
+			   optional double VLEMOLUMBV = 33 [default = 0];
+			   optional double VLEMOLUMCB = 34 [default = 0];
+			   optional double VLFUTURO = 35 [default = 0];
+			   optional double VLIRCORR = 36 [default = 0];
+			   optional double VLIROPER = 37 [default = 0];
+			   optional double VLIRRFDESPESA = 38 [default = 0];
+			   optional double VLISS = 39 [default = 0];
+			   optional double VLTAXANA = 40 [default = 0];
+			   optional double VLTAXPTA = 41 [default = 0];
+			   optional double VLTAXREG = 42 [default = 0];
+			   optional double VLTAXREGBV = 43 [default = 0];
+			   optional double VLTAXREGCB = 44 [default = 0];
+			   optional double VLTERMO = 45 [default = 0];
+			   optional double VLTITPUB = 46 [default = 0];
+			   optional double VLTOTNEG = 47 [default = 0];
+			   optional double VLVALCOR = 48 [default = 0];
+			   optional double VLVALCORORI = 49 [default = 0];
+			   optional double VLVDAFUT = 50 [default = 0];
+			   optional double VLVDAOPC = 51 [default = 0];
+			   optional double VLVDAVIS = 52 [default = 0];
+			}
+			
+			message BrokerageFeeReceiptBody {
+			   optional string BOLSA = 1;
+			   optional string CDBOLSAMOV = 2;
+			   optional int32 CDCLIENTEFIN = 3 [default = 0];
+			   optional string CDESPECIF = 4;
+			   optional string CV = 5;
+			   optional string DC = 6;
+			   optional int64 DTNEGOCIO = 7 [default = 0];
+			   optional string Id = 8;
+			   optional string INLIQUIDA = 9;
+			   optional string MERCADO = 10;
+			   optional string NMNOMRES = 11;
+			   optional int32 NRNEGOCIO = 12 [default = 0];
+			   optional string OBS = 13;
+			   optional string PRAZO = 14;
+			   optional double PRECO = 15 [default = 0];
+			   optional int32 QUANTIDADE = 16 [default = 0];
+			   optional string StringId = 17;
+			   optional string TPNEGOCIO = 18;
+			   optional int32 TradingCode = 19 [default = 0];
+			   optional double VALOR = 20 [default = 0];
+			   optional int64 Version = 21;
+			}
+			
+			message BrokerageFeeReceiptDate {
+			   optional int32 CDCLIENTECC = 1 [default = 0];
+			   optional Contract.Entities.BackOffice.ClearStatementDayDetails DayDetails = 2;
+			   optional int64 DTNEGOCIO = 3 [default = 0];
+			   optional string Id = 4;
+			   optional string TPNegocio = 5;
+			   optional int32 TradingCode = 6 [default = 0];
+			   optional int64 Version = 7;
+			}
+			
+			message CashPerformanceReportInfo {
+			   optional double Blocked = 1 [default = 0];
+			   optional double Yield = 2 [default = 0];
+			   optional Contract.Messaging.Abstraction.IEvaluatable Balance = 3;
+			   optional Contract.Entities.BackOffice.TradingCalendarInfo Calendar = 4;
+			}
+			
+			message CashSnapshotReportInfo {
+			   optional Contract.Messaging.Abstraction.IEvaluatable Balance = 1;
+			   optional Contract.Entities.BackOffice.CashSnapshotBalanceDistribution Distribution = 2;
+			   optional Contract.Entities.Abstraction.ReportBase InOut = 3;
+			   optional bool IsNegative = 4 [default = false];
+			}
+			
+			message CashSnapshotBalanceDistribution {
+			   optional double Blocked = 1 [default = 0];
+			   optional double Current = 2 [default = 0];
+			   optional double Open = 3 [default = 0];
+			   optional Contract.Entities.BackOffice.CashSnapshotDistributionPercentages Percentages = 4;
+			   optional double Total = 5 [default = 0];
+			}
+			
+			message CashSnapshotDistributionPercentages {
+			   optional double Blocked = 1 [default = 0];
+			   optional double Current = 2 [default = 0];
+			   optional double Left = 3 [default = 0];
+			   optional double Open = 4 [default = 0];
+			}
+			
+			message CashSnapshotInOutHistorySummaryReportInfo {
+			   optional double Costs = 1 [default = 0];
+			   optional double Earnings = 2 [default = 0];
+			   optional double Movements = 3 [default = 0];
+			}
+			
+			message ClearExpandEntryReportInfo {
+			   optional Contract.Entities.BackOffice.StatementEntry Entry = 1;
+			}
+			
+			message ClearExpandDayReportInfo {
+			   optional Contract.Entities.BackOffice.ClearStatementDayDetails DayDetails = 1;
+			}
+			
+			message ClearStatementDayDetails {
+			   optional Contract.Entities.BackOffice.StatementDaySummary DaySummary = 1;
+			   optional bool BMF = 2 [default = false];
+			   optional bool BM2 = 3 [default = false];
+			   optional bool FUT = 4 [default = false];
+			   optional bool D3C = 5 [default = false];
+			   optional bool NOR = 6 [default = false];
+			   optional bool SOM = 7 [default = false];
+			   optional bool D2S = 8 [default = false];
+			}
+			
+			message ClearStatementDaysWithEventReportInfo {
+			   repeated int64 Dates = 1;
+			}
+			
+			message ReceiptRequestInfo {
+			   optional int64 StartsAt = 1 [default = 0];
+			   optional int64 EndsAt = 2 [default = 0];
+			   optional bool IsDone = 3 [default = false];
+			}
+			
+			message ReceiptRequestReportInfo {
+			   repeated Contract.Entities.BackOffice.ReceiptRequestInfo Requests = 1;
+			}
+			
+			message SinacorStatementReportInfo {
+			   repeated Contract.Entities.BackOffice.SinacorStatement Statements = 1;
+			}
+			
+			message ClearFilterByDateReportInfo {
+			   repeated Contract.Entities.BackOffice.AccountStatementMonth Months = 1;
+			   repeated Contract.Entities.BackOffice.BrokerageFeeReceiptDate ReceiptDates = 2;
+			}
+			
+			message MarginChangeInfo {
+			   optional Contract.Enumeration.Trade.Module Module = 1 [default = Undefined];
+			   optional string Account = 2;
+			   optional double MarginAvailable = 3 [default = 0];
+			   optional double MarginCall = 4 [default = 0];
+			   optional double MarginPowerTotal = 5 [default = 0];
+			}
+			
+			message ConsolidatedCollateralReportInfo {
+			   optional int32 CollateralCount = 1 [default = 0];
+			   optional Contract.Entities.BackOffice.MarginPowerInfo MarginPower = 2;
+			   optional Contract.Enumeration.Trade.Module OrderType = 3 [default = Undefined];
+			}
+			
+			message CostsSummaryReportInfo {
+			   optional double BrokerageFee = 1 [default = 0];
+			   optional double ExchangeFee = 2 [default = 0];
+			   optional double Taxes = 3 [default = 0];
+			   optional double Total = 4 [default = 0];
+			}
+			
+			message EquitySummaryReportInfo {
+			   optional double Cash = 1 [default = 0];
+			   optional double FixedIncome = 2 [default = 0];
+			   optional Contract.Entities.BackOffice.EquityPercentageSummary Percentage = 3;
+			   optional double Total = 4 [default = 0];
+			   optional double VariableIncome = 5 [default = 0];
+			}
+			
+			message EquityPercentageSummary {
+			   optional double Cash = 1 [default = 0];
+			   optional double FixedIncome = 2 [default = 0];
+			   optional double VariableIncome = 3 [default = 0];
+			}
+			
+			message FinancialStatementEntry {
+			   optional double Balance = 1;
+			   optional string Description = 2;
+			   optional int64 EntryDateTime = 3;
+			   optional int64 ReferenceDateTime = 4;
+			   optional int64 SettlementDateTime = 5;
+			   optional double Value = 6;
+			}
+			
+			message HeritageCandleDetail {
+			   optional Contract.Entities.BackOffice.HeritageCandle Candle = 1;
+			   repeated Contract.Entities.BackOffice.HeritageCandleDetail Items = 2;
+			   optional int32 ModuleID = 3 [default = 0];
+			   optional string Symbol = 4;
+			}
+			
+			message HeritageCandle {
+			   optional double CloseValue = 1;
+			   optional int64 EndDate = 2 [default = 0];
+			   optional double MaxValue = 3;
+			   optional double MinValue = 4;
+			   optional double OpenValue = 5;
+			   optional double PreviousCloseValue = 6;
+			   optional double SpreadValue = 7;
+			   optional int64 StartDate = 8 [default = 0];
+			   optional double SpreadPercentage = 9;
+			}
+			
+			message HeritageModule {
+			   optional int32 ModuleID = 1;
+			   optional string Name = 2;
+			   optional int32 ParentModuleID = 3;
+			   optional bool Valid = 4 [default = false];
+			}
+			
+			message OpenOrdersAmountInfo {
+			   optional double Buy = 1 [default = 0];
+			   repeated double BuyD = 2;
+			   optional double BuyD1 = 3 [default = 0];
+			   optional double BuyD3 = 4 [default = 0];
+			   optional double Sell = 5 [default = 0];
+			   repeated double SellD = 6;
+			   optional double SellD1 = 7 [default = 0];
+			   optional double SellD3 = 8 [default = 0];
+			}
+			
+			message OverviewPerformanceReportInfo {
+			   optional double Total = 2 [default = 0];
+			}
+			
+			message OverviewSnapshotReportInfo {
+			   optional Contract.Entities.Abstraction.ReportBase Costs = 1;
+			   optional Contract.Entities.BackOffice.PortfolioEvaluation CurrentEvaluation = 2;
+			   optional Contract.Entities.Abstraction.ReportBase Equity = 3;
+			   optional Contract.Entities.Abstraction.ReportBase Performance = 4;
+			   optional Contract.Entities.Abstraction.ReportBase Rentability = 5;
+			}
+			
+			message PerformanceGroupReportInfo {
+			   optional Contract.Enumeration.BackOffice.PerformanceGroupType Type = 1 [default = Undefined];
+			   optional double Balance = 2 [default = 0];
+			   optional int32 Quantity = 3 [default = 0];
+			   repeated Contract.Entities.Abstraction.ReportBase Performance = 4;
+			}
+			
+			message PerformanceReportInfo {
+			   optional string Id = 1;
+			   optional double PnL = 2 [default = 0];
+			   optional string Symbol = 3;
+			   optional Contract.Enumeration.BackOffice.PerformanceReportType Type = 4 [default = Undefined];
+			   optional double Variation = 5 [default = 0];
+			   // the following represent sub-types; at most 1 should have a value
+			   optional Contract.Entities.BackOffice.AssetPerformanceReportInfo AssetPerformanceReportInfo = 100;
+			   optional Contract.Entities.BackOffice.OverviewPerformanceReportInfo OverviewPerformanceReportInfo = 200;
+			   optional Contract.Entities.BackOffice.CashPerformanceReportInfo CashPerformanceReportInfo = 300;
+			}
+			
+			message PortfolioEvaluationReportInfo {
+			   optional double Cash = 1 [default = 0];
+			   optional double Equities = 2 [default = 0];
+			   optional double FixedIncome = 3 [default = 0];
+			   optional double Total = 4 [default = 0];
+			}
+			
+			message RentabilitySummaryReportInfo {
+			   optional double CurrentEquityValue = 1 [default = 0];
+			   optional double Deposits = 2 [default = 0];
+			   optional double StartEquityValue = 3 [default = 0];
+			   optional double Total = 4 [default = 0];
+			}
+			
+			message SinacorStatement {
+			   optional int32 CDCLIENTE = 1 [default = 0];
+			   optional int32 CDHISTORICO = 2 [default = 0];
+			   optional string DSLANCAMENTO = 3;
+			   optional int64 DTLANCAMENTO = 4 [default = 0];
+			   optional int64 DTLIQUIDACAO = 5 [default = 0];
+			   optional string Id = 6;
+			   optional int32 NRLANCAMENTO = 7 [default = 0];
+			   optional int32 TradingCode = 8 [default = 0];
+			   optional int64 Version = 9;
+			   optional double VLLANCAMENTO = 10 [default = 0];
+			}
+			
+			message StatementDaySummary {
+			   optional int64 Date = 1 [default = 0];
+			   repeated Contract.Entities.BackOffice.StatementEntry Entries = 2;
+			   optional Contract.Enumeration.BackOffice.StatementDayEvent Events = 3 [default = None];
+			   optional bool HasMovements = 4 [default = false];
+			   optional string Id = 5;
+			   optional bool IsPlaceholder = 6 [default = false];
+			   optional double Net = 7 [default = 0];
+			   optional Contract.Enumeration.BackOffice.NetResultType NetResult = 8 [default = Undefined];
+			   optional Contract.Entities.BackOffice.AccountStatement Statement = 9;
+			   optional double Value = 10 [default = 0];
+			   optional Contract.Entities.BackOffice.BrokerageMarketType BrokerageFeeReceipt = 11;
+			}
+			
+			message StatementEntry {
+			   optional Contract.Enumeration.BackOffice.StatementEntryCategory Category = 1 [default = Undefined];
+			   repeated Contract.Entities.BackOffice.StatementEntry Children = 2;
+			   optional int64 CreatedAt = 3 [default = 0];
+			   optional Contract.Entities.BackOffice.StatementDaySummary Day = 4;
+			   optional bool HasChildren = 5 [default = false];
+			   optional string Id = 6;
+			   optional string Key = 7;
+			   optional Contract.Enumeration.Trade.MarketSegmentType MarketSegment = 8;
+			   optional int64 OccurredAt = 9 [default = 0];
+			   optional Contract.Entities.BackOffice.StatementEntry Parent = 10;
+			   optional double Quantity = 11 [default = 0];
+			   optional Contract.Enumeration.Trade.ExchangeOrderSide Side = 12 [default = Undefined];
+			   optional double Value = 13 [default = 0];
+			}
+			
+			message NetOverviewReportInfo {
+			   optional Contract.Entities.Abstraction.ReportBase OverviewSnapshot = 1;
+			   repeated Contract.Entities.BackOffice.PerformanceGroupReportInfo Groups = 2;
+			}
+			
+			message PortfolioEvaluation {
+			   optional double Cash = 1 [default = 0];
+			   optional double Equities = 2 [default = 0];
+			   optional double FixedIncome = 3 [default = 0];
+			   optional double Total = 4 [default = 0];
+			}
+			
+			message TradingCalendarInfo {
+			   optional int64 D0 = 1 [default = 0];
+			   optional int64 D1 = 2 [default = 0];
+			   optional int64 D2 = 3 [default = 0];
+			   optional int64 D3 = 4 [default = 0];
+			   repeated int64 Days = 5;
+			   repeated int64 Holidays = 6;
+			   optional string Id = 7;
+			   optional int64 Previous = 8 [default = 0];
+			   optional int64 Version = 9;
+			}
+			
+			message BalanceInfo {
+			   optional double AppliedRate = 1 [default = 0];
+			   optional Contract.Entities.BackOffice.BalanceAvailableAmountInfo Available = 2;
+			   optional double Blocked = 3 [default = 0];
+			   optional double Cash = 4 [default = 0];
+			   optional Contract.Entities.BackOffice.BalanceCurrentAmountInfo Current = 5;
+			   optional double DayStartWithoutBlocked = 6 [default = 0];
+			   optional double EvaluatedAmount = 7 [default = 0];
+			   optional string Id = 9;
+			   optional double Interest = 10 [default = 0];
+			   optional Contract.Entities.BackOffice.OpenOrdersAmountInfo OpenOrders = 11;
+			   optional double Price = 13 [default = 0];
+			   optional double Total = 14 [default = 0];
+			   optional double Yield = 15 [default = 0];
+			   optional double ProjectedAmount = 16 [default = 0];
+			   optional double CashForWithdrawAvaliable = 17 [default = 0];
+			}
+			
+			message BalanceCurrentAmountInfo {
+			   optional double D0 = 1 [default = 0];
+			   optional double D1 = 2 [default = 0];
+			   optional double D2 = 3 [default = 0];
+			   optional double D3 = 4 [default = 0];
+			   optional double DayStart = 5 [default = 0];
+			   optional double Dn = 6 [default = 0];
+			   optional double CashOnHand = 7 [default = 0];
+			   optional double Now = 8 [default = 0];
+			   optional double Total = 9 [default = 0];
+			   optional double TotalD1 = 10 [default = 0];
+			   optional double TotalD2 = 11 [default = 0];
+			   optional double Blocked = 12 [default = 0];
+			}
+			
+			message CollateralChangeInfo {
+			   optional Contract.Enumeration.Trade.Module Module = 1 [default = Undefined];
+			   optional string Account = 2;
+			   optional Contract.Enumeration.BackOffice.CollateralTransactionType Transaction = 3 [default = Deposit];
+			   optional Contract.Enumeration.BackOffice.CollateralAssetType Asset = 4 [default = Cash];
+			   optional double Amount = 5 [default = 0];
+			   optional string Symbol = 6;
+			   optional double Quantity = 7 [default = 0];
+			}
+			
+			message CollateralInfo {
+			   optional double Amount = 1 [default = 0];
+			   optional double AppliedRate = 2 [default = 0];
+			   optional double BlockedQty = 3 [default = 0];
+			   optional double EvaluatedAmount = 5 [default = 0];
+			   optional string Id = 6;
+			   optional bool IsCash = 7 [default = false];
+			   optional double NonBlocked = 8 [default = 0];
+			   optional bool OnlyStaffCanManage = 9 [default = false];
+			   optional double Price = 10 [default = 0];
+			   optional string Symbol = 11;
+			   optional string IconURL = 12;
+			   optional double RoundLot = 13 [default = 0];
+			}
+			
+			message CollateralPositionChangeInfo {
+			   optional bool Changed = 1 [default = false];
+			   optional int32 Current = 2 [default = 0];
+			   optional int32 Previous = 3 [default = 0];
+			   optional string Symbol = 4;
+			}
+			
+			message CollateralSummaryReportInfo {
+			   repeated Contract.Messaging.Abstraction.IEvaluatable Availables = 1;
+			   repeated Contract.Messaging.Abstraction.IEvaluatable Collaterals = 2;
+			   optional double TotalEvatuatedAmount = 3 [default = 0];
+			   optional Contract.Entities.BackOffice.MarginPowerInfo MarginPower = 4;
+			   optional bool IsActiveProcessFlag = 5 [default = false];
+			}
+			
+			message MarginPowerInfo {
+			   optional double Available = 2 [default = 0];
+			   optional double MarginCall = 3 [default = 0];
+			   optional double MarginRaw = 4 [default = 0];
+			   optional double MarginTotal = 5 [default = 0];
+			   optional bool IsOverflowing = 6 [default = false];
+			}
+			
+			message PortfolioSummaryInfo {
+			   optional double Available = 1 [default = 0];
+			   optional bool IsBeingBlocked = 2 [default = false];
+			   optional double Liquidated = 3 [default = 0];
+			   optional double RawLiquidated = 4 [default = 0];
+			   optional double Total = 5 [default = 0];
+			}
+			
+			message SideSummary {
+			   optional double Amount = 1 [default = 0];
+			   optional double Average = 2 [default = 0];
+			   optional double Quantity = 3 [default = 0];
+			}
+			
+			message BalanceSummaryReportInfo {
+			   optional Contract.Entities.BackOffice.BalanceCurrentAmountInfo Balance = 1;
+			   optional Contract.Entities.BackOffice.TradingCalendarInfo Calendar = 2;
+			}
+		}
+
+		message Account {
+			message NonComplianceRisk {
+				message NonCompliantRiskFlag {
+				   optional string CanResetRetries = 1;
+				   optional string CanSkip = 2;
+				   optional string CurrentProfile = 3;
+				   optional string DetectedProfile = 4;
+				   optional string MaxRetries = 5;
+				}
+			}
+
+			message Withdraw {
+				message Bank {
+				   optional string BankCode = 1;
+				   optional int32 Agency = 2 [default = 0];
+				   optional uint64 AccountNumber = 3 [default = 0];
+				   optional int32 AccountType = 4 [default = 0];
+				   optional string AccountDigit = 5;
+				   optional string OwnerJointAccountName = 6;
+				   optional string Key = 7;
+				   optional string Value = 8;
+				}
+				
+				message HistoryWithdraw {
+				   optional string Code = 1;
+				   optional string Data = 2;
+				   optional string OccurredAt = 3;
+				}
+			}
+
+			message Tools {
+				message LogEntry {
+				   optional string Code = 1;
+				   optional string Data = 2;
+				   optional string OccurredAt = 3;
+				   optional string Product = 4;
+				}
+				
+				message Product {
+				   optional string Id = 1;
+				   optional string Name = 2;
+				   optional double Price = 3 [default = 0];
+				   optional int32 Frequency = 4 [default = 0];
+				   optional string Code = 5;
+				   optional string FeeCode = 6;
+				   optional string Description = 7;
+				   optional double Fee = 8 [default = 0];
+				   optional double RefundBaseline = 9 [default = 0];
+				   optional bool WasRemoved = 10 [default = false];
+				   optional bool IsRestrictedForStaff = 11 [default = false];
+				   optional Contract.Enumeration.Account.PlatformVersion ExternalCode = 12 [default = Undefined];
+				   repeated Contract.Entities.Account.Tools.LogEntry LogEntry = 13;
+				   optional Contract.Enumeration.Account.PlatformIntegration PlatformCode = 14 [default = Undefined];
+				}
+				
+				message ProductOrders {
+				   optional string CreatedAt = 1;
+				   optional string Id = 2;
+				   optional bool IsActive = 3 [default = false];
+				   optional string OwnerAccount = 4;
+				   optional string Product = 5;
+				   optional bool Refunded = 6 [default = false];
+				   optional bool Renovation = 7 [default = false];
+				   optional string UpdatedAt = 8;
+				}
+			}
+
+			message Plans {
+				message ProductPlan {
+				   optional string Id = 1;
+				   optional string Group = 2;
+				   optional string Product = 3;
+				   optional double Brokerage = 4 [default = 0];
+				   optional string Name = 5;
+				   optional double MarginWin = 6 [default = 0];
+				   optional double MarginWdo = 7 [default = 0];
+				   optional string LeverageActions = 8;
+				   optional double Price = 9 [default = 0];
+				   optional bool CanHire = 10 [default = false];
+				   optional bool IsActive = 11 [default = false];
+				   optional bool WasRemoved = 12 [default = false];
+				   optional string Basic = 14;
+				   optional string Trader = 15;
+				   optional string Scalper = 16;
+				}
+				
+				message ProductPlanItem {
+				   optional string Id = 1;
+				   optional string Name = 2;
+				   optional string ProductPlanId = 3;
+				   optional Contract.Entities.Account.Tools.Product Product = 4;
+				}
+				
+				message ProductPlanOrders {
+				   optional string Id = 1;
+				   optional string ProductPlan = 2;
+				   optional string Product = 3;
+				   optional string OwnerAccount = 4;
+				   optional bool IsActive = 5 [default = false];
+				   optional bool Renovation = 6 [default = false];
+				   optional bcl.DateTime UpdatedAt = 7;
+				   optional bcl.DateTime CreatedAt = 8;
+				   optional int32 Frequency = 9 [default = 0];
+				}
+			}
+
+			message MyTaxes {
+				message Report {
+				   optional int32 Type = 1 [default = 0];
+				   optional string Description = 2;
+				   optional int32 Year = 3 [default = 0];
+				   optional int32 Trimester = 4;
+				}
+				
+				message ReportWrapper {
+				   repeated Contract.Entities.Account.MyTaxes.Report Reports = 1;
+				}
+			}
+
+			message MyData {
+				message RegistrationDataFromSinacor {
+				   optional string Attorney = 1;
+				   optional string AttorneyName = 2;
+				   optional string BornCountry = 3;
+				   optional string BornState = 4;
+				   optional string BusinessCity = 5;
+				   optional string BusinessComplement = 6;
+				   optional string BusinessCountry = 7;
+				   optional string BusinessFone = 8;
+				   optional string BusinessFoneCode = 9;
+				   optional string BusinessFoneNumber = 10;
+				   optional string BusinessName = 11;
+				   optional string BusinessNeighbor = 12;
+				   optional string BusinessNumber = 13;
+				   optional string BusinessState = 14;
+				   optional string BusinessStreet = 15;
+				   optional string BusinessZipCode = 16;
+				   optional string CorrespondenceAddress = 17;
+				   optional string CreatedAt = 18;
+				   optional string DateOfBirth = 19;
+				   optional string EMail = 20;
+				   optional string FatherName = 21;
+				   optional string FinancialApplications = 22;
+				   optional string Gender = 23;
+				   optional string Goods = 24;
+				   optional string Id = 25;
+				   optional string IdentificationNumber = 26;
+				   optional string IdentificationNumberSpouse = 27;
+				   optional string IdExpeditionDate = 28;
+				   optional string IdExpeditionState = 29;
+				   optional string IdExpeditior = 30;
+				   optional string IdNumber = 31;
+				   optional string IdType = 32;
+				   optional string IsWorking = 33;
+				   optional string MaritalStatus = 34;
+				   optional string MotherName = 35;
+				   optional string Name = 36;
+				   optional string Nationality = 37;
+				   optional string Occupation = 38;
+				   optional int32 OccupationId = 39 [default = 0];
+				   optional string OtherIncomes = 40;
+				   optional string PlaceOfBirth = 41;
+				   optional string PoliticalExposedPerson = 42;
+				   optional string PrimaryAccount = 43;
+				   optional string PrimaryAccountDigit = 44;
+				   optional string PrimaryAccountType = 45;
+				   optional string PrimaryAgency = 46;
+				   optional string PrimaryAgencyDigit = 47;
+				   optional string PrimaryAgregate = 48;
+				   optional string PrimaryAgregateAccount = 49;
+				   optional string PrimaryAgregateId = 50;
+				   optional string PrimaryBank = 51;
+				   optional string PrimaryFone = 52;
+				   optional string PrimaryFoneCode = 53;
+				   optional string PrimaryFoneNumber = 54;
+				   optional string RealEstate = 55;
+				   optional string RelatedPerson = 56;
+				   optional string ResidentialCity = 57;
+				   optional string ResidentialComplement = 58;
+				   optional string ResidentialCountry = 59;
+				   optional string ResidentialNeighbor = 60;
+				   optional string ResidentialNumber = 61;
+				   optional string ResidentialState = 62;
+				   optional string ResidentialStreet = 63;
+				   optional string ResidentialZipCode = 64;
+				   optional string SecondaryAccount = 65;
+				   optional string SecondaryAccountDigit = 66;
+				   optional string SecondaryAccountType = 67;
+				   optional string SecondaryAgency = 68;
+				   optional string SecondaryAgencyDigit = 69;
+				   optional string SecondaryAgregate = 70;
+				   optional string SecondaryAgregateAccount = 71;
+				   optional string SecondaryAgregateId = 72;
+				   optional string SecondaryBank = 73;
+				   optional string Spouse = 74;
+				   optional int64 TradingAccountDigit = 75 [default = 0];
+				   optional int64 TradingAccountNumber = 76 [default = 0];
+				   optional string UpdatedAt = 77;
+				   optional string WageIncome = 78;
+				   optional string NickName = 79;
+				   optional string RiskProfile = 80;
+				}
+			}
+
+			message Login {
+				message LoginNotificationInfo {
+				   optional string Account = 1;
+				   optional int64 LoginDatetime = 2 [default = 0];
+				}
+			}
+
+			message BrokeragePackages {
+				message BrokeragePackage {
+				   optional string Id = 1;
+				   optional string CreatedAt = 2;
+				   optional string Name = 3;
+				   optional int32 QuantityLeft = 4 [default = 0];
+				   optional string Definition = 5;
+				   optional string ExpiresAt = 6;
+				   optional bool Renovation = 7 [default = false];
+				}
+				
+				message BrokeragePackageDefinition {
+				   optional string Id = 1;
+				   optional string CreatedAt = 2;
+				   optional string Name = 3;
+				   optional string Quantity = 4;
+				   optional string Price = 5;
+				   optional string UnitPrice = 6;
+				   optional string Type = 7;
+				   optional int32 Duration = 8 [default = 0];
+				   optional bool IsActive = 9 [default = false];
+				   optional int32 Fee = 10 [default = 0];
+				   optional string MarketSegment = 11;
+				   repeated string TargetOrder = 12;
+				}
+				
+				message PackagesAndPackagesDefinition {
+				   repeated Contract.Entities.Account.BrokeragePackages.BrokeragePackageDefinition Def = 1;
+				   repeated Contract.Entities.Account.BrokeragePackages.BrokeragePackage Package = 2;
+				}
+			}
+
+			message AdvisorAccount {
+			   optional string Account = 1;
+			   optional string Login = 2;
+			   optional string GHP = 3;
+			   optional string Name = 4;
+			}
+			
+			message BlackBoardSettings {
+			   optional string Id = 1;
+			   optional bool IsActive = 2 [default = false];
+			   optional bool HasOrder = 3 [default = false];
+			   optional string Visitor = 4;
+			   optional string Client = 5;
+			   optional string Trade = 6;
+			   optional string TradeVisitor = 7;
+			   optional string AnalystRoomVisitor = 8;
+			   optional string Name = 9;
+			   optional string Url = 10;
+			   optional Contract.Enumeration.Account.RoomTypeBlackBoard RoomType = 11 [default = Undefined];
+			}
+			
+			message CustomerAccount {
+			   optional string Account = 1;
+			   optional int32 Code = 2 [default = 0];
+			   optional string Name = 3;
+			   optional string AdvisorName = 4;
+			   optional string AdvisorCode = 5;
+			   optional string AdvisorPhoneNumber = 6;
+			   optional Contract.Enumeration.Account.BrokeragePlan Plan = 7 [default = Private];
+			   optional int32 CodeDigit = 8 [default = 0];
+			   optional int64 LastLogon = 9 [default = 0];
+			   optional string EmailMD5 = 10;
+			   optional string CpfMD5 = 11;
+			   optional string NameMD5 = 12;
+			   optional string Suitability = 13;
+			   optional int64 BirthDate = 14 [default = 0];
+			   // the following represent sub-types; at most 1 should have a value
+			   optional Contract.Entities.Account.CustomerAccountXP CustomerAccountXP = 100;
+			   optional Contract.Entities.Account.CustomerAccountClear CustomerAccountClear = 200;
+			}
+			
+			message CustomerAccountXP {
+			   optional int32 BranchID = 1 [default = 0];
+			}
+			
+			message CustomerAccountClear {
+			   optional string Nickname = 1;
+			}
+			
+			message User {
+			   optional Contract.Enumeration.System.BrandTag Brand = 1 [default = Undefined];
+			   optional Contract.Enumeration.Account.AccountType Type = 2 [default = Undefined];
+			   optional Contract.Entities.Account.CustomerAccount Customer = 3;
+			   optional Contract.Entities.Account.AdvisorAccount Advisor = 4;
+			   optional string BackServer = 5;
+			   optional bool IsDemo = 6 [default = false];
+			   optional string SessionId = 7;
+			   optional Contract.Enumeration.Account.OptRlpStatus RlpStatus = 8 [default = OptRlpIn];
+			}
+		}
+
+		message Abstraction {
+			message OrderBase {
+			   optional string Id = 1;
+			   optional string Account = 2;
+			   optional int64 AckedTimestamp = 3;
+			   optional int64 CreatedAt = 4;
+			   optional string Symbol = 5;
+			   optional double Price = 6;
+			   optional double Quantity = 7;
+			   optional Contract.Enumeration.Trade.ExchangeOrderSide Side = 8;
+			   optional string Staff = 9;
+			   optional Contract.Enumeration.Trade.Module Module = 10 [default = Undefined];
+			   optional Contract.Enumeration.Trade.OrderStatus Status = 11;
+			   optional string Message = 12;
+			   optional bool HasDetails = 13;
+			   optional double OpenQuantity = 14;
+			   optional double ExecutedQuantity = 15;
+			   optional bool IsCancelable = 16;
+			   optional bool IsCanceled = 17;
+			   optional int64 UpdatedAt = 18;
+			   optional int64 CanceledAt = 19;
+			   optional int32 Progress = 20;
+			   optional string ESignature = 21;
+			   optional Contract.Entities.Trade.ExchangeOrderInfo ActiveExchangeOrder = 22;
+			   optional int64 TransactTime = 23;
+			   optional Contract.Enumeration.Trade.ExchangeOrderType ExchangeOrderType = 24;
+			   optional Contract.Enumeration.Trade.OrderActionType Action = 25;
+			   optional string ClientIpAddress = 26;
+			   optional string OrderSource = 27;
+			   optional bool IsUsingNewFederalBonds = 28;
+			   optional bool IsMobile = 29;
+			   // the following represent sub-types; at most 1 should have a value
+			   optional Contract.Entities.Trade.RejectedOrderInfo RejectedOrderInfo = 100;
+			   optional Contract.Entities.Trade.DayTrade.DayTradeOrderInfo DayTradeOrderInfo = 200;
+			   optional Contract.Entities.Trade.Forward.ForwardOrderInfo ForwardOrderInfo = 300;
+			   optional Contract.Entities.Trade.SwingTrade.SwingTradeOrderInfo SwingTradeOrderInfo = 400;
+			   optional Contract.Entities.Trade.FixedIncome.FixedIncomeOrderInfo FixedIncomeOrderInfo = 500;
+			   optional Contract.Entities.Trade.OptionsStrategies.OptionsStrategyOrderInfo OptionsStrategyOrderInfo = 600;
+			   optional Contract.Entities.Trade.InvestmentFund.InvestmentFundOrderInfo InvestmentFundOrderInfo = 700;
+			   optional Contract.Entities.Trade.MetaTrader.MetaTraderOrderInfo MetaTraderOrderInfo = 800;
+			   optional Contract.Entities.Trade.DigitalOptions.DigitalOptionsOrderInfo DigitalOptionsOrderInfo = 900;
+			   optional Contract.Entities.Trade.Platforms.PlatformOrderInfo PlatformOrderInfo = 1000;
+			}
+			
+			message ReportBase {
+			   optional string Account = 1;
+			   // the following represent sub-types; at most 1 should have a value
+			   optional Contract.Entities.BackOffice.CollateralSummaryReportInfo CollateralSummaryReportInfo = 100;
+			   optional Contract.Entities.BackOffice.DayTrade.DayTradeDetailedReportInfo DayTradeDetailedReportInfo = 200;
+			   optional Contract.Entities.BackOffice.DayTrade.DayTradeSummaryReportInfo DayTradeSummaryReportInfo = 300;
+			   optional Contract.Entities.BackOffice.DayTrade.DayTradeWarrantiesReportInfo DayTradeWarrantiesReportInfo = 400;
+			   optional Contract.Entities.BackOffice.Forward.ForwardDetailedReportInfo ForwardDetailedReportInfo = 500;
+			   optional Contract.Entities.BackOffice.Forward.ForwardSummaryReportInfo ForwardSummaryReportInfo = 600;
+			   optional Contract.Entities.BackOffice.Forward.ForwardWarrantiesReportInfo ForwardWarrantiesReportInfo = 700;
+			   optional Contract.Entities.BackOffice.SwingTrade.SwingTradeDetailedReportInfo SwingTradeDetailedReportInfo = 800;
+			   optional Contract.Entities.BackOffice.SwingTrade.SwingTradeSummaryReportInfo SwingTradeSummaryReportInfo = 900;
+			   optional Contract.Entities.BackOffice.SwingTrade.SwingTradeWarrantiesReportInfo SwingTradeWarrantiesReportInfo = 1000;
+			   optional Contract.Entities.BackOffice.BalanceSummaryReportInfo BalanceSummaryReportInfo = 1100;
+			   optional Contract.Entities.BackOffice.BalanceReportInfo BalanceReportInfo = 1200;
+			   optional Contract.Entities.BackOffice.FixedIncome.FixedIncomeWarrantiesReportInfo FixedIncomeWarrantiesReportInfo = 1300;
+			   optional Contract.Entities.BackOffice.FixedIncome.FixedIncomeDetailedReportInfo FixedIncomeDetailedReportInfo = 1400;
+			   optional Contract.Entities.BackOffice.OptionsStrategies.OptionsStrategyReportInfo OptionsStrategyReportInfo = 1500;
+			   optional Contract.Entities.BackOffice.OptionsStrategies.OptionsStrategyWarrantiesReportInfo OptionsStrategyWarrantiesReportInfo = 1600;
+			   optional Contract.Entities.BackOffice.OptionsStrategies.OptionsStrategyProfitLossReportInfo OptionsStrategyProfitLossReportInfo = 1700;
+			   optional Contract.Entities.BackOffice.CostsSummaryReportInfo CostsSummaryReportInfo = 1800;
+			   optional Contract.Entities.BackOffice.RentabilitySummaryReportInfo RentabilitySummaryReportInfo = 1900;
+			   optional Contract.Entities.BackOffice.PortfolioEvaluationReportInfo PortfolioEvaluationReportInfo = 2000;
+			   optional Contract.Entities.BackOffice.EquitySummaryReportInfo EquitySummaryReportInfo = 2100;
+			   optional Contract.Entities.BackOffice.CashSnapshotReportInfo CashSnapshotReportInfo = 2200;
+			   optional Contract.Entities.BackOffice.CashSnapshotInOutHistorySummaryReportInfo CashSnapshotInOutHistorySummaryReportInfo = 2300;
+			   optional Contract.Entities.BackOffice.OverviewSnapshotReportInfo OverviewSnapshotReportInfo = 2400;
+			   optional Contract.Entities.BackOffice.PerformanceReportInfo PerformanceReportInfo = 2500;
+			   optional Contract.Entities.BackOffice.NetOverviewReportInfo NetOverviewReportInfo = 2600;
+			   optional Contract.Entities.BackOffice.DayTrade.DayTradeSnapshotReportInfo DayTradeSnapshotReportInfo = 2700;
+			   optional Contract.Entities.BackOffice.BTC.BtcReportInfo BtcReportInfo = 2800;
+			   optional Contract.Entities.BackOffice.BTC.BtcSnapshotReportInfo BtcSnapshotReportInfo = 2900;
+			   optional Contract.Entities.BackOffice.FixedIncome.FixedIncomeSnapshotReportInfo FixedIncomeSnapshotReportInfo = 3000;
+			   optional Contract.Entities.BackOffice.Forward.ForwardSnapshotReportInfo ForwardSnapshotReportInfo = 3100;
+			   optional Contract.Entities.BackOffice.MetaTrader.MetaTraderSnapshotReportInfo MetaTraderSnapshotReportInfo = 3200;
+			   optional Contract.Entities.BackOffice.OptionsStrategies.OptionsStrategySnapshotReportInfo OptionsStrategySnapshotReportInfo = 3300;
+			   optional Contract.Entities.BackOffice.OptionsStrategies.OptionsStrategyDetailedReportInfo OptionsStrategyDetailedReportInfo = 3400;
+			   optional Contract.Entities.BackOffice.SwingTrade.CommoditySnapshotReportInfo CommoditySnapshotReportInfo = 3500;
+			   optional Contract.Entities.BackOffice.SwingTrade.StandardBuySellSnapshotReportInfo StandardBuySellSnapshotReportInfo = 3600;
+			   optional Contract.Entities.BackOffice.ConsolidatedCollateralReportInfo ConsolidatedCollateralReportInfo = 3700;
+			   optional Contract.Entities.BackOffice.InvestmentFunds.InvestmentFundsDetailedReportInfo InvestmentFundsDetailedReportInfo = 3800;
+			   optional Contract.Entities.BackOffice.InvestmentFunds.InvestmentFundsWarrantiesReportInfo InvestmentFundsWarrantiesReportInfo = 3900;
+			   optional Contract.Entities.BackOffice.ClearFilterByDateReportInfo ClearFilterByDateReportInfo = 4000;
+			   optional Contract.Entities.BackOffice.SinacorStatementReportInfo SinacorStatementReportInfo = 4100;
+			   optional Contract.Entities.BackOffice.ClearExpandDayReportInfo ClearExpandDayReportInfo = 4200;
+			   optional Contract.Entities.BackOffice.ClearExpandEntryReportInfo ClearExpandEntryReportInfo = 4300;
+			   optional Contract.Entities.BackOffice.ClearStatementDaysWithEventReportInfo ClearStatementDaysWithEventReportInfo = 4400;
+			   optional Contract.Entities.BackOffice.BrokerageFeeReceiptReportInfo BrokerageFeeReceiptReportInfo = 4500;
+			   optional Contract.Entities.BackOffice.BmfFeeReceiptReportInfo BmfFeeReceiptReportInfo = 4600;
+			   optional Contract.Entities.BackOffice.ReceiptRequestReportInfo ReceiptRequestReportInfo = 4700;
+			   optional Contract.Entities.BackOffice.DigitalOptions.DigitalOptionsDetailedReportInfo DigitalOptionsDetailedReportInfo = 4800;
+			   optional Contract.Entities.BackOffice.Platform.PlatformSnapshotReportInfo PlatformSnapshotReportInfo = 4900;
+			}
+		}
+
+	}
+
+}
