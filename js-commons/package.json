@@ -1,5 +1,5 @@
 {
-  "name": "auxiliary-functions",
+  "name": "js-commons",
   "version": "1.0.0",
   "description": "A lib that provides common functions to any javascript project.",
   "main": "lib/index.js",

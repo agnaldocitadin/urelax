@@ -17,7 +17,7 @@ export const fetchBrokerByCode = (brokerCode: string, fields: string): Promise<B
 }
 
 export const fetchAvailableStrategies = (fields: string): Promise<Strategy[]> => {
-     const name = "fetchBrokerByCode"
+     const name = "fetchAvailableStrategies"
      return gql(name, query(name, {}, fields))
 }
 

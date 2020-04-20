@@ -1,3 +1,5 @@
 honeybee-api/node_modules/*
 honeybee-api/lib/*
-auxiliary-functions/node_modules/*
+js-commons/node_modules/*
+js-commons/lib/*
+js-commons/yarn.lock
