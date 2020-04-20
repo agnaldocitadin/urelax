@@ -1,0 +1,5 @@
+* Bee
+- lucro/perda do dia
+- Valor da posicao atual (montante de ações compradas)
+- relatorio de lucro/perda diário (mostrando apenas os dias que existiu negociação)
+

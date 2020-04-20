@@ -1,0 +1,1 @@
+export const BALANCE_MODULE_NAME = 'BALANCE'
