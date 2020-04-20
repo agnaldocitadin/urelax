@@ -63,7 +63,7 @@ yarn.lock
 
 honeybee-api/node_modules/*
 honeybee-api/lib*
-honeybee-app/node_modules/*
+honeybee-app/node_modules*
 honeybee-app-server/node_modules*
 honeybee-app-server/dist*
 js-commons/node_modules/*
