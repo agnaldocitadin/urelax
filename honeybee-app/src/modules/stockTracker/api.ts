@@ -100,5 +100,6 @@ export const createBee = async (bee: StockTracker): Promise<StockTracker> => {
 export const updateBee = (id: string, bee: StockTracker): Promise<boolean> => {
     let stockTrackerClone = Object.assign({}, bee)
     stockTrackerClone.frequency = <any>stockTrackerClone.frequency?._id
+    stockTrackerClone.strategy = <any>stockTrackerClone.strategy?._id
     return API.updateBee(id, stockTrackerClone)
 }
