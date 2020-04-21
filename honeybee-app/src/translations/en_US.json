@@ -42,6 +42,7 @@
     "notifications": "Notificações",
     "general": "Geral",
     "settings_notification_msg": "Notificação de {{notification}} foi {{state}}",
+    "add_tracker_paused": "Adicionar rastreador pausado",
 
     "create_broker_account": "Create account",
     "broker_accounts": "Broker Accounts",

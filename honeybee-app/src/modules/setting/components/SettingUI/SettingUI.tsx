@@ -49,7 +49,7 @@ export const SettingUI: FC<SettingUIProps> = ({ navigation }) => {
 
                 <Divider>{ts("stock_trackers")}</Divider>
                 <Switch
-                    text={ts("Adicionar rastreador pausado.")}
+                    text={ts("add_tracker_paused")}
                     value={addStockTrackerPaused}
                     onChange={handleAddTrackerPaused}/>
 

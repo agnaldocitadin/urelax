@@ -1,6 +1,6 @@
 {
   "name": "honeybee-api",
-  "version": "1.0.0-betha-01",
+  "version": "1.0.0-betha",
   "description": "An API used on the app and server to provide a communication between them.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
