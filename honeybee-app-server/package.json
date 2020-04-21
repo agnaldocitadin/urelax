@@ -1,6 +1,6 @@
 {
     "name": "honeybeeappserver",
-    "version": "1.0.1-betha-0",
+    "version": "1.0.0-betha",
     "main": "honeycomb.server.ts",
     "license": "MIT",
     "devDependencies": {
