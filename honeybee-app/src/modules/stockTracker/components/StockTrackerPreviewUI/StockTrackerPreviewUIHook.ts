@@ -10,7 +10,7 @@ import { selectActivity } from "../../../activity"
 import { setLastActivityOnDashboard } from "../../../dashboard"
 import { showError } from "../../../message"
 import { appendStockTrackerActivities, clearStockTrackerPreview, initStockTrackerModule, selectStockTrackerToUpdate, updateMainStockTracker } from "../../actions"
-import { fetchBeeActivitiesQuery, fetchStockTrackerBalance } from "../../api"
+import { fetchStockTrackerActivitiesQuery, fetchStockTrackerBalance } from "../../api"
 
 export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) => {
 
@@ -62,7 +62,7 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
                     break
             }
             
-            let lastActivity = await fetchBeeActivitiesQuery(stockTracker._id || "", 0, 1)
+            let lastActivity = await fetchStockTrackerActivitiesQuery(stockTracker._id || "", 0, 1)
             dispatch(updateMainStockTracker({ status: result.status }))
             dispatch(appendStockTrackerActivities(lastActivity, "begin"))
             dispatch(setLastActivityOnDashboard(lastActivity[0]))
@@ -74,7 +74,7 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
 
     const handleRefresh = animatedCallback(async () => {
         try {
-            let activities = await fetchBeeActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
+            let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
             dispatch(appendStockTrackerActivities(activities, "end", true))
         }
         catch(error) {
@@ -84,7 +84,7 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
 
     const handleLoadMoreData = animatedCallback(async (page: number) => {
         try {
-            return await fetchBeeActivitiesQuery(stockTracker?._id || "", page, AppConfig.QTY_INITIAL_ACTIVITIES)
+            return await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", page, AppConfig.QTY_INITIAL_ACTIVITIES)
         }
         catch(error) {
             dispatch(showError(JSON.stringify(error)))
@@ -95,7 +95,7 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
     useEffectWhenReady(async () => {
         try {
             let balance = await fetchStockTrackerBalance(userAccountId, stockTracker.brokerAccount?._id)
-            let activities = await fetchBeeActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
+            let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
             dispatch(initStockTrackerModule(balance[0], activities))
         }
         catch(error) {

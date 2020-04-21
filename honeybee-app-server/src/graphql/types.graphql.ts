@@ -35,7 +35,7 @@ export const types = `
         stockLot: Int
     }
 
-    type Bee {
+    type StockTracker {
         _id: ID!
         userAccount: UserAccount
         brokerAccount: BrokerAccount

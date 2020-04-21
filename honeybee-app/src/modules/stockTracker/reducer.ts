@@ -108,7 +108,7 @@ export const StockTrackerReducer = (state: StockTrackerState = INITIAL_STATE, ac
 }
 
 const refreshStockTrackers = (state: StockTrackerState, action: ReduxAction, id?: string) => {
-    const fields: Bee = action.data
+    const fields: StockTracker = action.data
     return state.stockTrackers.map(stocktracker => (stocktracker._id === id) ? {...stocktracker, ...fields} : stocktracker)
 }
 

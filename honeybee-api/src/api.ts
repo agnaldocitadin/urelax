@@ -1,6 +1,6 @@
 import { utils } from 'js-commons'
-import { activateSimulationAccount, createBee, createBrokerAccount, createUserAccount, updateBee, updateBrokerAccount, updateUserAccount, updateUserPreferences } from './mutations'
-import { fetchActiveBeesQuery, fetchActiveBrokers, fetchAvailableFrequencies, fetchAvailableStrategies, fetchAvailableSymbols, fetchBalanceSheet, fetchBalanceSheetByUserQuery, fetchBalanceSheetHistoriesByUserQuery, fetchBeeActivitiesQuery, fetchBrokerAccountByUserQuery, fetchBrokerAccountQuery, fetchBrokerByCode, fetchUserAccountQuery, fetchUserActivitiesQuery } from './queries'
+import { activateSimulationAccount, createBrokerAccount, createStockTracker, createUserAccount, updateBrokerAccount, updateStockTracker, updateUserAccount, updateUserPreferences } from './mutations'
+import { fetchActiveBrokers, fetchActiveStockTrackersQuery, fetchAvailableFrequencies, fetchAvailableStrategies, fetchAvailableSymbols, fetchBalanceSheet, fetchBalanceSheetByUserQuery, fetchBalanceSheetHistoriesByUserQuery, fetchBrokerAccountByUserQuery, fetchBrokerAccountQuery, fetchBrokerByCode, fetchStockTrackerActivitiesQuery, fetchUserAccountQuery, fetchUserActivitiesQuery } from './queries'
 import { UserAccount } from "./types"
 
 interface APIConfiguration {
@@ -37,7 +37,7 @@ const authenticate = async (email?: string, passwd?: string, simulation: boolean
  * @returns
  */
 const playStockTracker = async (id: string) => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/playBee`, {
+    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/playStockTracker`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
@@ -52,7 +52,7 @@ const playStockTracker = async (id: string) => {
  * @returns
  */
 const pauseStockTracker = async (id: string) => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/pauseBee`, {
+    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/pauseStockTracker`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
@@ -67,7 +67,7 @@ const pauseStockTracker = async (id: string) => {
  * @returns
  */
 const destroyStockTracker = async (id: string) => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/destroyBee`, {
+    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/destroyStockTracker`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
@@ -91,8 +91,8 @@ export const API = {
     fetchAvailableStrategies,
     fetchAvailableFrequencies,
     fetchUserAccountQuery,
-    fetchActiveBeesQuery,
-    fetchBeeActivitiesQuery,
+    fetchActiveStockTrackersQuery,
+    fetchStockTrackerActivitiesQuery,
     fetchUserActivitiesQuery,
     fetchBrokerAccountQuery,
     fetchBrokerAccountByUserQuery,
@@ -102,12 +102,12 @@ export const API = {
 
     // mutation
     createUserAccount,
-    createBee,
+    createStockTracker,
     createBrokerAccount,
     updateUserAccount,
     updateUserPreferences,
     updateBrokerAccount,
-    updateBee,
+    updateStockTracker,
     activateSimulationAccount
 }
 

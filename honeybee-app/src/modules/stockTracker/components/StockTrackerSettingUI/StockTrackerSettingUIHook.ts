@@ -8,7 +8,7 @@ import { animatedCallback } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
 import { showConfirm, showCustomMessage, showSuccess } from "../../../message"
-import { isDisabled } from "../BeeControlButton"
+import { isDisabled } from "../StockTrackerControlButton"
 
 export const useStockTrackerSettingUIHook = (navigation: NavigationStackProp) => {
 

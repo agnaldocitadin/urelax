@@ -1,7 +1,7 @@
 import { Activity, API, BalanceSheet, Frequency, Stock, StockTracker, Strategy } from "honeybee-api"
 
-export const fetchActiveBeesQuery = async (userAccountId: string): Promise<StockTracker[]> => {
-    return API.fetchActiveBeesQuery(userAccountId, `
+export const fetchActiveStockTrackersQuery = async (userAccountId: string): Promise<StockTracker[]> => {
+    return API.fetchActiveStockTrackersQuery(userAccountId, `
         _id
         brokerAccount {
             brokerCode
@@ -26,8 +26,8 @@ export const fetchActiveBeesQuery = async (userAccountId: string): Promise<Stock
     `)
 }
 
-export const fetchBeeActivitiesQuery = async (beeId: string, page: number, qty: number, date: Date = new Date()): Promise<Activity[]> => {
-    return API.fetchBeeActivitiesQuery(beeId, date, page, qty, `
+export const fetchStockTrackerActivitiesQuery = async (stockTrackerId: string, page: number, qty: number, date: Date = new Date()): Promise<Activity[]> => {
+    return API.fetchStockTrackerActivitiesQuery(stockTrackerId, date, page, qty, `
         icon
         dateTime
         title
@@ -71,8 +71,8 @@ export const fetchAvailableStrategies = async (): Promise<Strategy[]> => {
     `)
 }
 
-export const createBee = async (bee: StockTracker): Promise<StockTracker> => {
-    return API.createBee(bee, `
+export const createStockTracker = async (stockTracker: StockTracker): Promise<StockTracker> => {
+    return API.createStockTracker(stockTracker, `
         _id
         brokerAccount {
             brokerCode
@@ -97,9 +97,9 @@ export const createBee = async (bee: StockTracker): Promise<StockTracker> => {
     `)
 }
 
-export const updateBee = (id: string, bee: StockTracker): Promise<boolean> => {
-    let stockTrackerClone = Object.assign({}, bee)
-    stockTrackerClone.frequency = <any>stockTrackerClone.frequency?._id
-    stockTrackerClone.strategy = <any>stockTrackerClone.strategy?._id
-    return API.updateBee(id, stockTrackerClone)
+export const updateStockTracker = (id: string, stockTracker: StockTracker): Promise<boolean> => {
+    let clone = Object.assign({}, stockTracker)
+    clone.frequency = <any>clone.frequency?._id
+    clone.strategy = <any>clone.strategy?._id
+    return API.updateStockTracker(id, clone)
 }

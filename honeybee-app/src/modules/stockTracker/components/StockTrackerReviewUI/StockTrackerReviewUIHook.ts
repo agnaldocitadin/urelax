@@ -5,7 +5,7 @@ import { animatedCallback } from "../../../../hooks/Commons.hook"
 import { States } from "../../../../reducers/Reducer"
 import { showConfirm, showError, showSuccess } from "../../../message"
 import { appendStockTrackers } from "../../actions"
-import { createBee } from "../../api"
+import { createStockTracker } from "../../api"
 import { getStockTrackerRoutes } from "../../reducer"
 
 /**
@@ -27,7 +27,7 @@ export const useStockTrackerReviewUIHook = (navigation: NavigationStackProp) => 
 
     const handleSaveStockTracker = animatedCallback(async () => {
         try {
-            let newStocktracker = await createBee(stockTrackerToUpdate)
+            let newStocktracker = await createStockTracker(stockTrackerToUpdate)
             dispatch(appendStockTrackers([newStocktracker], "begin"))
             dispatch(showSuccess(ts("stock_tracker_add_success"), ts("stock_tracker_add_success_msg")))
             // TODO Add stock tracker creation activiy to dashboard

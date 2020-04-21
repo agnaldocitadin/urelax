@@ -1,8 +1,8 @@
 import { arrayProp, instanceMethod, prop, Ref, Typegoose } from '@hasezoey/typegoose'
 import mongoose from "mongoose"
-import { StockTracker } from './stock.tracker.model'
 import { BrokerAccount } from './broker.account.model'
 import { Stock } from './stock.model'
+import { StockTracker } from './stock.tracker.model'
 import { UserAccount } from './user.account.model'
 
 export enum OrderPlatforms {
@@ -51,7 +51,7 @@ export class Order extends Typegoose {
     brokerAccount!: Ref<BrokerAccount>
 
     @prop({ ref: StockTracker, required: true })
-    bee!: Ref<StockTracker>
+    stockTracker!: Ref<StockTracker>
     
     @prop({ ref: Stock, required: true })
     stock!: Ref<Stock>

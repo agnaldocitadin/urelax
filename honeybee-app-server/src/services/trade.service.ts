@@ -29,7 +29,7 @@ export const makeAOrder = async (stockTracker: StockTracker, {
     return await OrderModel.create({
         userAccount: stockTracker.userAccount,
         brokerAccount: stockTracker.brokerAccount,
-        bee: stockTracker._id,
+        stockTracker: stockTracker._id,
         stock: stockTracker.stock,
         platform: platform,
         type: orderType,

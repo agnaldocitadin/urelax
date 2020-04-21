@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 import { UserAccount } from "./user.account.model"
 
 export enum ActivityType {
-    STOCK_TRACKER = "BEE",
+    STOCK_TRACKER = "STOCK_TRACKER",
     USER_ACCOUNT = "USER_ACCOUNT"
 }
 

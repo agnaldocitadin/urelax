@@ -39,7 +39,7 @@ export const resolvers = {
         return findUserAccountById(userAccountId)
     },
 
-    fetchActiveBeesQuery: async ({ userAccountId }: any) => {
+    fetchActiveStockTrackersQuery: async ({ userAccountId }: any) => {
         return findActivesByAccount(userAccountId)
     },
 
@@ -51,8 +51,8 @@ export const resolvers = {
         return findBrokerAccountByUser(userAccountId)
     },
 
-    fetchBeeActivitiesQuery: ({ beeId, date, page, qty }: any) => {
-        return findActivitiesByStockTracker(beeId, page, qty)
+    fetchStockTrackerActivitiesQuery: ({ stockTrackerId, date, page, qty }: any) => {
+        return findActivitiesByStockTracker(stockTrackerId, page, qty)
     },
 
     fetchUserActivitiesQuery: ({ userAccountId, date, page, qty }: any) => {
@@ -81,13 +81,13 @@ export const resolvers = {
         return createBrokerAccount(brokerAccount)
     },
 
-    createBee: async ({ bee }: any) => {
-        const beeModel = await createNewStockTracker(bee)
-        if (runOnCreate(beeModel)) {
-            let investor = StockTrackerFactory.create(beeModel)
+    createStockTracker: async ({ stockTracker }: any) => {
+        const model = await createNewStockTracker(stockTracker)
+        if (runOnCreate(model)) {
+            let investor = StockTrackerFactory.create(model)
             stockTrackerPlayground.addInvestor(investor)
         }
-        return populateStockTrackerDependencies(beeModel)
+        return populateStockTrackerDependencies(model)
     },
 
     updateUserAccount: ({ _id, userAccount }: any) => {
@@ -102,9 +102,9 @@ export const resolvers = {
         return updateBrokerAccountById(_id, brokerAccount)
     },
 
-    updateBee: async ({ _id, bee }: any) => {
-        let beeDB = await updateStockTrackerById(_id, bee)
-        stockTrackerPlayground.refreshInvestor(beeDB)
+    updateStockTracker: async ({ _id, stockTracker }: any) => {
+        let stockTrackerDB = await updateStockTrackerById(_id, stockTracker)
+        stockTrackerPlayground.refreshInvestor(stockTrackerDB)
         return true
     },
 

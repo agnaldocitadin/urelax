@@ -27,14 +27,14 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
         loading,
         stockTrackers,
         stockAmount,
-        handleAddBee, 
-        handleBeePreview 
+        handleAddStockTracker, 
+        handleStockTrackerPreview
     } = useStockTrackerListUIHook(navigation)
     
     const renderStockTracker = useCallback(({ item }: any) => (
         <StockTrackerListItem 
             stockTracker={item} 
-            onStockTrackerPress={handleBeePreview} 
+            onStockTrackerPress={handleStockTrackerPreview} 
             loading={loading}/>
     ), [loading])
     
@@ -43,7 +43,7 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
     return (
         <FlatLayout fail={fail}>
             <BackHeader title={ts("stock_trackers")} right={
-                <ButtonHeader icon={Icons.PLUS_CIRCLE} color={Colors.BLUES_1} onPress={handleAddBee}/>
+                <ButtonHeader icon={Icons.PLUS_CIRCLE} color={Colors.BLUES_1} onPress={handleAddStockTracker}/>
             }/>
 
             { !fail && <InfiniteFlatList
@@ -52,7 +52,7 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
                 minLengthToLoadMore={20}
                 data={stockTrackers}
                 renderItem={renderStockTracker}
-                keyExtractor={(item, index) => `bee${index}`}
+                keyExtractor={(item, index) => `stck${index}`}
                 ListEmptyComponent={
                     <GenericTextIcon
                         icon={Icons.ALERT_CIRCLE}

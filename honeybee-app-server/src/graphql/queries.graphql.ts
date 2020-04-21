@@ -14,9 +14,9 @@ export const queries = `
         
         fetchUserAccountQuery(userAccountId: ID!): UserAccount
         
-        fetchActiveBeesQuery(userAccountId: ID!): [Bee]
+        fetchActiveStockTrackersQuery(userAccountId: ID!): [StockTracker]
 
-        fetchBeeActivitiesQuery(beeId: ID!, date: String, page: Int!, qty: Int!): [Activity]
+        fetchStockTrackerActivitiesQuery(stockTrackerId: ID!, date: String, page: Int!, qty: Int!): [Activity]
         
         fetchUserActivitiesQuery(userAccountId: ID!, date: String, page: Int!, qty: Int!): [Activity]
 

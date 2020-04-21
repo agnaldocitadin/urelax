@@ -73,6 +73,6 @@ export class StockTracker extends Typegoose {
 
 export const StockTrackerModel = new StockTracker().getModelForClass(StockTracker, {
     schemaOptions: {
-        collection: "bees"
+        collection: "stock-trackers"
     }
 })

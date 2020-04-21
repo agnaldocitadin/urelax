@@ -31,14 +31,14 @@ export const fetchUserAccountQuery = (userAccountId: string, fields: string): Pr
      return gql(name, query(name, { userAccountId }, fields))
 }
 
-export const fetchActiveBeesQuery = (userAccountId: string, fields: string): Promise<StockTracker[]> => {
-     const name = "fetchActiveBeesQuery"
+export const fetchActiveStockTrackersQuery = (userAccountId: string, fields: string): Promise<StockTracker[]> => {
+     const name = "fetchActiveStockTrackersQuery"
      return gql(name, query(name, { userAccountId }, fields))
 }
 
-export const fetchBeeActivitiesQuery = (beeId: string, date: Date, page: number, qty: number, fields: string): Promise<Activity[]> => {
-     const name = "fetchBeeActivitiesQuery"
-     return gql(name, query(name, { beeId, date, page, qty }, fields))
+export const fetchStockTrackerActivitiesQuery = (stockTrackerId: string, date: Date, page: number, qty: number, fields: string): Promise<Activity[]> => {
+     const name = "fetchStockTrackerActivitiesQuery"
+     return gql(name, query(name, { stockTrackerId, date, page, qty }, fields))
 }
 
 export const fetchUserActivitiesQuery = (userAccountId: string, date: Date, page: number, qty: number, fields: string): Promise<Activity[]> => {

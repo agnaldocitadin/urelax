@@ -89,7 +89,7 @@ class StockTrackerPlayground {
      */
     addInvestor(investor: Investor): boolean {
         const id = investor.stockTrackerModel._id.toString()
-        Logger.info("@ Investor to stock tracker %s has been attached to playground.", id)
+        Logger.info("@ Investor %s has been attached to playground.", id)
         this.investors.set(id, investor)
         investor.init()
         return true
@@ -106,7 +106,7 @@ class StockTrackerPlayground {
         if (investor) {
             this.investors.delete(investorId)
             investor.shuttdow()
-            Logger.info("@ Investor to stock tracker %s has been dettached from playground.", investorId)
+            Logger.info("@ Investor %s has been dettached from playground.", investorId)
         }
     }
 

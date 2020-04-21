@@ -14,14 +14,14 @@ interface StockTrackerListItemProps {
     stockTracker: StockTracker
     loading?: boolean
     style?: ViewStyle
-    onStockTrackerPress?(bee: StockTracker): void
+    onStockTrackerPress?(stockTracker: StockTracker): void
 }
 
 export const StockTrackerListItem: FC<StockTrackerListItemProps> = ({ stockTracker, onStockTrackerPress, style, loading }) => {
     return (
         <Touch style={style} onPress={() => onStockTrackerPress && onStockTrackerPress(stockTracker)} noChevron={!onStockTrackerPress}>
             <Shimmer autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
-                <Image source={SymbolsImg[stockTracker.stock?.symbol]} style={{ width: 50, height: 50 }} />
+                <Image source={SymbolsImg[stockTracker.stock?.symbol]} resizeMode="contain" style={{ maxWidth: 60, maxHeight: 60 }} />
             </Shimmer>
             <StockInfo
                 name={stockTracker.stock?.description} 

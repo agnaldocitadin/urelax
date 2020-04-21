@@ -37,6 +37,6 @@ export class StockHistory extends Typegoose {
 
 export const StockHistoryModel = new StockHistory().getModelForClass(StockHistory, {
     schemaOptions: {
-        collection: "stocks-histories"
+        collection: "stock-histories"
     }
 })

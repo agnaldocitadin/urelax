@@ -6,7 +6,7 @@ import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
 import { appendStockTrackers, prepateStockTrackerToCreate, resetStockTrackerModule, selectStockTracker } from "../../actions"
-import { fetchActiveBeesQuery } from "../../api"
+import { fetchActiveStockTrackersQuery } from "../../api"
 import { getStockTrackerRoutes } from "../../reducer"
 
 export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
@@ -19,12 +19,12 @@ export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
     const isEditing = useSelector((state: States) => state.STOCK_TRACKER.isEditing)
     const stockAmount = useSelector((state: States) => state.DASHBOARD.balanceSummary.stocks || 0)
 
-    const handleBeePreview = animatedCallback((stockTracker: StockTracker) => {
+    const handleStockTrackerPreview = animatedCallback((stockTracker: StockTracker) => {
         dispatch(selectStockTracker(stockTracker))
         navigation.navigate(Routes.StockTrackerPreviewUI)
     })
 
-    const handleAddBee = animatedCallback(() => {
+    const handleAddStockTracker = animatedCallback(() => {
         dispatch(prepateStockTrackerToCreate(userAcount))
         const initRoute = getStockTrackerRoutes(userAcount.simulation || false, isEditing)[1]
         navigation.navigate(initRoute)
@@ -32,7 +32,7 @@ export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
 
     useEffectWhenReady(async () => {
         try {
-            let stockTrackers = await fetchActiveBeesQuery(userAcount._id || "")
+            let stockTrackers = await fetchActiveStockTrackersQuery(userAcount._id || "")
             dispatch(appendStockTrackers(stockTrackers))
             setLoading(false)
         }
@@ -47,7 +47,7 @@ export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
         loading,
         stockAmount,
         stockTrackers,
-        handleBeePreview,
-        handleAddBee
+        handleStockTrackerPreview,
+        handleAddStockTracker
     }
 }

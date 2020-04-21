@@ -4,7 +4,7 @@ export const mutations = `
 
         createUserAccount(userAccount: UserAccountInput!): UserAccount
         
-        createBee(bee: BeeInput!): Bee
+        createStockTracker(stockTracker: StockTrackerInput!): StockTracker
         
         createBrokerAccount(brokerAccount: BrokerAccountInput!): BrokerAccount
         
@@ -14,7 +14,7 @@ export const mutations = `
         
         updateBrokerAccount(_id: ID!, brokerAccount: BrokerAccountInput!): Boolean
         
-        updateBee(_id: ID!, bee: BeeInput!): Boolean
+        updateStockTracker(_id: ID!, stockTracker: StockTrackerInput!): Boolean
 
         activateSimulationAccount(userAccountId: ID!): String
     }

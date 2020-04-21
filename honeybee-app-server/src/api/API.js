@@ -22,27 +22,27 @@ export const registerAPI = (app) => {
         res.sendStatus(403)
     })
 
-    app.post("/playBee", async (req, res) => {
+    app.post("/playStockTracker", async (req, res) => {
         invoke(res, async () => {
             const { id } = req.body
-            let bee = await stockTrackerPlayground.playInvestor(id)
-            res.send({ status: bee.status })
+            let stockTracker = await stockTrackerPlayground.playInvestor(id)
+            res.send({ status: stockTracker.status })
         })
     })
 
-    app.post("/pauseBee", async (req, res) => {
+    app.post("/pauseStockTracker", async (req, res) => {
         invoke(res, async () => {
             const { id } = req.body
-            let bee = await stockTrackerPlayground.pauseInvestor(id)
-            res.send({ status: bee.status })
+            let stockTracker = await stockTrackerPlayground.pauseInvestor(id)
+            res.send({ status: stockTracker.status })
         })
     })
     
-    app.post("/destroyBee", async (req, res) => {
+    app.post("/destroyStockTracker", async (req, res) => {
         invoke(res, async () => {
             const { id } = req.body
-            let bee = await stockTrackerPlayground.destroyInvestor(id)
-            res.send({ status: bee.status })
+            let stockTracker = await stockTrackerPlayground.destroyInvestor(id)
+            res.send({ status: stockTracker.status })
         })
     })
 

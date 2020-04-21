@@ -30,7 +30,7 @@ export const StockTrackerData = withNavigation(({ stockTracker, navigation, isRe
 
     return (
         <React.Fragment>
-            <StockLogo source={SymbolsImg[stockTracker.stock?.symbol]} noPadding={noPadding}/>
+            <StockLogo source={SymbolsImg[stockTracker.stock?.symbol]} noPadding={noPadding} resizeMode="contain"/>
             <SInfo name="Ativo" value={`${stock?.description} (${stock?.symbol})`} disabled={isReview} noPadding={noPadding}/>
             <SInfo name="Corretora" value={brokerAccount?.brokerCode} disabled={isReview} noPadding={noPadding}/>
             <SInfo name="Conta" value={brokerAccount?.accountName} disabled={isReview} noPadding={noPadding}/>
@@ -44,7 +44,7 @@ export const StockTrackerData = withNavigation(({ stockTracker, navigation, isRe
 })
 
 const StockLogo: any = styled(Image)`
-    width: 100px;
+    width: 150px;
     height: 100px;
     margin-left: ${(props: any) => props.noPadding ? 0 : FORM_PADDING};
     margin-top: ${FORM_PADDING};

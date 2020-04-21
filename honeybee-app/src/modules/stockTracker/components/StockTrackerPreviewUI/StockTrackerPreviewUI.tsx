@@ -13,7 +13,7 @@ import { Info } from '../../../../ui/components/Info'
 import { FlatLayout } from '../../../../ui/components/Layout/FlatLayout'
 import { FORM_PADDING } from '../../../../ui/components/Layout/Layout.style'
 import { ActivityTimeline } from '../../../activity/components/ActivityTimeline'
-import { BeeControlButton } from '../BeeControlButton'
+import { StockTrackerControlButton } from '../StockTrackerControlButton'
 import { useStockTrackerPreviewUIHook } from './StockTrackerPreviewUIHook'
 
 interface StockTrackerPreviewUIProps {
@@ -80,11 +80,12 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({ navigati
                             <RightColumn>
                                 <Image 
                                     source={SymbolsImg[stockTracker.stock.symbol]} 
-                                    style={{ width: 100, height: 100 }}/>
+                                    resizeMode="contain"
+                                    style={{ maxWidth: 100, maxHeight: 60 }}/>
                             </RightColumn>
                         </InfoHeader>
                         <ButtonView>
-                            <BeeControlButton 
+                            <StockTrackerControlButton 
                                 buttonSize={60} 
                                 iconSize={30}
                                 status={stockTracker?.status} 

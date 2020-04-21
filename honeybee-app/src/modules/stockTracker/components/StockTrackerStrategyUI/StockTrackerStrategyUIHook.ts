@@ -41,7 +41,7 @@ export const useStockTrackerStrategyUIHook = (navigation: NavigationStackProp) =
         onRequestEdit: async () => {
             Keyboard.dismiss()
             let changes = { strategy: selectedValue } as StockTracker
-            await API.updateBee(_id, changes)
+            await API.updateStockTracker(_id, changes)
             dispatch(updateSelectedStockTracker(changes))
             dispatch(showSuccess(ts("stock_tracker_update_success"), ts("stock_tracker_update_success_msg")))
         },

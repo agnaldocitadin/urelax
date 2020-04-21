@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { Colors, Icons } from '../../../../core/Theme'
 import { InteractiveButton, InteractiveButtonStates } from '../../../../ui/components/InteractiveButton'
 
-export interface BeeControlButtonProps {
+export interface StockTrackerControlButtonProps {
     buttonSize: number
     iconSize: number
     status?: string
@@ -27,7 +27,7 @@ export const isDisabled = (status?: string): boolean => {
     return status === StockTrackerStatus.WAITING_DESTROY || status === StockTrackerStatus.WAITING_PAUSE
 }
 
-export const BeeControlButton: FC<BeeControlButtonProps> = ({ buttonSize, iconSize, status, onPress }) => {
+export const StockTrackerControlButton: FC<StockTrackerControlButtonProps> = ({ buttonSize, iconSize, status, onPress }) => {
     const btActionIcon = getBtIcon(status)
     const disabled = isDisabled(status)
     if (isDestroyed(status)) return null

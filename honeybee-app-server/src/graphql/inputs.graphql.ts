@@ -16,7 +16,7 @@ export const inputs = `
         addStockTrackerPaused: Boolean
     }
 
-    input BeeInput {
+    input StockTrackerInput {
         userAccount: String
         brokerAccount: String
         stock: String

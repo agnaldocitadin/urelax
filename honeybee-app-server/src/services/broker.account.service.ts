@@ -30,7 +30,7 @@ export const findBrokerAccount = (id: string) => {
  * @returns
  */
 export const findBrokerAccountByUser = (userAccountId: string) => {
-    return BrokerAccountModel.find({ userAccount: userAccountId }).exec()
+    return BrokerAccountModel.find({ userAccount: <any>userAccountId }).exec()
 }
 
 /**
