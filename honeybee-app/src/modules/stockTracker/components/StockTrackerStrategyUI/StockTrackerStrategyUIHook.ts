@@ -1,4 +1,4 @@
-import { StockTracker, Strategy } from "honeybee-api"
+import { API, StockTracker, Strategy } from "honeybee-api"
 import { useState } from "react"
 import { Keyboard } from "react-native"
 import { NavigationStackProp } from "react-navigation-stack"
@@ -10,7 +10,7 @@ import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
 import { showConfirm, showError, showSuccess } from "../../../message"
 import { updateSelectedStockTracker } from "../../actions"
-import { fetchAvailableStrategies, updateBee } from "../../api"
+import { fetchAvailableStrategies } from "../../api"
 import { getStockTrackerRoutes } from "../../reducer"
 
 /**
@@ -41,7 +41,7 @@ export const useStockTrackerStrategyUIHook = (navigation: NavigationStackProp) =
         onRequestEdit: async () => {
             Keyboard.dismiss()
             let changes = { strategy: selectedValue } as StockTracker
-            await updateBee(_id, changes)
+            await API.updateBee(_id, changes)
             dispatch(updateSelectedStockTracker(changes))
             dispatch(showSuccess(ts("stock_tracker_update_success"), ts("stock_tracker_update_success_msg")))
         },

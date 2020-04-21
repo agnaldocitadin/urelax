@@ -38,6 +38,7 @@ export const query = (name: string, params?: object, fields?: string): string =>
  */
 export const gql = async (queryName: string, query: string) => {
     try {
+        console.log("query:", query)
         const response: Response = await timedPromise(fetch(CONFIG.graphqlURI, {
             method: "POST",
             headers: { 

@@ -7,8 +7,9 @@ export const createUserAccount = (userAccount: UserAccount, fields: string): Pro
 }
 
 export const createBee = (bee: StockTracker, fields: string): Promise<StockTracker> => {
-    const name = "createUserAccount"
-    return gql(name, mutation(name, { bee }, fields))
+    const name = "createBee"
+    const clone = transformStockTracker(bee)
+    return gql(name, mutation(name, { bee: clone }, fields))
 }
 
 export const createBrokerAccount = (brokerAccount: BrokerAccount, fields: string): Promise<BrokerAccount> => {
@@ -33,10 +34,20 @@ export const updateBrokerAccount = (_id: string, brokerAccount: BrokerAccount): 
 
 export const updateBee = (_id: string, bee: StockTracker): Promise<boolean> => {
     const name = "updateBee"
-    return gql(name, mutation(name, { _id, bee }))
+    const clone = transformStockTracker(bee)
+    return gql(name, mutation(name, { _id, bee: clone }))
 }
 
 export const activateSimulationAccount = (userAccountId: string): Promise<string> => {
     const name = "activateSimulationAccount"
     return gql(name, mutation(name, { userAccountId }))
+}
+
+const transformStockTracker = (tracker: StockTracker): StockTracker => {
+    let stockTrackerClone = Object.assign({}, tracker)
+    stockTrackerClone.userAccount = <any>stockTrackerClone.userAccount?._id
+    stockTrackerClone.stock = <any>stockTrackerClone.stock?._id
+    stockTrackerClone.frequency = <any>stockTrackerClone.frequency?._id
+    stockTrackerClone.strategy = <any>stockTrackerClone.strategy?._id
+    return stockTrackerClone
 }
