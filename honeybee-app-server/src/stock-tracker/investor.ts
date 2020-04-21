@@ -1,3 +1,4 @@
+import { StockTrackerStatus } from 'honeybee-api'
 import Logger from '../core/Logger'
 import { OrderSides } from '../models/order.model'
 import { StockTracker } from '../models/stock.tracker.model'
@@ -11,7 +12,6 @@ import { registerUpdate, STOCK_TRACKER_STATUS_DONT_UPDATE } from '../services/st
 import { addOrderExecution, makeAOrder, updateOrderCode } from '../services/trade.service'
 import { InvestimentStrategy, PredictionResult } from '../strategies/investiment.strategy'
 import { StockTrackerFrequency } from './stock.tracker.frequency'
-import { StockTrackerStatus } from './stock.tracker.status'
 
 /**
  *

@@ -1,3 +1,7 @@
+export enum Locales {
+    PT_BR = "pt_BR",
+    EN_US = "en_US"
+}
 
 export enum StockTrackerStatus {
     PAUSED = "PAUSED",

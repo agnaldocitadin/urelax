@@ -7,7 +7,7 @@ import { createBrokerAccount, findBrokerAccount, findBrokerAccountByUser, update
 import { findAllActives, findByCode } from "../services/broker.service"
 import { findAvailables as findAvailableStocks } from "../services/stock.service"
 import { createNewStockTracker, findActivesByAccount, populateStockTrackerDependencies, runOnCreate, updateStockTrackerById } from "../services/stock.tracker.service"
-import { activateSimulationAccount, createAccount, findById, updateAccount, updateUserPreferences } from '../services/user.account.service'
+import { activateSimulationAccount, createAccount, findUserAccountById, updateAccount, updateUserPreferences } from '../services/user.account.service'
 import { STFrequencyDef, StockTrackerFrequency } from "../stock-tracker/stock.tracker.frequency"
 import { StrategyNames, StrategyNamesDef } from "../strategies/strategy.names"
 
@@ -36,7 +36,7 @@ export const resolvers = {
     },
 
     fetchUserAccountQuery: ({ userAccountId }: any) => {
-        return findById(userAccountId)
+        return findUserAccountById(userAccountId)
     },
 
     fetchActiveBeesQuery: async ({ userAccountId }: any) => {

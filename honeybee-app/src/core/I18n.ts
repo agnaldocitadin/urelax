@@ -1,12 +1,8 @@
-import i18n, { TOptions } from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import en_US from '../translations/en_US.json';
-import pt_BR from '../translations/pt_BR.json';
-
-export enum Locales {
-    PT_BR = "pt_BR",
-    EN_US = "en_US"
-}
+import { Locales } from 'honeybee-api'
+import i18n, { TOptions } from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import en_US from '../translations/en_US.json'
+import pt_BR from '../translations/pt_BR.json'
 
 i18n
     .use(initReactI18next)
@@ -25,7 +21,7 @@ i18n
         }
     });
 
-export { i18n };
+export { i18n }
 
 export const ts = (key: string | string[], options?: TOptions<any> | string) => {
     return i18n.t(key, options)

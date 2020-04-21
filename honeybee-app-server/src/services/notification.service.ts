@@ -1,13 +1,12 @@
 import admin from 'firebase-admin'
+import { MessageTypes, NotificationMessage, StockTrackerStatus } from 'honeybee-api'
 import { ts } from '../core/i18n'
 import { Utils } from '../core/Utils'
 import { Order, OrderModel, OrderSides, OrderStatus } from "../models/order.model"
 import { Stock } from '../models/stock.model'
 import { StockTracker } from '../models/stock.tracker.model'
-import { MessageTypes, NotificationMessage } from '../models/types.d'
 import { UserAccount } from '../models/user.account.model'
 import { OrderExecution } from "../plugins/broker/broker.plugin"
-import { StockTrackerStatus } from '../stock-tracker/stock.tracker.status'
 
 const NOTIFICATION_ICON = "icon_notification"
 

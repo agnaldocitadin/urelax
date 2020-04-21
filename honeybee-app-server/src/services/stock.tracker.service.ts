@@ -1,3 +1,4 @@
+import { StockTrackerStatus } from 'honeybee-api'
 import { ErrorCodes } from '../core/error.codes.d'
 import { ts } from '../core/i18n'
 import Logger from '../core/Logger'
@@ -7,11 +8,11 @@ import { StockTracker, StockTrackerModel } from '../models/stock.tracker.model'
 import { UserAccount, UserAccountModel } from '../models/user.account.model'
 import { Investor } from '../stock-tracker/investor'
 import { StockTrackerFrequency } from '../stock-tracker/stock.tracker.frequency'
-import { StockTrackerStatus } from '../stock-tracker/stock.tracker.status'
 import { StrategyNames } from '../strategies/strategy.names'
 import { onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from './activity.service'
 import { findBalanceSheetOnCache } from './balance.sheet.service'
 import { notifyStockTrackerDestroy, notifyStockTrackerPause } from './notification.service'
+import { findUserAccountById } from './user.account.service'
 
 export const STOCK_TRACKER_STATUS_INACTIVE = [StockTrackerStatus.DESTROYED]
 export const STOCK_TRACKER_STATUS_DONT_UPDATE = [StockTrackerStatus.PAUSED].concat(STOCK_TRACKER_STATUS_INACTIVE)
@@ -23,12 +24,16 @@ export const STOCK_TRACKER_STATUS_DONT_UPDATE = [StockTrackerStatus.PAUSED].conc
  * @returns {Promise<StockTracker>}
  */
 export const createNewStockTracker = async ({ userAccount, brokerAccount, stock, strategy, frequency, stockAmountLimit, autoAmountLimit = false }: any): Promise<StockTracker> => {
+
+    const { preferences } = await findUserAccountById(userAccount)
+    const status = preferences.addStockTrackerPaused ? StockTrackerStatus.PAUSED : StockTrackerStatus.RUNNING
+
     const model: any = {
         userAccount,
         brokerAccount,
         strategy,
         stock,
-        status: StockTrackerStatus.RUNNING,
+        status,
         frequency,
         stockAmountLimit,
         autoAmountLimit
@@ -121,19 +126,19 @@ const findStockTrackerToGraphql = async (filter: any): Promise<StockTracker[]> =
  */
 export const populateStockTrackerDependencies = (stockTracker: StockTracker|any): StockTracker => {
     let doc = Object.assign({}, stockTracker._doc)
-    let str = StrategyNames.convert(stockTracker.strategy)
-    let fr = StockTrackerFrequency.convert(stockTracker.frequency)
+    let strategy = StrategyNames.convert(stockTracker.strategy)
+    let frequency = StockTrackerFrequency.convert(stockTracker.frequency)
 
     doc.strategy = {
-        _id: str._id,
-        description: ts(str._id),
-        file: str.file,
-        impl: str.impl
+        _id: strategy._id,
+        description: ts(strategy._id),
+        file: strategy.file,
+        impl: strategy.impl
     }
 
     doc.frequency = {
-        _id: fr.type,
-        description: ts(fr.type)
+        _id: frequency.type,
+        description: ts(frequency.type)
     }
 
     return doc

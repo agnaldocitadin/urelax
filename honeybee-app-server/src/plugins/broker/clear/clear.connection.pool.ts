@@ -1,8 +1,8 @@
+import { Brokers } from "honeybee-api"
 import { ErrorCodes } from "../../../core/error.codes.d"
 import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
 import { BrokerAccount } from "../../../models/broker.account.model"
-import { Brokers } from "../../../models/types.d"
 import { ClearConnection } from "./clear.connection"
 
 const connectionPool = new Map<string, ClearConnection>()

@@ -1,3 +1,4 @@
+import { StockTrackerStatus } from "honeybee-api"
 import { ATR, BollingerBands, StochasticRSI } from "technicalindicators"
 import { BollingerBandsOutput } from "technicalindicators/declarations/volatility/BollingerBands"
 import Logger from "../core/Logger"
@@ -9,7 +10,6 @@ import { StockTracker } from "../models/stock.tracker.model"
 import { BrokerPlugin } from "../plugins/broker/broker.plugin"
 import { getHistory } from "../services/stock.history.service"
 import { destroyStockTracker, getBoughtQty, isBought, isSold, pauseStockTracker, playStockTracker, waitStockTrackerDestroy, waitStockTrackerPause } from "../services/stock.tracker.service"
-import { StockTrackerStatus } from "../stock-tracker/stock.tracker.status"
 import { InvestimentStrategy, PredictionResult } from "./investiment.strategy"
 import { StochasticAnalizer, Trends } from "./stochastic.analizer"
 

@@ -1,5 +1,11 @@
 import { Brokers, MessageTypes, StockTrackerStatus } from "./Enums"
 
+export type NotificationMessage = {
+    messageType: MessageTypes
+    stockTrackerId?: string
+    stockTrackerStatus?: StockTrackerStatus
+}
+
 export type GroupBy = "day" | "week" | "month" | "year"
 
 export interface Preferences {
@@ -134,10 +140,4 @@ export interface BrokerAccountExtraData {
     cpf?: string
     passwd?: string
     birthdate?: Date
-}
-
-export interface NotificationMessage {
-    messageType: MessageTypes
-    stockTrackerId?: string
-    stockTrackerStatus?: StockTrackerStatus
 }

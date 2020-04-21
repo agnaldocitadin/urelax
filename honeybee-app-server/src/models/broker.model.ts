@@ -1,6 +1,6 @@
 import { prop, Typegoose } from '@hasezoey/typegoose'
+import { Brokers } from 'honeybee-api'
 import mongoose from "mongoose"
-import { Brokers } from './types.d'
 
 /**
  *

@@ -1,6 +1,6 @@
 import { prop, Ref, Typegoose } from '@hasezoey/typegoose'
+import { Brokers } from 'honeybee-api'
 import mongoose from "mongoose"
-import { Brokers } from './types.d'
 import { UserAccount } from './user.account.model'
 
 export type BrokerAccountExtraData = {

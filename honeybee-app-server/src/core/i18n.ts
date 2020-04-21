@@ -1,11 +1,7 @@
+import { Locales } from 'honeybee-api'
 import i18n, { TOptions } from 'i18next'
 import en_US from '../translations/en_US.json'
 import pt_BR from '../translations/pt_BR.json'
-
-export enum Locales {
-    PT_BR = "pt_BR",
-    EN_US = "en_US"
-}
 
 i18n
     .init({

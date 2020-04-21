@@ -1,7 +1,6 @@
 import admin from 'firebase-admin'
-import { StockTrackerStatus } from '../src/stock-tracker/stock.tracker.status'
+import { MessageTypes, NotificationMessage, StockTrackerStatus } from 'honeybee-api'
 import Logger from '../src/core/Logger'
-import { MessageTypes, NotificationMessage } from '../src/models/types.d'
 
 beforeAll(async () => {
     // dotenv.config()

@@ -1,5 +1,5 @@
+import { Brokers } from "honeybee-api"
 import { Broker, BrokerModel } from "../models/broker.model"
-import { Brokers } from "../models/types.d"
 
 /**
  *

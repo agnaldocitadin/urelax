@@ -12,7 +12,7 @@ import { createNewBalanceSheet } from './balance.sheet.service'
  * @param {string} id
  * @returns
  */
-export const findById = (id: string) => {
+export const findUserAccountById = (id: string) => {
     return UserAccountModel.findById(id).exec()
 }
 
@@ -62,7 +62,7 @@ const validateAccount = (userAccount: UserAccount) => {
  * @returns {Promise<mongoose.Types.ObjectId>}
  */
 export const activateSimulationAccount = async (userAccountId: string): Promise<mongoose.Types.ObjectId> => {
-    let userAccountDB = await findById(userAccountId)
+    let userAccountDB = await findUserAccountById(userAccountId)
 
     if (userAccountDB.simulation) {
         Logger.throw(ErrorCodes.ACCOUNT_IS_SIMULATION, ts("account_is_simulation"))
