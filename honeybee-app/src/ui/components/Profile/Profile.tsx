@@ -21,9 +21,8 @@ export const Profile: FC<ProfileProps> = ({ name, onPress, style }) => {
             <SProfileName>{name}</SProfileName>
             <InteractiveButton
                 block
-                borderWidth={1}
-                iconColor={Colors.BLUES_2}
-                borderColor={Colors.BLUES_2}
+                normalBgColor={Colors.BLUES_2}
+                iconColor={Colors.WHITE}
                 icon={Icons.ACCOUNT_EDIT}
                 width={BTN_PROFILE_SIZE}
                 height={BTN_PROFILE_SIZE}
