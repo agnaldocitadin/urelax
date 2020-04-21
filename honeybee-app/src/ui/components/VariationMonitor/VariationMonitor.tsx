@@ -1,9 +1,9 @@
 
+import { utils } from 'js-commons'
 import { Icon, Text, View } from 'native-base'
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { Colors, Icons, Theme } from '../../../core/Theme'
-import { formatNumber } from '../../../globals/Utils'
 
 interface VariationMonitorProps {
     value?: number
@@ -29,7 +29,7 @@ export const VariationMonitor: FC<VariationMonitorProps> = ({
             fontSize={fontSize}
             color={textColor}
             bgColor={value === 0 ? Colors.BG_2 : ( value > 0 ? Colors.BLUES_3 : Colors.RED_ERROR )}>
-            {formatNumber(value, { showSignal: true })}%
+            {utils.formatNumber(value, { showSignal: true })}%
         </DisplayValue>
     </Display>
 )

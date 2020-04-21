@@ -1,7 +1,6 @@
-import { API } from "honeybee-api"
 import { NavigationStackProp } from "react-navigation-stack"
 import { useDispatch, useSelector } from "react-redux"
-import { animatedCallback, useEffectWhenReady } from "../../../../globals/Utils"
+import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
 import { initDashboardData } from "../../actions"

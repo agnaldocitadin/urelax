@@ -1,3 +1,4 @@
+import { utils } from "js-commons"
 import { View } from "native-base"
 import React, { FC } from "react"
 import { NavigationStackProp } from "react-navigation-stack"
@@ -6,7 +7,6 @@ import styled from "styled-components"
 import AppConfig from "../../../../core/AppConfig"
 import { ts } from "../../../../core/I18n"
 import { Colors } from "../../../../core/Theme"
-import { formatCurrency } from "../../../../globals/Utils"
 import { States } from "../../../../reducers/Reducer"
 import { BackHeader } from "../../../../ui/components/Header/BackHeader"
 import { Info } from "../../../../ui/components/Info"
@@ -28,20 +28,20 @@ export const BalanceHistoryDetailUI: FC<BalanceHistoryDetailUIProps> = ({ naviga
     return (
         <FlatLayout bgColor={Colors.WHITE}>
             <BackHeader title={ts("balance_from", { period: balance.label })}/>
-            <BalanceInfo name={result} nameFontSize={17} valueFontSize={25} value={formatCurrency(money, { prefix: AppConfig.CURRENCY_PREFIX })}/>
+            <BalanceInfo name={result} nameFontSize={17} valueFontSize={25} value={utils.formatCurrency(money, { prefix: AppConfig.CURRENCY_PREFIX })}/>
             <Data>
                 <Variation>
-                    <Info name={ts("total_amount")} value={formatCurrency(balance.amount || 0, { prefix: AppConfig.CURRENCY_PREFIX })}/>
+                    <Info name={ts("total_amount")} value={utils.formatCurrency(balance.amount || 0, { prefix: AppConfig.CURRENCY_PREFIX })}/>
                     <VariationMonitor value={balance.amountVariation} fontSize={15}/>
                 </Variation>
 
                 <Variation>
-                    <Info name={ts("account_amount")} value={formatCurrency(balance.credits || 0, { prefix: AppConfig.CURRENCY_PREFIX })}/>
+                    <Info name={ts("account_amount")} value={utils.formatCurrency(balance.credits || 0, { prefix: AppConfig.CURRENCY_PREFIX })}/>
                     <VariationMonitor value={balance.creditVariation} fontSize={15}/>
                 </Variation>
 
                 <Variation>
-                    <Info name={ts("stock_amount")} value={formatCurrency(balance.stocks || 0, { prefix: AppConfig.CURRENCY_PREFIX })}/>
+                    <Info name={ts("stock_amount")} value={utils.formatCurrency(balance.stocks || 0, { prefix: AppConfig.CURRENCY_PREFIX })}/>
                     <VariationMonitor value={balance.stockVariation} fontSize={15}/>
                 </Variation>
             </Data>

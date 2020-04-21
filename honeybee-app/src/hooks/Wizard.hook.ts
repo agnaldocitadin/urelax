@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react"
 import { NavigationStackProp } from "react-navigation-stack"
-import { animatedCallback } from "../globals/Utils"
 import { BROKER_FLOW_VIEW } from "../modules/broker"
+import { animatedCallback } from "./Commons.hook"
 
 export interface WizardExecution {
     navigation: NavigationStackProp

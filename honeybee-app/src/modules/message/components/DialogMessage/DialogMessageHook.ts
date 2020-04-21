@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { animatedPromise } from "../../../../globals/Utils"
+import { animatedCallback } from "../../../../hooks/Commons.hook"
 import { States } from "../../../../reducers/Reducer"
 import { closeMessage } from "../../actions"
 
@@ -11,12 +11,12 @@ export const useDialogMessageHook = () => {
 
     const handleCloseDialog = useCallback(() => dispatch(closeMessage()), [])
 
-    const handleButtonAction = useCallback(() => animatedPromise(async () => {
+    const handleButtonAction = animatedCallback(async () => {
         payload.buttonAction && await payload.buttonAction()
         if (payload.closeAfterAction) {
             dispatch(closeMessage())
         }
-    }), [payload])
+    }, [payload])
 
     return {
         payload,

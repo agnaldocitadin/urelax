@@ -1,3 +1,4 @@
+import { utils } from 'js-commons'
 import { View } from 'native-base'
 import React, { FC } from 'react'
 import { Image } from 'react-native'
@@ -6,7 +7,6 @@ import styled from 'styled-components'
 import AppConfig from '../../../../core/AppConfig'
 import { ts } from '../../../../core/I18n'
 import { Colors, Icons, SymbolsImg } from '../../../../core/Theme'
-import { formatCurrency } from '../../../../globals/Utils'
 import { BackHeader } from '../../../../ui/components/Header/BackHeader'
 import { ButtonHeader } from '../../../../ui/components/Header/ButtonHeader'
 import { Info } from '../../../../ui/components/Info'
@@ -58,13 +58,13 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({ navigati
                             <LeftColumn>
                                 <InfoItem 
                                     name={ts("stock_amount")}
-                                    value={formatCurrency(stockBalance.amount, { prefix: AppConfig.CURRENCY_PREFIX })}
+                                    value={utils.formatCurrency(stockBalance.amount, { prefix: AppConfig.CURRENCY_PREFIX })}
                                     nameFontSize={15}
                                     valueFontSize={24}/>
 
                                 <InfoItem 
                                     name={ts("buy_average_price")}
-                                    value={formatCurrency(stockBalance.averagePrice, { prefix: AppConfig.CURRENCY_PREFIX })}
+                                    value={utils.formatCurrency(stockBalance.averagePrice, { prefix: AppConfig.CURRENCY_PREFIX })}
                                     valueFontSize={18}/>
 
                                 <InfoItem 

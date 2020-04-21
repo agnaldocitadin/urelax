@@ -21,7 +21,6 @@
     "honeybee-api": "../honeybee-api/",
     "i18next": "^19.1.0",
     "js-commons": "../../js-commons/",
-    "native-app-commons": "../../native-app-commons/",
     "native-base": "^2.13.8",
     "react": "16.12.0",
     "react-i18next": "^11.3.2",

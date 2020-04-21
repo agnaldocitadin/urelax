@@ -4,11 +4,10 @@ import { NavigationStackProp } from 'react-navigation-stack'
 import styled from 'styled-components'
 import { ts } from '../../../../core/I18n'
 import { Colors, Icons } from '../../../../core/Theme'
-import { animatedCallback } from '../../../../globals/Utils'
+import { animatedCallback } from '../../../../hooks/Commons.hook'
 import { Routes } from '../../../../navigations/Navigator'
 import { InteractiveButton } from '../../../../ui/components/InteractiveButton'
 import { GenericTextIcon } from '../../../../ui/components/Layout/Layout.style'
-import { TextIconDisplay } from '../../../../ui/components/TextIconDisplay'
 
 interface FastAuthFailureUIProps {
     navigation: NavigationStackProp

@@ -1,10 +1,10 @@
+import { utils } from 'js-commons'
 import React, { FC, useCallback } from 'react'
 import { NavigationStackProp } from 'react-navigation-stack'
 import styled from 'styled-components'
 import AppConfig from '../../../../core/AppConfig'
 import { ts } from '../../../../core/I18n'
 import { Colors, Icons } from '../../../../core/Theme'
-import { formatCurrency } from '../../../../globals/Utils'
 import { BackHeader } from '../../../../ui/components/Header/BackHeader'
 import { ButtonHeader } from '../../../../ui/components/Header/ButtonHeader'
 import { InfiniteFlatList } from '../../../../ui/components/InfiniteFlatList'
@@ -63,7 +63,7 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
                     (loading || hasData) ? <StockAmount
                         loading={loading}
                         name={ts("stock_amount")}
-                        value={formatCurrency(stockAmount, { prefix: AppConfig.CURRENCY_PREFIX })}
+                        value={utils.formatCurrency(stockAmount, { prefix: AppConfig.CURRENCY_PREFIX })}
                         valueFontSize={25}/> : null
                 }/>}
             

@@ -1,4 +1,5 @@
 import { StockTracker } from 'honeybee-api'
+import { utils } from 'js-commons'
 import { Text } from 'native-base'
 import React from 'react'
 import { Image } from 'react-native'
@@ -8,7 +9,7 @@ import styled from 'styled-components'
 import AppConfig from '../../../../core/AppConfig'
 import { ts } from '../../../../core/I18n'
 import { Colors, SymbolsImg, Theme } from '../../../../core/Theme'
-import { animatedCallback, formatCurrency } from '../../../../globals/Utils'
+import { animatedCallback } from '../../../../hooks/Commons.hook'
 import { Routes } from '../../../../navigations/Navigator'
 import { Info } from '../../../../ui/components/Info'
 import { FORM_PADDING, SHeaderDivider } from '../../../../ui/components/Layout/Layout.style'
@@ -36,7 +37,7 @@ export const StockTrackerData = withNavigation(({ stockTracker, navigation, isRe
             <SInfo name="Estratégia" value={strategy?.description} onPress={handleStrategy} disabled={isReview} noPadding={noPadding}/>
             <SInfo name="Frequência" value={frequency?.description} onPress={handleFrequency} disabled={isReview} noPadding={noPadding}/>
             <Divider noPadding={noPadding}>Negociação</Divider>
-            <SInfo name="Valor máximo negociável" value={formatCurrency(stockAmountLimit || 0, { prefix: AppConfig.CURRENCY_PREFIX })} onPress={handleTransaction} disabled={isReview} noPadding={noPadding}/>
+            <SInfo name="Valor máximo negociável" value={utils.formatCurrency(stockAmountLimit || 0, { prefix: AppConfig.CURRENCY_PREFIX })} onPress={handleTransaction} disabled={isReview} noPadding={noPadding}/>
             { autoAmountLimit && <AutoAmountLimit noPadding={noPadding}>{ts("stock_tracker_auto_transaction_active")}</AutoAmountLimit>}
         </React.Fragment>
     )

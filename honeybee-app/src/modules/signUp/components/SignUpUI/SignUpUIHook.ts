@@ -1,11 +1,11 @@
-import { validations } from 'js-commons'
 import { UserAccount } from "honeybee-api"
+import { validations } from 'js-commons'
 import { useCallback, useState } from "react"
 import { Keyboard } from "react-native"
 import { NavigationStackProp } from "react-navigation-stack"
 import { useDispatch } from "react-redux"
 import { ts } from "../../../../core/I18n"
-import { animatedPromise } from "../../../../globals/Utils"
+import { animatedPromise } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { showError } from "../../../message"
 import { createUserAccount } from "../../api"

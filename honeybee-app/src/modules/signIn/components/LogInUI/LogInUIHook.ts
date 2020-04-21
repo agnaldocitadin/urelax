@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Keyboard } from "react-native"
 import { NavigationStackProp } from "react-navigation-stack"
 import { useDispatch, useSelector } from "react-redux"
-import { animatedPromise } from "../../../../globals/Utils"
+import { animatedCallback } from "../../../../hooks/Commons.hook"
 import { States } from "../../../../reducers/Reducer"
 import { showError } from "../../../message"
 import { registerUserEmail, registerUserKeepSession, registerUserPassword, resetSignInForm } from "../../actions"
@@ -32,10 +32,10 @@ export const useLogInUIHook = (navigation: NavigationStackProp) => {
     
     const handlePasswdChanges = useCallback((chars: string) => dispatch(registerUserPassword(chars)), [passwd])
     
-    const handleAuthentication = useCallback(() => animatedPromise(() => {
+    const handleAuthentication = animatedCallback(() => {
         Keyboard.dismiss()
         setAuthenticate(true)
-    }), [])
+    }, [])
 
     const handleAuthFail = useCallback((error: any) => {
         dispatch(showError(JSON.stringify(error.message)))

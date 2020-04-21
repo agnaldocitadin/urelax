@@ -1,11 +1,12 @@
 import { format } from 'date-fns'
 import { BrokerAccount, BrokerAccountExtraData } from 'honeybee-api'
+import { utils } from 'js-commons'
 import React from 'react'
 import { withNavigation } from 'react-navigation'
 import { NavigationStackProp } from 'react-navigation-stack'
 import styled from 'styled-components'
 import AppConfig from '../../../../core/AppConfig'
-import { animatedCallback, formatCPF, formatCurrency } from '../../../../globals/Utils'
+import { animatedCallback } from '../../../../hooks/Commons.hook'
 import { Routes } from '../../../../navigations/Navigator'
 import { Info } from '../../../../ui/components/Info'
 import { FORM_PADDING } from '../../../../ui/components/Layout/Layout.style'
@@ -35,11 +36,11 @@ export const AccountData = withNavigation(({ navigation, brokerAccount, isReview
         <React.Fragment>
             {/* Commons */}
             <SInfo name="Corretora" value={brokerAccount.brokerCode} noPadding={noPadding}/>
-            <SInfo name="Aporte inicial" value={formatCurrency(initialAmount, { prefix: AppConfig.CURRENCY_PREFIX })} noPadding={noPadding}/>
+            <SInfo name="Aporte inicial" value={utils.formatCurrency(initialAmount, { prefix: AppConfig.CURRENCY_PREFIX })} noPadding={noPadding}/>
             <SInfo name="Nome da conta" value={brokerAccount.accountName} onPress={handleDescription} disabled={isReview} noPadding={noPadding}/>
 
             {/* Extra data */}
-            <SInfo name="CPF" value={formatCPF(cpf)} onPress={handleCpf} disabled={isReview} noPadding={noPadding}/>
+            <SInfo name="CPF" value={utils.formatCPF(cpf)} onPress={handleCpf} disabled={isReview} noPadding={noPadding}/>
             <SInfo name="Senha" value={"****"} onPress={handlePasswd} disabled={isReview} noPadding={noPadding}/>
             <SInfo name="Data de nascimento" value={format(new Date(birthdate || 0), "dd/MM/yyyy")} onPress={handleBirthdate} disabled={isReview} noPadding={noPadding}/>
             <SInfo name="Assinatura eletrônica" value={signature} onPress={handleSignature} disabled={isReview} noPadding={noPadding}/>

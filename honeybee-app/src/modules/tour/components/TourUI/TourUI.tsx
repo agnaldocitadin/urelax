@@ -3,7 +3,7 @@ import React, { FC } from "react"
 import { NavigationStackProp } from "react-navigation-stack"
 import styled from "styled-components"
 import { Colors, Theme } from "../../../../core/Theme"
-import { animatedCallback } from "../../../../globals/Utils"
+import { animatedCallback } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { FlatLayout } from "../../../../ui/components/Layout/FlatLayout"
 

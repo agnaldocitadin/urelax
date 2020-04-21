@@ -11,7 +11,9 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "js-commons": "../../js-commons/"
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-typescript": "^7.9.0",

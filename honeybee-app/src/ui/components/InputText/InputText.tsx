@@ -5,7 +5,7 @@ import { TextInputMask, TextInputMaskOptionProp, TextInputMaskTypeProp } from 'r
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import styled from 'styled-components'
 import { Colors, Icons, Theme } from '../../../core/Theme'
-import { animatedCallback } from '../../../globals/Utils'
+import { animatedCallback } from '../../../hooks/Commons.hook'
 import { InputLabel } from '../Label'
 import { FORM_PADDING, SHIMMER_COLORS } from '../Layout/Layout.style'
 

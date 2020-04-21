@@ -1,4 +1,5 @@
 
+import { utils } from 'js-commons'
 import { Text, View } from 'native-base'
 import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'
@@ -6,7 +7,6 @@ import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import styled from 'styled-components'
 import AppConfig from '../../../core/AppConfig'
 import { Colors, Theme } from '../../../core/Theme'
-import { formatCurrency } from '../../../globals/Utils'
 import { SHIMMER_COLORS } from '../Layout/Layout.style'
 import { VariationMonitor } from '../VariationMonitor'
 
@@ -49,7 +49,7 @@ export const CashDisplay: FC<CashDisplayProps> = ({
                     <SCreditValue
                         fontSize={valueSize} 
                         color={valueColor}>
-                        {formatCurrency(value, { prefix: AppConfig.CURRENCY_PREFIX }) }
+                        {utils.formatCurrency(value, { prefix: AppConfig.CURRENCY_PREFIX }) }
                     </SCreditValue>
                     { !loading && <VariationMonitor
                         value={variation}

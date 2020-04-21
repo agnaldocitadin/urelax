@@ -1,5 +1,5 @@
 import { Activity, BalanceSheet, StockTracker } from "honeybee-api"
-import { joinArrays } from "../../globals/Utils"
+import { utils } from "js-commons"
 import { Routes } from "../../navigations/Navigator"
 import { ReduxAction } from "../../reducers/Reducer"
 import { APPEND_STOCK_TRACKERS, APPEND_STOCK_TRACKER_ACTIVITIES, CLEAR_STOCK_TRACKER_PREVIEW, INIT_STOCK_TRACKER_MODULE, PREPATE_STOCK_TRACKER_TO_CREATE, REGISTER_STOCK_TRACKER_BALANCE, REMOVE_STOCK_TRACKERS, RESET_STOCK_TRACKER_MODULE, SELECT_STOCK_TRACKER, SELECT_STOCK_TRACKER_TO_UPDATE, UPDATE_MAIN_STOCK_TRACKER, UPDATE_SELECTED_STOCK_TRACKER } from "./actionTypes"
@@ -68,13 +68,13 @@ export const StockTrackerReducer = (state: StockTrackerState = INITIAL_STATE, ac
         case APPEND_STOCK_TRACKERS:
             return {
                 ...state,
-                stockTrackers: action.data.reset ? action.data.stockTrackers : joinArrays(state.stockTrackers, action.data.stockTrackers, action.data.position)
+                stockTrackers: action.data.reset ? action.data.stockTrackers : utils.joinArrays(state.stockTrackers, action.data.stockTrackers, action.data.position)
             }
 
         case APPEND_STOCK_TRACKER_ACTIVITIES:
             return {
                 ...state,
-                selectedStockTrackerActivities: action.data.reset ? action.data.activities : joinArrays(state.selectedStockTrackerActivities, action.data.activities, action.data.position)
+                selectedStockTrackerActivities: action.data.reset ? action.data.activities : utils.joinArrays(state.selectedStockTrackerActivities, action.data.activities, action.data.position)
             }
 
         case REMOVE_STOCK_TRACKERS:

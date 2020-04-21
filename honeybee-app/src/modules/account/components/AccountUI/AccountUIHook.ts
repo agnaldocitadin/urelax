@@ -2,7 +2,8 @@ import { validations } from 'js-commons'
 import { useCallback, useState } from "react"
 import { Keyboard } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
-import { animatedPromise, useEffectWhenReady } from "../../../../globals/Utils"
+import { ts } from '../../../../core/I18n'
+import { animatedPromise, useEffectWhenReady } from '../../../../hooks/Commons.hook'
 import { States } from "../../../../reducers/Reducer"
 import { showConfirm, showError, showSuccess } from "../../../message"
 import { registerAuthenticatedUser } from "../../../signIn"
