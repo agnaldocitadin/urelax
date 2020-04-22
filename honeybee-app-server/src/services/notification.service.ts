@@ -21,7 +21,11 @@ const notifyBuy = (deviceToken: string, order: Order) => {
     admin.messaging().sendToDevice(deviceToken, {
         notification: {
             title: ts("buy_stock"),
-            body: ts("order_stock", { count: order.quantity, symbol: stock.toPresentation(), amount: Utils.Currency.format(order.getTotalOrder(), "R$") }),
+            body: ts("order_stock", { 
+                count: order.quantity, 
+                symbol: stock.toPresentation(), 
+                amount: Utils.Currency.format(order.getTotalOrder(), "R$")
+            }),
             icon: NOTIFICATION_ICON
         }
     })
@@ -39,7 +43,11 @@ const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
     admin.messaging().sendToDevice(deviceToken, {
         notification: {
             title: ts("sell_stock"),
-            body: ts("order_stock", { count: order.quantity, symbol: stock.toPresentation(), amount: Utils.Currency.format(order.getTotalOrder(), "R$") }),
+            body: ts("order_stock", { 
+                count: order.quantity, 
+                symbol: stock.toPresentation(),
+                amount: Utils.Currency.format(order.getTotalOrder(), "R$")
+            }),
             icon: NOTIFICATION_ICON
         }
     })
