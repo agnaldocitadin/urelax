@@ -5,12 +5,12 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:statusBarColor">@color/primary</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-        
+        <item name="android:windowTranslucentStatus">false</item> 
         <!-- <item name="android:windowLightStatusBar">true</item> -->
         
-        <!-- Faz o layout não redimensionar com o teclado ativo -->
-        <!-- <item name="android:windowTranslucentStatus">false</item>  -->
+
+        <!-- Faz o layout não redimensionar com o teclado ativo [TRUE]-->
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
 </resources>

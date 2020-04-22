@@ -56,6 +56,7 @@ export const activateSimulationAccount = (userAccountId: string): Promise<string
 const transformStockTracker = (tracker: StockTracker): StockTracker => {
     let clone = Object.assign({}, tracker)
     clone.userAccount = <any>clone.userAccount?._id
+    clone.brokerAccount = <any>clone.brokerAccount?._id
     clone.stock = <any>clone.stock?._id
     clone.frequency = <any>clone.frequency?._id
     clone.strategy = <any>clone.strategy?._id

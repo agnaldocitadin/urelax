@@ -1,6 +1,9 @@
 import { UserAccount } from 'honeybee-api'
 import React, { FC, ReactElement } from 'react'
+import { ActivityIndicator, View } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
+import styled from 'styled-components'
+import { Colors } from '../../../../core/Theme'
 import { Authenticate } from '../../../security'
 import { useSplashAuthHook } from './SplashAuthHook'
 
@@ -22,6 +25,9 @@ export const SplashAuth: FC<SplashAuthProps> = (props) => {
     return (
         <React.Fragment>
             { authenticating ? <React.Fragment>
+                <Splash>
+                    <ActivityIndicator size="large" color="white"/>
+                </Splash>
                 <Authenticate
                     authType="password"
                     email={email}
@@ -33,3 +39,10 @@ export const SplashAuth: FC<SplashAuthProps> = (props) => {
         </React.Fragment>
     )
 }
+
+const Splash = styled(View)`
+    background-color: ${Colors.BLUES_1};
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+`
