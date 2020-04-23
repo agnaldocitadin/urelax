@@ -4,16 +4,17 @@ import dotenv from 'dotenv-flow'
 import express from 'express'
 import fs from 'fs'
 import { ServerOptions } from 'https'
+import { version } from '../../package.json'
 import { registerAPI } from '../api/API'
 import Auth from '../authentication/Auth'
 import { connectDB } from '../db/mongo'
 import { PluginFactory } from '../factories/plugin.factory'
 import { StrategyFactory } from '../factories/strategy.factory'
 import { scheduleBalanceProcessor } from '../services/balance.sheet.service'
-import { stockTrackerPlayground } from './stock.tracker.playground'
 import { initFirebaseConfiguration } from './firebase'
 import './i18n'
 import Logger from './Logger'
+import { stockTrackerPlayground } from './stock.tracker.playground'
 import { stockWatcher } from './stock.watcher'
 
 /**
@@ -112,7 +113,8 @@ class HoneycombServer {
      * @memberof HoneycombServer
      */
     private logServerConfs() {
-        Logger.info("Launching Honeycomb Server, version %s", process.env.VERSION)
+        Logger.info("Launching Honeycomb Server, version %s", version)
+        Logger.info("Enviroment: %s", process.env.PRODUCTION_MODE === "true" ? "PRODUCTION" : "DEVELOPMENT")
         Logger.info("OS: %s", process.env.OS)
         Logger.info("Platform: %s", process.platform)
         Logger.info("Processors: %s", process.env.NUMBER_OF_PROCESSORS)

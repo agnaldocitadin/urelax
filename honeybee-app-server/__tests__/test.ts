@@ -1,5 +1,4 @@
 import admin from 'firebase-admin'
-import { MessageTypes, NotificationMessage, StockTrackerStatus } from 'honeybee-api'
 import Logger from '../src/core/Logger'
 
 beforeAll(async () => {
@@ -19,70 +18,39 @@ it("teste", async () => {
     // let token = "fPllQznjycw:APA91bFcsXgsc4_rzPqYmjK7Oqn94fN00oIgC2GPesRYYd09MQRxC9NeLUtda0gz8DrmkbNpEH-W9_DhVQfGAq-xvBZyVv3-LRHarY16WMJ8d_aR41J9x5pDG-wyNNXWNvpH1A3xxa2d"
     // let token = "eV4iZKNqqKo:APA91bGK0-_XcnzaBDX72pt-7Ke2IVHouGydwsNJAUrIhTFxplGk4uv7Iwn_PP8FnNj3s3m1GBfM25oE2SvEPTOxb493Xtgge1KlV0HKtPeN8M1rtk3PClud3OwZoE16Thc9wBMq-l8s"
     // let token = "e-voJwC_I-w:APA91bFFGbD8sYGn6ohFY88rkx7CEyxUo8NDPJ7v6BeEqz7gi2rTToCFQlndgChrzhZzpPPk0xV_U2L6pLIDzPP9Id9VG_MrXSl4U7N9ebUGFE-lhBu5bUlBl0BXMuk1piSg565CqTxz"
-    // let token = "dQZpLQzW_h4:APA91bEihjOvHxyO-33diZs8EUYoY3XWFZ6I7H3L-In29liRlHSJdyQLsbZr9XuBMfmCwnVUiI90VlXxzl89p58F2wRPhanZlK743GK7W6xyG-2g0Q-dSMU5mSghsCqiBbI0Qrqe8hbo"
-    // await admin.messaging().sendToDevice(token, 
-    //     {
-    //         // data: {
-    //         //     messageType: "BEE_STATUS",
-    //         //     beeId: "5df963b6be8a8d53cc812a8e",
-    //         //     status: BeeStatus.DESTROYED
-    //         // },
-    //         notification: {
-    //             title: "Compra de ações",
-    //             body: "500 ações em Azul Linhas Aéreas (AZUL4) no valor total de R$ 25.514,22.",
-    //             // color: "#011627",
-    //             icon: "icon_notification",
-    //             clickAction: ""
-    //         },
-    //         // notification: {
-    //         //     title: "Venda de ações",
-    //         //     body: "500 ações em Azul Linhas Aéreas (AZUL4) no valor total de R$ 25.514,22. Lucro de R$ 52,84. ",
-    //         //     // color: "#011627",
-    //         //     icon: "icon_notification",
-    //         //     clickAction: ""
-    //         // }
-    //         // notification: {
-    //         //     title: "Compra realizada!",
-    //         //     body: "500 ações da AZUL4 à R$ 35,02.",
-    //         //     color: "#ff9f1c",
-    //         //     icon: "icon_notification",
-    //         //     clickAction: ""
-    //         // }
-    //         // notification: {
-    //         //     title: "Abelhinha iniciada",
-    //         //     body: "Negocia ações da AZUL4.",
-    //         //     color: "#ff0000",
-    //         //     icon: "ic_launcher"
-    //         // }
-    //         // notification: {
-    //         //     title: "Abelhinha pausada",
-    //         //     body: "Negocia ações da AZUL4.",
-    //         //     color: "#ff0000",
-    //         //     icon: "ic_launcher"
-    //         // }
-    //         // notification: {
-    //         //     title: "Abelhinha destruída",
-    //         //     body: "Negociava ações da AZUL4.",
-    //         //     color: "#ff0000",
-    //         //     icon: "ic_launcher"
-    //         // }
-    //     }, 
-    //     { priority: 'high', timeToLive: 60 * 60 * 24 }
-    // ).catch(e => Logger.error(e))
+    let token = "cV3QFdjTu70:APA91bG-gQ-xaKT8xbKDjDNMkS7vheAQmT_wvK7rSCls0lY3vr_gq0STPVQlOQ9IPc4LqMHcBzZ9HGfg2RD-TxEAFGyzUf3ZFtaTZDo8SFhvJdEAaWqHVFy8qLiZUD41gA5bT9sYLHhl"
+    await admin.messaging().sendToDevice(token, {
+            // data: {
+            //     messageType: "BEE_STATUS",
+            //     beeId: "5df963b6be8a8d53cc812a8e",
+            //     status: StockTrackerStatus.DESTROYED
+            // },
+            notification: {
+                title: "Compra de ações",
+                body: "500 ações em Azul Linhas Aéreas (AZUL4) no valor total de R$ 25.514,22.",
+                color: "#1099f5",
+                icon: "icon_notification",
+                clickAction: ""
+            },
+    
+        }, 
+        // { priority: 'high', timeToLive: 60 * 60 * 24 }
+    ).catch(e => Logger.error(e))
 
-    await admin.messaging().send({
-        token: "dQZpLQzW_h4:APA91bEihjOvHxyO-33diZs8EUYoY3XWFZ6I7H3L-In29liRlHSJdyQLsbZr9XuBMfmCwnVUiI90VlXxzl89p58F2wRPhanZlK743GK7W6xyG-2g0Q-dSMU5mSghsCqiBbI0Qrqe8hbo",
-        data: {
-            messageType: MessageTypes.STOCK_TRACKER_STATUS,
-            stockTrackerId: "acb123",
-            stockTrackerStatus: StockTrackerStatus.DESTROYED
-        } as NotificationMessage,
-        notification: {
-            title: "Minha notificacao",
-            body: "Ai sim hiem campeão!!",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Godot_icon.svg"
-        }
-    }).catch(e => Logger.error(e))
+    // await admin.messaging().send({
+    //     token: "e9nWJQMHaKg:APA91bEwygCaYVz5V3SjbPZZo0vBfaeUpMwd5TkrVQOmaOUejR0U48sNwK0eQNYlJm1LBfI1VM6KASFTolb8AeuRczGZDJkwG-Da9LgIan8bllGuZPziy1cer0MqvX4zKyP7uhueMHy3",
+    //     // data: {
+    //     //     messageType: MessageTypes.STOCK_TRACKER_STATUS,
+    //     //     stockTrackerId: "acb123",
+    //     //     stockTrackerStatus: StockTrackerStatus.DESTROYED
+    //     // } as NotificationMessage,
+    //     notification: {
+    //         // icon: "icon_notification",
+    //         title: "Minha notificacao",
+    //         body: "Ai sim hiem campeão!!",
+    //         imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Godot_icon.svg"
+    //     }
+    // }).catch(e => Logger.error(e))
 
     Logger.info("Enviou!")
 

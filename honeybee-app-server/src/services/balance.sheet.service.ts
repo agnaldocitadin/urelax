@@ -428,7 +428,7 @@ export const processBalanceByExecution = async ({ orderCode, quantity, price, st
 export const regenerateBalanceSheetAndHistory = async (userAccountId: string) => {
     
     // reseta balanco history
-    await BalanceSheetHistoryModel.deleteMany({ userAccount: userAccountId })
+    await BalanceSheetHistoryModel.deleteMany({ userAccount: <any>userAccountId })
     
     const now = set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }) 
     const balances = await findBalanceSheetOnCache(userAccountId)

@@ -40,8 +40,8 @@ class StockWatcher {
      */
     schedule(): void {
         if (process.env.STOCKWATCHER_ACTIVE === "true") {
-            Logger.info("> StockWatcher starts {%s}", cronstrue.toString(process.env.STOCKWATCHER_START))
-            Logger.info("< StockWatcher stops {%s}", cronstrue.toString(process.env.STOCKWATCHER_STOP))
+            Logger.info("[> StockWatcher] is going to START at {%s}", cronstrue.toString(process.env.STOCKWATCHER_START))
+            Logger.info("[< StockWatcher] is going to STOP at {%s}", cronstrue.toString(process.env.STOCKWATCHER_STOP))
             schedule.scheduleJob(process.env.STOCKWATCHER_START, () => this.start())
             schedule.scheduleJob(process.env.STOCKWATCHER_STOP, () => this.stop())
         }

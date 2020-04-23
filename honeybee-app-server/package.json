@@ -37,11 +37,12 @@
     },
     "scripts": {
         "webpack": "webpack -w --mode development",
-        "node": "SET \"NODE_ENV=development\" & nodemon --inspect ./dist/honeycomb.server.js",
+        "nodewatch": "SET \"NODE_ENV=development\" & nodemon --inspect ./dist/honeycomb.server.js",
+        "standalone": "SET \"NODE_ENV=development\" & node ./dist/honeycomb.server.js",
         "startdb": "mongod --quiet -dbpath D:\\development\\MongoDB\\Server\\4.0\\data",
         "backupdb": "mongodump --host=localhost:27017 --db=honeybee --verbose --out ./dist/",
         "restoredb": "mongorestore --host=localhost:27017 --db=honeybee --verbose ./dist/investing-bot/",
-        "start": "concurrently --kill-others yarn:webpack yarn:node",
+        "start": "concurrently --kill-others yarn:webpack yarn:nodewatch",
         "build": "webpack --mode production",
         "test": "jest --detectOpenHandles",
         "test:debug": "node --inspect ./node_modules/jest/bin/jest.js --runInBand --detectOpenHandles"
