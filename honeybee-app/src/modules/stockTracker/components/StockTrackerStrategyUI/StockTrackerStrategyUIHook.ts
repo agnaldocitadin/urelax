@@ -8,7 +8,7 @@ import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.
 import { useWizardHook } from "../../../../hooks/Wizard.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
-import { showConfirm, showError, showSuccess } from "../../../message"
+import { showAPIError, showConfirm, showSuccess } from "../../../message"
 import { updateSelectedStockTracker } from "../../actions"
 import { fetchAvailableStrategies } from "../../api"
 import { getStockTrackerRoutes } from "../../reducer"
@@ -46,7 +46,7 @@ export const useStockTrackerStrategyUIHook = (navigation: NavigationStackProp) =
             dispatch(showSuccess(ts("stock_tracker_update_success"), ts("stock_tracker_update_success_msg")))
         },
         onRequestPersist: () => dispatch(updateSelectedStockTracker({ strategy: selectedValue })),
-        onRequestFail: (error) => dispatch(showError(JSON.stringify(error.message)))
+        onRequestFail: (error) => dispatch(showAPIError(error))
     })
 
     useEffectWhenReady(async () => {

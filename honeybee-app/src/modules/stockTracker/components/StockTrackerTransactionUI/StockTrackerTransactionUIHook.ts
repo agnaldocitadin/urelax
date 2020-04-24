@@ -8,7 +8,7 @@ import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.
 import { useWizardHook } from "../../../../hooks/Wizard.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
-import { showConfirm, showError, showSuccess } from "../../../message"
+import { showAPIError, showConfirm, showSuccess } from "../../../message"
 import { updateSelectedStockTracker } from "../../actions"
 import { getStockTrackerRoutes } from "../../reducer"
 
@@ -46,7 +46,7 @@ export const useStockTrackerTransactionUIHook = (navigation: NavigationStackProp
             dispatch(showSuccess(ts("stock_tracker_update_success"), ts("stock_tracker_update_success_msg")))
         },
         onRequestPersist: () => dispatch(updateSelectedStockTracker({ stockAmountLimit: selectedValue, autoAmountLimit: autoLimit })),
-        onRequestFail: (error) => dispatch(showError(JSON.stringify(error)))
+        onRequestFail: (error) => dispatch(showAPIError(error))
     }, [autoLimit, stockAmountLimit])
 
     useEffectWhenReady(() => handleValueChanges(stockAmountLimit))

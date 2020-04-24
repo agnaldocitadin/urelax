@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { ts } from "../../../../core/I18n"
 import { animatedCallback } from "../../../../hooks/Commons.hook"
 import { States } from "../../../../reducers/Reducer"
-import { showConfirm, showError, showSuccess } from "../../../message"
+import { showAPIError, showConfirm, showSuccess } from "../../../message"
 import { appendStockTrackers } from "../../actions"
 import { createStockTracker } from "../../api"
 import { getStockTrackerRoutes } from "../../reducer"
@@ -34,7 +34,7 @@ export const useStockTrackerReviewUIHook = (navigation: NavigationStackProp) => 
             navigation.navigate(flow[0])
         }
         catch(e) {
-            dispatch(showError(JSON.stringify(e)))
+            dispatch(showAPIError(e))
         }
     }, [stockTrackerToUpdate])
 

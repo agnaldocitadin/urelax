@@ -7,7 +7,7 @@ import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.
 import { useWizardHook } from "../../../../hooks/Wizard.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
-import { showConfirm, showError } from "../../../message"
+import { showAPIError, showConfirm } from "../../../message"
 import { updateSelectedStockTracker } from "../../actions"
 import { fetchAvailableSymbols } from "../../api"
 import { getStockTrackerRoutes } from "../../reducer"
@@ -38,7 +38,7 @@ export const useStockTrackerSymbolUIHook = (navigation: NavigationStackProp) => 
         isEditing,
         onRequestEdit: () => {},
         onRequestPersist: () => dispatch(updateSelectedStockTracker({ stock: selectedValue })),
-        onRequestFail: (error) => dispatch(showError(JSON.stringify(error.message)))
+        onRequestFail: (error) => dispatch(showAPIError(error))
     })
 
     useEffectWhenReady(async () => {

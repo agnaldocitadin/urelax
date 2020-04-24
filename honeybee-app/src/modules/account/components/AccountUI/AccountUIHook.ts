@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { ts } from '../../../../core/I18n'
 import { animatedPromise, useEffectWhenReady } from '../../../../hooks/Commons.hook'
 import { States } from "../../../../reducers/Reducer"
-import { showConfirm, showError, showSuccess } from "../../../message"
+import { showAPIError, showConfirm, showSuccess } from "../../../message"
 import { registerAuthenticatedUser } from "../../../signIn"
 import { updateDataApp } from "../../../storage"
 import { changeAccountData, resetAccountModule, selectAccountToUpdate } from "../../actions"
@@ -51,7 +51,7 @@ export const useAccountUIHook = () => {
                 dispatch(showSuccess(ts("account_update_success"), ts("account_update_success_msg")))
             }
             catch(e) {
-                dispatch(showError(JSON.stringify(e)))
+                dispatch(showAPIError(e))
             }
         }, false))
     })

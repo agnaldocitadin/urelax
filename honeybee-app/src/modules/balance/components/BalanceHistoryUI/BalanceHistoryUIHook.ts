@@ -6,7 +6,7 @@ import AppConfig from "../../../../core/AppConfig"
 import { animatedPromise, useEffectWhenReady } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
-import { showError } from "../../../message"
+import { showAPIError } from "../../../message"
 import { appendBalanceSheetHistories, clearBalanceSheetHistories, selectBalanceSheetHistory } from "../../actions"
 import { fetchBalanceSheetHistoriesByUserQuery } from "../../api"
 
@@ -43,7 +43,7 @@ export const useBalanceHistoryUIHook = (navigation: NavigationStackProp) => {
             return await fetchBalanceSheetHistoriesByUserQuery(id, new Date(), page, AppConfig.QTY_INITIAL_BALANCE_HISTORY, "day")
         }
         catch(error) {
-            dispatch(showError(JSON.stringify(error)))
+            dispatch(showAPIError(error))
             return Promise.reject()
         }
     }, [])

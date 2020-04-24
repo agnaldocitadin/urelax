@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux"
 import { ts } from "../../../../core/I18n"
 import { animatedPromise } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
-import { showError } from "../../../message"
+import { showAPIError, showError } from "../../../message"
 import { createUserAccount } from "../../api"
 
 export const useSignUpUIHook = (navigation: NavigationStackProp) => {
@@ -39,7 +39,7 @@ export const useSignUpUIHook = (navigation: NavigationStackProp) => {
             setAuthenticate(true)
         }
         catch(e) {
-            dispatch(showError(JSON.stringify(e.message)))
+            dispatch(showAPIError(e))
         }
     })
 

@@ -7,7 +7,7 @@ import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.
 import { useWizardHook } from "../../../../hooks/Wizard.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
-import { showConfirm, showError, showSuccess } from "../../../message"
+import { showAPIError, showConfirm, showSuccess } from "../../../message"
 import { updateSelectedBrokerAccount } from "../../actions"
 import { BROKER_FLOW_VIEW } from "../../constants"
 
@@ -41,7 +41,7 @@ export const useAccountDescriptionUIHook = (navigation: NavigationStackProp) => 
             dispatch(showSuccess(ts("broker_account_update_success"), ts("broker_account_update_name")))
         },
         onRequestPersist: () => dispatch(updateSelectedBrokerAccount({ accountName: selectedValue })),
-        onRequestFail: error => dispatch(showError(JSON.stringify(error)))
+        onRequestFail: error => dispatch(showAPIError(error))
     })
     
     useEffectWhenReady(() => handleValueChanges(accountName))

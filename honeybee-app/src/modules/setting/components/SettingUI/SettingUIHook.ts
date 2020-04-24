@@ -8,7 +8,7 @@ import { animatedCallback } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
 import { resetDashboardData } from "../../../dashboard"
-import { showConfirm, showError } from "../../../message"
+import { showAPIError, showConfirm, showError } from "../../../message"
 import { FORCE_LOG_IN, registerAuthenticatedUser, signout } from "../../../signIn"
 import { resetStorage, updateDataApp } from "../../../storage/storage"
 
@@ -86,8 +86,8 @@ export const useSettingUIHook = (navigation: NavigationStackProp) => {
                 dispatch(resetDashboardData())
                 navigation.navigate(Routes.FastAuthUI, {[FORCE_LOG_IN]: true})
             }
-            catch(e) {
-                dispatch(showError(JSON.stringify(e)))
+            catch(error) {
+                dispatch(showAPIError(error))
             }
         }))
     }, [user.simulation, user.simulationAccountId]) 

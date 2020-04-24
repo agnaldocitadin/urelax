@@ -96,10 +96,3 @@ export const createStockTracker = async (stockTracker: StockTracker): Promise<St
         autoAmountLimit
     `)
 }
-
-export const updateStockTracker = (id: string, stockTracker: StockTracker): Promise<boolean> => {
-    let clone = Object.assign({}, stockTracker)
-    clone.frequency = <any>clone.frequency?._id
-    clone.strategy = <any>clone.strategy?._id
-    return API.updateStockTracker(id, clone)
-}

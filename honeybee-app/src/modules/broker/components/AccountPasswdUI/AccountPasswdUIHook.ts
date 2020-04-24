@@ -7,7 +7,7 @@ import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.
 import { useWizardHook } from "../../../../hooks/Wizard.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
-import { showConfirm, showError, showSuccess } from "../../../message"
+import { showAPIError, showConfirm, showSuccess } from "../../../message"
 import { updateSelectedExtraData } from "../../actions"
 import { BROKER_FLOW_VIEW } from "../../constants"
 
@@ -35,7 +35,7 @@ export const useAccountPasswdUIHook = (navigation: NavigationStackProp) => {
             dispatch(showSuccess(ts("broker_account_update_success"), ts("broker_account_update_password")))
         },
         onRequestPersist: () => dispatch(updateSelectedExtraData({ passwd: selectedValue })),
-        onRequestFail: error => dispatch(showError(JSON.stringify(error.message)))
+        onRequestFail: error => dispatch(showAPIError(error))
     })
     
     useEffectWhenReady(() => handleValueChanges(extraData?.passwd))

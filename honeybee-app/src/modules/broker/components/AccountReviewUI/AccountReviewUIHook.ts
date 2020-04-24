@@ -6,7 +6,7 @@ import { ts } from "../../../../core/I18n"
 import { animatedCallback } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
-import { showConfirm, showError, showSuccess } from "../../../message"
+import { showAPIError, showConfirm, showSuccess } from "../../../message"
 import { appendBrokerAccounts } from "../../actions"
 import { createBrokerAccount } from "../../api"
 
@@ -23,7 +23,7 @@ export const useAccountReviewUIHook = (navigation: NavigationStackProp) => {
             navigation.navigate(Routes.AccountListUI)
         }
         catch(error) {
-            dispatch(showError(JSON.stringify(error)))
+            dispatch(showAPIError(error))
         }
     })
 
