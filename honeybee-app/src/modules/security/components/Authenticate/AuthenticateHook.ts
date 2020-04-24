@@ -1,4 +1,4 @@
-import { API, UserAccount } from 'honeybee-api'
+import { API } from 'honeybee-api'
 import { useCallback, useEffect } from "react"
 import { AuthenticateProps } from './Authenticate'
 
@@ -11,8 +11,8 @@ export const useAuthenticateHook = ({ email, password, simulation, authType, onS
 
     const authenticateByEmailPassword = useCallback(async () => {
         try {
-            let userAccount: UserAccount = await API.authenticate(email, password, simulation)
-            onSuccess && onSuccess(userAccount)
+            let { user, token } = await API.authenticate(email, password, simulation)
+            onSuccess && onSuccess(user)
         }
         catch(e) {
             onFail && onFail(e)

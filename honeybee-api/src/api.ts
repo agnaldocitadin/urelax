@@ -1,7 +1,8 @@
 import { utils } from 'js-commons'
+import { StockTrackerStatus } from './Enums'
 import { activateSimulationAccount, createBrokerAccount, createStockTracker, createUserAccount, updateBrokerAccount, updateStockTracker, updateUserAccount, updateUserPreferences } from './mutations'
 import { fetchActiveBrokers, fetchActiveStockTrackersQuery, fetchAvailableFrequencies, fetchAvailableStrategies, fetchAvailableSymbols, fetchBalanceSheet, fetchBalanceSheetByUserQuery, fetchBalanceSheetHistoriesByUserQuery, fetchBrokerAccountByUserQuery, fetchBrokerAccountQuery, fetchBrokerByCode, fetchStockTrackerActivitiesQuery, fetchUserAccountQuery, fetchUserActivitiesQuery } from './queries'
-import { UserAccount } from "./types"
+import { APIError, UserAccount } from "./types"
 
 interface APIConfiguration {
     serverURI: string
@@ -15,19 +16,23 @@ const configure = (conf: APIConfiguration) => {
     CONFIG["graphqlURI"] = conf.graphqlURI
 }
 
+export const OFFLINE: APIError = { code: "API_OFFLINE" }
+
 /**
  *
  *
  * @param {string} [email]
  * @param {string} [passwd]
  * @param {boolean} [simulation=false]
- * @returns {Promise<UserAccount>}
+ * @returns {Promise<{user: UserAccount, token: string}>}
  */
-const authenticate = async (email?: string, passwd?: string, simulation: boolean = false): Promise<UserAccount> => {
-    let url = `${CONFIG.serverURI}/authenticate?email=${email}&passwd=${passwd}&simulation=${simulation}`
-    let res: Response = await utils.timedPromise(fetch(url), "Server API was not found!")
-    if (res.ok) return res.json()
-    throw new Error("Forbidden 403")
+const authenticate = async (email?: string, passwd?: string, simulation: boolean = false): Promise<{user: UserAccount, token: string}> => {
+    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/authenticate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, passwd, simulation })
+    }), OFFLINE)
+    return handleResponse(res)
 }
 
 /**
@@ -36,12 +41,12 @@ const authenticate = async (email?: string, passwd?: string, simulation: boolean
  * @param {string} id
  * @returns
  */
-const playStockTracker = async (id: string) => {
+const playStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
     let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/playStockTracker`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
-    }), "Server offline")
+    }), OFFLINE)
     return handleResponse(res)
 }
 
@@ -51,12 +56,12 @@ const playStockTracker = async (id: string) => {
  * @param {string} id
  * @returns
  */
-const pauseStockTracker = async (id: string) => {
+const pauseStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
     let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/pauseStockTracker`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
-    }), "Server offline")
+    }), OFFLINE)
     return handleResponse(res)
 }
 
@@ -66,12 +71,12 @@ const pauseStockTracker = async (id: string) => {
  * @param {string} id
  * @returns
  */
-const destroyStockTracker = async (id: string) => {
+const destroyStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
     let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/destroyStockTracker`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
-    }), "Server offline")
+    }), OFFLINE)
     return handleResponse(res)
 }
 
@@ -113,6 +118,6 @@ export const API = {
 
 const handleResponse = async (res: Response) => {
     let json = await res.json()
-    if (res.status !== 200) throw new Error(json.error)
+    if (!res.ok) throw json
     return json
 }

@@ -2,6 +2,7 @@ import { addDays, endOfDay, endOfWeek, format, isSaturday, isSunday, lastDayOfMo
 import { ObjectId } from "mongodb"
 import mongoose from 'mongoose'
 import schedule from "node-schedule"
+import { Logger } from "../core/Logger"
 import { percentVariation } from "../core/Utils"
 import { BalanceSheetHistory, BalanceSheetHistoryModel } from "../models/balance.sheet.history.model"
 import { BalanceSheet, BalanceSheetModel, StockSheet } from "../models/balance.sheet.model"
@@ -302,12 +303,15 @@ export const createNewBalanceSheet = async (userAccount: ObjectId, brokerAccount
  *
  */
 const processDailyBalanceSheet = async () => {
+    Logger.info("[BalanceSheetService] Daily balance sheet process has stated...")
     const now = new Date()
     const userAccounts = await findAllowedAccounts()
+    Logger.info("[BalanceSheetService] Generating balances to %s accounts.", userAccounts.length)
     await Promise.all(userAccounts.map(async (userAccount) => {
         const histories = await generateDailyBalanceSheetHistory(userAccount, now)
         BalanceSheetHistoryModel.create(histories)
     }))
+    Logger.info("[BalanceSheetService] Daily balance sheet process finished successfully!")
 }
 
 /**

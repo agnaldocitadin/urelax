@@ -1,7 +1,7 @@
 import pino, { LogFn } from 'pino'
 import { ErrorCodes } from './error.codes.d'
 
-export type BaseError = {
+export type MessageError = {
     code: ErrorCodes
     message?: string
     args?: any[]
@@ -74,21 +74,18 @@ export const Logger = {
     fatal,
 
     throw: (code: ErrorCodes, message?: string, args?: any[]) => {
-        throw Error(JSON.stringify({ code, message, args }))
+        const error: MessageError = { code, message, args }
+        throw Error(JSON.stringify(error))
     },
 
-    encapsulate: (error: string, args?: any[]): BaseError => {
-        return { code: ErrorCodes.UNKNOWN, message: error, args }
-    },
-
-    print: (error: any, levelFn: Function) => {
+    print: (error: Error, levelFn: Function, prefix: string = "") => {
         try {
-            let def: BaseError = JSON.parse(error.message)
-            let msg = `Error code: ${def.code}${def.message ? ` (${def.message})` : ""}`
-            def.args && def.args.length > 0 ? levelFn(error, msg, def.args) : levelFn(error, msg)
+            let errorParsed: MessageError = JSON.parse(error.message)
+            let msg = `${prefix}ERRCODE: ${errorParsed.code}`
+            levelFn(error, msg)
         }
         catch(e) {
-            levelFn(error)
+            levelFn(error, prefix)
         }
     },
 

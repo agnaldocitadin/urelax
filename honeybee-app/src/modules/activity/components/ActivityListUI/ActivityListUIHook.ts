@@ -6,7 +6,7 @@ import AppConfig from "../../../../core/AppConfig"
 import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.hook"
 import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
-import { showError } from "../../../message"
+import { showAPIError } from "../../../message"
 import { appendActivities, resetActivityModule, selectActivity } from "../../actions"
 import { fetchUserActivitiesQuery } from "../../api"
 
@@ -43,7 +43,7 @@ export const useActivityListUIHook = (navigation: NavigationStackProp) => {
             return await fetchUserActivitiesQuery(id, page, AppConfig.QTY_INITIAL_ACTIVITIES)
         }
         catch(error) {
-            dispatch(showError(JSON.stringify(error)))
+            dispatch(showAPIError(error))
             return Promise.reject()
         }
     }, [])

@@ -8,7 +8,7 @@ import { Routes } from "../../../../navigations/Navigator"
 import { States } from "../../../../reducers/Reducer"
 import { selectActivity } from "../../../activity"
 import { setLastActivityOnDashboard } from "../../../dashboard"
-import { showError } from "../../../message"
+import { showAPIError } from "../../../message"
 import { appendStockTrackerActivities, clearStockTrackerPreview, initStockTrackerModule, selectStockTrackerToUpdate, updateMainStockTracker } from "../../actions"
 import { fetchStockTrackerActivitiesQuery, fetchStockTrackerBalance } from "../../api"
 
@@ -63,12 +63,12 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
             }
             
             let lastActivity = await fetchStockTrackerActivitiesQuery(stockTracker._id || "", 0, 1)
-            dispatch(updateMainStockTracker({ status: result.status }))
+            dispatch(updateMainStockTracker({ status: result?.status }))
             dispatch(appendStockTrackerActivities(lastActivity, "begin"))
             dispatch(setLastActivityOnDashboard(lastActivity[0]))
         }
         catch(error) {
-            dispatch(showError(JSON.stringify(error)))
+            dispatch(showAPIError(error))
         }
     }, [stockTracker])
 
@@ -78,7 +78,7 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
             dispatch(appendStockTrackerActivities(activities, "end", true))
         }
         catch(error) {
-            dispatch(showError(JSON.stringify(error)))
+            dispatch(showAPIError(error))
         }
     })
 
@@ -87,7 +87,7 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
             return await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", page, AppConfig.QTY_INITIAL_ACTIVITIES)
         }
         catch(error) {
-            dispatch(showError(JSON.stringify(error)))
+            dispatch(showAPIError(error))
             return Promise.reject()
         }
     })

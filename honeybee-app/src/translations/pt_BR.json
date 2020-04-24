@@ -75,7 +75,7 @@
     "broker_account_add_success_msg": "Sua nova conta foi cadastrada com sucesso",
 
     "create_stock_tracker": "Criar rastreador de ações",
-    "stock_trackers": "Rastreadores de ações",
+    "stock_trackers": "Rastreadores",
     "update_stock_tracker": "Atualizar rastreador de ação",
     "add_stock_tracker": "Adicionar rastreador de ação",
     "none_stock_trackers": "Oops!\nNenhum rastreador ativo.",

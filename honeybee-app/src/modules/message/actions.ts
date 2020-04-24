@@ -1,3 +1,4 @@
+import { APIError } from "honeybee-api"
 import { ts } from "../../core/I18n"
 import { Colors, Icons } from "../../core/Theme"
 import { ReduxAction } from "../../reducers/Reducer"
@@ -49,6 +50,10 @@ export const showConfirm = (title: string, message: string, buttonAction?: Funct
         closeAfterAction
     } as MessageData
 })
+
+export const showAPIError = (apiError: APIError) => {
+    return showError(apiError.message || `ERROR: ${apiError.code}`)
+}
 
 export const showError = (message: string, title: string = ts("oops"), buttonLabel: string = ts("ok"), buttonAction?: Function, closeAfterAction: boolean = true): ReduxAction => ({
     type: SHOW_ERROR_MESSAGE,

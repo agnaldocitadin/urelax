@@ -1,5 +1,5 @@
 import { utils } from 'js-commons'
-import { CONFIG } from "./api"
+import { CONFIG, OFFLINE } from "./api"
 
 const SEPARATOR = ","
 
@@ -37,26 +37,22 @@ export const query = (name: string, params?: object, fields?: string): string =>
  * @returns
  */
 export const gql = async (queryName: string, query: string) => {
-    try {
-        console.log("query:", query)
-        const response: Response = await utils.timedPromise(fetch(CONFIG.graphqlURI, {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json;charset=UTF-8", 
-                "Accept-Encoding": "gzip, deflate"
-            },
-            body: JSON.stringify({ query })
-        }), "Could not access the API.")
-    
-        const json = await response.json()
-        if (json.errors) {
-            throw json.errors.map((error: any) => error.message)
-        }
-        return json.data[queryName]
+    console.log("query:", query)
+    const response: Response = await utils.timedPromise(fetch(CONFIG.graphqlURI, {
+        method: "POST",
+        headers: { 
+            "Content-Type": "application/json;charset=UTF-8", 
+            "Accept-Encoding": "gzip, deflate"
+        },
+        body: JSON.stringify({ query })
+    }), OFFLINE)
+
+    const json = await response.json()
+    console.log("gql response:", json)
+    if (json.errors) {
+        throw json.errors[0]
     }
-    catch(error) {
-        console.error(error)
-    }
+    return json.data[queryName]
 }
 
 /**

@@ -9,6 +9,7 @@ import { UserAccount } from '../models/user.account.model'
 import { OrderExecution } from "../plugins/broker/broker.plugin"
 
 const NOTIFICATION_ICON = "icon_notification"
+const ICON_COLOR = "#1099f5"
 
 /**
  *
@@ -26,7 +27,8 @@ const notifyBuy = (deviceToken: string, order: Order) => {
                 symbol: stock.toPresentation(), 
                 amount: Utils.Currency.format(order.getTotalOrder(), "R$")
             }),
-            icon: NOTIFICATION_ICON
+            icon: NOTIFICATION_ICON,
+            color: ICON_COLOR
         }
     })
 }
@@ -48,7 +50,8 @@ const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
                 symbol: stock.toPresentation(),
                 amount: Utils.Currency.format(order.getTotalOrder(), "R$")
             }),
-            icon: NOTIFICATION_ICON
+            icon: NOTIFICATION_ICON,
+            color: ICON_COLOR
         }
     })
 }
@@ -79,7 +82,8 @@ export const notifyStockTrackerPause = (stockTracker: StockTracker) => {
         notification: {
             title: ts("stock_tracker_paused"),
             body: ts("stock_tracker_paused_msg", { symbol: stock.toPresentation() }),
-            icon: NOTIFICATION_ICON
+            icon: NOTIFICATION_ICON,
+            color: ICON_COLOR
         },
         data: {
             messageType: MessageTypes.STOCK_TRACKER_STATUS,
@@ -101,7 +105,8 @@ export const notifyStockTrackerDestroy = (stockTracker: StockTracker) => {
         notification: {
             title: ts("stock_tracker_destroyed"),
             body: ts("stock_tracker_destroyed_msg", { symbol: stock.toPresentation() }),
-            icon: NOTIFICATION_ICON
+            icon: NOTIFICATION_ICON,
+            color: ICON_COLOR
         },
         data: {
             messageType: MessageTypes.STOCK_TRACKER_STATUS,

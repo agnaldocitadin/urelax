@@ -6,6 +6,11 @@ export type NotificationMessage = {
     stockTrackerStatus?: StockTrackerStatus
 }
 
+export type APIError = {
+    code: string
+    message?: string
+}
+
 export type GroupBy = "day" | "week" | "month" | "year"
 
 export interface Preferences {

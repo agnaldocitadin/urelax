@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser'
 import compression from 'compression'
 import dotenv from 'dotenv-flow'
-import express from 'express'
+import express, { Express } from 'express'
 import fs from 'fs'
 import { ServerOptions } from 'https'
 import { version } from '../../package.json'
@@ -24,24 +24,20 @@ import { stockWatcher } from './stock.watcher'
  */
 class HoneycombServer {
 
-    app: express.Express
+    app: Express
     httpsOptions: ServerOptions
 
     constructor() {
         dotenv.config()
         this.app = express()
+        
         this.httpsOptions = {
             key: fs.readFileSync("./src/ssl/server.key"),
             cert: fs.readFileSync("./src/ssl/server.cert")
         }
-        process.on("unhandledRejection", (error: any) => {
-            Logger.error("[ unhandledRejection ]")
-            Logger.print(error, Logger.warn)
-        })
-        process.on("uncaughtException", (error: any) => {
-            Logger.error("[ uncaughtException ]")
-            Logger.print(error, Logger.error)
-        })
+
+        process.on("unhandledRejection", (error: Error) => Logger.print(error, Logger.error, "[unhandledRejection]"))
+        process.on("uncaughtException", (error: Error) => Logger.print(error, Logger.error, "[uncaughtException]"))
     }
     
     /**

@@ -11,6 +11,7 @@ import { CashDisplay } from '../../../../ui/components/CashDisplay'
 import { FlatLayout } from '../../../../ui/components/Layout/FlatLayout'
 import { MenuButton } from '../../../../ui/components/MenuButton'
 import { TextIconDisplay } from '../../../../ui/components/TextIconDisplay'
+import { Touchable } from '../../../../ui/components/Touchable'
 import { ActivityItem } from '../../../activity/components/ActivityItem'
 import { BalanceHistoryItem } from '../../../balance/components/BalanceHistoryItem'
 import { DashboardPanel } from '../DashboardPanel'
@@ -30,6 +31,7 @@ interface BalanceHistoriesProps {
     balanceSheetHistories: BalanceSheetHistorySummary[]
     noBalances: boolean
     onBottomPress(): void
+    onBalancePress(): void
 }
 
 /**
@@ -50,7 +52,8 @@ export const DashboardUI: FC<HomeDashboardProps> = ({ navigation }) => {
         handleBalances,
         handleStockTracker,
         handleSetting,
-        handleNicknameTouch
+        handleNicknameTouch,
+        handleBalancePress
     } = useDashboardUIHook(navigation)
 
     const balanceInfo = (
@@ -66,7 +69,8 @@ export const DashboardUI: FC<HomeDashboardProps> = ({ navigation }) => {
             key={1}
             balanceSheetHistories={balanceHistorySummary} 
             noBalances={noBalances} 
-            onBottomPress={handleBalances}/>
+            onBottomPress={handleBalances}
+            onBalancePress={handleBalancePress}/>
     )
 
     return (
@@ -128,12 +132,12 @@ const BalanceInfo: FC<BalanceInfoProps> = ({ activity, balanceSummary, onBottomP
  *
  * @param {*} { balanceSheetHistories, onBottomPress, noBalances }
  */
-const BalanceHistories: FC<BalanceHistoriesProps> = ({ balanceSheetHistories, onBottomPress, noBalances }) => (
+const BalanceHistories: FC<BalanceHistoriesProps> = ({ balanceSheetHistories, onBottomPress, onBalancePress, noBalances }) => (
     <DashboardPanel 
         onBottomPress={onBottomPress} 
         bottom={!noBalances ? <SBalancesLink>{ts("balance_history")}</SBalancesLink> : undefined}>
         {!noBalances && <SLastBalances>{ts("last_balances")}</SLastBalances>}
-        {renderBalanceHistories(balanceSheetHistories)}
+        {renderBalanceHistories(balanceSheetHistories, onBalancePress)}
         { noBalances && <SNoBalances
             icon={Icons.CLOCK}
             title={ts("waiting_balance")}
@@ -148,15 +152,17 @@ const BalanceHistories: FC<BalanceHistoriesProps> = ({ balanceSheetHistories, on
  * @param {BalanceSheetHistorySummary[]} balances
  * @returns
  */
-const renderBalanceHistories = (balances: BalanceSheetHistorySummary[]) => {
+const renderBalanceHistories = (balances: BalanceSheetHistorySummary[], onBalancePress: (balance: BalanceSheetHistorySummary) => void) => {
     const maxAmount = balances.reduce((max, value) => value.amount && value.amount > max ? value.amount : max, 0)
-    return balances.map((balance, k) => 
-        <SBalanceHistoryItem 
-            key={k} 
-            label={balance.label}
-            value={balance.amount}
-            valueReference={maxAmount}
-            variation={balance.amountVariation}/>
+    return balances.map((balance, k) =>
+        <Touchable onPress={() => onBalancePress(balance)} noChevron>
+            <SBalanceHistoryItem 
+                key={k} 
+                label={balance.label}
+                value={balance.amount}
+                valueReference={maxAmount}
+                variation={balance.amountVariation}/>
+        </Touchable>
     )
 }
 
@@ -208,7 +214,8 @@ const SBalancesLink = styled(Text)`
 `
 
 const SBalanceHistoryItem = styled(BalanceHistoryItem)`
-    margin: 0 15px;
+    margin: 10px 15px;
+    flex: 1;
 `
 
 const SLastBalances = styled(Text)`
