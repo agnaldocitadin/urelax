@@ -30,9 +30,6 @@ export class BrokerAccount extends Typegoose {
     @prop({ required: true })
     accountName!: string
 
-    @prop({ default: 0.0 })
-    initialAmount: number
-
     @prop({ required: true, enum: Brokers })
     brokerCode!: string
 

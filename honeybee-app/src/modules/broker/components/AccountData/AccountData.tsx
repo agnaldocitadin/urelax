@@ -24,7 +24,7 @@ export const AccountData = withNavigation(({ navigation, brokerAccount, isReview
 
     const flow = { [BROKER_FLOW_VIEW]: getRoutes(brokerAccount.brokerCode) }
     const { cpf, signature, birthdate } = brokerAccount.extraData || {} as BrokerAccountExtraData
-    const initialAmount = brokerAccount.initialAmount || 0
+    const initialAmount = 0
 
     const handleDescription = animatedCallback(() => navigation.navigate(Routes.AccountDescriptionUI, flow))
     const handleCpf = animatedCallback(() => navigation.navigate(Routes.AccountCpfUI, flow))

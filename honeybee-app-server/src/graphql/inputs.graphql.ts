@@ -30,7 +30,6 @@ export const inputs = `
     input BrokerAccountInput {
         userAccount: String
         accountName: String
-        initialAmount: Float
         brokerCode: String
         extraData: BrokerAccountExtraDataInput
     }

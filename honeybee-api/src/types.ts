@@ -131,7 +131,6 @@ export interface BrokerAccount {
     _id?: string
     userAccount?: UserAccount
     accountName?: string
-    initialAmount?: number
     brokerCode?: Brokers
     extraData?: BrokerAccountExtraData
     createdAt?: Date

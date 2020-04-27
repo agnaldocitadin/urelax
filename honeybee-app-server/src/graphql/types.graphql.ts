@@ -64,7 +64,6 @@ export const types = `
         _id: String
         userAccount: UserAccount
         accountName: String
-        initialAmount: Float
         brokerCode: String
         extraData: BrokerAccountExtraData
         createdAt: Datetime

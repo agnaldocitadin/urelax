@@ -4,7 +4,6 @@ export const fetchBrokerAccountByUserQuery = async (userAccountId: string): Prom
     return API.fetchBrokerAccountByUserQuery(userAccountId, `
         _id
         accountName
-        initialAmount
         brokerCode
         extraData {
             token
@@ -35,7 +34,6 @@ export const createBrokerAccount = async (account: BrokerAccount): Promise<Broke
     return API.createBrokerAccount(account, `
         _id
         accountName
-        initialAmount
         brokerCode
         extraData {
             token

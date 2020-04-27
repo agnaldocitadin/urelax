@@ -76,11 +76,11 @@ export const findBalanceSheet = (userAccountId: ObjectId | string, brokerAccount
 export const findAllBalanceSheetByUser = async (userAccountId: string): Promise<BalanceSheeSummary> => {
     
     const balances = await BalanceSheetModel.find({ userAccount: userAccountId })
-    const summary = balances.reduce((summary, item) => {
-        summary.amount += item.getTotalAmount()
-        summary.credits += item.currentAmount
-        summary.stocks += item.getTotalStock()
-        return summary
+    const summary = balances.reduce((balance, item: BalanceSheet) => {
+        balance.amount += item.getTotalAmount()
+        balance.credits += item.currentAmount
+        balance.stocks += item.getTotalStock()
+        return balance
     }, {
         amount: 0,
         amountVariation: 0,

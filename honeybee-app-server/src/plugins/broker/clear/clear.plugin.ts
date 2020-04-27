@@ -18,7 +18,7 @@ const PIT_NOVO_SWINGTRADE = "pit-novo-swingtrade"
 
 /**
  * Real order id: 349f2c50-e407-4868-b6ce-81e5cb22374d (This order exists at Clear)
- * TODO Maybe it's a good idea to load all unfinished orders from every robot
+ * TODO Maybe it's a good idea to load all unfinished orders of every robot
  * 
  *
  * @export
