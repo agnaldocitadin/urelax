@@ -1,4 +1,5 @@
 import { addDays, endOfDay, endOfWeek, format, isSaturday, isSunday, lastDayOfMonth, lastDayOfWeek, lastDayOfYear, set, startOfDay, startOfWeek, subDays, subMonths, subWeeks, subYears } from "date-fns"
+import { BalanceSheetHistorySummary, BalanceSheetSummary, GroupBy } from "honeybee-api"
 import { ObjectId } from "mongodb"
 import mongoose from 'mongoose'
 import schedule from "node-schedule"
@@ -14,27 +15,6 @@ import { OrderExecution } from "../plugins/broker/broker.plugin"
 import { cache } from "./cache.service"
 import { getLastClosingPrice } from "./stock.history.service"
 import { findAllowedAccounts } from "./user.account.service"
-
-type BalanceSheeSummary = {
-    amount?: number
-    amountVariation?: number
-    credits?: number
-    creditVariation?: number
-    stocks?: number
-    stockVariation?: number
-}
-
-type BalanceSheetHistorySummary = {
-    label?: string
-    amount?: number
-    amountVariation?: number
-    credits?: number
-    creditVariation?: number
-    stocks?: number
-    stockVariation?: number
-}
-
-type GroupBy = "day" | "week" | "month" | "year"
 
 /**
  * 
@@ -71,33 +51,44 @@ export const findBalanceSheet = (userAccountId: ObjectId | string, brokerAccount
  *
  *
  * @param {string} userAccountId
- * @returns {Promise<BalanceSheeSummary>}
+ * @returns {Promise<BalanceSheetSummary>}
  */
-export const findAllBalanceSheetByUser = async (userAccountId: string): Promise<BalanceSheeSummary> => {
+export const findAllBalanceSheetByUser = async (userAccountId: string): Promise<BalanceSheetSummary> => {
     
-    const balances = await BalanceSheetModel.find({ userAccount: userAccountId })
-    const summary = balances.reduce((balance, item: BalanceSheet) => {
-        balance.amount += item.getTotalAmount()
-        balance.credits += item.currentAmount
-        balance.stocks += item.getTotalStock()
-        return balance
-    }, {
+    let initialSummary: BalanceSheetSummary =  {
         amount: 0,
         amountVariation: 0,
         credits: 0,
         creditVariation: 0,
         stocks: 0,
         stockVariation: 0
-    })
-
-    const lastHistory = await findLastBalanceSheetHistoryByUser(userAccountId, new Date())
-    const lastHistorySummary = sumBalanceSheetHistories([lastHistory])
-    if (lastHistory){
-        summary.amountVariation = percentVariation(lastHistorySummary.amount, summary.amount)
-        summary.creditVariation = percentVariation(lastHistorySummary.credits, summary.credits)
-        summary.stockVariation = percentVariation(lastHistorySummary.stocks, summary.stocks)
     }
 
+    // Find all balance sheets by user account
+    const balances = await BalanceSheetModel.find({ userAccount: <any>userAccountId })
+    const summary = balances.reduce((balance: BalanceSheetSummary, item: BalanceSheet) => {
+        balance.amount += item.getTotalAmount()
+        balance.credits += item.currentAmount
+        balance.stocks += item.getTotalStock()
+        return balance
+    }, initialSummary)
+
+    // Find the last one balance sheet history by user to calculate the variations
+    const lastHistory = await findLastBalanceSheetHistoryByUser(userAccountId, new Date())
+    let lastHistorySummary = sumBalanceSheetHistories([lastHistory])
+
+    // If no balance sheet has been found, it means that is the first day of the user operations
+    if (!lastHistory) {
+        let initialAmount = balances.reduce((total, balance) => total += balance.initialAmount, 0)
+        lastHistorySummary = {
+            amount: initialAmount,
+            credits: initialAmount
+        }
+    }
+    
+    summary.amountVariation = percentVariation(lastHistorySummary.amount, summary.amount)
+    summary.creditVariation = percentVariation(lastHistorySummary.credits, summary.credits)
+    summary.stockVariation = percentVariation(lastHistorySummary.stocks, summary.stocks)
     return summary
 }
 
@@ -235,7 +226,8 @@ const createBalanceSheetHistorySummaries = (groups: any, groupBy: GroupBy): Bala
         let roots = groups[key]
         let historySummary = sumBalanceSheetHistories(roots.map((r: any) => r.root))
         let summary: BalanceSheetHistorySummary = { 
-            label: createLabel(groupBy, roots[0].root.date), 
+            label: createLabel(groupBy, roots[0].root.date),
+            profit: lastAmount !== 0 ? historySummary.amount - lastAmount : 0,
             amount: historySummary.amount,
             amountVariation: percentVariation(lastAmount, historySummary.amount),
             credits: historySummary.credits,
@@ -260,7 +252,7 @@ const createBalanceSheetHistorySummaries = (groups: any, groupBy: GroupBy): Bala
 const sumBalanceSheetHistories = (balances: BalanceSheetHistory[]): BalanceSheetHistorySummary => {
     return balances.reduce((summary, balance) => {
         let credits = balance && balance.currentAmount || 0
-        let stocks = balance && balance.stocks.reduce((sum, stock) => sum += (stock.qty * stock.averagePrice), 0) || 0
+        let stocks = balance && balance.stocks.reduce((sum, stock) => sum += (stock.qty * stock.lastAvailablePrice), 0) || 0
         summary.amount += credits + stocks
         summary.credits += credits
         summary.stocks += stocks
@@ -276,11 +268,11 @@ const sumBalanceSheetHistories = (balances: BalanceSheetHistory[]): BalanceSheet
  *
  *
  * @param {string} userAccountId
- * @param {Date} dateReference
+ * @param {Date} referenceDate
  * @returns
  */
-export const findLastBalanceSheetHistoryByUser = (userAccountId: string, dateReference: Date) => {
-    return BalanceSheetHistoryModel.findOne({ userAccount: userAccountId, date: { "$lt": dateReference} })
+export const findLastBalanceSheetHistoryByUser = (userAccountId: string, referenceDate: Date) => {
+    return BalanceSheetHistoryModel.findOne({ userAccount: <any>userAccountId, date: { "$lt": referenceDate} })
         .sort({ date: "desc" })
         .limit(1)
 }
@@ -306,13 +298,36 @@ const processDailyBalanceSheet = async () => {
     Logger.info("[BalanceSheetService] Daily balance sheet process has stated...")
     const now = new Date()
     const userAccounts = await findAllowedAccounts()
+
     Logger.info("[BalanceSheetService] Generating balances to %s accounts.", userAccounts.length)
     await Promise.all(userAccounts.map(async (userAccount) => {
-        const histories = await generateDailyBalanceSheetHistory(userAccount, now)
+        const balances = await findBalanceSheetOnCache(userAccount._id)
+        await updateStockPriceFrom(balances, now)
+        const histories = await generateDailyBalanceSnapshot(balances, now)
         BalanceSheetHistoryModel.create(histories)
     }))
+
     Logger.info("[BalanceSheetService] Daily balance sheet process finished successfully!")
 }
+
+/**
+ *
+ *
+ * @param {BalanceSheet[]} balances
+ * @param {Date} referenceDate
+ */
+const updateStockPriceFrom = async (balances: BalanceSheet[], referenceDate: Date) => {
+    for (let balance of balances) {
+        for (let stock of balance.stocks) {
+            if (stock.qty > 0) {
+                const price = await getLastClosingPrice(stock.symbol, referenceDate)
+                stock.lastAvailablePrice = price
+            }
+        }
+        cache.save(balance, BalanceSheetModel)
+    }
+}
+
 
 /**
  * 
@@ -321,9 +336,8 @@ const processDailyBalanceSheet = async () => {
  * @param {Date} date
  * @returns
  */
-const generateDailyBalanceSheetHistory = async (userAccount: UserAccount, date: Date) => {
-    const balances = await findBalanceSheetOnCache(userAccount._id)
-    const histories = await Promise.all(balances.map(async (balance) => generateBalanceSheetHistory(balance, date)))
+const generateDailyBalanceSnapshot = async (balances: BalanceSheet[], date: Date): Promise<BalanceSheetHistory[]> => {
+    const histories = await Promise.all(balances.map(async (balance) => await generateBalanceSnapshot(balance, date)))
     return histories.filter(history => history !== undefined)
 }
 
@@ -334,7 +348,7 @@ const generateDailyBalanceSheetHistory = async (userAccount: UserAccount, date: 
  * @param {Date} date
  * @returns {Promise<BalanceSheetHistory>}
  */
-const generateBalanceSheetHistory = async (balance: BalanceSheet, date: Date): Promise<BalanceSheetHistory> => {
+const generateBalanceSnapshot = async (balance: BalanceSheet, date: Date): Promise<BalanceSheetHistory> => {
     const _date = set(date, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0})
     const history = await BalanceSheetHistoryModel.findOne({ userAccount: balance.userAccount, brokerAccount: balance.brokerAccount, date: _date })
     if (history) {
@@ -350,8 +364,10 @@ const generateBalanceSheetHistory = async (balance: BalanceSheet, date: Date): P
 
     const stocks: StockSheet[] = []
     for (let stockEntry of balance.stocks) {
-        const lastPrice = stockEntry.qty > 0 ? await getLastClosingPrice(stockEntry.symbol, date) : 0
-        stocks.push({ symbol: stockEntry.symbol, qty: stockEntry.qty, averagePrice: lastPrice, progress: 0 })
+        stocks.push({
+            ...stockEntry,
+            progress: 0
+        })
     }
     
     historySheet["stocks"] = stocks
@@ -382,6 +398,7 @@ const addBalanceOrderExecution = (balance: BalanceSheet, symbol: string, side: O
     
             if (side === OrderSides.BUY) {
                 stockEntry.averagePrice = stockEntry.qty > 0 ? (stockEntry.averagePrice + price) / 2 : price
+                stockEntry.lastAvailablePrice = stockEntry.qty === 0 ? stockEntry.averagePrice : stockEntry.lastAvailablePrice
                 stockEntry.qty += qty
                 stockEntry.progress = _progress
                 balance.currentAmount -= qty * price
@@ -390,6 +407,7 @@ const addBalanceOrderExecution = (balance: BalanceSheet, symbol: string, side: O
             if (side === OrderSides.SELL) {
                 stockEntry.qty -= qty
                 stockEntry.averagePrice = stockEntry.qty === 0 ? 0 : stockEntry.qty
+                stockEntry.lastAvailablePrice = stockEntry.qty === 0 ? 0 : stockEntry.lastAvailablePrice
                 stockEntry.progress = _progress
                 balance.currentAmount += qty * price
             }
@@ -398,7 +416,13 @@ const addBalanceOrderExecution = (balance: BalanceSheet, symbol: string, side: O
         }
     
         balance.currentAmount -= qty * price
-        balance.stocks.push({ symbol, qty, averagePrice: price, progress: _progress })
+        balance.stocks.push({
+            symbol, 
+            qty, 
+            averagePrice: price, 
+            lastAvailablePrice: price, 
+            progress: _progress
+        })
     }
 
     return balance
@@ -442,20 +466,21 @@ export const regenerateBalanceSheetAndHistory = async (userAccountId: string) =>
         balance.stocks = []
         cache.save(balance, BalanceSheetModel)
 
-        let currentDate = balance.createdAt
+        let currentDate =  set(balance.createdAt, { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 })
         while(currentDate <= now) {
-            
+
             let isWeekend = isSaturday(currentDate) || isSunday(currentDate)
             if (!isWeekend) {
                 
-                // Logger.debug("Generating balance to", balanceCreatedAt, isWeekend)
                 // busca os ordens para processamento
                 const orders = await OrderModel.find({ userAccount: balance.userAccount, createdAt: { "$gte": currentDate, "$lt": addDays(currentDate, 1) }})
                     .populate("stock")
                     .sort({ "createdAt": "asc" })
 
                 if (orders.length === 0) {
-                    let history = await generateBalanceSheetHistory(balance, currentDate)
+                    // atualiza ultimo preco do dia
+                    await updateStockPriceFrom([balance], currentDate)
+                    let history = await generateBalanceSnapshot(balance, currentDate)
                     if (history) {
                         await BalanceSheetHistoryModel.create(history)
                     }
@@ -487,7 +512,9 @@ export const regenerateBalanceSheetAndHistory = async (userAccountId: string) =>
     
                         // salva alterações balance
                         let dd = new Date(key)
-                        let history = await generateBalanceSheetHistory(balance, dd)
+                        // Logger.info("=====>", dd)
+                        await updateStockPriceFrom([balance], dd)
+                        let history = await generateBalanceSnapshot(balance, dd)
                         if (history) {
                             await BalanceSheetHistoryModel.create(history)
                         }

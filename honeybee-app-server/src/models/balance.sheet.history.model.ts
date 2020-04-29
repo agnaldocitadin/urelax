@@ -37,7 +37,7 @@ export class BalanceSheetHistory extends Typegoose {
 
     @instanceMethod
     public getTotalStock() {
-        return this.stocks.reduce((sum, stock) => sum += (stock.qty * stock.averagePrice), 0) || 0
+        return this.stocks.reduce((sum, stock) => sum += (stock.qty * stock.lastAvailablePrice), 0) || 0
     }
 
 }

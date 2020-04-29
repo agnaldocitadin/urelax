@@ -34,7 +34,7 @@ export const useDashboardUIHook = (navigation: NavigationStackProp) => {
     useEffectWhenReady(async () => {
         try {
             let balance = await fetchCurrentBalanceSheetByUser(_id)
-            let history = await fetchLastBalancesSheets(_id, 13)
+            let history = await fetchLastBalancesSheets(_id, 3)
             let activity = await fetchLastUserActivity(_id)
             dispatch(initDashboardData(balance, history, activity))
         }

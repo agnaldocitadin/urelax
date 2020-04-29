@@ -20,15 +20,15 @@ interface BalanceHistoryDetailUIProps {
 
 export const BalanceHistoryDetailUI: FC<BalanceHistoryDetailUIProps> = ({ navigation }) => {
     const balance = useSelector((state: States) => state.BALANCE.selectedBalanceHistory)
-    const money = (balance.amount || 0) * ((balance.amountVariation || 0) / 100)
+    const profit = balance.profit || 0
     let result = ts("no_variation")
-    if (money > 0) result = ts("gain")
-    if (money < 0) result = ts("loss")
+    if (profit > 0) result = ts("gain")
+    if (profit < 0) result = ts("loss")
 
     return (
         <FlatLayout bgColor={Colors.WHITE}>
             <BackHeader title={ts("balance_from", { period: balance.label })}/>
-            <BalanceInfo name={result} nameFontSize={17} valueFontSize={25} value={utils.formatCurrency(money, { prefix: AppConfig.CURRENCY_PREFIX })}/>
+            <BalanceInfo name={result} nameFontSize={17} valueFontSize={25} value={utils.formatCurrency(profit, { prefix: AppConfig.CURRENCY_PREFIX })}/>
             <Data>
                 <Variation>
                     <Info name={ts("total_amount")} value={utils.formatCurrency(balance.amount || 0, { prefix: AppConfig.CURRENCY_PREFIX })}/>

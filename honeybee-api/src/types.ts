@@ -96,6 +96,7 @@ export interface StockSheet {
     symbol: string
     qty: number
     averagePrice: number
+    lastAvailablePrice?: number
 }
 
 export interface BalanceSheet {
@@ -119,6 +120,7 @@ export interface BalanceSheetSummary {
 
 export interface BalanceSheetHistorySummary {
     label?: string
+    profit?: number
     amount?: number
     amountVariation?: number
     credits?: number

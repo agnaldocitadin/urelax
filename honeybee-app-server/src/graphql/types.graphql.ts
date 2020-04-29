@@ -100,6 +100,7 @@ export const types = `
         symbol: String
         qty: Int
         averagePrice: Float
+        lastAvailablePrice: Float
     }
 
     type BalanceSheet {
@@ -132,6 +133,7 @@ export const types = `
 
     type BalanceSheetHistorySummary {
         label: String!
+        profit: Float
         amount: Float
         amountVariation: Float
         credits: Float
