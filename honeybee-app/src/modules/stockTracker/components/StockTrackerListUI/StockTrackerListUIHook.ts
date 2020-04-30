@@ -16,7 +16,7 @@ export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
     const [ fail, setFail ] = useState(false)
     const { stockTrackers, isEditing, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
     const userAcount = useSelector((state: States) => state.SIGNIN.authenticatedUser)
-    const stockAmount = useSelector((state: States) => state.DASHBOARD.balanceSummary.stocks || 0)
+    const { stocks, stockVariation } = useSelector((state: States) => state.DASHBOARD.balanceSummary)
 
     const handleStockTrackerPreview = animatedCallback((stockTracker: StockTracker) => {
         dispatch(selectStockTracker(stockTracker))
@@ -51,7 +51,8 @@ export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
     return {
         fail,
         loading,
-        stockAmount,
+        stockAmount: stocks || 0,
+        stockVariation,
         stockTrackers,
         handleStockTrackerPreview,
         handleAddStockTracker,

@@ -130,8 +130,10 @@ class HoneycombServer {
     async start(): Promise<void> {
         this.logServerConfs()
         await this.init()
+        const hostname = process.env.HOST_ADDRESS
+        const port = Number.parseInt(process.env.PORT)
+        this.app.listen(port, hostname, () => Logger.info(`Host:[${hostname}:${port}] Server started successfully.`))
         // https.createServer(this.httpsOptions, this.app).listen(3002, "0.0.0.0", () => Logger.info("Server started. Host:[0.0.0.0:3002]"))
-        this.app.listen(3002, "0.0.0.0", () => Logger.info("Server started. Host:[0.0.0.0:3002]"))
     }
 }
 

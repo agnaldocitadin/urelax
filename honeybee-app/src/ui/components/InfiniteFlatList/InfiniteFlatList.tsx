@@ -19,9 +19,14 @@ export const InfiniteFlatList: FC<InfiniteFlatListProps<{}>> = (props) => {
         loading,
         refreshing,
         handleRefresh,
-        handleEndReached
+        handleEndReached,
+        pseudos
     } = useInfiniteFlatListHook(props)
-    
+
+    if (props.showShimmer) {
+        return <FlatList {...props} keyExtractor={(item, index) => `psdo_${index}`} refreshing={false} data={pseudos()}/>
+    }
+
     return <FlatList 
         {...props}
         data={internalData}
