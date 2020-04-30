@@ -25,8 +25,8 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
         
         if (stock) {
             return {
-                amount: (stock?.averagePrice * stock?.qty),
-                averagePrice: stock.averagePrice,
+                amount: (stock?.lastAvailablePrice || 0 * stock?.qty),
+                averagePrice: stock.lastAvailablePrice || 0,
                 quantity: stock.qty
             }
         }

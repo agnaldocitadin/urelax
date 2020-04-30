@@ -11,7 +11,7 @@ interface InfoProps {
     name?: string
     nameFontSize?: number
     nameFontStyle?: Theme.FONT_REGULAR | Theme.FONT_MEDIUM | Theme.FONT_SEMIBOLD
-    value?: string
+    value?: string | ReactElement
     valueFontSize?: number
     valueFontStyle?: Theme.FONT_REGULAR | Theme.FONT_MEDIUM | Theme.FONT_SEMIBOLD
     disabled?: boolean
@@ -44,9 +44,16 @@ export const Info: FC<InfoProps> = ({
                 { name && <StyledName font={nameFontStyle} fontSize={nameFontSize}>{name}</StyledName> }
             </ShimmerName>
             
-            <ShimmerValue autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
-                <StyledValue font={valueFontStyle} fontSize={valueFontSize}>{value}</StyledValue>
-            </ShimmerValue>
+            { 
+                typeof value === "object" ? 
+                <ShimmerValue autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
+                    { value }
+                </ShimmerValue>
+                : 
+                <ShimmerValue autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
+                    <StyledValue font={valueFontStyle} fontSize={valueFontSize}>{value}</StyledValue>
+                </ShimmerValue>
+            }
 
             { bottom }
 

@@ -1,9 +1,11 @@
 import { StockTracker } from 'honeybee-api'
+import { utils } from 'js-commons'
 import { Text } from 'native-base'
 import React, { FC } from 'react'
 import { Image, ViewStyle } from 'react-native'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import styled from 'styled-components'
+import AppConfig from '../../../../core/AppConfig'
 import { ts } from '../../../../core/I18n'
 import { Colors, SymbolsImg, Theme } from '../../../../core/Theme'
 import { Info } from '../../../../ui/components/Info'
@@ -12,12 +14,13 @@ import { Touchable } from '../../../../ui/components/Touchable'
 
 interface StockTrackerListItemProps {
     stockTracker: StockTracker
+    amount: number
     loading?: boolean
     style?: ViewStyle
     onStockTrackerPress?(stockTracker: StockTracker): void
 }
 
-export const StockTrackerListItem: FC<StockTrackerListItemProps> = ({ stockTracker, onStockTrackerPress, style, loading }) => {
+export const StockTrackerListItem: FC<StockTrackerListItemProps> = ({ stockTracker, amount, onStockTrackerPress, style, loading }) => {
     return (
         <Touch style={style} onPress={() => onStockTrackerPress && onStockTrackerPress(stockTracker)} noChevron={!onStockTrackerPress}>
             <Shimmer autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
@@ -26,7 +29,7 @@ export const StockTrackerListItem: FC<StockTrackerListItemProps> = ({ stockTrack
             <StockInfo
                 name={stockTracker.stock?.description} 
                 nameFontSize={16}
-                value={stockTracker.stock?.symbol} 
+                value={utils.formatCurrency(amount, { prefix: AppConfig.CURRENCY_PREFIX })}
                 valueFontSize={14}
                 loading={loading}
                 bottom={
@@ -52,7 +55,7 @@ const StockInfo = styled(Info)`
 const Status = styled(Text)`
     color: ${Colors.BLUES_4};
     font-family: ${Theme.FONT_MEDIUM};
-    font-size: 13px;
+    font-size: 14px;
 `
 
 const Shimmer = styled(ShimmerPlaceHolder)`

@@ -28,12 +28,14 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
         stockTrackers,
         stockAmount,
         handleAddStockTracker, 
-        handleStockTrackerPreview
+        handleStockTrackerPreview,
+        handleStockAmount
     } = useStockTrackerListUIHook(navigation)
     
     const renderStockTracker = useCallback(({ item }: any) => (
         <StockTrackerListItem 
-            stockTracker={item} 
+            stockTracker={item}
+            amount={handleStockAmount(item)}
             onStockTrackerPress={handleStockTrackerPreview} 
             loading={loading}/>
     ), [loading])

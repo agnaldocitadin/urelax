@@ -1,5 +1,5 @@
 import { StockTracker } from "honeybee-api"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { NavigationStackProp } from "react-navigation-stack"
 import { useDispatch, useSelector } from "react-redux"
 import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.hook"
@@ -14,9 +14,8 @@ export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
     const dispatch = useDispatch()
     const [ loading, setLoading ] = useState(true)
     const [ fail, setFail ] = useState(false)
-    const stockTrackers = useSelector((state: States) => state.STOCK_TRACKER.stockTrackers)
+    const { stockTrackers, isEditing, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
     const userAcount = useSelector((state: States) => state.SIGNIN.authenticatedUser)
-    const isEditing = useSelector((state: States) => state.STOCK_TRACKER.isEditing)
     const stockAmount = useSelector((state: States) => state.DASHBOARD.balanceSummary.stocks || 0)
 
     const handleStockTrackerPreview = animatedCallback((stockTracker: StockTracker) => {
@@ -30,6 +29,14 @@ export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
         navigation.navigate(initRoute)
     })
 
+    const handleStockAmount = useCallback((stockTracker: StockTracker) => {
+        let stock = balanceSheet?.stocks.find(stock => stock.symbol === stockTracker?.stock?.symbol)
+        if (stock) {
+            return stock?.lastAvailablePrice || 0 * stock?.qty
+        }
+        return 0
+    }, [])
+
     useEffectWhenReady(async () => {
         try {
             let stockTrackers = await fetchActiveStockTrackersQuery(userAcount._id || "")
@@ -41,13 +48,13 @@ export const useStockTrackerListUIHook = (navigation: NavigationStackProp) => {
         }
     }, () => dispatch(resetStockTrackerModule()))
 
-
     return {
         fail,
         loading,
         stockAmount,
         stockTrackers,
         handleStockTrackerPreview,
-        handleAddStockTracker
+        handleAddStockTracker,
+        handleStockAmount
     }
 }

@@ -25,6 +25,7 @@ interface BalanceInfoProps {
     activity: Activity
     balanceSummary: BalanceSheetSummary
     onBottomPress(): void
+    onStockPress(): void
 }
 
 interface BalanceHistoriesProps {
@@ -61,7 +62,8 @@ export const DashboardUI: FC<HomeDashboardProps> = ({ navigation }) => {
             key={0}
             activity={lastActivity} 
             balanceSummary={balanceSummary} 
-            onBottomPress={handleActivities}/>
+            onBottomPress={handleActivities}
+            onStockPress={handleStockTracker}/>
     )
 
     const balanceHistory = (
@@ -99,7 +101,7 @@ export const DashboardUI: FC<HomeDashboardProps> = ({ navigation }) => {
  *
  * @param {*} { activity, balanceSummary, onBottomPress }
  */
-const BalanceInfo: FC<BalanceInfoProps> = ({ activity, balanceSummary, onBottomPress }) => (
+const BalanceInfo: FC<BalanceInfoProps> = ({ activity, balanceSummary, onBottomPress, onStockPress }) => (
     <DashboardPanel onBottomPress={onBottomPress} bottom={<SActivityItem activity={activity} showDate={false} loading={balanceSummary.amount === undefined} bgIcon={Colors.WHITE}/>}>
         <SHomeCredit 
             label={ts("total_amount")}
@@ -116,14 +118,16 @@ const BalanceInfo: FC<BalanceInfoProps> = ({ activity, balanceSummary, onBottomP
             variationSize={13}
             loading={balanceSummary.credits === undefined}
             valueSize={18}/>
-
-        <SHomeCredit 
-            label={ts("stock_amount")}
-            value={balanceSummary.stocks} 
-            variation={balanceSummary.stockVariation} 
-            variationSize={13}
-            loading={balanceSummary.stockVariation === undefined}
-            valueSize={18}/>
+            
+        <Touchable noChevron onPress={onStockPress}>
+            <SHomeCredit 
+                label={ts("stock_amount")}
+                value={balanceSummary.stocks} 
+                variation={balanceSummary.stockVariation} 
+                variationSize={13}
+                loading={balanceSummary.stockVariation === undefined}
+                valueSize={18}/>
+        </Touchable>
     </DashboardPanel>
 )
 

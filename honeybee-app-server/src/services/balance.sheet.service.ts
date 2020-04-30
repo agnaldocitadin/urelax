@@ -64,7 +64,7 @@ export const findAllBalanceSheetByUser = async (userAccountId: string): Promise<
         stockVariation: 0
     }
 
-    // Find all balance sheets by user account
+    // Find all balance sheets by user account and summarize them.
     const balances = await BalanceSheetModel.find({ userAccount: <any>userAccountId })
     const summary = balances.reduce((balance: BalanceSheetSummary, item: BalanceSheet) => {
         balance.amount += item.getTotalAmount()
@@ -77,7 +77,7 @@ export const findAllBalanceSheetByUser = async (userAccountId: string): Promise<
     const lastHistory = await findLastBalanceSheetHistoryByUser(userAccountId, new Date())
     let lastHistorySummary = sumBalanceSheetHistories([lastHistory])
 
-    // If no balance sheet has been found, it means that is the first day of the user operations
+    // If no balance sheet has been found, it means that the user hasn't started making orders yet.
     if (!lastHistory) {
         let initialAmount = balances.reduce((total, balance) => total += balance.initialAmount, 0)
         lastHistorySummary = {
@@ -171,8 +171,11 @@ export const findAllBalanceSheetHistoryByUser = async (userAccountId: string, da
             }
         ]).sort({ "root.date": "asc" })
 
+    let balanceSheets = await findBalanceSheetOnCache(userAccountId)
+    let initialAmount = balanceSheets.reduce((amount, sheet) => amount += sheet.initialAmount, 0)
+
     let groups = groupBalanceSheetHistories(query)
-    return createBalanceSheetHistorySummaries(groups, groupBy)
+    return createBalanceSheetHistorySummaries(initialAmount, groups, groupBy)
 }
 
 /**
@@ -196,6 +199,9 @@ const createLabel = (group: GroupBy, label: any) => {
 
         case "month":
             return format(_date, "MMM/yyyy")
+
+        case "year":
+            return _date.getFullYear()
         
         default:
             return label
@@ -219,7 +225,7 @@ const groupBalanceSheetHistories = (query: { label: string, root: BalanceSheetHi
  * @param {GroupBy} groupBy
  * @returns {BalanceSheetHistorySummary[]}
  */
-const createBalanceSheetHistorySummaries = (groups: any, groupBy: GroupBy): BalanceSheetHistorySummary[] => {
+const createBalanceSheetHistorySummaries = (initalAmount: number, groups: any, groupBy: GroupBy): BalanceSheetHistorySummary[] => {
     let keys = Object.keys(groups)
     let lastAmount = 0, lastCredit = 0, lastStock = 0
     return keys.map(key => {
@@ -227,7 +233,7 @@ const createBalanceSheetHistorySummaries = (groups: any, groupBy: GroupBy): Bala
         let historySummary = sumBalanceSheetHistories(roots.map((r: any) => r.root))
         let summary: BalanceSheetHistorySummary = { 
             label: createLabel(groupBy, roots[0].root.date),
-            profit: lastAmount !== 0 ? historySummary.amount - lastAmount : 0,
+            profit: historySummary.amount - (lastAmount === 0 ? initalAmount : lastAmount),
             amount: historySummary.amount,
             amountVariation: percentVariation(lastAmount, historySummary.amount),
             credits: historySummary.credits,
