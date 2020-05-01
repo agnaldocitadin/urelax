@@ -1,7 +1,7 @@
 import { Activity, BalanceSheetHistorySummary, BalanceSheetSummary } from 'honeybee-api'
 import { Text, View } from 'native-base'
 import React, { FC } from 'react'
-import { ViewStyle } from 'react-native'
+import { RefreshControl, ViewStyle } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import { NavigationStackProp } from 'react-navigation-stack'
 import styled from 'styled-components'
@@ -49,12 +49,14 @@ export const DashboardUI: FC<HomeDashboardProps> = ({ navigation }) => {
         balanceSummary,
         balanceHistorySummary,
         noBalances,
+        refreshing,
         handleActivities, 
         handleBalances,
         handleStockTracker,
         handleSetting,
         handleNicknameTouch,
-        handleBalancePress
+        handleBalancePress,
+        handleRefresh
     } = useDashboardUIHook(navigation)
 
     const balanceInfo = (
@@ -77,17 +79,19 @@ export const DashboardUI: FC<HomeDashboardProps> = ({ navigation }) => {
 
     return (
         <FlatLayout bgStatusBar={Colors.BG_1}>
-            <SNickName onPress={handleNicknameTouch}>{ts("welcome")}, {nickname}!</SNickName>
-            <SMainHeader>
-                <AppIntroSlider
-                    renderDoneButton={() => false}
-                    renderNextButton={() => false}
-                    renderItem={item => item.item}
-                    paginationStyle={{ height: 23, bottom: 0 } as any}
-                    dotStyle={dotStyle}
-                    activeDotStyle={activeDotStyle}
-                    slides={[balanceInfo, balanceHistory]} />
-            </SMainHeader>
+            <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
+                <SNickName onPress={handleNicknameTouch}>{ts("welcome")}, {nickname}!</SNickName>
+                <SMainHeader>
+                    <AppIntroSlider
+                        renderDoneButton={() => false}
+                        renderNextButton={() => false}
+                        renderItem={item => item.item}
+                        paginationStyle={{ height: 23, bottom: 0 } as any}
+                        dotStyle={dotStyle}
+                        activeDotStyle={activeDotStyle}
+                        slides={[balanceInfo, balanceHistory]} />
+                </SMainHeader>
+            </Refresher>
             <SMenuBox>
                 <MenuButton label={ts("stock_trackers")} icon={Icons.CHART_LINE_VARIANT} action={handleStockTracker}/>
                 <MenuButton label={ts("settings")} icon={Icons.SETTINGS} action={handleSetting}/>
@@ -231,4 +235,8 @@ const SLastBalances = styled(Text)`
 
 const SNoBalances = styled(TextIconDisplay)`
     margin: auto 20px;
+`
+
+const Refresher = styled(RefreshControl)`
+    flex: 1;
 `

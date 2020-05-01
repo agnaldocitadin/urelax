@@ -40,7 +40,7 @@ export const useInfiniteFlatListHook = ({
                 .then(() => updateState({ refreshing: false }))
                 .catch(() => updateState({ refreshing: false }))
         }
-    }, [])
+    }, [onRefresh])
 
     const handleEndReached = () => {
         const isLoadMore = !listState.infiniteReached && listState.internalData?.length >= minLengthToLoadMore && onEndPageReached && !listState.loading

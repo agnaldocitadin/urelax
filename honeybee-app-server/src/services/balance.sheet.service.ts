@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb"
 import mongoose from 'mongoose'
 import schedule from "node-schedule"
 import { Logger } from "../core/Logger"
-import { percentVariation } from "../core/Utils"
+import { percentVariation, Utils } from "../core/Utils"
 import { BalanceSheetHistory, BalanceSheetHistoryModel } from "../models/balance.sheet.history.model"
 import { BalanceSheet, BalanceSheetModel, StockSheet } from "../models/balance.sheet.model"
 import { OrderModel, OrderSides, OrderStatus } from "../models/order.model"
@@ -44,7 +44,7 @@ export const findBalanceSheetOnCache = (userAccountId: ObjectId | string, broker
  * @returns {Promise<BalanceSheet[]>}
  */
 export const findBalanceSheet = (userAccountId: ObjectId | string, brokerAccountId?: ObjectId | string): Promise<BalanceSheet[]> => {
-    return BalanceSheetModel.find({ userAccount: userAccountId, brokerAccount: brokerAccountId }).exec()
+    return BalanceSheetModel.find({ userAccount: <any>userAccountId, brokerAccount: <any>brokerAccountId }).exec()
 }
 
 /**
@@ -109,32 +109,37 @@ export const findAllBalanceSheetHistoryByUser = async (userAccountId: string, da
     let endDate
     let groupClause: any
     let label: any
+    let _qty = qty
 
     switch (groupBy) {
         case "day":
-            endDate = subDays(endOfDay(date), page * qty)
-            startDate = subDays(startOfDay(endDate), qty)
+            _qty += 2
+            endDate = subDays(endOfDay(date), page * _qty)
+            startDate = subDays(startOfDay(endDate), _qty)
             groupClause = { day: "$date" }
             label = "$date"
             break
 
         case "week":
-            endDate = subWeeks(lastDayOfWeek(date), page * qty)
-            startDate = lastDayOfWeek(subWeeks(endDate, qty))
+            _qty += 1
+            endDate = subWeeks(lastDayOfWeek(date), page * _qty)
+            startDate = lastDayOfWeek(subWeeks(endDate, _qty))
             groupClause = { week: "$week" }
             label = { "$concat": [{ "$toString": { "$week": "$date" }}, "W-", { "$toString": { "$year": "$date" }}]}
             break
 
         case "month":
-            endDate = subMonths(lastDayOfMonth(date), page * qty)
-            startDate = lastDayOfMonth(subMonths(endDate, qty))
+            _qty += 1
+            endDate = subMonths(lastDayOfMonth(date), page * _qty)
+            startDate = lastDayOfMonth(subMonths(endDate, _qty))
             groupClause = { month: "$month" }
             label = { "$concat": [{ "$toString": { "$month": "$date" }}, "M-", { "$toString": { "$year": "$date" }}]}
             break
 
         case "year":
-            endDate = subYears(lastDayOfYear(date), page * qty)
-            startDate = lastDayOfYear(subYears(endDate, qty))
+            _qty += 1
+            endDate = subYears(lastDayOfYear(date), page * _qty)
+            startDate = lastDayOfYear(subYears(endDate, _qty))
             groupClause = { year: "$year" }
             label = "$_id.year"
             break
@@ -166,7 +171,7 @@ export const findAllBalanceSheetHistoryByUser = async (userAccountId: string, da
                 "$project": {
                     _id: 0,
                     label,
-                    root: "$history",
+                    root: "$history"
                 }
             }
         ]).sort({ "root.date": "asc" })
@@ -175,7 +180,8 @@ export const findAllBalanceSheetHistoryByUser = async (userAccountId: string, da
     let initialAmount = balanceSheets.reduce((amount, sheet) => amount += sheet.initialAmount, 0)
 
     let groups = groupBalanceSheetHistories(query)
-    return createBalanceSheetHistorySummaries(initialAmount, groups, groupBy)
+    let summaries = createBalanceSheetHistorySummaries(initialAmount, groups, groupBy)
+    return Utils.Array.firstElements(summaries, qty) 
 }
 
 /**
@@ -208,6 +214,12 @@ const createLabel = (group: GroupBy, label: any) => {
     }
 }
 
+/**
+ *
+ *
+ * @param {{ label: string, root: BalanceSheetHistory }[]} query
+ * @returns
+ */
 const groupBalanceSheetHistories = (query: { label: string, root: BalanceSheetHistory }[]) => {
     return query.reduce((groups: any, item: any) => {
         let label = item["label"]
@@ -217,9 +229,8 @@ const groupBalanceSheetHistories = (query: { label: string, root: BalanceSheetHi
     }, {})
 }
 
-
 /**
- *
+ * FIXME There's a workaround here!
  *
  * @param {*} groups
  * @param {GroupBy} groupBy
@@ -228,12 +239,16 @@ const groupBalanceSheetHistories = (query: { label: string, root: BalanceSheetHi
 const createBalanceSheetHistorySummaries = (initalAmount: number, groups: any, groupBy: GroupBy): BalanceSheetHistorySummary[] => {
     let keys = Object.keys(groups)
     let lastAmount = 0, lastCredit = 0, lastStock = 0
+
     return keys.map(key => {
         let roots = groups[key]
-        let historySummary = sumBalanceSheetHistories(roots.map((r: any) => r.root))
+        let balances: BalanceSheetHistory[] = roots.map((r: any) => r.root)
+        let historySummary = sumBalanceSheetHistories(balances)
+        lastAmount = (lastAmount === 0 ? initalAmount : lastAmount)
+        
         let summary: BalanceSheetHistorySummary = { 
             label: createLabel(groupBy, roots[0].root.date),
-            profit: historySummary.amount - (lastAmount === 0 ? initalAmount : lastAmount),
+            profit: historySummary.amount - lastAmount,
             amount: historySummary.amount,
             amountVariation: percentVariation(lastAmount, historySummary.amount),
             credits: historySummary.credits,
@@ -241,6 +256,7 @@ const createBalanceSheetHistorySummaries = (initalAmount: number, groups: any, g
             stocks: historySummary.stocks,
             stockVariation: percentVariation(lastStock, historySummary.stocks)
         }
+        
         lastAmount = historySummary.amount
         lastCredit = historySummary.credits
         lastStock = historySummary.stocks
@@ -333,7 +349,6 @@ const updateStockPriceFrom = async (balances: BalanceSheet[], referenceDate: Dat
         cache.save(balance, BalanceSheetModel)
     }
 }
-
 
 /**
  * 

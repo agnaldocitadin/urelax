@@ -21,8 +21,8 @@ it("teste", async () => {
     // updateStocks("BROKER_5e4d4a64d166972ea000cf98_945707800", 1, 51.54) //AZUL4
     // updateStocks("BROKER_5e4c065e7be5c00764040b31_861284800", 1, 12.50) //MGLU3
 
-    regenerateBalanceSheetAndHistory("5e2a417deababd0d50cfd797")
-    regenerateBalanceSheetAndHistory("5d6a88e4f857b851188f58ea")
+    // regenerateBalanceSheetAndHistory("5e2a417deababd0d50cfd797")
+    regenerateBalanceSheetAndHistory("5ea0e2483d30930834b0ec87")
 
     // console.log(new Date("2020-01-01T00:00:00.000Z"))
     // console.log(new Date("Wed Feb 19 2020 00:00:00 GMT-0300 (Brasilia Standard Time)"))

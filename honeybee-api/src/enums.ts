@@ -13,6 +13,7 @@ export enum StockTrackerStatus {
 
 export enum MessageTypes {
     STOCK_TRACKER_STATUS = "STOCK_TRACKER_STATUS",
+    STOCK_TRACKER_ORDER = "STOCK_TRACKER_ORDER",
 }
 
 export enum Brokers {

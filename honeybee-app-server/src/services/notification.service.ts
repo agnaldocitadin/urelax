@@ -29,7 +29,10 @@ const notifyBuy = (deviceToken: string, order: Order) => {
             }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR
-        }
+        },
+        data: {
+            messageType: MessageTypes.STOCK_TRACKER_ORDER
+        } as NotificationMessage
     })
 }
 
@@ -52,7 +55,10 @@ const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
             }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR
-        }
+        },
+        data: {
+            messageType: MessageTypes.STOCK_TRACKER_ORDER
+        } as NotificationMessage
     })
 }
 
