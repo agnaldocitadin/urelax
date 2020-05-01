@@ -21,7 +21,7 @@ export const VariationMonitor: FC<VariationMonitorProps> = ({
     <Display>
         <DisplayIcon 
             type={Theme.ICON_PACK} 
-            name={value >= 0 ? Icons.ARROW_UP : Icons.ARROW_DOWN} 
+            name={value === 0 ? Icons.ARROW_RIGHT : (value >= 0 ? Icons.ARROW_UP : Icons.ARROW_DOWN)} 
             fontSize={fontSize} 
             color={iconColor}/>
 

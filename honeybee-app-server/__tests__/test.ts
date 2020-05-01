@@ -1,5 +1,6 @@
 import admin from 'firebase-admin'
 import Logger from '../src/core/Logger'
+import { MessageTypes } from 'honeybee-api'
 
 beforeAll(async () => {
     // dotenv.config()
@@ -18,13 +19,11 @@ it("teste", async () => {
     // let token = "fPllQznjycw:APA91bFcsXgsc4_rzPqYmjK7Oqn94fN00oIgC2GPesRYYd09MQRxC9NeLUtda0gz8DrmkbNpEH-W9_DhVQfGAq-xvBZyVv3-LRHarY16WMJ8d_aR41J9x5pDG-wyNNXWNvpH1A3xxa2d"
     // let token = "eV4iZKNqqKo:APA91bGK0-_XcnzaBDX72pt-7Ke2IVHouGydwsNJAUrIhTFxplGk4uv7Iwn_PP8FnNj3s3m1GBfM25oE2SvEPTOxb493Xtgge1KlV0HKtPeN8M1rtk3PClud3OwZoE16Thc9wBMq-l8s"
     // let token = "e-voJwC_I-w:APA91bFFGbD8sYGn6ohFY88rkx7CEyxUo8NDPJ7v6BeEqz7gi2rTToCFQlndgChrzhZzpPPk0xV_U2L6pLIDzPP9Id9VG_MrXSl4U7N9ebUGFE-lhBu5bUlBl0BXMuk1piSg565CqTxz"
-    let token = "cV3QFdjTu70:APA91bG-gQ-xaKT8xbKDjDNMkS7vheAQmT_wvK7rSCls0lY3vr_gq0STPVQlOQ9IPc4LqMHcBzZ9HGfg2RD-TxEAFGyzUf3ZFtaTZDo8SFhvJdEAaWqHVFy8qLiZUD41gA5bT9sYLHhl"
+    let token = "cgN7h6TXDzE:APA91bFL15ucpJTG3myTBrBEcCpe78sg6ljBF_kJ8tNCWsqBnmd_khMcJpccy1mHA0IN2EQtY6znontcJwb5krqOKv3zZ50hIlflRcliJX5jZldHj_YO5E3AlGQ0bxHOCVYFDNdqLhdp"
     await admin.messaging().sendToDevice(token, {
-            // data: {
-            //     messageType: "BEE_STATUS",
-            //     beeId: "5df963b6be8a8d53cc812a8e",
-            //     status: StockTrackerStatus.DESTROYED
-            // },
+            data: {
+                messageType: MessageTypes.STOCK_TRACKER_ORDER
+            },
             notification: {
                 title: "Compra de ações",
                 body: "500 ações em Azul Linhas Aéreas (AZUL4) no valor total de R$ 25.514,22.",

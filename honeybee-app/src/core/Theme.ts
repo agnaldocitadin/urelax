@@ -48,6 +48,7 @@ export enum Icons {
     CAMERA = "camera",
     ARROW_UP = "arrow-up",
     ARROW_DOWN = "arrow-down",
+    ARROW_RIGHT = "arrow-right",
     CHEVRON_RIGHT = "chevron-right",
     ALERT_CIRCLE = "alert-circle",
     CHECK_CIRCLE = "check-circle",
