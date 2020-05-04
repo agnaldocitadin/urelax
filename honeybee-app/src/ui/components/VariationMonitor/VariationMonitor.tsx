@@ -2,7 +2,7 @@
 import { utils } from 'js-commons'
 import { Icon, Text, View } from 'native-base'
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { Colors, Icons, Theme } from '../../../core/Theme'
 
 interface VariationMonitorProps {

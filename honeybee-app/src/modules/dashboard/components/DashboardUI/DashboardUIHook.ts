@@ -43,7 +43,7 @@ export const useDashboardUIHook = (navigation: NavigationStackProp) => {
     const refresh = useCallback(async () => {
         try {
             let balanceSummary = await fetchCurrentBalanceSheetByUser(_id)
-            let historySummary = await fetchLastBalancesSheets(_id, 3)
+            let historySummary = await fetchLastBalancesSheets(_id, 4)
             let activity = await fetchLastUserActivity(_id)
             dispatch(initDashboardData(balanceSummary, historySummary, activity))
         }
@@ -57,7 +57,7 @@ export const useDashboardUIHook = (navigation: NavigationStackProp) => {
     return {
         nickname,
         balanceSummary,
-        balanceHistorySummary,
+        balanceHistorySummary: balanceHistorySummary.slice(0, 2),
         lastActivity,
         noBalances: balanceHistorySummary.length === 0,
         refreshing,
