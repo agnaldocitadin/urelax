@@ -4,11 +4,8 @@ export const fetchCurrentBalanceSheetByUser = async (userAccountId?: string): Pr
     if (!userAccountId) return Promise.reject("userAccountId not provided")
     return API.fetchBalanceSheetByUserQuery(userAccountId, `
         amount
-        amountVariation
         credits
-        creditVariation
         stocks
-        stockVariation
     `)
 }
 

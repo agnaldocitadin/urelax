@@ -13,7 +13,7 @@ import { MenuButton } from '../../../../ui/components/MenuButton'
 import { TextIconDisplay } from '../../../../ui/components/TextIconDisplay'
 import { Touchable } from '../../../../ui/components/Touchable'
 import { ActivityItem } from '../../../activity/components/ActivityItem'
-import { BalanceHistoryItem } from '../../../balance/components/BalanceHistoryItem'
+import { BalanceDetail } from '../../../balance'
 import { DashboardPanel } from '../DashboardPanel'
 import { useDashboardUIHook } from './DashboardUIHook'
 
@@ -107,29 +107,26 @@ export const DashboardUI: FC<HomeDashboardProps> = ({ navigation }) => {
  */
 const BalanceInfo: FC<BalanceInfoProps> = ({ activity, balanceSummary, onBottomPress, onStockPress }) => (
     <DashboardPanel onBottomPress={onBottomPress} bottom={<SActivityItem activity={activity} showDate={false} loading={balanceSummary.amount === undefined} bgIcon={Colors.WHITE}/>}>
-        <SHomeCredit 
+        <CashDisplay 
             label={ts("total_amount")}
             value={balanceSummary.amount} 
-            variation={balanceSummary.amountVariation}
-            variationSize={13}
             loading={balanceSummary.amount === undefined}
+            showVariation={false}
             valueSize={25}/>
 
-        <SHomeCredit 
+        <CashDisplay 
             label={ts("account_amount")}
             value={balanceSummary.credits} 
-            variation={balanceSummary.creditVariation}
-            variationSize={13}
             loading={balanceSummary.credits === undefined}
+            showVariation={false}
             valueSize={18}/>
             
         <Touchable noChevron onPress={onStockPress}>
-            <SHomeCredit 
+            <CashDisplay 
                 label={ts("stock_amount")}
                 value={balanceSummary.stocks} 
-                variation={balanceSummary.stockVariation} 
-                variationSize={13}
-                loading={balanceSummary.stockVariation === undefined}
+                loading={balanceSummary.stocks === undefined}
+                showVariation={false}
                 valueSize={18}/>
         </Touchable>
     </DashboardPanel>
@@ -144,8 +141,7 @@ const BalanceHistories: FC<BalanceHistoriesProps> = ({ balanceSheetHistories, on
     <DashboardPanel 
         onBottomPress={onBottomPress} 
         bottom={!noBalances ? <SBalancesLink>{ts("balance_history")}</SBalancesLink> : undefined}>
-        {!noBalances && <SLastBalances>{ts("last_balances")}</SLastBalances>}
-        {renderBalanceHistories(balanceSheetHistories, onBalancePress)}
+        { !noBalances && <BalanceDetail balance={balanceSheetHistories[0]}/>}
         { noBalances && <SNoBalances
             icon={Icons.CLOCK}
             title={ts("waiting_balance")}
@@ -153,26 +149,6 @@ const BalanceHistories: FC<BalanceHistoriesProps> = ({ balanceSheetHistories, on
         }
     </DashboardPanel>
 )
-
-/**
- *
- *
- * @param {BalanceSheetHistorySummary[]} balances
- * @returns
- */
-const renderBalanceHistories = (balances: BalanceSheetHistorySummary[], onBalancePress: (balance: BalanceSheetHistorySummary) => void) => {
-    const maxAmount = balances.reduce((max, value) => value.amount && value.amount > max ? value.amount : max, 0)
-    return balances.map((balance, k) =>
-        <Touchable onPress={() => onBalancePress(balance)} noChevron>
-            <SBalanceHistoryItem 
-                key={k} 
-                label={balance.label}
-                value={balance.amount}
-                valueReference={maxAmount}
-                variation={balance.amountVariation}/>
-        </Touchable>
-    )
-}
 
 const dotStyle: ViewStyle = {
     backgroundColor: "rgba(29, 161, 242, .2)", 
@@ -191,7 +167,7 @@ const SNickName = styled(Text)`
     color: ${Colors.BLACK_2};
     font-size: 16px;
     text-align: center;
-    margin: 20px 0;
+    line-height: 50px;
 `
 
 const SMainHeader = styled(View)`
@@ -205,10 +181,6 @@ const SMenuBox = styled(View)`
     padding: 20px 10px;
 `
 
-const SHomeCredit = styled(CashDisplay)`
-    padding: 0 15px;
-`
-
 const SActivityItem = styled(ActivityItem)`
     flex: 1;
 `
@@ -219,18 +191,6 @@ const SBalancesLink = styled(Text)`
     text-align: center;
     font-size: 14px;
     flex: 1;
-`
-
-const SBalanceHistoryItem = styled(BalanceHistoryItem)`
-    margin: 10px 15px;
-    flex: 1;
-`
-
-const SLastBalances = styled(Text)`
-    font-family: ${Theme.FONT_REGULAR};
-    color: ${Colors.GRAY_3};
-    font-size: 14px;
-    margin-left: 20px;
 `
 
 const SNoBalances = styled(TextIconDisplay)`
