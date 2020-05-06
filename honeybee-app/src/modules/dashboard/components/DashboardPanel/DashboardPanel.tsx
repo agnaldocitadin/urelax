@@ -1,5 +1,3 @@
-
-import { View } from 'native-base'
 import React, { FC, ReactElement } from 'react'
 import styled from 'styled-components/native'
 import { Colors } from '../../../../core/Theme'
@@ -27,7 +25,7 @@ const Content = styled.View`
     flex: 1;
 `
 
-const SHomePanel: any = styled(View)`
+const SHomePanel: any = styled.View`
     background-color: ${Colors.WHITE};
     border-radius: 5px;
     margin: 15px 20px;

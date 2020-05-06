@@ -1,10 +1,10 @@
 import { Activity, BalanceSheetHistorySummary, BalanceSheetSummary } from 'honeybee-api'
 import { Text, View } from 'native-base'
 import React, { FC } from 'react'
-import { RefreshControl, ViewStyle } from 'react-native'
+import { RefreshControl, TouchableNativeFeedback, ViewStyle } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import { NavigationStackProp } from 'react-navigation-stack'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { ts } from '../../../../core/I18n'
 import { Colors, Icons, Theme } from '../../../../core/Theme'
 import { CashDisplay } from '../../../../ui/components/CashDisplay'
@@ -29,7 +29,7 @@ interface BalanceInfoProps {
 }
 
 interface BalanceHistoriesProps {
-    balanceSheetHistories: BalanceSheetHistorySummary[]
+    balanceSheetHistories: BalanceSheetHistorySummary
     noBalances: boolean
     onBottomPress(): void
     onBalancePress(): void
@@ -138,10 +138,15 @@ const BalanceInfo: FC<BalanceInfoProps> = ({ activity, balanceSummary, onBottomP
  * @param {*} { balanceSheetHistories, onBottomPress, noBalances }
  */
 const BalanceHistories: FC<BalanceHistoriesProps> = ({ balanceSheetHistories, onBottomPress, onBalancePress, noBalances }) => (
-    <DashboardPanel 
-        onBottomPress={onBottomPress} 
-        bottom={!noBalances ? <SBalancesLink>{ts("balance_history")}</SBalancesLink> : undefined}>
-        { !noBalances && <BalanceDetail balance={balanceSheetHistories[0]}/>}
+    <DashboardPanel>
+        { !noBalances && 
+            <TouchableNativeFeedback onPress={onBottomPress}>
+                <View style={{ flex: 1, justifyContent: "space-around" }}>
+                    <Date>{balanceSheetHistories.label}</Date>
+                    <BalanceDetail balance={balanceSheetHistories}/>
+                </View>
+            </TouchableNativeFeedback>
+        }
         { noBalances && <SNoBalances
             icon={Icons.CLOCK}
             title={ts("waiting_balance")}
@@ -149,6 +154,12 @@ const BalanceHistories: FC<BalanceHistoriesProps> = ({ balanceSheetHistories, on
         }
     </DashboardPanel>
 )
+
+const Date = styled.Text`
+    font-family: ${Theme.FONT_REGULAR};
+    text-align: center;
+    color: ${Colors.BLACK_2};
+`
 
 const dotStyle: ViewStyle = {
     backgroundColor: "rgba(29, 161, 242, .2)", 
@@ -167,12 +178,12 @@ const SNickName = styled(Text)`
     color: ${Colors.BLACK_2};
     font-size: 16px;
     text-align: center;
-    line-height: 50px;
+    line-height: 90px;
 `
 
 const SMainHeader = styled(View)`
     flex: 1;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
 `
 
 const SMenuBox = styled(View)`

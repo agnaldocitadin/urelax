@@ -57,7 +57,7 @@ export const useDashboardUIHook = (navigation: NavigationStackProp) => {
     return {
         nickname,
         balanceSummary,
-        balanceHistorySummary: balanceHistorySummary.slice(0, 1),
+        balanceHistorySummary: balanceHistorySummary.slice(0, 1)[0],
         lastActivity,
         noBalances: balanceHistorySummary.length === 0,
         refreshing,

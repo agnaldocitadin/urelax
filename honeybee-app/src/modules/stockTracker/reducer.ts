@@ -2,13 +2,13 @@ import { Activity, BalanceSheet, StockTracker } from "honeybee-api"
 import { utils } from "js-commons"
 import { Routes } from "../../navigations/Navigator"
 import { ReduxAction } from "../../reducers/Reducer"
-import { APPEND_STOCK_TRACKERS, APPEND_STOCK_TRACKER_ACTIVITIES, CLEAR_STOCK_TRACKER_PREVIEW, INIT_STOCK_TRACKER_MODULE, PREPATE_STOCK_TRACKER_TO_CREATE, REGISTER_STOCK_TRACKER_BALANCE, REMOVE_STOCK_TRACKERS, RESET_STOCK_TRACKER_MODULE, SELECT_STOCK_TRACKER, SELECT_STOCK_TRACKER_TO_UPDATE, UPDATE_MAIN_STOCK_TRACKER, UPDATE_SELECTED_STOCK_TRACKER } from "./actionTypes"
+import { APPEND_STOCK_TRACKERS, APPEND_STOCK_TRACKER_ACTIVITIES, CLEAR_STOCK_TRACKER_PREVIEW, PREPATE_STOCK_TRACKER_TO_CREATE, REGISTER_STOCK_TRACKER_BALANCE, REMOVE_STOCK_TRACKERS, RESET_STOCK_TRACKER_MODULE, SELECT_STOCK_TRACKER, SELECT_STOCK_TRACKER_TO_UPDATE, UPDATE_MAIN_STOCK_TRACKER, UPDATE_SELECTED_STOCK_TRACKER } from "./actionTypes"
 
 export interface StockTrackerState {
     stockTrackers: StockTracker[]
     selectedStockTracker?: StockTracker
     selectedStockTrackerActivities: Activity[]
-    balanceSheet?: BalanceSheet
+    balanceSheet?: BalanceSheet[]
     stockTrackerToUpdate: StockTracker
     isEditing: boolean
 }
@@ -22,13 +22,6 @@ const INITIAL_STATE: StockTrackerState = {
 
 export const StockTrackerReducer = (state: StockTrackerState = INITIAL_STATE, action: ReduxAction): StockTrackerState => {
     switch (action.type) {
-
-        case INIT_STOCK_TRACKER_MODULE:
-            return {
-                ...state,
-                balanceSheet: action.data.balance,
-                selectedStockTrackerActivities: action.data.activities
-            }
 
         case SELECT_STOCK_TRACKER:
             return {

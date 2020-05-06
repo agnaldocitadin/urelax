@@ -25,7 +25,6 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
         loading,
         stockTrackers,
         stockAmount,
-        stockVariation,
         handleAddStockTracker, 
         handleStockTrackerPreview,
         handleStockAmount
@@ -67,7 +66,7 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
                         label={ts("stock_amount")}
                         value={stockAmount}
                         valueSize={25}
-                        variation={stockVariation}/>
+                        showVariation={false}/>
                     : null
                 }/>}
             
