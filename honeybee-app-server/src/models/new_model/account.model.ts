@@ -1,5 +1,31 @@
-import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
+import { arrayProp, getModelForClass, prop } from '@typegoose/typegoose'
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses'
 import mongoose from 'mongoose'
+
+/**
+ *
+ *
+ * @export
+ * @class Account
+ * @extends {TimeStamps}
+ */
+export class Account extends TimeStamps {
+
+    _id?: mongoose.Types.ObjectId
+
+    @prop({ required: true })
+    profile!: Profile
+
+    @prop({ required: true })
+    preference!: Preferences
+
+    @arrayProp({ items: "Device" })
+    devices: Device[]
+
+    @prop({ required: true })
+    active!: boolean
+
+}
 
 class Profile {
 
@@ -41,27 +67,6 @@ class Device {
 
     @prop({ required: true, default: false })
     active: boolean
-}
-
-class Account {
-
-    _id?: mongoose.Types.ObjectId
-
-    @prop({ ref: Profile, required: true })
-    profile!: Ref<Profile>
-
-    @prop({ ref: Profile, required: true })
-    preference!: Ref<Preferences>
-
-    @arrayProp({ ref: Device, default: [] })
-    devices: Ref<Device>[]
-
-    @prop({ required: true })
-    active!: boolean
-
-    @prop({ default: () => new Date() })
-    createdAt?: Date
-
 }
 
 export const AccountModel = getModelForClass(Account, {

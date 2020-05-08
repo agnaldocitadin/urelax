@@ -1,21 +1,11 @@
-import { arrayProp, prop, Ref, Typegoose } from '@hasezoey/typegoose'
+import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses'
 import mongoose from 'mongoose'
 import { Account } from './account.model'
 
 export enum ActivityType {
     STOCK_TRACKER = "STOCK_TRACKER",
     USER_ACCOUNT = "USER_ACCOUNT"
-}
-
-export type ActivityDetail = {
-    title: Translation
-    description: Translation
-    hidden?: boolean
-}
-
-type Translation = {
-    text: string
-    args: any[]
 }
 
 /**
@@ -26,7 +16,7 @@ type Translation = {
  * @class Activity
  * @extends {Typegoose}
  */
-export class Activity extends Typegoose {
+class Activity extends TimeStamps {
     
     _id?: mongoose.Types.ObjectId
 
@@ -45,16 +35,34 @@ export class Activity extends Typegoose {
     @prop({ required: true })
     title!: Translation
 
-    @arrayProp({ items: Object, default: [] })
+    @arrayProp({ items: "ActivityDetail" })
     details?: ActivityDetail[]
 
-    @prop({ default: () => new Date() })
-    createdAt?: Date
-    
 }
 
-export const ActivityModel = new Activity().getModelForClass(Activity, {
+class ActivityDetail {
+
+    @prop({ required: true })
+    title: Translation
+
+    @prop({ required: true })
+    description: Translation
+
+    @prop({ default: true })
+    hidden?: boolean
+}
+
+class Translation {
+
+    @prop({ required: true })
+    text!: string
+    
+    @arrayProp({ default: [] })
+    args: any[]
+}
+
+export const ActivityModel = getModelForClass(Activity, {
     schemaOptions: {
-        collection: "activities"
+        collection: "activities-test"
     }
 })

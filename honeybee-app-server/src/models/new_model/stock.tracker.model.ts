@@ -1,4 +1,6 @@
 import { instanceMethod, prop, Ref, Typegoose } from '@hasezoey/typegoose'
+import { getModelForClass } from '@typegoose/typegoose'
+import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses'
 import { StockTrackerStatus } from 'honeybee-api'
 import { ObjectId } from 'mongodb'
 import mongoose from 'mongoose'
@@ -13,7 +15,7 @@ import { Account } from './account.model'
  * @class StockTracker
  * @extends {Typegoose}
  */
-export class StockTracker extends Typegoose {
+export class StockTracker extends TimeStamps {
 
     _id?: mongoose.Types.ObjectId
 
@@ -44,8 +46,8 @@ export class StockTracker extends Typegoose {
     // @prop({ default: true })
     // autoAmountLimit?: boolean
 
-    @prop({ default: () => new Date() })
-    createdAt?: Date
+    // @prop({ default: () => new Date() })
+    // createdAt?: Date
 
     // @instanceMethod
     // public getSymbol(): string {
@@ -69,8 +71,8 @@ export class StockTracker extends Typegoose {
 
 }
 
-export const StockTrackerModel = new StockTracker().getModelForClass(StockTracker, {
+export const StockTrackerModel = getModelForClass(StockTracker, {
     schemaOptions: {
-        collection: "stock-trackers"
+        collection: "stock-trackers-test"
     }
 })

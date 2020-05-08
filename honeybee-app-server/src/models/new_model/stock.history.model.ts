@@ -1,4 +1,4 @@
-import { prop, Typegoose } from '@hasezoey/typegoose'
+import { getModelForClass, prop } from '@typegoose/typegoose'
 import mongoose from 'mongoose'
 
 /**
@@ -8,35 +8,35 @@ import mongoose from 'mongoose'
  * @class StockHistory
  * @extends {Typegoose}
  */
-export class StockHistory extends Typegoose {
+export class StockHistory {
 
     _id?: mongoose.Types.ObjectId
 
     @prop({ required: false })
     symbol!: string
 
-    @prop()
-    date: Date
+    @prop({ required: false })
+    date!: Date
 
     @prop()
-    openingPrice: number
+    openingPrice?: number
 
     @prop()
-    closingPrice: number
+    closingPrice?: number
 
     @prop()
-    highestPrice: number
+    highestPrice?: number
 
     @prop()
-    lowestPrice: number
+    lowestPrice?: number
 
     @prop()
-    volume:number
+    volume?:number
     
 }
 
-export const StockHistoryModel = new StockHistory().getModelForClass(StockHistory, {
+export const StockHistoryModel = getModelForClass(StockHistory, {
     schemaOptions: {
-        collection: "stock-history"
+        collection: "stock-history-test"
     }
 })
