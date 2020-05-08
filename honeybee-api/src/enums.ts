@@ -20,3 +20,8 @@ export enum Brokers {
     CLEAR = "CLEAR"
     // Add new brokers here ...
 }
+
+// --- New model ---
+export enum TransactionType {
+
+}

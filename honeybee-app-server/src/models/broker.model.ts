@@ -3,7 +3,8 @@ import { Brokers } from 'honeybee-api'
 import mongoose from "mongoose"
 
 /**
- *
+ * - Dados de corretoras que operam ações, índice, dollar, bitcoin, etc.
+ * - Necessita de implementação em plugins para cada corretora
  *
  * @export
  * @class Broker

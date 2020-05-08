@@ -58,12 +58,12 @@ class HoneycombServer {
      * @memberof Server
      */
     private async init(): Promise<void> {
-        this.configure()
-        await this.initFactories()
+        // this.configure()
+        // await this.initFactories()
         await connectDB()
-        registerAPI(this.app)
-        initFirebaseConfiguration()
-        this.registerSchedules()
+        // registerAPI(this.app)
+        // initFirebaseConfiguration()
+        // this.registerSchedules()
     }
 
     /**
@@ -130,9 +130,9 @@ class HoneycombServer {
     async start(): Promise<void> {
         this.logServerConfs()
         await this.init()
-        const hostname = process.env.HOST_ADDRESS
-        const port = Number.parseInt(process.env.PORT)
-        this.app.listen(port, hostname, () => Logger.info(`Host:[${hostname}:${port}] Server started successfully.`))
+        // const hostname = process.env.HOST_ADDRESS
+        // const port = Number.parseInt(process.env.PORT)
+        // this.app.listen(port, hostname, () => Logger.info(`Host:[${hostname}:${port}] Server started successfully.`))
         // https.createServer(this.httpsOptions, this.app).listen(3002, "0.0.0.0", () => Logger.info("Server started. Host:[0.0.0.0:3002]"))
     }
 }
