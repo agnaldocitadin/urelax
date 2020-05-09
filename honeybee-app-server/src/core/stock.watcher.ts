@@ -1,8 +1,8 @@
 import cronstrue from 'cronstrue'
 import schedule from 'node-schedule'
-import { ClearStockUpdater } from "../plugins/stock/clear.stock.updater"
-import { StockUpdaterPlugin } from '../plugins/stock/stock.updater.plugin'
-import { findAvailables } from '../services/stock.service'
+import { ClearStockUpdater } from "../modules/Stock/plugins/clear.stock.updater"
+import { StockUpdaterPlugin } from '../modules/Stock/plugins/stock.updater.plugin'
+import { findAvailables } from '../modules/Stock/services/stock.service'
 import Logger from './Logger'
 
 const STOCK_UPDATER_IMPL = ClearStockUpdater

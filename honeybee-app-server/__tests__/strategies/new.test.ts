@@ -1,6 +1,6 @@
 import dotenv from 'dotenv-flow'
 import { connectDB } from '../../src/db/mongo'
-import { BBStochasticRSIStrategy } from "../../src/strategies/bb.stochastic.rsi.strategy"
+import { BBStochasticRSIStrategy } from "../../src/modules/Stock/strategies/bb.stochastic.rsi.strategy"
 import Logger from '../../src/logger'
 
 const STRATEGY_TYPE = BBStochasticRSIStrategy

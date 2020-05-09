@@ -1,8 +1,8 @@
 import dotenv from 'dotenv-flow'
 import { connectDB } from '../src/db/mongo'
-import { Account, Preferences, Profile } from '../src/models/profile.model'
+import { Account, Preferences, Profile } from '../src/modules/Identity/models/profile.model'
 import Logger from '../src/core/Logger'
-import { updateAccount } from '../src/services/profile.service'
+import { updateAccount } from '../src/modules/Identity/services/profile.service'
 
 
 beforeAll(async () => {

@@ -2,15 +2,15 @@ import dotenv from 'dotenv-flow'
 import fs from "fs"
 import { connectDB } from "../../src/db/mongo"
 import Logger from "../../src/logger"
-import { OrderModel, OrderSides, OrderStatus } from "../../src/models/order.model"
-import { StockHistory, StockHistoryModel } from "../../src/models/stock.history.model"
+import { OrderModel, OrderSides, OrderStatus } from "../../src/modules/Order/models/order.model"
+import { StockHistory, StockHistoryModel } from "../../src/modules/Stock/models/stock.history.model"
 import { Stock, StockModel } from "../../src/models/stock.model"
-import { StockTracker, StockTrackerModel } from "../../src/models/stock.tracker.model"
-import { BrokerPlugin, OrderExecution } from "../../src/plugins/broker/broker.plugin"
-import { MockBrokerPlugin } from "../../src/plugins/broker/mock.broker.plugin"
-import { StockService } from "../../src/services/stock.service"
-import { BeeService } from '../../src/services/stock.tracker.service'
-import { BBStochasticRSIStrategy } from "../../src/strategies/bb.stochastic.rsi.strategy"
+import { StockTracker, StockTrackerModel } from "../../src/modules/Stock/models/stock.tracker.model"
+import { BrokerPlugin, OrderExecution } from "../../src/modules/Broker/plugins/broker.plugin"
+import { MockBrokerPlugin } from "../../src/modules/Broker/plugins/mock.broker.plugin"
+import { StockService } from "../../src/modules/Stock/services/stock.service"
+import { BeeService } from '../../src/modules/Stock/services/stock.tracker.service'
+import { BBStochasticRSIStrategy } from "../../src/modules/Stock/strategies/bb.stochastic.rsi.strategy"
 import { Utils } from "../../src/Utils"
 
 // TODO Test performance on AZUL4 (2019-12-27 to 2019-12-27)
