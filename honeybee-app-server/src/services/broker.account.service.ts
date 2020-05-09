@@ -3,8 +3,6 @@ import { ErrorCodes } from "../core/error.codes.d"
 import { ts } from "../core/i18n"
 import Logger from "../core/Logger"
 import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
-import { UserAccount } from "../models/user.account.model"
-import { createNewBalanceSheet } from "./balance.sheet.service"
 import { ClearHelper } from "./helpers/clear.helper"
 
 export interface BrokerHelperInterface {
@@ -26,15 +24,15 @@ export const findBrokerAccount = (id: string) => {
 /**
  *
  *
- * @param {string} userAccountId
+ * @param {string} accountId
  * @returns
  */
-export const findBrokerAccountByUser = (userAccountId: string) => {
-    return BrokerAccountModel.find({ userAccount: <any>userAccountId }).exec()
+export const findBrokerAccountByUser = (accountId: string) => {
+    return BrokerAccountModel.find({ account: accountId }).exec()
 }
 
 /**
- *
+ * FIXME
  *
  * @param {BrokerAccount} brokerAccount
  * @returns
@@ -45,7 +43,7 @@ export const createBrokerAccount = async (brokerAccount: BrokerAccount) => {
     if (helper.validateExtraData(brokerAccount)) {
         await helper.loadExtraData(brokerAccount)
         const savedAccount = await BrokerAccountModel.create(brokerAccount)
-        createNewBalanceSheet((<UserAccount>savedAccount.userAccount)._id, savedAccount._id)
+        // createNewBalanceSheet((<UserAccount>savedAccount.userAccount)._id, savedAccount._id)
         return savedAccount
     }
 }
@@ -60,6 +58,7 @@ export const createBrokerAccount = async (brokerAccount: BrokerAccount) => {
 export const updateBrokerAccountById = async (_id: string, brokerAccount: BrokerAccount) => {
     let accountDB = await BrokerAccountHelper.merge(_id, brokerAccount)
     let helper = BrokerAccountHelper.convert(accountDB.brokerCode)
+    
     validate(accountDB)
     if (helper.validateExtraData(accountDB)) {
         await helper.loadExtraData(accountDB)
@@ -75,7 +74,7 @@ export const updateBrokerAccountById = async (_id: string, brokerAccount: Broker
  * @param {BrokerAccount} brokerAccount
  */
 const validate = (brokerAccount: BrokerAccount) => {
-    if (!brokerAccount.userAccount) {
+    if (!brokerAccount.account) {
         Logger.throw(ErrorCodes.BROKER_ACCOUNT_USERACCOUNT_REQUIRED)
     }
     

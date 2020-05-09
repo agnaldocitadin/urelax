@@ -4,7 +4,7 @@ import { ErrorCodes } from "../core/error.codes.d"
 import { tsLng } from '../core/i18n'
 import Logger, { MessageError } from "../core/Logger"
 import { stockTrackerPlayground } from "../core/stock.tracker.playground"
-import { findByEmailPasswd } from "../services/user.account.service"
+import { findByEmailPassword } from "../services/profile.service"
 import { expressGraphqlConfig } from "./graphql"
 
 /**
@@ -19,7 +19,7 @@ export const registerAPI = (app: Express) => {
     app.post("/authenticate", (req, res) => {
         invoke(req, res, async () => {
             const { email, passwd, simulation } = req.body
-            const user = await findByEmailPasswd(email, passwd, simulation)
+            const user = await findByEmailPassword(email, passwd, simulation)
             if (user) {
                 res.json({ user, token: "token"})
                 return

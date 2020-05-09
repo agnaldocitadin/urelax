@@ -1,9 +1,6 @@
-import { arrayProp, instanceMethod, prop, Ref, Typegoose } from '@hasezoey/typegoose'
-import mongoose from "mongoose"
-import { BrokerAccount } from './broker.account.model'
-import { Stock } from './stock.model'
-import { StockTracker } from './stock.tracker.model'
-import { UserAccount } from './user.account.model'
+import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
+import mongoose from 'mongoose'
+import { Account } from './profile.model'
 
 export enum OrderPlatforms {
     SWINGTRADE = "SWINGTRADE",
@@ -28,130 +25,126 @@ export enum OrderStatus {
     REJECTED = "REJECTED"
 }
 
-export type Execution = {
-    priceExecuted: number
-    quantityExecuted: number
+class Execution {
+    
+    @prop({ required: true })
+    priceExecuted!: number
+
+    @prop({ required: true })
+    quantityExecuted!: number
+}
+
+class StockInfo {
+
+    @prop({ required: true })
+    symbol!: string
+    
+    @prop({ required: true })
+    type!: string
+    
+    @prop({ required: true })
+    expiresAt!: Date
 }
 
 /**
- *
+ * OK
+ * - Ordem será o mesmo modelo para todos os tipos (renda variável, fixa, etc)
+ * - Conforme o tipo de ordem criado, será instanciado o executor da ordem
  *
  * @export
  * @class Order
  * @extends {Typegoose}
  */
-export class Order extends Typegoose {
+export class Order {
 
     _id?: mongoose.Types.ObjectId
 
-    @prop({ ref: UserAccount, required: true })
-    userAccount!: Ref<UserAccount>
+    @prop({ ref: Account, required: true })
+    account!: Ref<Account>
 
-    @prop({ ref: BrokerAccount, required: true })
-    brokerAccount!: Ref<BrokerAccount>
+    @prop({ required: true, default: 0 })
+    progress!: number
 
-    @prop({ ref: StockTracker, required: true })
-    stockTracker!: Ref<StockTracker>
-    
-    @prop({ ref: Stock, required: true })
-    stock!: Ref<Stock>
-
-    @prop({ required: true, enum: OrderPlatforms })
-    platform!: string
-
-    @prop({ required: true, enum: OrderTypes })
-    type!: string
-    
-    @prop({ required: true })
-    price!: number
-    
-    @prop({ required: true })
-    quantity!: number
-    
-    @prop({ required: true, enum: OrderSides })
-    side!: string
-
-    @prop({ default: () => new Date() })
-    createdAt?: Date
-
-    @prop()
-    expiresAt?: Date
+    @prop({ required: true, enum: OrderStatus })
+    status!: string
 
     @prop()
     orderBrokerId?: string
 
-    @prop({ enum: OrderStatus })
-    status?: string
+    @prop({ required: true, default: 0 })
+    price!: number
 
-    @prop({ default: 0 })
-    progress?: number
+    @prop({ required: true, default: 0 })
+    quantity!: number
 
-    @prop()
-    updatedAt?: Date
+    @prop({ required: true, enum: OrderPlatforms })
+    platform!: string
+
+    @prop({ required: true, enum: OrderSides })
+    side!: string
 
     @prop()
     message?: string
-
-    @arrayProp({ items: Object, default: [] })
+    
+    @arrayProp({ _id: false, items: Execution })
     executions?: Execution[]
 
-    @instanceMethod
+    @prop({ _id: false })
+    stock?: StockInfo
+
+    @prop({ default: () => new Date() })
+    createdAt?: Date
+
+    @prop({ default: () => new Date() })
+    updatedAt?: Date
+
     public isBuy(): boolean {
         return this.side === OrderSides.BUY
     }
 
-    @instanceMethod
     public isSell(): boolean {
         return this.side === OrderSides.SELL
     }
     
-    @instanceMethod
     public addExecution(execution: Execution, progress: number) {
         if (!this.executions) this.executions = []
         this.executions = [...this.executions, execution]
         this.progress = progress
     }
 
-    @instanceMethod
     public isSellOrderNotRejected(): boolean {
         return this.side === OrderSides.SELL && this.status !== OrderStatus.REJECTED
     }
     
-    @instanceMethod
     public isSellOrderRejected(): boolean {
         return this.side === OrderSides.SELL && this.status === OrderStatus.REJECTED
     }
     
-    @instanceMethod
     public isBuyOrderNotRejected(): boolean {
         return this.side === OrderSides.BUY && this.status !== OrderStatus.REJECTED
     }
     
-    @instanceMethod
     public isBuyOrderRejected(): boolean {
         return this.side === OrderSides.BUY && this.status === OrderStatus.REJECTED
     }
 
-    @instanceMethod
     public getQuantityExecuted(): number {
         return this.executions.map(execution => execution.quantityExecuted).reduce((a, b) => a + b, 0)
     }
 
-    @instanceMethod
     public getExecutedPriceAverage(): number {
         let prices = this.executions.map(execution => execution.priceExecuted).reduce((a, b) => a + b, 0)
         return prices / this.executions.length
     }
 
-    @instanceMethod
     public getTotalOrder(): number {
         return this.executions.reduce((total, execution) => total + (execution.quantityExecuted * execution.priceExecuted), 0)
     }
 
 }
 
-export const OrderModel = new Order().getModelForClass(Order, {
+export const OrderModel = getModelForClass(Order, {
     schemaOptions: {
-        collection: "orders"
+        collection: "orders-test"
     }
 })

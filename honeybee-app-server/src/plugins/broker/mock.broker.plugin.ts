@@ -1,7 +1,6 @@
 import { Utils } from "../../core/Utils"
 import { Order, OrderPlatforms, OrderSides, OrderStatus } from "../../models/order.model"
 import { StockTracker } from "../../models/stock.tracker.model"
-import { UserAccount } from "../../models/user.account.model"
 import { findBalanceSheetOnCache } from "../../services/balance.sheet.service"
 import { AdapterCallbacks, BaseBrokerPlugin } from "./base.broker.plugin"
 import { OrderExecution } from "./broker.plugin"
@@ -45,7 +44,8 @@ export class MockBrokerPlugin extends BaseBrokerPlugin {
     }
     
     async totalAvailableAmount(stockTracker: StockTracker, plaftorm: OrderPlatforms, orderSide: OrderSides, symbol: string): Promise<number> {
-        const balance = (await findBalanceSheetOnCache((<UserAccount>stockTracker.userAccount)._id))[0]
+        // const balance = (await findBalanceSheetOnCache((<UserAccount>stockTracker.userAccount)._id))[0]
+        const balance = {}
         return balance.currentAmount || 0
     }
 

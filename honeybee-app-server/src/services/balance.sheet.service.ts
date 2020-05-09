@@ -5,16 +5,16 @@ import mongoose from 'mongoose'
 import schedule from "node-schedule"
 import { Logger } from "../core/Logger"
 import { percentVariation, Utils } from "../core/Utils"
-import { BalanceSheetHistory, BalanceSheetHistoryModel } from "../models/balance.sheet.history.model"
-import { BalanceSheet, BalanceSheetModel, StockSheet } from "../models/balance.sheet.model"
+// import { BalanceSheetHistory, BalanceSheetHistoryModel } from "../models/balance.sheet.history.model"
+// import { BalanceSheet, BalanceSheetModel, StockSheet } from "../models/balance.sheet.model"
 import { OrderModel, OrderSides, OrderStatus } from "../models/order.model"
-import { Stock } from "../models/stock.model"
+// import { Stock } from "../models/stock.model"
 import { StockTracker } from "../models/stock.tracker.model"
-import { UserAccount } from "../models/user.account.model"
+// import { UserAccount } from "../models/user.account.model"
 import { OrderExecution } from "../plugins/broker/broker.plugin"
 import { cache } from "./cache.service"
 import { getLastClosingPrice } from "./stock.history.service"
-import { findAllowedAccounts } from "./user.account.service"
+import { findAllowedProfiles } from "./profile.service"
 
 /**
  * 
@@ -319,7 +319,7 @@ export const createNewBalanceSheet = async (userAccount: ObjectId, brokerAccount
 const processDailyBalanceSheet = async () => {
     Logger.info("[BalanceSheetService] Daily balance sheet process has stated...")
     const now = new Date()
-    const userAccounts = await findAllowedAccounts()
+    const userAccounts = await findAllowedProfiles()
 
     Logger.info("[BalanceSheetService] Generating balances to %s accounts.", userAccounts.length)
     await Promise.all(userAccounts.map(async (userAccount) => {

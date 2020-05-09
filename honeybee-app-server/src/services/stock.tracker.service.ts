@@ -3,33 +3,28 @@ import { ErrorCodes } from '../core/error.codes.d'
 import { ts } from '../core/i18n'
 import Logger from '../core/Logger'
 import { StockTrackerFactory } from '../factories/stock.tracker.factory'
-import { StockModel } from '../models/stock.model'
+// import { StockModel } from '../models/stock.model'
 import { StockTracker, StockTrackerModel } from '../models/stock.tracker.model'
-import { UserAccount, UserAccountModel } from '../models/user.account.model'
+// import { UserAccount, UserAccountModel } from '../models/user.account.model'
 import { Investor } from '../stock-tracker/investor'
 import { StockTrackerFrequency } from '../stock-tracker/stock.tracker.frequency'
 import { StrategyNames } from '../strategies/strategy.names'
 import { onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from './activity.service'
 import { findBalanceSheetOnCache } from './balance.sheet.service'
 import { notifyStockTrackerDestroy, notifyStockTrackerPause } from './notification.service'
-import { findUserAccountById } from './user.account.service'
+import { findProfileById } from './profile.service'
 
 export const STOCK_TRACKER_STATUS_INACTIVE = [StockTrackerStatus.DESTROYED]
 export const STOCK_TRACKER_STATUS_DONT_UPDATE = [StockTrackerStatus.PAUSED].concat(STOCK_TRACKER_STATUS_INACTIVE)
 
-/**
- *
- *
- * @param {*} { userAccount, brokerAccount, stock, strategy, frequency }
- * @returns {Promise<StockTracker>}
- */
-export const createNewStockTracker = async ({ userAccount, brokerAccount, stock, strategy, frequency, stockAmountLimit, autoAmountLimit = false }: any): Promise<StockTracker> => {
 
-    const { preferences } = await findUserAccountById(userAccount)
+export const createNewStockTracker = async ({ account, brokerAccount, stock, strategy, frequency, stockAmountLimit, autoAmountLimit = false }: any): Promise<StockTracker> => {
+
+    const {  } = await findProfileById(account)
     const status = preferences.addStockTrackerPaused ? StockTrackerStatus.PAUSED : StockTrackerStatus.RUNNING
 
     const model: any = {
-        userAccount,
+        userAccount: account,
         brokerAccount,
         strategy,
         stock,
@@ -42,9 +37,8 @@ export const createNewStockTracker = async ({ userAccount, brokerAccount, stock,
     await validate(model)
     const savedTracker = await StockTrackerModel.create(model)
     const populatedTracker = await savedTracker
-        .populate("userAccount")
+        .populate("account")
         .populate("brokerAccount")
-        .populate("stock")
         .execPopulate()
         
     onStockTrackerCreated(populatedTracker)

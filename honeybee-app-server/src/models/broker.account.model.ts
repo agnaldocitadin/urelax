@@ -1,31 +1,45 @@
-import { prop, Ref, Typegoose } from '@hasezoey/typegoose'
+import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import { Brokers } from 'honeybee-api'
-import mongoose from "mongoose"
-import { UserAccount } from './user.account.model'
+import mongoose from 'mongoose'
+import { Account } from './profile.model'
 
-export type BrokerAccountExtraData = {
-    token: string
-    signature: string
-    platformUID: string
-    sessionId: string
-    cpf: string
-    passwd: string
-    birthdate: Date
+class BrokerAccountExtraData {
+
+    @prop()
+    token?: string
+
+    @prop()
+    signature?: string
+
+    @prop()
+    platformUID?: string
+
+    @prop()
+    sessionId?: string
+
+    @prop()
+    cpf?: string
+
+    @prop()
+    passwd?: string
+
+    @prop()
+    birthdate?: Date
 }
 
 /**
  *
  *
  * @export
- * @class Broker
- * @extends {Typegoose}
+ * @class BrokerAccount
+ * @extends {TimeStamps}
  */
-export class BrokerAccount extends Typegoose {
+export class BrokerAccount {
 
     _id?: mongoose.Types.ObjectId
 
-    @prop({ ref: UserAccount, required: true })
-    userAccount!: Ref<UserAccount>
+    @prop({ ref: Account, required: true })
+    account!: Ref<Account>
 
     @prop({ required: true })
     accountName!: string
@@ -33,15 +47,19 @@ export class BrokerAccount extends Typegoose {
     @prop({ required: true, enum: Brokers })
     brokerCode!: string
 
-    @prop()
+    @prop({ required: true, _id: false })
     extraData!: BrokerAccountExtraData
-    
+
     @prop({ default: () => new Date() })
     createdAt?: Date
+
+    @prop({ default: () => new Date() })
+    updatedAt?: Date
+
 }
 
-export const BrokerAccountModel = new BrokerAccount().getModelForClass(BrokerAccount, {
+export const BrokerAccountModel = getModelForClass(BrokerAccount, {
     schemaOptions: {
-        collection: "broker-accounts"
+        collection: "broker-accounts-test"
     }
 })

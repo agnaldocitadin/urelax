@@ -5,7 +5,6 @@ import { Utils } from '../core/Utils'
 import { Order, OrderModel, OrderSides, OrderStatus } from "../models/order.model"
 import { Stock } from '../models/stock.model'
 import { StockTracker } from '../models/stock.tracker.model'
-import { UserAccount } from '../models/user.account.model'
 import { OrderExecution } from "../plugins/broker/broker.plugin"
 
 const NOTIFICATION_ICON = "icon_notification"

@@ -1,7 +1,7 @@
 import { StockTrackerFactory } from "../factories/stock.tracker.factory"
 import { Investor } from "../stock-tracker/investor"
 import { buildStockTrackersFrom, findStockTrackerBy } from "./stock.tracker.service"
-import { findAllowedAccounts } from "./user.account.service"
+import { findAllowedProfiles } from "./profile.service"
 
 /**
  *
@@ -9,7 +9,7 @@ import { findAllowedAccounts } from "./user.account.service"
  * @returns {Promise<Investor[]>}
  */
 export const wakeUpInvestors = async (): Promise<Investor[]> => {
-    const accounts = await findAllowedAccounts()
+    const accounts = await findAllowedProfiles()
     const StockTrackers = await Promise.all(accounts.map(async account => await buildStockTrackersFrom(account)))
     return StockTrackers.reduce((bag, currentTracker) => bag.concat(currentTracker), [])
 }

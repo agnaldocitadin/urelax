@@ -1,34 +1,49 @@
-import { arrayProp, prop, Ref, Typegoose } from "@hasezoey/typegoose"
-import mongoose from "mongoose"
-import { UserAccount } from "./user.account.model"
+import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
+import mongoose from 'mongoose'
+import { Account } from './profile.model'
 
 export enum ActivityType {
     STOCK_TRACKER = "STOCK_TRACKER",
     USER_ACCOUNT = "USER_ACCOUNT"
 }
 
-export type ActivityDetail = {
-    title: string
-    description: string
+class Translation {
+
+    @prop({ required: true })
+    text!: string
+    
+    @arrayProp({ _id: false, items: String })
+    args?: string[]
+}
+
+class ActivityDetail {
+
+    @prop({ _id: false })
+    title?: Translation | string
+
+    @prop({ _id: false, required: true })
+    description: Translation | string
+
+    @prop({ default: true })
     hidden?: boolean
 }
 
 /**
+ * OK
  * An activity is a screenshot of a specific time. It can't change after to be created.
  *
  * @export
  * @class Activity
- * @extends {Typegoose}
  */
-export class Activity extends Typegoose {
+export class Activity {
     
     _id?: mongoose.Types.ObjectId
 
-    @prop({ ref: UserAccount, required: true })
-    userAccount!: Ref<UserAccount>
+    @prop({ ref: Account, required: true })
+    account!: Ref<Account>
 
     @prop({ required: true, enum: ActivityType })
-    activityType: string
+    activityType!: string
 
     @prop()
     ref?: string
@@ -36,19 +51,19 @@ export class Activity extends Typegoose {
     @prop({ required: true })
     icon!: string
 
-    @prop({ required: true })
-    dateTime!: Date
+    @prop({ _id: false, required: true })
+    title!: Translation
 
-    @prop({ required: true })
-    title!: string
-
-    @arrayProp({ items: Object, default: [] })
+    @arrayProp({ _id: false, items: ActivityDetail })
     details?: ActivityDetail[]
-    
+
+    @prop({ default: () => new Date() })
+    createdAt?: Date
+
 }
 
-export const ActivityModel = new Activity().getModelForClass(Activity, {
+export const ActivityModel = getModelForClass(Activity, {
     schemaOptions: {
-        collection: "activities"
+        collection: "activities-test"
     }
 })

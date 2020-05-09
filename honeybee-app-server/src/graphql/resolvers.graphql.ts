@@ -1,13 +1,13 @@
 import { ts } from "../core/i18n"
 import { stockTrackerPlayground } from "../core/stock.tracker.playground"
 import { StockTrackerFactory } from "../factories/stock.tracker.factory"
-import { findActivitiesByStockTracker, findActivitiesByUser } from "../services/activity.service"
+import { findActivitiesByStockTracker, findActivitiesByAccount } from "../services/activity.service"
 import { findAllBalanceSheetByUser, findAllBalanceSheetHistoryByUser, findBalanceSheet } from '../services/balance.sheet.service'
 import { createBrokerAccount, findBrokerAccount, findBrokerAccountByUser, updateBrokerAccountById } from "../services/broker.account.service"
 import { findAllActives, findByCode } from "../services/broker.service"
 import { findAvailables as findAvailableStocks } from "../services/stock.service"
 import { createNewStockTracker, findActivesByAccount, populateStockTrackerDependencies, runOnCreate, updateStockTrackerById } from "../services/stock.tracker.service"
-import { activateSimulationAccount, createAccount, findUserAccountById, updateAccount, updateUserPreferences } from '../services/user.account.service'
+import { activateSimulation, createProfile, findProfileById, updateAccount, updateUserPreferences } from '../services/profile.service'
 import { STFrequencyDef, StockTrackerFrequency } from "../stock-tracker/stock.tracker.frequency"
 import { StrategyNames, StrategyNamesDef } from "../strategies/strategy.names"
 
@@ -36,7 +36,7 @@ export const resolvers = {
     },
 
     fetchUserAccountQuery: ({ userAccountId }: any) => {
-        return findUserAccountById(userAccountId)
+        return findProfileById(userAccountId)
     },
 
     fetchActiveStockTrackersQuery: async ({ userAccountId }: any) => {
@@ -56,7 +56,7 @@ export const resolvers = {
     },
 
     fetchUserActivitiesQuery: ({ userAccountId, date, page, qty }: any) => {
-        return findActivitiesByUser(userAccountId, page, qty)
+        return findActivitiesByAccount(userAccountId, page, qty)
     },
 
     fetchBalanceSheet: ({ userAccountId, brokerAccountId }: any) => {
@@ -74,7 +74,7 @@ export const resolvers = {
     // Mutations
 
     createUserAccount: ({ userAccount }: any) => {
-        return createAccount(userAccount)
+        return createProfile(userAccount)
     },
 
     createBrokerAccount: ({ brokerAccount }: any) => {
@@ -109,6 +109,6 @@ export const resolvers = {
     },
 
     activateSimulationAccount: ({ userAccountId }: any) => {
-        return activateSimulationAccount(userAccountId)
+        return activateSimulation(userAccountId)
     }
 }

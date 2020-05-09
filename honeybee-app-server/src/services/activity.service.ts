@@ -2,9 +2,8 @@ import { ts } from "../core/i18n"
 import { Utils } from "../core/Utils"
 import { Activity, ActivityModel, ActivityType } from "../models/activity.model"
 import { OrderModel, OrderSides, OrderStatus } from "../models/order.model"
-import { Stock } from "../models/stock.model"
+import { Profile } from "../models/profile.model"
 import { StockTracker } from "../models/stock.tracker.model"
-import { UserAccount } from "../models/user.account.model"
 import { OrderExecution } from "../plugins/broker/broker.plugin"
 import { StockTrackerFrequency } from "../stock-tracker/stock.tracker.frequency"
 import { StrategyNames } from "../strategies/strategy.names"
@@ -23,16 +22,8 @@ enum Icons {
     CASH = "cash"
 }
 
-/**
- *
- *
- * @param {string} userAccountId
- * @param {number} page
- * @param {number} qty
- * @returns {Promise<Activity[]>}
- */
-export const findActivitiesByUser = (userAccountId: string, page: number, qty: number): Promise<Activity[]> => {
-    return ActivityModel.find({ userAccount: userAccountId })
+export const findActivitiesByAccount = (accountId: string, page: number, qty: number): Promise<Activity[]> => {
+    return ActivityModel.find({ account: accountId })
         .sort({ dateTime: "desc" })
         .skip(page * qty)
         .limit(qty)
@@ -63,7 +54,6 @@ export const findActivitiesByStockTracker = (id: string, page: number, qty: numb
  * @param {Activity} activity
  */
 const createBaseActivity = (activity: Activity) => {
-    activity.dateTime = new Date()
     ActivityModel.create(activity)
 }
 
@@ -196,40 +186,38 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
     }
 }
 
-/**
- *
- *
- * @param {UserAccount} account
- */
-export const onCreateAccount = (account: UserAccount) => {
-    const activity: any = {
+export const onCreateAccount = (profile: Profile) => {
+    const activity: Activity = {
         activityType: ActivityType.USER_ACCOUNT,
-        title: ts("account_created"),
+        title: { text: "account_created" },
         icon: Icons.ACCOUNT_CHECK,
-        userAccount: account._id,
+        account: profile._id,
         details: [
-            { title: ts("name"), description: account.name },
-            { title: ts("email"), description: account.email }
+            {
+                title: { text: "name" },
+                description: profile.name
+            },
+            {
+                title: { text: "email" },
+                description: profile.email
+            }
         ]
     }
     createBaseActivity(activity)
 }
 
-/**
- *
- *
- * @param {UserAccount} account
- */
-export const onActivateSimulationAccount = (account: UserAccount) => {
-    const activity: any = {
+export const onActivateSimulationAccount = (profile: Profile) => {
+    const activity: Activity = {
         activityType: ActivityType.USER_ACCOUNT,
-        title: ts("account_credit"),
+        title: { text: "account_credit" },
         icon: Icons.CASH,
-        userAccount: account._id,
+        account: profile.getSimulation()._id,
         details: [
             { 
-                title: undefined, 
-                description: ts("account_credit_msg", { amount: Utils.Currency.format(Number(process.env.INITIAL_SIMULATION_AMOUNT), "R$") })
+                description: { 
+                    text: "account_credit_msg", 
+                    args: [Utils.Currency.format(Number(process.env.INITIAL_SIMULATION_AMOUNT), "R$")]
+                }
             }
         ]
     }

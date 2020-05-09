@@ -1,8 +1,19 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
-import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses'
 import { TransactionType } from 'honeybee-api'
 import mongoose from 'mongoose'
-import { Account } from './account.model'
+import { Account } from './profile.model'
+
+class Transaction {
+
+    @prop({ required: true })
+    dateTime: Date
+
+    @prop({ required: true, enum: TransactionType })
+    type: string
+
+    @prop({ required: true })
+    value: number
+}
 
 /**
  * OK
@@ -11,34 +22,28 @@ import { Account } from './account.model'
  * @class FinancialHistory
  * @extends {Typegoose}
  */
-export class FinancialHistory extends TimeStamps {
+export class FinancialHistory {
 
     _id?: mongoose.Types.ObjectId
 
     @prop({ required: true })
     date!: Date
 
-    @prop({ ref: "Account", required: true })
+    @prop({ ref: Account, required: true })
     acount!: Ref<Account>
 
-    @arrayProp({ items: "Transaction", default: [] })
-    transactions: Transaction[]
+    @arrayProp({ _id: false, items: Transaction })
+    transactions?: Transaction[]
 
     @prop({ required: true })
     locked!: boolean
 
-}
+    @prop({ default: () => new Date() })
+    createdAt?: Date
 
-class Transaction {
+    @prop({ default: () => new Date() })
+    updatedAt?: Date
 
-    @prop({ required: true })
-    dateTime: Date
-
-    @prop({ required: true, enum: TransactionType })
-    type: TransactionType
-
-    @prop({ required: true })
-    value: number
 }
 
 export const FinancialHistoryModel = getModelForClass(FinancialHistory, {
