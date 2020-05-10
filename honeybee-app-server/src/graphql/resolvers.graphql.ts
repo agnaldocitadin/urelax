@@ -1,5 +1,5 @@
 import { ts } from "../core/i18n"
-import { stockTrackerPlayground } from "../core/stock.tracker.playground"
+import { stockTrackerPlayground } from "../modules/Stock/tracker/stock.tracker.playground"
 import { StockTrackerFactory } from "../modules/Stock/tracker/stock.tracker.factory"
 import { findActivitiesByStockTracker, findActivitiesByAccount } from "../modules/Activity/services/activity.service"
 import { findAllBalanceSheetByUser, findAllBalanceSheetHistoryByUser, findBalanceSheet } from '../services/balance.sheet.service'

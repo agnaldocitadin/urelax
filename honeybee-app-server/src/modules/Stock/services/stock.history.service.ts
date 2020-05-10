@@ -1,5 +1,5 @@
 import { set } from 'date-fns'
-import { ErrorCodes } from '../../../core/error.codes'
+import { ErrorCodes } from '../../../core/error.codes.d'
 import { ts } from '../../../core/i18n'
 import Logger from '../../../core/Logger'
 import { STFrequencyDef } from '../tracker/stock.tracker.frequency'

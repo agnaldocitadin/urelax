@@ -6,13 +6,13 @@ import fs from 'fs'
 import { ServerOptions } from 'https'
 import { version } from '../../package.json'
 import Auth from '../authentication/Auth'
-import { connectDB } from '../db/mongo'
 import { PluginFactory } from '../modules/Broker/plugins/plugin.factory'
+import Module from '../modules/Module'
 import { StrategyFactory } from '../modules/Stock/strategies/strategy.factory'
+import { stockTrackerPlayground } from '../modules/Stock/tracker/stock.tracker.playground'
 import { scheduleBalanceProcessor } from '../services/balance.sheet.service'
 import './i18n'
 import Logger from './Logger'
-import { stockTrackerPlayground } from './stock.tracker.playground'
 import { stockWatcher } from './stock.watcher'
 
 /**
@@ -30,8 +30,8 @@ class HoneycombServer {
         this.app = express()
         
         this.httpsOptions = {
-            key: fs.readFileSync("./src/ssl/server.key"),
-            cert: fs.readFileSync("./src/ssl/server.cert")
+            key: fs.readFileSync("./src/modules/Security/ssl/server.key"),
+            cert: fs.readFileSync("./src/modules/Security/ssl/server.cert")
         }
 
         process.on("unhandledRejection", (error: Error) => Logger.print(error, Logger.error, "[unhandledRejection]"))
@@ -58,10 +58,15 @@ class HoneycombServer {
     private async init(): Promise<void> {
         // this.configure()
         // await this.initFactories()
-        await connectDB()
+        // await connectDB()
         // registerAPI(this.app)
         // initFirebaseConfiguration()
         // this.registerSchedules()
+        
+        Logger.info("Loading modules...")
+        const modules = await Module.register()
+        await Module.initModules(modules)
+        
     }
 
     /**

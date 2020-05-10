@@ -1,11 +1,11 @@
 import cronstrue from 'cronstrue'
 import { StockTrackerStatus } from 'honeybee-api'
 import schedule from 'node-schedule'
-import { StockTracker } from '../modules/Stock/models/stock.tracker.model'
-import { wakeUpInvestor, wakeUpInvestors } from '../modules/Stock/services/startup.service'
-import { STOCK_TRACKER_STATUS_INACTIVE } from "../modules/Stock/services/stock.tracker.service"
-import { Investor } from '../modules/Stock/tracker/investor'
-import Logger from './Logger'
+import { StockTracker } from '../models/stock.tracker.model'
+import { wakeUpInvestor, wakeUpInvestors } from '../services/startup.service'
+import { STOCK_TRACKER_STATUS_INACTIVE } from "../services/stock.tracker.service"
+import { Investor } from './investor'
+import Logger from '../../../core/Logger'
 
 const PLAYGROUND_TICK = 60000
 

@@ -1,5 +1,5 @@
 import { StockTrackerStatus } from 'honeybee-api'
-import { ErrorCodes } from '../../../core/error.codes'
+import { ErrorCodes } from '../../../core/error.codes.d'
 import { ts } from '../../../core/i18n'
 import Logger from '../../../core/Logger'
 import { StockTrackerFactory } from '../tracker/stock.tracker.factory'

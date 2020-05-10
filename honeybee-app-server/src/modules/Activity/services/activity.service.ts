@@ -4,8 +4,8 @@ import { OrderExecution } from "../../Broker/plugins/broker.plugin"
 import { Profile } from "../../Identity/models/profile.model"
 import { OrderModel, OrderSides, OrderStatus } from "../../Order/models/order.model"
 import { StockTracker } from "../../Stock/models/stock.tracker.model"
-import { StockTrackerFrequency } from "../../Stock/tracker/stock.tracker.frequency"
 import { StrategyNames } from "../../Stock/strategies/strategy.names"
+import { StockTrackerFrequency } from "../../Stock/tracker/stock.tracker.frequency"
 import { Activity, ActivityModel, ActivityType } from "../models/activity.model"
 
 enum Icons {
@@ -22,12 +22,20 @@ enum Icons {
     CASH = "cash"
 }
 
+/**
+ *
+ *
+ * @param {string} accountId
+ * @param {number} page
+ * @param {number} qty
+ * @returns {Promise<Activity[]>}
+ */
 export const findActivitiesByAccount = (accountId: string, page: number, qty: number): Promise<Activity[]> => {
     return ActivityModel.find({ account: accountId })
         .sort({ dateTime: "desc" })
         .skip(page * qty)
         .limit(qty)
-        .populate("userAccount")
+        .populate("account")
         .exec()
 }
 
@@ -44,7 +52,7 @@ export const findActivitiesByStockTracker = (id: string, page: number, qty: numb
         .sort({ dateTime: "desc" })
         .skip(page * qty)
         .limit(qty)
-        .populate("userAccount")
+        .populate("account")
         .exec()
 }
 
@@ -186,6 +194,11 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
     }
 }
 
+/**
+ *
+ *
+ * @param {Profile} profile
+ */
 export const onCreateAccount = (profile: Profile) => {
     const activity: Activity = {
         activityType: ActivityType.USER_ACCOUNT,
@@ -206,6 +219,11 @@ export const onCreateAccount = (profile: Profile) => {
     createBaseActivity(activity)
 }
 
+/**
+ *
+ *
+ * @param {Profile} profile
+ */
 export const onActivateSimulationAccount = (profile: Profile) => {
     const activity: Activity = {
         activityType: ActivityType.USER_ACCOUNT,

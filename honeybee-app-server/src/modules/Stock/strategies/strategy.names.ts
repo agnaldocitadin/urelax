@@ -1,4 +1,4 @@
-import { ErrorCodes } from "../../../core/error.codes"
+import { ErrorCodes } from "../../../core/error.codes.d"
 import Logger from "../../../core/Logger"
 
 export type StrategyNamesDef = { _id: string, file: string, impl: string }

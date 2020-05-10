@@ -1,10 +1,10 @@
 import protobufjs from 'protobufjs'
-import { ErrorCodes } from '../../../../core/error.codes'
+import { ErrorCodes } from '../../../../core/error.codes.d'
 import { ts } from '../../../../core/i18n'
 import Logger from '../../../../core/Logger'
 import { OrderStatus } from '../../../Order/models/order.model'
 
-const builder = protobufjs.loadSync("./src/plugins/broker/clear/Contract.proto")
+const builder = protobufjs.loadSync("./src/modules/Broker/plugins/clear/Contract.proto")
 const GUIID = "5edc1089-b9e5-4125-8548-b6ad6741c414"
 
 export const ClearEnums = {

@@ -3,7 +3,7 @@ import { APIError, Locales } from 'honeybee-api'
 import { ErrorCodes } from "../core/error.codes.d"
 import { tsLng } from '../core/i18n'
 import Logger, { MessageError } from "../core/Logger"
-import { stockTrackerPlayground } from "../core/stock.tracker.playground"
+import { stockTrackerPlayground } from "../modules/Stock/tracker/stock.tracker.playground"
 import { findByEmailPassword } from "../modules/Identity/services/profile.service"
 import { expressGraphqlConfig } from "./graphql"
 

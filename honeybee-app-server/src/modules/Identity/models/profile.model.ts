@@ -14,6 +14,21 @@ export class Device {
     active: boolean
 }
 
+export class Preferences {
+
+    @prop({ required: true, enum: Locales })
+    language: string
+    
+    @prop({ required: true })
+    receiveTradeNotification: boolean
+    
+    @prop({ required: true })
+    receiveBalanceNotification: boolean
+    
+    @prop({ required: true })
+    addStockTrackerPaused: boolean
+}
+
 export class Account {
 
     _id?: mongoose.Types.ObjectId
@@ -33,21 +48,6 @@ export class Account {
     public getActiveDevice?(): Device {
         return this.devices.find(device => device.active)
     }
-}
-
-export class Preferences {
-
-    @prop({ required: true, enum: Locales })
-    language: string
-    
-    @prop({ required: true })
-    receiveTradeNotification: boolean
-    
-    @prop({ required: true })
-    receiveBalanceNotification: boolean
-    
-    @prop({ required: true })
-    addStockTrackerPaused: boolean
 }
 
 /**
