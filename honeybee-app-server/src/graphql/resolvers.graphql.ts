@@ -1,6 +1,6 @@
 import { ts } from "../core/i18n"
-import { stockTrackerPlayground } from "../modules/Stock/tracker/stock.tracker.playground"
-import { StockTrackerFactory } from "../modules/Stock/tracker/stock.tracker.factory"
+import { stockTrackerPlayground } from "../modules/Stock/trackers/stock.tracker.playground"
+import { StockTrackerFactory } from "../modules/Stock/trackers/stock.tracker.factory"
 import { findActivitiesByStockTracker, findActivitiesByAccount } from "../modules/Activity/services/activity.service"
 import { findAllBalanceSheetByUser, findAllBalanceSheetHistoryByUser, findBalanceSheet } from '../services/balance.sheet.service'
 import { createBrokerAccount, findBrokerAccount, findBrokerAccountByUser, updateBrokerAccountById } from "../modules/Broker/services/broker.account.service"
@@ -8,7 +8,7 @@ import { findAllActives, findByCode } from "../modules/Broker/services/broker.se
 import { findAvailables as findAvailableStocks } from "../modules/Stock/services/stock.service"
 import { createNewStockTracker, findActivesByAccount, populateStockTrackerDependencies, runOnCreate, updateStockTrackerById } from "../modules/Stock/services/stock.tracker.service"
 import { activateSimulation, createProfile, findProfileById, updateAccount, updateUserPreferences } from '../modules/Identity/services/profile.service'
-import { STFrequencyDef, StockTrackerFrequency } from "../modules/Stock/tracker/stock.tracker.frequency"
+import { STFrequencyDef, StockTrackerFrequency } from "../modules/Stock/trackers/stock.tracker.frequency"
 import { StrategyNames, StrategyNamesDef } from "../modules/Stock/strategies/strategy.names"
 
 export const resolvers = {

@@ -1,7 +1,7 @@
 {
     "name": "honeybeeappserver",
     "version": "1.0.0-betha",
-    "main": "honeycomb.server.ts",
+    "main": "server.entrypoint.ts",
     "license": "MIT",
     "devDependencies": {
         "@babel/core": "^7.6.0",
@@ -39,8 +39,8 @@
     },
     "scripts": {
         "webpack": "webpack -w --mode development",
-        "nodewatch": "SET \"NODE_ENV=development\" & nodemon --inspect ./dist/honeycomb.server.js",
-        "standalone": "SET \"NODE_ENV=development\" & node ./dist/honeycomb.server.js",
+        "nodewatch": "SET \"NODE_ENV=development\" & nodemon --inspect ./dist/server.entrypoint.js",
+        "standalone": "SET \"NODE_ENV=development\" & node ./dist/server.entrypoint.js",
         "startdb": "mongod --quiet -dbpath D:\\development\\MongoDB\\Server\\4.0\\data",
         "backupdb": "mongodump --host=localhost:27017 --db=honeybee --verbose --out ./dist/",
         "restoredb": "mongorestore --host=localhost:27017 --db=honeybee --verbose ./dist/investing-bot/",

@@ -5,7 +5,7 @@ import { Profile } from "../../Identity/models/profile.model"
 import { OrderModel, OrderSides, OrderStatus } from "../../Order/models/order.model"
 import { StockTracker } from "../../Stock/models/stock.tracker.model"
 import { StrategyNames } from "../../Stock/strategies/strategy.names"
-import { StockTrackerFrequency } from "../../Stock/tracker/stock.tracker.frequency"
+import { StockTrackerFrequency } from "../../Stock/trackers/stock.tracker.frequency"
 import { Activity, ActivityModel, ActivityType } from "../models/activity.model"
 
 enum Icons {

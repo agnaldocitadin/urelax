@@ -5,7 +5,7 @@ import { BrokerAccount } from '../../Broker/models/broker.account.model'
 import { StockInfo } from '../../Broker/models/broker.model'
 import { Account } from '../../Identity/models/profile.model'
 import { StrategyNames } from '../strategies/strategy.names'
-import { STFrequencyDef, StockTrackerFrequency } from '../tracker/stock.tracker.frequency'
+import { STFrequencyDef, StockTrackerFrequency } from '../trackers/stock.tracker.frequency'
 
 class StrategySetting {
     

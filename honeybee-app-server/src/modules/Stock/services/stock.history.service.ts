@@ -2,7 +2,7 @@ import { set } from 'date-fns'
 import { ErrorCodes } from '../../../core/error.codes.d'
 import { ts } from '../../../core/i18n'
 import Logger from '../../../core/Logger'
-import { STFrequencyDef } from '../tracker/stock.tracker.frequency'
+import { STFrequencyDef } from '../trackers/stock.tracker.frequency'
 import { PredictionData } from '../strategies/investiment.strategy'
 import { StockHistory, StockHistoryModel } from '../models/stock.history.model'
 

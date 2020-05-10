@@ -4,13 +4,13 @@ const nodeExternals = require('webpack-node-externals')
 module.exports = {
     mode: process.env.NODE_ENV || "development",
     entry: {
-        server: './src/core/honeycomb.server.ts'
+        server: './src/core/server.entrypoint.ts'
     },
     devtool: 'eval-source-map',
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/',
-        filename: 'honeycomb.server.js'
+        filename: 'server.entrypoint.js'
     },
     target: 'node',
     node: {

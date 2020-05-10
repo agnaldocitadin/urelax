@@ -1,11 +1,11 @@
 import cronstrue from 'cronstrue'
 import { StockTrackerStatus } from 'honeybee-api'
 import schedule from 'node-schedule'
+import Logger from '../../../core/Logger'
 import { StockTracker } from '../models/stock.tracker.model'
 import { wakeUpInvestor, wakeUpInvestors } from '../services/startup.service'
 import { STOCK_TRACKER_STATUS_INACTIVE } from "../services/stock.tracker.service"
 import { Investor } from './investor'
-import Logger from '../../../core/Logger'
 
 const PLAYGROUND_TICK = 60000
 
@@ -43,8 +43,8 @@ class StockTrackerPlayground {
      */
     schedule(): void {
         if (process.env.STOCKTRACKER_PLAYGROUND_ACTIVE) {
-            Logger.info("[> StockTracker playground] is going to START at {%s}", cronstrue.toString(process.env.STOCKTRACKER_PLAYGROUND_START))
-            Logger.info("[< StockTracker playground] is going to STOP at {%s}", cronstrue.toString(process.env.STOCKTRACKER_PLAYGROUND_STOP))
+            Logger.info("StockTracker playground # STARTS: %s", cronstrue.toString(process.env.STOCKTRACKER_PLAYGROUND_START))
+            Logger.info("StockTracker playground # STOPS: %s", cronstrue.toString(process.env.STOCKTRACKER_PLAYGROUND_STOP))
             schedule.scheduleJob(process.env.STOCKTRACKER_PLAYGROUND_START, () => this.start())
             schedule.scheduleJob(process.env.STOCKTRACKER_PLAYGROUND_STOP, () => this.stop())
         }

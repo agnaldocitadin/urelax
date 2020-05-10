@@ -1,5 +1,5 @@
-import { StockTrackerFactory } from "../tracker/stock.tracker.factory"
-import { Investor } from "../tracker/investor"
+import { StockTrackerFactory } from "../trackers/stock.tracker.factory"
+import { Investor } from "../trackers/investor"
 import { buildStockTrackersFrom, findStockTrackerBy } from "./stock.tracker.service"
 import { findAllowedProfiles } from "../../Identity/services/profile.service"
 

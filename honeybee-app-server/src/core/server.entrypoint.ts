@@ -5,22 +5,18 @@ import express, { Express } from 'express'
 import fs from 'fs'
 import { ServerOptions } from 'https'
 import { version } from '../../package.json'
+import { registerAPI } from '../api/API'
 import Auth from '../authentication/Auth'
-import { PluginFactory } from '../modules/Broker/plugins/plugin.factory'
 import Module from '../modules/Module'
-import { StrategyFactory } from '../modules/Stock/strategies/strategy.factory'
-import { stockTrackerPlayground } from '../modules/Stock/tracker/stock.tracker.playground'
-import { scheduleBalanceProcessor } from '../services/balance.sheet.service'
 import './i18n'
 import Logger from './Logger'
-import { stockWatcher } from './stock.watcher'
 
 /**
  *
  *
  * @class InvestingBotServer
  */
-class HoneycombServer {
+class ServerEntryPoint {
 
     app: Express
     httpsOptions: ServerOptions
@@ -45,7 +41,7 @@ class HoneycombServer {
      * @memberof Server
      */
     static run() {
-        new HoneycombServer().start()
+        new ServerEntryPoint().start()
     }
     
     /**
@@ -56,53 +52,15 @@ class HoneycombServer {
      * @memberof Server
      */
     private async init(): Promise<void> {
-        // this.configure()
-        // await this.initFactories()
-        // await connectDB()
-        // registerAPI(this.app)
-        // initFirebaseConfiguration()
-        // this.registerSchedules()
-        
-        Logger.info("Loading modules...")
-        const modules = await Module.register()
-        await Module.initModules(modules)
-        
-    }
-
-    /**
-     *
-     *
-     * @private
-     * @memberof HoneycombServer
-     */
-    private registerSchedules() {
-        stockTrackerPlayground.schedule()
-        stockWatcher.schedule()
-        scheduleBalanceProcessor()
-    }
-
-    /**
-     *
-     *
-     * @private
-     * @memberof Server
-     */
-    private configure(): void {
         this.app.use(Auth)
         this.app.use(bodyParser.json())
         this.app.use(compression())
         Logger.info("Http body parser: %s", "body-parser[JSON]")
-    }
-
-    /**
-     *
-     *
-     * @private
-     * @memberof Server
-     */
-    private async initFactories(): Promise<void> {
-        await PluginFactory.init()
-        await StrategyFactory.init()
+        registerAPI(this.app) // put it in a specific module
+        Logger.info("Loading modules...")
+        const modules = await Module.register()
+        await Module.initModules(modules, this.app)
+        
     }
 
     /**
@@ -133,11 +91,11 @@ class HoneycombServer {
     async start(): Promise<void> {
         this.logServerConfs()
         await this.init()
-        // const hostname = process.env.HOST_ADDRESS
-        // const port = Number.parseInt(process.env.PORT)
-        // this.app.listen(port, hostname, () => Logger.info(`Host:[${hostname}:${port}] Server started successfully.`))
+        const hostname = process.env.HOST_ADDRESS
+        const port = Number.parseInt(process.env.PORT)
+        this.app.listen(port, hostname, () => Logger.info(`Host:[${hostname}:${port}] Server started successfully.`))
         // https.createServer(this.httpsOptions, this.app).listen(3002, "0.0.0.0", () => Logger.info("Server started. Host:[0.0.0.0:3002]"))
     }
 }
 
-HoneycombServer.run()
+ServerEntryPoint.run()

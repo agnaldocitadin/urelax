@@ -1,9 +1,9 @@
 import cronstrue from 'cronstrue'
 import schedule from 'node-schedule'
-import { ClearStockUpdater } from "../modules/Stock/plugins/clear.stock.updater"
-import { StockUpdaterPlugin } from '../modules/Stock/plugins/stock.updater.plugin'
-import { findAvailables } from '../modules/Stock/services/stock.service'
-import Logger from './Logger'
+import Logger from '../../../core/Logger'
+import { findAvailables } from '../services/stock.service'
+import { ClearStockUpdater } from "./clear.stock.updater"
+import { StockUpdaterPlugin } from './stock.updater.plugin'
 
 const STOCK_UPDATER_IMPL = ClearStockUpdater
 
@@ -40,8 +40,8 @@ class StockWatcher {
      */
     schedule(): void {
         if (process.env.STOCKWATCHER_ACTIVE === "true") {
-            Logger.info("[> StockWatcher] is going to START at {%s}", cronstrue.toString(process.env.STOCKWATCHER_START))
-            Logger.info("[< StockWatcher] is going to STOP at {%s}", cronstrue.toString(process.env.STOCKWATCHER_STOP))
+            Logger.info("StockWatcher # STARTS: %s", cronstrue.toString(process.env.STOCKWATCHER_START))
+            Logger.info("StockWatcher # STOPs: %s", cronstrue.toString(process.env.STOCKWATCHER_STOP))
             schedule.scheduleJob(process.env.STOCKWATCHER_START, () => this.start())
             schedule.scheduleJob(process.env.STOCKWATCHER_STOP, () => this.stop())
         }
