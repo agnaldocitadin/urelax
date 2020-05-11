@@ -2,8 +2,8 @@ import { Brokers } from "honeybee-api"
 import { ErrorCodes } from "../../../core/error.codes"
 import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
-import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
 import { ClearHelper } from "../helpers/clear.helper"
+import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
 
 export interface BrokerHelperInterface {
     code: Brokers
@@ -42,9 +42,7 @@ export const createBrokerAccount = async (brokerAccount: BrokerAccount) => {
     validate(brokerAccount)
     if (helper.validateExtraData(brokerAccount)) {
         await helper.loadExtraData(brokerAccount)
-        const savedAccount = await BrokerAccountModel.create(brokerAccount)
-        // createNewBalanceSheet((<UserAccount>savedAccount.userAccount)._id, savedAccount._id)
-        return savedAccount
+        return BrokerAccountModel.create(brokerAccount)
     }
 }
 

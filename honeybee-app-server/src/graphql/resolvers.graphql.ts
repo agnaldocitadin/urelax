@@ -1,22 +1,18 @@
 import { ts } from "../core/i18n"
-import { stockTrackerPlayground } from "../modules/Stock/trackers/stock.tracker.playground"
-import { StockTrackerFactory } from "../modules/Stock/trackers/stock.tracker.factory"
-import { findActivitiesByStockTracker, findActivitiesByAccount } from "../modules/Activity/services/activity.service"
-import { findAllBalanceSheetByUser, findAllBalanceSheetHistoryByUser, findBalanceSheet } from '../services/balance.sheet.service'
-import { createBrokerAccount, findBrokerAccount, findBrokerAccountByUser, updateBrokerAccountById } from "../modules/Broker/services/broker.account.service"
-import { findAllActives, findByCode } from "../modules/Broker/services/broker.service"
-import { findAvailables as findAvailableStocks } from "../modules/Stock/services/stock.service"
-import { createNewStockTracker, findActivesByAccount, populateStockTrackerDependencies, runOnCreate, updateStockTrackerById } from "../modules/Stock/services/stock.tracker.service"
-import { activateSimulation, createProfile, findProfileById, updateAccount, updateUserPreferences } from '../modules/Identity/services/profile.service'
-import { STFrequencyDef, StockTrackerFrequency } from "../modules/Stock/trackers/stock.tracker.frequency"
-import { StrategyNames, StrategyNamesDef } from "../modules/Stock/strategies/strategy.names"
+import { findActivitiesByAccount, findActivitiesByStockTracker } from "../modules/Activity/services"
+import { createBrokerAccount, findAllActives, findBrokerAccount, findBrokerAccountByUser, findByCode, updateBrokerAccountById } from "../modules/Broker/services"
+import { activateSimulation, createProfile, findProfileById, updateAccount } from "../modules/Identity/services"
+import { createNewStockTracker, findActivesByAccount, runOnCreate, updateStockTrackerById } from "../modules/Stock/services"
+import { StrategyNames, StrategyNamesDef } from "../modules/Stock/strategies"
+import { STFrequencyDef, StockTrackerFactory, StockTrackerFrequency, stockTrackerPlayground } from "../modules/Stock/trackers"
+
 
 export const resolvers = {
 
     // Queries
 
     fetchAvailableSymbols: () => {
-        return findAvailableStocks()
+        // return findAvailableStocks()
     },
 
     fetchAvailableStrategies: () => {
@@ -60,15 +56,15 @@ export const resolvers = {
     },
 
     fetchBalanceSheet: ({ userAccountId, brokerAccountId }: any) => {
-        return findBalanceSheet(userAccountId, brokerAccountId)
+        // return findBalanceSheet(userAccountId, brokerAccountId)
     },
 
     fetchBalanceSheetByUserQuery: ({ userAccountId }: any) => {
-        return findAllBalanceSheetByUser(userAccountId)
+        // return findAllBalanceSheetByUser(userAccountId)
     },
 
     fetchBalanceSheetHistoriesByUserQuery: ({ userAccountId, date, page, qty, groupBy }: any) => {
-        return findAllBalanceSheetHistoryByUser(userAccountId, new Date(date), page, qty, groupBy)
+        // return findAllBalanceSheetHistoryByUser(userAccountId, new Date(date), page, qty, groupBy)
     },
 
     // Mutations
@@ -87,7 +83,7 @@ export const resolvers = {
             let investor = StockTrackerFactory.create(model)
             stockTrackerPlayground.addInvestor(investor)
         }
-        return populateStockTrackerDependencies(model)
+        return model
     },
 
     updateUserAccount: ({ _id, userAccount }: any) => {
@@ -95,7 +91,7 @@ export const resolvers = {
     },
 
     updateUserPreferences: ({ _id, preferences }: any) => {
-        return updateUserPreferences(_id, preferences)
+        // return updateUserPreferences(_id, preferences)
     },
 
     updateBrokerAccount: ({ _id, brokerAccount }: any) => {
@@ -111,4 +107,5 @@ export const resolvers = {
     activateSimulationAccount: ({ userAccountId }: any) => {
         return activateSimulation(userAccountId)
     }
+    
 }

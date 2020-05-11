@@ -11,7 +11,6 @@ const register = () => {
     return Promise.all(fs.readdirSync('./src/modules').map(async (file) => {
         if (!file.endsWith(".js") && !file.endsWith(".ts")) {
             const module = require('./' + file)
-            // const module = {}
             Logger.info(`- ${file.toUpperCase()} module loaded successfully.`)
             return module
         }
