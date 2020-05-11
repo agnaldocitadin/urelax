@@ -1,39 +1,24 @@
-import { StockTrackerStatus } from 'honeybee-api'
-import { ErrorCodes } from '../../../core/error.codes'
-import { ts } from '../../../core/i18n'
-import Logger from '../../../core/Logger'
-import { StockTrackerFactory } from '../trackers/stock.tracker.factory'
-// import { StockModel } from '../models/stock.model'
-import { StockTracker, StockTrackerModel } from '../models/stock.tracker.model'
-// import { UserAccount, UserAccountModel } from '../models/user.account.model'
-import { Investor } from '../trackers/investor'
-import { StockTrackerFrequency } from '../trackers/stock.tracker.frequency'
-import { StrategyNames } from '../strategies/strategy.names'
-import { onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from '../../Activity/services/activity.service'
-import { findBalanceSheetOnCache } from '../../../services/balance.sheet.service'
-import { notifyStockTrackerDestroy, notifyStockTrackerPause } from '../../Notification/notification.service'
-import { findProfileById } from '../../Identity/services/profile.service'
+import { StockTrackerStatus } from "honeybee-api"
+import { onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
+import { Account } from "../../Identity/models"
+import { notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
+import { Order, OrderStatus } from "../../Order/models"
+import { makeBaseOrder } from "../../Order/services"
+import { StockTracker, StockTrackerModel } from "../models"
+import { PredictionResult } from "../strategies"
+import { Investor, StockTrackerFactory } from "../trackers"
 
 export const STOCK_TRACKER_STATUS_INACTIVE = [StockTrackerStatus.DESTROYED]
 export const STOCK_TRACKER_STATUS_DONT_UPDATE = [StockTrackerStatus.PAUSED].concat(STOCK_TRACKER_STATUS_INACTIVE)
 
 
-export const createNewStockTracker = async ({ account, brokerAccount, stock, strategy, frequency, stockAmountLimit, autoAmountLimit = false }: any): Promise<StockTracker> => {
-
-    const {  } = await findProfileById(account)
-    const status = preferences.addStockTrackerPaused ? StockTrackerStatus.PAUSED : StockTrackerStatus.RUNNING
-
-    const model: any = {
-        userAccount: account,
-        brokerAccount,
-        strategy,
-        stock,
-        status,
-        frequency,
-        stockAmountLimit,
-        autoAmountLimit
-    }
-
+/**
+ *
+ *
+ * @param {StockTracker} model
+ * @returns {Promise<StockTracker>}
+ */
+export const createNewStockTracker = async (model: StockTracker): Promise<StockTracker> => {
     await validate(model)
     const savedTracker = await StockTrackerModel.create(model)
     const populatedTracker = await savedTracker
@@ -52,25 +37,68 @@ export const createNewStockTracker = async ({ account, brokerAccount, stock, str
  * @returns {Promise<void>}
  */
 const validate = async (stockTracker: StockTracker): Promise<void> => {
-    const stockModel = await StockModel.findById(stockTracker.stock).exec()
-    if (!stockModel) {
-        Logger.throw(ErrorCodes.STOCK_TRACKER_SYMBOL_NOT_FOUND, ts("stock_tracker_symbol_not_found", { symbol: stockTracker.stock }))
+    // const stockModel = {} //await StockModel.findById(stockTracker.stock).exec()
+
+    // if (!stockModel) {
+    //     Logger.throw(ErrorCodes.STOCK_TRACKER_SYMBOL_NOT_FOUND, ts("stock_tracker_symbol_not_found", { symbol: stockTracker.stock }))
+    // }
+
+    // const userAccountModel = await UserAccountModel.findById(stockTracker.userAccount).exec()
+    // if (!userAccountModel) {
+    //     Logger.throw(ErrorCodes.STOCK_TRACKER_ACCOUNT_NOT_FOUND, ts("stock_tracker_account_not_found", { id: stockTracker.userAccount }))
+    // }
+
+    // if (!Object.keys(StrategyNames).includes(stockTracker.strategy)) {
+    //     Logger.throw(ErrorCodes.STOCK_TRACKER_STRATEGY_NOT_FOUND, ts("stock_tracker_strategy_not_found", { code: stockTracker.strategy }))
+    // }
+
+    // if (!Object.keys(StockTrackerStatus).includes(stockTracker.status)) {
+    //     Logger.throw(ErrorCodes.STOCK_TRACKER_STATUS_NOT_FOUND, ts("stock_tracker_status_not_found", { status: stockTracker.status }))
+    // }
+
+    // StockTrackerFrequency.convert(stockTracker.frequency)
+}
+
+/**
+ *
+ *
+ * @param {StockTracker} stockTracker
+ * @param {PredictionResult} { 
+ *     platform, 
+ *     orderType, 
+ *     orderSide, 
+ *     quantity, 
+ *     price, 
+ *     expiresAt 
+ * }
+ * @returns {Promise<Order>}
+ */
+export const makeStockOrder = async (stockTracker: StockTracker, { 
+    platform, 
+    orderType, 
+    orderSide, 
+    quantity, 
+    price, 
+    expiresAt 
+}: PredictionResult): Promise<Order> => {
+    
+    const order: Order = {
+        account: stockTracker.account,
+        stock: {
+            symbol: stockTracker.stockInfo.symbol,
+            type: orderType,
+            expiresAt
+        },
+        platform: platform,
+        price: price,
+        quantity: quantity,
+        side: orderSide,
+        progress: 0,
+        status: OrderStatus.NEW,
+        createdAt: new Date()
     }
 
-    const userAccountModel = await UserAccountModel.findById(stockTracker.userAccount).exec()
-    if (!userAccountModel) {
-        Logger.throw(ErrorCodes.STOCK_TRACKER_ACCOUNT_NOT_FOUND, ts("stock_tracker_account_not_found", { id: stockTracker.userAccount }))
-    }
-
-    if (!Object.keys(StrategyNames).includes(stockTracker.strategy)) {
-        Logger.throw(ErrorCodes.STOCK_TRACKER_STRATEGY_NOT_FOUND, ts("stock_tracker_strategy_not_found", { code: stockTracker.strategy }))
-    }
-
-    if (!Object.keys(StockTrackerStatus).includes(stockTracker.status)) {
-        Logger.throw(ErrorCodes.STOCK_TRACKER_STATUS_NOT_FOUND, ts("stock_tracker_status_not_found", { status: stockTracker.status }))
-    }
-
-    StockTrackerFrequency.convert(stockTracker.frequency)
+    return makeBaseOrder(order)
 }
 
 /**
@@ -79,11 +107,9 @@ const validate = async (stockTracker: StockTracker): Promise<void> => {
  * @param {UserAccount} userAccount
  * @returns {Promise<Investor[]>}
  */
-export const buildStockTrackersFrom = async (userAccount: UserAccount): Promise<Investor[]> => {
-    return (await StockTrackerModel.find({ userAccount, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }})
-        .populate("userAccount")
-        .populate("stock"))
-        .map(model => StockTrackerFactory.create(model))
+export const buildStockTrackersFrom = async (account: Account): Promise<Investor[]> => {
+    let trackers = await StockTrackerModel.find({ account, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }}).populate("account").exec()
+    return trackers.map(model => StockTrackerFactory.create(model))
 }
 
 /**
@@ -104,39 +130,38 @@ export const findActivesByAccount = (accountId: string): Promise<StockTracker[]>
  * @returns {Promise<StockTracker[]>}
  */
 const findStockTrackerToGraphql = async (filter: any): Promise<StockTracker[]> => {
-    const stockTrackers: any[] = await StockTrackerModel.find(filter)
-        .populate("userAccount")
+    return StockTrackerModel.find(filter)
+        .populate("account")
         .populate("brokerAccount")
-        .populate("stock")
         .sort({ "createdAt": "desc" })
-    return stockTrackers.map(tracker => populateStockTrackerDependencies(tracker))
+        .exec()
 }
 
-/**
- *
- *
- * @param {(StockTracker|any)} stockTracker
- * @returns {StockTracker}
- */
-export const populateStockTrackerDependencies = (stockTracker: StockTracker|any): StockTracker => {
-    let doc = Object.assign({}, stockTracker._doc)
-    let strategy = StrategyNames.convert(stockTracker.strategy)
-    let frequency = StockTrackerFrequency.convert(stockTracker.frequency)
+// /**
+//  *
+//  *
+//  * @param {(StockTracker|any)} stockTracker
+//  * @returns {StockTracker}
+//  */
+// export const populateStockTrackerDependencies = (stockTracker: StockTracker|any): StockTracker => {
+//     let doc = Object.assign({}, stockTracker._doc)
+//     let strategy = StrategyNames.convert(stockTracker.strategy)
+//     let frequency = StockTrackerFrequency.convert(stockTracker.frequency)
 
-    doc.strategy = {
-        _id: strategy._id,
-        description: ts(strategy._id),
-        file: strategy.file,
-        impl: strategy.impl
-    }
+//     doc.strategy = {
+//         _id: strategy._id,
+//         description: ts(strategy._id),
+//         file: strategy.file,
+//         impl: strategy.impl
+//     }
 
-    doc.frequency = {
-        _id: frequency.type,
-        description: ts(frequency.type)
-    }
+//     doc.frequency = {
+//         _id: frequency.type,
+//         description: ts(frequency.type)
+//     }
 
-    return doc
-}
+//     return doc
+// }
 
 /**
  *
@@ -146,8 +171,7 @@ export const populateStockTrackerDependencies = (stockTracker: StockTracker|any)
  */
 export const findStockTrackerBy = (id: String): Promise<StockTracker> => {
     return StockTrackerModel.findById(id)
-        .populate("userAccount")
-        .populate("stock")
+        .populate("account")
         .exec()
 }
 
@@ -233,8 +257,10 @@ export const destroyStockTracker = async (stockTracker: StockTracker, sendNotifi
  * @returns {Promise<boolean>}
  */
 export const isBought = async (stockTracker: StockTracker): Promise<boolean> => {
-    const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
-    return balance.isBought(stockTracker.getSymbol())
+    // FIXME
+    // const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
+    // return balance.isBought(stockTracker.getSymbol())
+    return false
 }
 
 /**
@@ -244,8 +270,10 @@ export const isBought = async (stockTracker: StockTracker): Promise<boolean> => 
  * @returns {Promise<boolean>}
  */
 export const isSold = async (stockTracker: StockTracker): Promise<boolean> => {
-    const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
-    return balance.isSold(stockTracker.getSymbol())
+    // FIXME
+    // const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
+    // return balance.isSold(stockTracker.getSymbol())
+    return false
 }
 
 /**
@@ -255,8 +283,10 @@ export const isSold = async (stockTracker: StockTracker): Promise<boolean> => {
  * @returns
  */
 export const getBoughtQty = async (stockTracker: StockTracker) => {
-    const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
-    return balance.getQtyFrom(stockTracker.getSymbol())
+    // FIXME
+    // const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
+    // return balance.getQtyFrom(stockTracker.getSymbol())
+    return 0
 }
 
 /**

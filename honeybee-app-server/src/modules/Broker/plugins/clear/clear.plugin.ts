@@ -1,18 +1,16 @@
 import { Types } from "mongoose"
+import { AdapterCallbacks, BaseBrokerPlugin, OrderExecution } from ".."
 import { ErrorCodes } from "../../../../core/error.codes"
 import Logger from "../../../../core/Logger"
 import { Utils } from "../../../../core/Utils"
-import { BrokerAccount, BrokerAccountModel } from "../../models/broker.account.model"
-import { Order, OrderPlatforms, OrderSides, OrderTypes } from "../../../Order/models/order.model"
-import { Stock } from "../../../models/stock.model"
-import { StockTracker } from "../../../Stock/models/stock.tracker.model"
-import { Clear } from "../../../Stock/models/types"
-import { AdapterCallbacks, BaseBrokerPlugin } from '../base.broker.plugin'
-import { OrderExecution } from "../broker.plugin"
+import { Order, OrderPlatforms, OrderSides, OrderTypes } from "../../../Order/models"
+import { Clear, StockTracker } from "../../../Stock/models"
+import { BrokerAccount, BrokerAccountModel } from "../../models"
 import { ClearConnection } from "./clear.connection"
 import { ClearConnectionPool } from "./clear.connection.pool"
 import { ClearEnums, ClearMessages } from "./clear.messages"
 import { ClearRequest, PromiseResponse } from "./clear.request"
+
 
 const PIT_NOVO_SWINGTRADE = "pit-novo-swingtrade"
 
@@ -126,13 +124,13 @@ export class ClearPlugin extends BaseBrokerPlugin {
             ESignature: clear.signature,
             Info: {
                 ClientIpAddress: await this.connection.getIPAddress(),
-                ExchangeOrderType: ClearEnums.ExchangeOrderType.convert(order.type),
+                ExchangeOrderType: ClearEnums.ExchangeOrderType.convert(order.stock.type),
                 Module: ClearEnums.Module.SWINGTRADE,
                 OrderSource: PIT_NOVO_SWINGTRADE,
-                Price: order.type === OrderTypes.STOP ? 0 : order.price,
+                Price: order.stock.type === OrderTypes.STOP ? 0 : order.price,
                 Quantity: order.quantity,
                 Side: ClearEnums.ExchangeOrderSide.BUY,
-                Symbol: (<Stock>order.stock).symbol,
+                Symbol: order.stock.symbol,
                 SwingTradeOrderInfo: this.buildSwingTradeOrderInfo(order)
             }
         })
@@ -152,13 +150,13 @@ export class ClearPlugin extends BaseBrokerPlugin {
             ESignature: clear.signature,
             Info: {
                 ClientIpAddress: await this.connection.getIPAddress(),
-                ExchangeOrderType: ClearEnums.ExchangeOrderType.convert(order.type),
+                ExchangeOrderType: ClearEnums.ExchangeOrderType.convert(order.stock.type),
                 Module: ClearEnums.Module.SWINGTRADE,
                 OrderSource: PIT_NOVO_SWINGTRADE,
-                Price: order.type === OrderTypes.STOP ? 0 : order.price,
+                Price: order.stock.type === OrderTypes.STOP ? 0 : order.price,
                 Quantity: order.quantity,
                 Side: ClearEnums.ExchangeOrderSide.SELL,
-                Symbol: (<Stock>order.stock).symbol,
+                Symbol: order.stock.symbol,
                 SwingTradeOrderInfo: this.buildSwingTradeOrderInfo(order)
             }
         })
@@ -174,8 +172,8 @@ export class ClearPlugin extends BaseBrokerPlugin {
      */
     private buildSwingTradeOrderInfo(order: Order) {
         return { 
-            ExpiresAt: order.expiresAt.getTime(), 
-            ... order.type === OrderTypes.STOP ? { StopPx: Utils.Number.toFixed(order.price, 2) } : {}
+            ExpiresAt: order.stock.expiresAt.getTime(), 
+            ... order.stock.type === OrderTypes.STOP ? { StopPx: Utils.Number.toFixed(order.price, 2) } : {}
         }
     }
 

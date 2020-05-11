@@ -1,6 +1,6 @@
-import Logger from '../../../core/Logger'
-import { InvestimentStrategy } from './investiment.strategy'
-import { StrategyNames, StrategyNamesDef } from './strategy.names'
+import Logger from "../../../core/Logger"
+import { InvestimentStrategy } from "./investiment.strategy"
+import { StrategyNames, StrategyNamesDef } from "./strategy.names"
 
 const strategies = new Map<string, any>()
 

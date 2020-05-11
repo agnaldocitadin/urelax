@@ -1,48 +1,18 @@
-import { Order, OrderModel } from "../models/order.model"
-import { StockTracker } from "../../Stock/models/stock.tracker.model"
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
-import { PredictionResult } from "../../Stock/strategies/investiment.strategy"
+import { Order, OrderModel } from "../models/order.model"
 
 /**
  *
  *
- * @param {StockTracker} stockTracker
- * @param {PredictionResult} { 
- *     platform, 
- *     orderType, 
- *     orderSide, 
- *     quantity, 
- *     price, 
- *     expiresAt 
- * }
- * @returns {Promise<Order>}
+ * @param {Order} order
+ * @returns
  */
-export const makeAOrder = async (stockTracker: StockTracker, { 
-    platform, 
-    orderType, 
-    orderSide, 
-    quantity, 
-    price, 
-    expiresAt 
-}: PredictionResult): Promise<Order> => {
-    
-    return await OrderModel.create({
-        userAccount: stockTracker.userAccount,
-        brokerAccount: stockTracker.brokerAccount,
-        stockTracker: stockTracker._id,
-        stock: stockTracker.stock,
-        platform: platform,
-        type: orderType,
-        price: price,
-        quantity: quantity,
-        side: orderSide,
-        createdAt: new Date(),
-        expiresAt
-    })
+export const makeBaseOrder = (order: Order) => {
+    return OrderModel.create(order)
 }
 
 /**
- *
+ * FIXME update by updateOne()
  *
  * @param {Order} order
  * @param {string} orderCode

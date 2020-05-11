@@ -56,7 +56,9 @@ class ServerEntryPoint {
         this.app.use(bodyParser.json())
         Logger.info("Http body parser: %s", "body-parser[JSON]")
         this.app.use(compression())
+        
         registerAPI(this.app) // put it in a specific module
+
         Logger.info("Loading modules...")
         const modules = await Module.register()
         await Module.initModules(modules, this.app)

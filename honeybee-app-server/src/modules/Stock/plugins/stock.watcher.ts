@@ -1,8 +1,7 @@
 import cronstrue from 'cronstrue'
 import schedule from 'node-schedule'
 import Logger from '../../../core/Logger'
-import { findAvailables } from '../services/stock.service'
-import { ClearStockUpdater } from "./clear.stock.updater"
+import { ClearStockUpdater } from './clear.stock.updater'
 import { StockUpdaterPlugin } from './stock.updater.plugin'
 
 const STOCK_UPDATER_IMPL = ClearStockUpdater
@@ -84,8 +83,7 @@ class StockWatcher {
      * @memberof StockWatcher
      */
     private async fetchSymbols(): Promise<string[]> {
-        const stocks = await findAvailables()
-        return stocks.map(stock => stock.symbol)
+        return Promise.resolve(["ABEV3"]) // FIXME
     }
 
 }

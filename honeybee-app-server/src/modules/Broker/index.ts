@@ -1,13 +1,10 @@
 import { Express } from 'express'
-import * as plugins from './plugins'
-import * as services from './services'
-export * from './models'
+import { PluginFactory } from './plugins'
 
-const init = async (app: Express) => {
-    await plugins.PluginFactory.init()
+const init = (app: Express) => {
+    return PluginFactory.init()
 }
 
 export default {
-    init,
-    ...services
+    init
 }

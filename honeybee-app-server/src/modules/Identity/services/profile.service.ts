@@ -1,10 +1,10 @@
-import { Locales } from 'honeybee-api'
-import { ErrorCodes } from '../../../core/error.codes'
-import { ts } from '../../../core/i18n'
-import Logger from '../../../core/Logger'
-import { flatObject } from '../../../core/Utils'
-import { onActivateSimulationAccount, onCreateAccount } from '../../Activity/services/activity.service'
-import { Account, Preferences, Profile, ProfileModel } from '../models/profile.model'
+import { Locales } from "honeybee-api"
+import { ErrorCodes } from "../../../core/error.codes"
+import { ts } from "../../../core/i18n"
+import Logger from "../../../core/Logger"
+import { flatObject } from "../../../core/Utils"
+import { onActivateSimulationAccount, onCreateAccount } from "../../Activity/services"
+import { Preferences, Profile, ProfileModel } from "../models"
 
 const defaultPreferences: Preferences = {
     language: Locales.PT_BR,
@@ -28,8 +28,9 @@ export const findProfileById = (id: string) => {
  *
  * @returns {Promise<Profile[]>}
  */
-export const findAllowedProfiles = (): Promise<Profile[]> => {
-    return ProfileModel.find({ active: true }).exec()
+export const findAllowedAccounts = (): Promise<Account[]> => {
+    // return ProfileModel.find({ active: true }).exec()
+    return
 }
 
 /**

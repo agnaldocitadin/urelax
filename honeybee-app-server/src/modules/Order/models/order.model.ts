@@ -39,7 +39,7 @@ class StockInfo {
     @prop({ required: true })
     symbol!: string
     
-    @prop({ required: true })
+    @prop({ required: true, enum: OrderTypes })
     type!: string
     
     @prop({ required: true })
@@ -92,52 +92,54 @@ export class Order {
     @prop({ _id: false })
     stock?: StockInfo
 
+    // Add here the others kind of investiments
+
     @prop({ default: () => new Date() })
     createdAt?: Date
 
     @prop({ default: () => new Date() })
     updatedAt?: Date
 
-    public isBuy(): boolean {
+    public isBuy?(): boolean {
         return this.side === OrderSides.BUY
     }
 
-    public isSell(): boolean {
+    public isSell?(): boolean {
         return this.side === OrderSides.SELL
     }
     
-    public addExecution(execution: Execution, progress: number) {
+    public addExecution?(execution: Execution, progress: number) {
         if (!this.executions) this.executions = []
         this.executions = [...this.executions, execution]
         this.progress = progress
     }
 
-    public isSellOrderNotRejected(): boolean {
+    public isSellOrderNotRejected?(): boolean {
         return this.side === OrderSides.SELL && this.status !== OrderStatus.REJECTED
     }
     
-    public isSellOrderRejected(): boolean {
+    public isSellOrderRejected?(): boolean {
         return this.side === OrderSides.SELL && this.status === OrderStatus.REJECTED
     }
     
-    public isBuyOrderNotRejected(): boolean {
+    public isBuyOrderNotRejected?(): boolean {
         return this.side === OrderSides.BUY && this.status !== OrderStatus.REJECTED
     }
     
-    public isBuyOrderRejected(): boolean {
+    public isBuyOrderRejected?(): boolean {
         return this.side === OrderSides.BUY && this.status === OrderStatus.REJECTED
     }
 
-    public getQuantityExecuted(): number {
+    public getQuantityExecuted?(): number {
         return this.executions.map(execution => execution.quantityExecuted).reduce((a, b) => a + b, 0)
     }
 
-    public getExecutedPriceAverage(): number {
+    public getExecutedPriceAverage?(): number {
         let prices = this.executions.map(execution => execution.priceExecuted).reduce((a, b) => a + b, 0)
         return prices / this.executions.length
     }
 
-    public getTotalOrder(): number {
+    public getTotalOrder?(): number {
         return this.executions.reduce((total, execution) => total + (execution.quantityExecuted * execution.priceExecuted), 0)
     }
 

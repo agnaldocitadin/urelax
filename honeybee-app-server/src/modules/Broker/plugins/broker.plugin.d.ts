@@ -1,6 +1,15 @@
 import { Order, OrderPlatforms, OrderSides, OrderStatus } from "../../Order/models/order.model"
 import { StockTracker } from "../../Stock/models/stock.tracker.model"
 
+export type OrderExecution = {
+    orderCode: string
+    status: OrderStatus
+    quantity: number
+    price: number
+    progress: number
+    message?: string
+}
+
 /**
  *
  *
@@ -70,13 +79,4 @@ export interface BrokerPlugin {
      */
     totalAvailableAmount(stockTracker: StockTracker, plaftorm: OrderPlatforms, orderSide: OrderSides, symbol: string): Promise<number>
 
-}
-
-export type OrderExecution = {
-    orderCode: string
-    status: OrderStatus
-    quantity: number
-    price: number
-    progress: number
-    message?: string
 }

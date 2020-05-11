@@ -1,11 +1,11 @@
 import admin from 'firebase-admin'
 import { MessageTypes, NotificationMessage, StockTrackerStatus } from 'honeybee-api'
-import { ts } from '../../core/i18n'
-import { Utils } from '../../core/Utils'
-import { OrderExecution } from "../Broker/plugins/broker.plugin"
-import { Stock } from '../models/stock.model'
-import { Order, OrderModel, OrderSides, OrderStatus } from "../Order/models/order.model"
-import { StockTracker } from '../Stock/models/stock.tracker.model'
+import { ts } from '../../../core/i18n'
+import { Utils } from '../../../core/Utils'
+import { OrderExecution } from "../../Broker/plugins/broker.plugin"
+import { Account } from '../../Identity/models'
+import { Order, OrderModel, OrderSides, OrderStatus } from "../../Order/models/order.model"
+import { StockTracker } from '../../Stock/models/stock.tracker.model'
 
 const NOTIFICATION_ICON = "icon_notification"
 const ICON_COLOR = "#1099f5"
@@ -17,13 +17,12 @@ const ICON_COLOR = "#1099f5"
  * @param {Order} order
  */
 const notifyBuy = (deviceToken: string, order: Order) => {
-    const stock = <Stock>order.stock
     admin.messaging().sendToDevice(deviceToken, {
         notification: {
             title: ts("buy_stock"),
             body: ts("order_stock", { 
                 count: order.quantity, 
-                symbol: stock.toPresentation(), 
+                symbol: order.stock.symbol, 
                 amount: Utils.Currency.format(order.getTotalOrder(), "R$")
             }),
             icon: NOTIFICATION_ICON,
@@ -43,13 +42,12 @@ const notifyBuy = (deviceToken: string, order: Order) => {
  * @param {number} [profit=0]
  */
 const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
-    const stock = <Stock>order.stock
     admin.messaging().sendToDevice(deviceToken, {
         notification: {
             title: ts("sell_stock"),
             body: ts("order_stock", { 
                 count: order.quantity, 
-                symbol: stock.toPresentation(),
+                symbol: order.stock.symbol,
                 amount: Utils.Currency.format(order.getTotalOrder(), "R$")
             }),
             icon: NOTIFICATION_ICON,
@@ -81,12 +79,11 @@ export const notifyOrder = async (execution: OrderExecution, deviceToken: string
  * @param {StockTracker} stockTracker
  */
 export const notifyStockTrackerPause = (stockTracker: StockTracker) => {
-    const token = (<UserAccount>stockTracker.userAccount).deviceToken
-    const stock = <Stock>stockTracker.stock
+    const token = (<Account>stockTracker.account).getActiveDevice().token
     admin.messaging().sendToDevice(token, {
         notification: {
             title: ts("stock_tracker_paused"),
-            body: ts("stock_tracker_paused_msg", { symbol: stock.toPresentation() }),
+            body: ts("stock_tracker_paused_msg", { symbol: stockTracker.stockInfo.symbol }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR
         },
@@ -104,12 +101,11 @@ export const notifyStockTrackerPause = (stockTracker: StockTracker) => {
  * @param {StockTracker} stockTracker
  */
 export const notifyStockTrackerDestroy = (stockTracker: StockTracker) => {
-    const token = (<UserAccount>stockTracker.userAccount).deviceToken
-    const stock = <Stock>stockTracker.stock
+    const token = (<Account>stockTracker.account).getActiveDevice().token
     admin.messaging().sendToDevice(token, {
         notification: {
             title: ts("stock_tracker_destroyed"),
-            body: ts("stock_tracker_destroyed_msg", { symbol: stock.toPresentation() }),
+            body: ts("stock_tracker_destroyed_msg", { symbol: stockTracker.stockInfo.symbol }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR
         },

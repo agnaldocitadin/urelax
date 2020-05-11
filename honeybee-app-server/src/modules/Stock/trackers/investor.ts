@@ -1,17 +1,16 @@
-import { StockTrackerStatus } from 'honeybee-api'
-import Logger from '../../../core/Logger'
-import { processBalanceByExecution } from '../../../services/balance.sheet.service'
-import { onStockOrderExecution } from "../../Activity/services/activity.service"
-import { AdapterCallbacks } from '../../Broker/plugins/base.broker.plugin'
-import { BrokerPlugin, OrderExecution } from '../../Broker/plugins/broker.plugin'
-import { Account } from '../../Identity/models/profile.model'
-import { notifyOrder } from "../../Notification/notification.service"
-import { OrderSides } from '../../Order/models/order.model'
-import { addOrderExecution, makeAOrder, updateOrderCode } from '../../Order/services/trade.service'
-import { StockTracker } from '../models/stock.tracker.model'
-import { registerUpdate, STOCK_TRACKER_STATUS_DONT_UPDATE } from '../services/stock.tracker.service'
-import { InvestimentStrategy, PredictionResult } from '../strategies/investiment.strategy'
-import { StockTrackerFrequency } from './stock.tracker.frequency'
+import { StockTrackerStatus } from "honeybee-api"
+import Logger from "../../../core/Logger"
+import { processBalanceByExecution } from "../../../services/balance.sheet.service"
+import Activity from "../../Activity"
+import { AdapterCallbacks, BrokerPlugin, OrderExecution } from "../../Broker/plugins"
+import { Account } from "../../Identity"
+import Notification from "../../Notification"
+import { OrderSides } from "../../Order/models"
+import { addOrderExecution, updateOrderCode } from "../../Order/services"
+import { StockTracker } from "../models"
+import { makeStockOrder, registerUpdate, STOCK_TRACKER_STATUS_DONT_UPDATE } from "../services"
+import { InvestimentStrategy, PredictionResult } from "../strategies"
+import { StockTrackerFrequency } from "./stock.tracker.frequency"
 
 /**
  *
@@ -140,7 +139,7 @@ export class Investor {
      * @memberof Investor
      */
     async buy(prediction: PredictionResult): Promise<void> {
-        const buyOrderModel = await makeAOrder(this.stockTrackerModel, prediction)
+        const buyOrderModel = await makeStockOrder(this.stockTrackerModel, prediction)
         const orderCode = await this.brokerPlugin.buy(buyOrderModel)
         await updateOrderCode(buyOrderModel, orderCode)
         this.strategy.onBuy(this.stockTrackerModel)
@@ -155,7 +154,7 @@ export class Investor {
      * @memberof Investor
      */
     async sell(prediction: PredictionResult): Promise<void> {
-        const sellOrderModel = await makeAOrder(this.stockTrackerModel, prediction)
+        const sellOrderModel = await makeStockOrder(this.stockTrackerModel, prediction)
         const orderCode = await this.brokerPlugin.sell(sellOrderModel)
         await updateOrderCode(sellOrderModel, orderCode)
         this.strategy.onSell(this.stockTrackerModel)
@@ -172,9 +171,9 @@ export class Investor {
     async orderExecutionCallback(execution: OrderExecution): Promise<void> {
         await addOrderExecution(execution)
         processBalanceByExecution(execution, this.stockTrackerModel)
-        onStockOrderExecution(execution, this.stockTrackerModel)
+        Activity.onStockOrderExecution(execution, this.stockTrackerModel)
         const deviceToken = (<Account>this.stockTrackerModel.account).getActiveDevice().token
-        notifyOrder(execution, deviceToken)
+        Notification.notifyOrder(execution, deviceToken)
     }
 
 }

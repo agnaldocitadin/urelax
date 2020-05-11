@@ -14,7 +14,7 @@ import { StockTracker } from "../modules/Stock/models/stock.tracker.model"
 import { OrderExecution } from "../modules/Broker/plugins/broker.plugin"
 import { cache } from "./cache.service"
 import { getLastClosingPrice } from "../modules/Stock/services/stock.history.service"
-import { findAllowedProfiles } from "../modules/Identity/services/profile.service"
+import { findAllowedAccounts } from "../modules/Identity/services/profile.service"
 
 /**
  * 
@@ -319,7 +319,7 @@ export const createNewBalanceSheet = async (userAccount: ObjectId, brokerAccount
 const processDailyBalanceSheet = async () => {
     Logger.info("[BalanceSheetService] Daily balance sheet process has stated...")
     const now = new Date()
-    const userAccounts = await findAllowedProfiles()
+    const userAccounts = await findAllowedAccounts()
 
     Logger.info("[BalanceSheetService] Generating balances to %s accounts.", userAccounts.length)
     await Promise.all(userAccounts.map(async (userAccount) => {

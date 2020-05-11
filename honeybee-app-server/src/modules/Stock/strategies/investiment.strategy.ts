@@ -1,6 +1,5 @@
-import { OrderPlatforms, OrderSides, OrderTypes } from "../../Order/models/order.model"
-import { StockTracker } from "../models/stock.tracker.model"
-import { BrokerPlugin } from "../../Broker/plugins/broker.plugin"
+import { BrokerPlugin } from "../../Broker/plugins"
+import { StockTracker } from "../models"
 
 /**
  *

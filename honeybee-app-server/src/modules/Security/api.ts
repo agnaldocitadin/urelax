@@ -1,15 +1,15 @@
 import { Express } from 'express'
-import { Identity } from '..'
 import { ErrorCodes } from '../../core/error.codes'
 import { Logger } from '../../core/Logger'
 import { invoke } from '../../core/Utils'
+import { findByEmailPassword } from '../Identity/services'
 
 export const registerAPI = (app: Express) => {
 
     app.post("/authenticate", (req, res) => {
         invoke(req, res, async () => {
             const { email, passwd } = req.body
-            const user = await Identity.findByEmailPassword(email, passwd)
+            const user = await findByEmailPassword(email, passwd)
             if (user) {
                 res.json({ user, token: "token"})
                 return

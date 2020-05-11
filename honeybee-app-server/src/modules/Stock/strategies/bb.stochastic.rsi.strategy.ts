@@ -3,11 +3,10 @@ import { ATR, BollingerBands, StochasticRSI } from "technicalindicators"
 import { BollingerBandsOutput } from "technicalindicators/declarations/volatility/BollingerBands"
 import Logger from "../../../core/Logger"
 import { Utils } from "../../../core/Utils"
+import { BrokerPlugin } from "../../Broker/plugins/broker.plugin"
 import { OrderPlatforms, OrderSides, OrderTypes } from "../../Order/models/order.model"
 import { StockHistory } from "../models/stock.history.model"
-import { Stock } from "../models/stock.model"
 import { StockTracker } from "../models/stock.tracker.model"
-import { BrokerPlugin } from "../../Broker/plugins/broker.plugin"
 import { getHistory } from "../services/stock.history.service"
 import { destroyStockTracker, getBoughtQty, isBought, isSold, pauseStockTracker, playStockTracker, waitStockTrackerDestroy, waitStockTrackerPause } from "../services/stock.tracker.service"
 import { InvestimentStrategy, PredictionResult } from "./investiment.strategy"
@@ -67,7 +66,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
     async predict(referenceDate: Date, stockTracker: StockTracker, brokerPlugin: BrokerPlugin): Promise<PredictionResult> {
         
         this.bought = await isBought(stockTracker)
-        const symbol = stockTracker.getSymbol()
+        const symbol = stockTracker.stockInfo.symbol
         const frequency = stockTracker.getFrequency()
         const history = await getHistory(symbol, referenceDate, frequency, DATA_LENGTH, true)
         
@@ -335,8 +334,9 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      */
     private async defineBuyStockQuantity(price: number, stockTracker: StockTracker, brokerPlugin: BrokerPlugin, platform: OrderPlatforms, symbol: string): Promise<number> {
         let availableAmount = await brokerPlugin.totalAvailableAmount(stockTracker, platform, OrderSides.BUY, symbol)
-        let limit = stockTracker.autoAmountLimit ? availableAmount : Math.min(...[availableAmount, stockTracker.stockAmountLimit])
-        let stockLot = (<Stock>stockTracker.stock).stockLot
+        let { autoAmountLimit, stockAmountLimit } = stockTracker.strategySetting
+        let limit = autoAmountLimit ? availableAmount : Math.min(...[availableAmount, stockAmountLimit])
+        let stockLot = stockTracker.stockInfo.stockLot
         let lotQuantity = Math.floor((limit / price) / stockLot)
         let stockQuantity = lotQuantity * stockLot
         if (stockQuantity === 0) {

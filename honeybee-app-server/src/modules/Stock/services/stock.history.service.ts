@@ -2,9 +2,8 @@ import { set } from 'date-fns'
 import { ErrorCodes } from '../../../core/error.codes'
 import { ts } from '../../../core/i18n'
 import Logger from '../../../core/Logger'
-import { STFrequencyDef } from '../trackers/stock.tracker.frequency'
-import { PredictionData } from '../strategies/investiment.strategy'
-import { StockHistory, StockHistoryModel } from '../models/stock.history.model'
+import { StockHistory, StockHistoryModel } from '../models'
+import { STFrequencyDef } from '../trackers'
 
 /**
  *
@@ -109,20 +108,4 @@ export const getLastClosingPrice = async (symbol: string, date: Date): Promise<n
     }
 
     Logger.throw(ErrorCodes.LAST_PRICE_NOT_FOUND, ts("last_price_not_found", { symbol, date }))
-}
-
-/**
- *
- *
- * @param {StockHistory[]} stockHistory
- * @returns {PredictionData[]}
- */
-const convertToPredictionData = (stockHistory: StockHistory[]): PredictionData[] => {
-    return stockHistory.map(history => ({
-        date: history.date,
-        open: history.openingPrice,
-        low: history.lowestPrice,
-        high: history.highestPrice,
-        close: history.closingPrice
-    }))
 }

@@ -1,6 +1,8 @@
 import Mongoose from 'mongoose'
 import { Logger } from '../../core/Logger'
 
+const DB_DRIVER = "MongoDB"
+
 export default {
     init: async () => {
         const host = process.env.DB_HOST
@@ -11,6 +13,6 @@ export default {
             useFindAndModify: false,
             useUnifiedTopology: true
         })
-        Logger.info("Connection to database established: [%s:%s/%s]", host, port, db)
+        Logger.info("Database connected to: %s [%s:%s/%s]", DB_DRIVER, host, port, db)
     }
 }
