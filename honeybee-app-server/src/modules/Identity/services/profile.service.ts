@@ -1,5 +1,5 @@
 import { Locales } from 'honeybee-api'
-import { ErrorCodes } from '../../../core/error.codes.d'
+import { ErrorCodes } from '../../../core/error.codes'
 import { ts } from '../../../core/i18n'
 import Logger from '../../../core/Logger'
 import { flatObject } from '../../../core/Utils'

@@ -1,7 +1,7 @@
 import { set } from 'date-fns'
 import { Request, Response } from 'express'
 import { APIError, Locales } from 'honeybee-api'
-import { ErrorCodes } from './error.codes.d'
+import { ErrorCodes } from './error.codes'
 import { tsLng } from './i18n'
 import Logger, { MessageError } from './Logger'
 

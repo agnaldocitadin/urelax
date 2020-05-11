@@ -3,7 +3,7 @@ import admin from 'firebase-admin'
 import { Logger } from '../../core/Logger'
 
 const init = (app: Express) => {
-    let firebaseCredentials = `./${process.env.FIREBASE_CREDENTIAL_FILE}`
+    let firebaseCredentials = `./src/modules/Notification/${process.env.FIREBASE_CREDENTIAL_FILE}`
     let configuration = {
         credential: admin.credential.cert(firebaseCredentials),
         databaseURL: process.env.FIREBASE_DATABASE_URL

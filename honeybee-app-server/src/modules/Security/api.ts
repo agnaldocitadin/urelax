@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import { Identity } from '..'
-import { ErrorCodes } from '../../core/error.codes.d'
+import { ErrorCodes } from '../../core/error.codes'
 import { Logger } from '../../core/Logger'
 import { invoke } from '../../core/Utils'
 

@@ -1,6 +1,6 @@
 import { Express, Request, Response } from 'express'
 import { APIError, Locales } from 'honeybee-api'
-import { ErrorCodes } from "../core/error.codes.d"
+import { ErrorCodes } from "../core/error.codes"
 import { tsLng } from '../core/i18n'
 import Logger, { MessageError } from "../core/Logger"
 import { stockTrackerPlayground } from "../modules/Stock/trackers/stock.tracker.playground"

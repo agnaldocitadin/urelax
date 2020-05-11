@@ -1,5 +1,5 @@
 import { Types } from "mongoose"
-import { ErrorCodes } from "../../../../core/error.codes.d"
+import { ErrorCodes } from "../../../../core/error.codes"
 import Logger from "../../../../core/Logger"
 import { Utils } from "../../../../core/Utils"
 import { BrokerAccount, BrokerAccountModel } from "../../models/broker.account.model"

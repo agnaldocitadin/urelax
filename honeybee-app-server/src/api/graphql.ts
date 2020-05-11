@@ -1,7 +1,7 @@
 import { Request } from 'express'
 import expressGraphql from 'express-graphql'
 import { APIError, Locales } from 'honeybee-api'
-import { ErrorCodes } from '../core/error.codes.d'
+import { ErrorCodes } from '../core/error.codes'
 import { tsLng } from '../core/i18n'
 import Logger, { MessageError } from '../core/Logger'
 import { resolvers } from '../graphql/resolvers.graphql'

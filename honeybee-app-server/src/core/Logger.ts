@@ -1,5 +1,5 @@
 import pino, { LogFn } from 'pino'
-import { ErrorCodes } from './error.codes.d'
+import { ErrorCodes } from './error.codes'
 
 export type MessageError = {
     code: ErrorCodes

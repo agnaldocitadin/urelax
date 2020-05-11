@@ -1,5 +1,5 @@
 import { differenceInHours, differenceInMinutes, set } from "date-fns"
-import { ErrorCodes } from "../../../core/error.codes.d"
+import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 
 export type STFrequencyDef = { type: string, hasToUpdate: Function, inMinutes: number }

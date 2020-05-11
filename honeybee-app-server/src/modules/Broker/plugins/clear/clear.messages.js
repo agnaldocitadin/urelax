@@ -1,5 +1,5 @@
 import protobufjs from 'protobufjs'
-import { ErrorCodes } from '../../../../core/error.codes.d'
+import { ErrorCodes } from '../../../../core/error.codes'
 import { ts } from '../../../../core/i18n'
 import Logger from '../../../../core/Logger'
 import { OrderStatus } from '../../../Order/models/order.model'
