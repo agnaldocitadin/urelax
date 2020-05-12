@@ -8,10 +8,11 @@ import Logger from '../core/Logger'
  * @returns
  */
 const register = () => {
+    Logger.info("Loading modules...")
     return Promise.all(fs.readdirSync('./src/modules').map(async (file) => {
         if (!file.endsWith(".js") && !file.endsWith(".ts")) {
             const module = require('./' + file)
-            Logger.info(`- ${file.toUpperCase()} module loaded successfully.`)
+            Logger.info("- %s module loaded successfully.", file.toUpperCase())
             return module
         }
     }))

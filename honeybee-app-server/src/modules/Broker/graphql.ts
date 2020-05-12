@@ -15,14 +15,34 @@ export const types = `
     }
 
     type Broker {
-        _id?: mongoose.Types.ObjectId
-        code!: string
-        name!: string
-        logo!: string
-        active!: boolean
-        investiments?: Investiment[]
-        createdAt?: Date
-        updatedAt?: Date
+        _id: ID!
+        code: String
+        name: String
+        logo: String
+        active: Boolean
+        investiments: [Investiment]
+        createdAt: Datetime
+        updatedAt: Datetime
+    }
+
+    type BrokerAccountExtraData {
+        token: String
+        signature: String
+        platformUID: String
+        sessionId: String
+        cpf: String
+        passwd: String
+        birthdate: Datetime
+    }
+
+    type BrokerAccount {
+        _id: ID!
+        account: Account
+        accountName: String
+        brokerCode: String
+        extraData: BrokerAccountExtraData
+        createdAt: Datetime
+        updatedAt: Datetime
     }
 `
 

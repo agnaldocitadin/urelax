@@ -6,6 +6,12 @@ import { ErrorCodes } from '../core/error.codes'
 import { tsLng } from '../core/i18n'
 import Logger, { MessageError } from '../core/Logger'
 
+/**
+ * TODO Log it!
+ *
+ * @param {any[]} modules
+ * @param {Express} app
+ */
 const initGraphQLSchema = async (modules: any[], app: Express) => {
 
     const scalars = `
@@ -56,6 +62,8 @@ const initGraphQLSchema = async (modules: any[], app: Express) => {
         ${mutations.trim().length > 0 ? `type Mutation {${mutations}}` : ""}
     `)
 
+    Logger.info(schema)
+
     app.use("/graphql", expressGraphql((request: Request) => ({
         schema,
         rootValue: resolvers,
@@ -74,6 +82,8 @@ const initGraphQLSchema = async (modules: any[], app: Express) => {
             }
         }
     })))
+
+    Logger.info("GrapQL Schema done.")
 }
 
 export default {

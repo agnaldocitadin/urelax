@@ -57,12 +57,9 @@ class ServerEntryPoint {
         Logger.info("Http body parser: %s", "body-parser[JSON]")
         this.app.use(compression())
 
-        Logger.info("Loading modules...")
         const modules = await Module.register()
         await Module.initModules(modules, this.app)
-
         await GraphQL.initGraphQLSchema(modules, this.app)
-        Logger.info("GrapQL Schema done.")
     }
 
     /**
