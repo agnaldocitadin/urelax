@@ -1,17 +1,6 @@
 
 export const types = `
-    type UserAccount {
-        _id: ID!
-        name: String
-        nickname: String
-        passwd: String
-        email: String
-        active: Boolean
-        simulation: Boolean
-        simulationAccountId: String
-        preferences: Preferences
-        createdAt: Datetime
-    }
+    
 
     type Preferences {
         receiveTradeNotification: Boolean

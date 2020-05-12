@@ -52,12 +52,8 @@ const initGraphQLSchema = async (modules: any[], app: Express) => {
         ${scalars}
         ${types}
         ${inputs}
-        type Query {
-            ${queries}
-        }
-        type Mutation {
-            ${mutations}
-        }
+        ${queries.trim().length > 0 ? `type Query {${queries}}` : ""}
+        ${mutations.trim().length > 0 ? `type Mutation {${mutations}}` : ""}
     `)
 
     app.use("/graphql", expressGraphql((request: Request) => ({
