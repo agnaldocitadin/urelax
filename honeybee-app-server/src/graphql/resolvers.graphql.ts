@@ -47,13 +47,7 @@ export const resolvers = {
         return findBrokerAccountByUser(userAccountId)
     },
 
-    fetchStockTrackerActivitiesQuery: ({ stockTrackerId, date, page, qty }: any) => {
-        return findActivitiesByStockTracker(stockTrackerId, page, qty)
-    },
-
-    fetchUserActivitiesQuery: ({ userAccountId, date, page, qty }: any) => {
-        return findActivitiesByAccount(userAccountId, page, qty)
-    },
+    
 
     fetchBalanceSheet: ({ userAccountId, brokerAccountId }: any) => {
         // return findBalanceSheet(userAccountId, brokerAccountId)
@@ -69,13 +63,9 @@ export const resolvers = {
 
     // Mutations
 
-    createUserAccount: ({ userAccount }: any) => {
-        return createProfile(userAccount)
-    },
+    
 
-    createBrokerAccount: ({ brokerAccount }: any) => {
-        return createBrokerAccount(brokerAccount)
-    },
+
 
     createStockTracker: async ({ stockTracker }: any) => {
         const model = await createNewStockTracker(stockTracker)
@@ -86,17 +76,13 @@ export const resolvers = {
         return model
     },
 
-    updateUserAccount: ({ _id, userAccount }: any) => {
-        return updateAccount(_id, userAccount)
-    },
+    
 
     updateUserPreferences: ({ _id, preferences }: any) => {
         // return updateUserPreferences(_id, preferences)
     },
 
-    updateBrokerAccount: ({ _id, brokerAccount }: any) => {
-        return updateBrokerAccountById(_id, brokerAccount)
-    },
+    
 
     updateStockTracker: async ({ _id, stockTracker }: any) => {
         let stockTrackerDB = await updateStockTrackerById(_id, stockTracker)
@@ -104,8 +90,6 @@ export const resolvers = {
         return true
     },
 
-    activateSimulationAccount: ({ userAccountId }: any) => {
-        return activateSimulation(userAccountId)
-    }
+    
     
 }

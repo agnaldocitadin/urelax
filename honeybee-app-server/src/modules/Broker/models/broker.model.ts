@@ -72,6 +72,6 @@ export class Broker {
 
 export const BrokerModel = getModelForClass(Broker, {
     schemaOptions: {
-        collection: "brokers-test"
+        collection: "brokers"
     }
 })

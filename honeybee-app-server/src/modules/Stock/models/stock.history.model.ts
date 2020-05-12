@@ -37,6 +37,6 @@ export class StockHistory {
 
 export const StockHistoryModel = getModelForClass(StockHistory, {
     schemaOptions: {
-        collection: "stock-history-test"
+        collection: "stock-history"
     }
 })

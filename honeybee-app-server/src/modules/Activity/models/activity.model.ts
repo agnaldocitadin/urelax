@@ -64,6 +64,6 @@ export class Activity {
 
 export const ActivityModel = getModelForClass(Activity, {
     schemaOptions: {
-        collection: "activities-test"
+        collection: "activities"
     }
 })

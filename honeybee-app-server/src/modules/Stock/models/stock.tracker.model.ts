@@ -69,6 +69,6 @@ export class StockTracker {
 
 export const StockTrackerModel = getModelForClass(StockTracker, {
     schemaOptions: {
-        collection: "stock-trackers-test"
+        collection: "stock-trackers"
     }
 })

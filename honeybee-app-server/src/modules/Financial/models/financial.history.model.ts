@@ -48,6 +48,6 @@ export class FinancialHistory {
 
 export const FinancialHistoryModel = getModelForClass(FinancialHistory, {
     schemaOptions: {
-        collection: "financial-history-test"
+        collection: "financial-history"
     }
 })

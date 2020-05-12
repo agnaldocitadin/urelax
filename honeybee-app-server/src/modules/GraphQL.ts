@@ -6,6 +6,14 @@ import { ErrorCodes } from '../core/error.codes'
 import { tsLng } from '../core/i18n'
 import Logger, { MessageError } from '../core/Logger'
 
+export interface GraphQLModule {
+    types?: string
+    inputs?: string
+    queries?: string
+    mutations?: string
+    resolvers?: object
+}
+
 /**
  * TODO Log it!
  *
@@ -61,8 +69,6 @@ const initGraphQLSchema = async (modules: any[], app: Express) => {
         ${queries.trim().length > 0 ? `type Query {${queries}}` : ""}
         ${mutations.trim().length > 0 ? `type Mutation {${mutations}}` : ""}
     `)
-
-    Logger.info(schema)
 
     app.use("/graphql", expressGraphql((request: Request) => ({
         schema,

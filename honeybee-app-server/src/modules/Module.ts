@@ -2,6 +2,10 @@ import { Express } from 'express'
 import fs from 'fs'
 import Logger from '../core/Logger'
 
+export interface ModuleEntry {
+    
+}
+
 /**
  *
  *

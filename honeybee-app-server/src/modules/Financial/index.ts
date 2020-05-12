@@ -1,14 +1,9 @@
 import { Express } from 'express'
-import { inputs, mutations, queries, types } from './graphql'
+import graphqlSchema from './graphql'
 
 const init = (app: Express) => {}
 
 export default {
     init,
-    graphqlSchema: {
-        types,
-        inputs,
-        queries,
-        mutations
-    }
+    graphqlSchema
 }

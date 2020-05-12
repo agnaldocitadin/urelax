@@ -16,9 +16,7 @@ export const queries = `
         
         fetchActiveStockTrackersQuery(userAccountId: ID!): [StockTracker]
 
-        fetchStockTrackerActivitiesQuery(stockTrackerId: ID!, date: String, page: Int!, qty: Int!): [Activity]
         
-        fetchUserActivitiesQuery(userAccountId: ID!, date: String, page: Int!, qty: Int!): [Activity]
 
         fetchBrokerAccountQuery(brokerAccountId: ID!): BrokerAccount
         

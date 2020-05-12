@@ -60,6 +60,6 @@ export class BrokerAccount {
 
 export const BrokerAccountModel = getModelForClass(BrokerAccount, {
     schemaOptions: {
-        collection: "broker-accounts-test"
+        collection: "broker-accounts"
     }
 })

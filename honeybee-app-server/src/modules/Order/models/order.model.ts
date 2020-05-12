@@ -147,6 +147,6 @@ export class Order {
 
 export const OrderModel = getModelForClass(Order, {
     schemaOptions: {
-        collection: "orders-test"
+        collection: "orders"
     }
 })

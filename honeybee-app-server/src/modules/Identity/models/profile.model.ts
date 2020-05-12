@@ -93,6 +93,6 @@ export class Profile {
 
 export const ProfileModel = getModelForClass(Profile, {
     schemaOptions: {
-        collection: "profile-test"
+        collection: "profiles"
     }
 })

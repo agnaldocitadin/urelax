@@ -1,5 +1,5 @@
 import { Express } from 'express'
-import { inputs, mutations, queries, types } from './graphql'
+import graphqlSchema from './graphql'
 import { PluginFactory } from './plugins'
 
 const init = (app: Express) => {
@@ -8,10 +8,5 @@ const init = (app: Express) => {
 
 export default {
     init,
-    graphqlSchema: {
-        types,
-        inputs,
-        queries,
-        mutations
-    }
+    graphqlSchema
 }
