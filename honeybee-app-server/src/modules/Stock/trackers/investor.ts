@@ -1,10 +1,10 @@
 import { StockTrackerStatus } from "honeybee-api"
 import Logger from "../../../core/Logger"
 import { processBalanceByExecution } from "../../../services/balance.sheet.service"
-import Activity from "../../Activity"
+import { onStockOrderExecution } from "../../Activity/services"
 import { AdapterCallbacks, BrokerPlugin, OrderExecution } from "../../Broker/plugins"
-import { Account } from "../../Identity"
-import Notification from "../../Notification"
+import { Account } from "../../Identity/models"
+import { notifyOrder } from "../../Notification/services"
 import { OrderSides } from "../../Order/models"
 import { addOrderExecution, updateOrderCode } from "../../Order/services"
 import { StockTracker } from "../models"
@@ -171,9 +171,9 @@ export class Investor {
     async orderExecutionCallback(execution: OrderExecution): Promise<void> {
         await addOrderExecution(execution)
         processBalanceByExecution(execution, this.stockTrackerModel)
-        Activity.onStockOrderExecution(execution, this.stockTrackerModel)
+        onStockOrderExecution(execution, this.stockTrackerModel)
         const deviceToken = (<Account>this.stockTrackerModel.account).getActiveDevice().token
-        Notification.notifyOrder(execution, deviceToken)
+        notifyOrder(execution, deviceToken)
     }
 
 }

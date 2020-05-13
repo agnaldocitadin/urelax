@@ -4,21 +4,14 @@ const entry: GraphQLModule = {
     types: `
         type StockTracker {
             _id: ID!
-
             account: Account
-
             brokerAccount: BrokerAccount
 
             strategy: String
-
             strategySetting: StrategySetting
-            
             status: String
-
             frequency: String
-
             lastFrequencyUpdate: Datetime
-
             stockInfo: StockInfo
 
             createdAt: Datetime
