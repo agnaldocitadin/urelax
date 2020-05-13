@@ -12,7 +12,7 @@ const entry: GraphQLModule = {
             status: String
             frequency: String
             lastFrequencyUpdate: Datetime
-            stockInfo: StockInfo
+            stockInfo: StockInvestimentInfo
 
             createdAt: Datetime
             updatedAt: Datetime

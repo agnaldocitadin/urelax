@@ -108,7 +108,7 @@ export const makeStockOrder = async (stockTracker: StockTracker, {
  * @returns {Promise<Investor[]>}
  */
 export const buildStockTrackersFrom = async (account: Account): Promise<Investor[]> => {
-    let trackers = await StockTrackerModel.find({ account, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }}).populate("account").exec()
+    let trackers = await StockTrackerModel.find({ account, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }}).populate("account")
     return trackers.map(model => StockTrackerFactory.create(model))
 }
 
@@ -297,7 +297,7 @@ export const getBoughtQty = async (stockTracker: StockTracker) => {
  */
 export const registerUpdate = (stockTracker: StockTracker, dateUpdate: Date) => {
     stockTracker.lastFrequencyUpdate = dateUpdate
-    StockTrackerModel.create(stockTracker)
+    StockTrackerModel.updateOne({ _id: stockTracker._id }, { lastFrequencyUpdate: dateUpdate }).exec()
 }
 
 /**

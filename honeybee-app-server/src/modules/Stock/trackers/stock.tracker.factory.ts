@@ -1,12 +1,18 @@
-import { BrokerAccount } from '../../Broker/models/broker.account.model'
-import { PluginFactory } from '../../Broker/plugins/plugin.factory'
-import { Account } from '../../Identity/models/profile.model'
-import { StockTracker } from '../models/stock.tracker.model'
-import { StrategyFactory } from '../strategies/strategy.factory'
-import { Investor } from './investor'
+import { Investor } from "."
+import { BrokerAccount } from "../../Broker/models"
+import { PluginFactory } from "../../Broker/plugins"
+import { Account } from "../../Identity/models"
+import { StockTracker } from "../models"
+import { StrategyFactory } from "../strategies"
 
 export const StockTrackerFactory = {
 
+    /**
+     *
+     *
+     * @param {StockTracker} stockTracker
+     * @returns {Investor}
+     */
     create: (stockTracker: StockTracker): Investor => {
         let simulation = (<Account>stockTracker.account).simulation
         const adapter = PluginFactory.create(<BrokerAccount>stockTracker.brokerAccount, simulation)

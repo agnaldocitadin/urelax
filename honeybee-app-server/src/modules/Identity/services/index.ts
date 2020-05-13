@@ -1,1 +1,1 @@
-export * from './profile.service'
+export * from './identity.service'

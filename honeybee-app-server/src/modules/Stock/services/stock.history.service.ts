@@ -64,7 +64,6 @@ export const getHistory = async (symbol: string, lastDateTime: Date, frequency: 
         .find({ symbol, date: { "$lte": lastDateTime }})
         .sort({ "date": "desc" })
         .limit(numRecords)
-        .exec()
 
     const stockHistoryGroup: StockHistory[] = stockHistories.reduce((stockHistoryGroup, history, index) => {
         if (index % frequency.inMinutes === 0) {

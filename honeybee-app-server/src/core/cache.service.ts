@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import NodeCache from 'node-cache'
-import { ErrorCodes } from '../core/error.codes'
-import Logger from '../core/Logger'
+import { ErrorCodes } from './error.codes'
+import Logger from './Logger'
 
 /**
  *

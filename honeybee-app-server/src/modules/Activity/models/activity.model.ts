@@ -1,6 +1,6 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import mongoose from 'mongoose'
-import { Account } from '../../Identity/models/profile.model'
+import { Account } from '../../Identity/models'
 
 export enum ActivityType {
     STOCK_TRACKER = "STOCK_TRACKER",

@@ -20,10 +20,10 @@ const entry: GraphQLModule = {
             description: String
             active: Boolean
             logo: String
-            stock: StockInfo
+            stock: StockInvestimentInfo
         }
 
-        type StockInfo {
+        type StockInvestimentInfo {
             symbol: String
             stockLot: Float
         }

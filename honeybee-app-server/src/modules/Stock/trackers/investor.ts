@@ -1,6 +1,5 @@
 import { StockTrackerStatus } from "honeybee-api"
 import Logger from "../../../core/Logger"
-import { processBalanceByExecution } from "../../../services/balance.sheet.service"
 import { onStockOrderExecution } from "../../Activity/services"
 import { AdapterCallbacks, BrokerPlugin, OrderExecution } from "../../Broker/plugins"
 import { Account } from "../../Identity/models"
@@ -170,7 +169,6 @@ export class Investor {
      */
     async orderExecutionCallback(execution: OrderExecution): Promise<void> {
         await addOrderExecution(execution)
-        processBalanceByExecution(execution, this.stockTrackerModel)
         onStockOrderExecution(execution, this.stockTrackerModel)
         const deviceToken = (<Account>this.stockTrackerModel.account).getActiveDevice().token
         notifyOrder(execution, deviceToken)

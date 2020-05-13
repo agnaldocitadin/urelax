@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import { ErrorCodes } from '../../core/error.codes'
-import { Logger } from '../../core/Logger'
+import Logger from '../../core/Logger'
 import { invoke } from '../../core/Utils'
 import { findByEmailPassword } from '../Identity/services'
 

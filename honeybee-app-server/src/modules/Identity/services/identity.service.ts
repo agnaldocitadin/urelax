@@ -4,7 +4,7 @@ import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
 import { flatObject } from "../../../core/Utils"
 import { onActivateSimulationAccount, onCreateAccount } from "../../Activity/services"
-import { Account, Preferences, Profile, ProfileModel } from "../models"
+import { Account, AccountModel, Preferences, Profile, ProfileModel } from "../models"
 
 const defaultPreferences: Preferences = {
     language: Locales.PT_BR,
@@ -28,9 +28,8 @@ export const findProfileById = (id: string) => {
  *
  * @returns {Promise<Profile[]>}
  */
-export const findAllowedAccounts = (): Promise<Account[]> => {
-    // return ProfileModel.find({ active: true }).exec()
-    return Promise.resolve([])
+export const findAllowedAccounts = async (): Promise<Account[]> => {
+    return AccountModel.find({ active: true }).exec()
 }
 
 /**

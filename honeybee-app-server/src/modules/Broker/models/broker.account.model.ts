@@ -1,7 +1,7 @@
 import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import { Brokers } from 'honeybee-api'
 import mongoose from 'mongoose'
-import { Account } from '../../Identity/models/profile.model'
+import { Account } from '../../Identity/models'
 
 class BrokerAccountExtraData {
 

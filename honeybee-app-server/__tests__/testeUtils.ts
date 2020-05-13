@@ -1,8 +1,21 @@
 import dotenv from 'dotenv-flow'
-import { connectDB } from '../src/db/mongo'
-import { Account, Preferences, Profile } from '../src/modules/Identity/models/profile.model'
+import Mongoose from 'mongoose'
 import Logger from '../src/core/Logger'
-import { updateAccount } from '../src/modules/Identity/services/profile.service'
+import { StockTracker, StockTrackerModel } from '../src/modules/Stock/models'
+import { mongoose } from '@typegoose/typegoose'
+
+
+const connectDB = async () => {
+    const host = process.env.DB_HOST
+    const port = process.env.DB_PORT
+    const db = process.env.DB_NAME
+    await Mongoose.connect(`mongodb://${host}:${port}/${db}`, {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true
+    })
+    Logger.info("Database connected to: %s [%s:%s/%s]", "mongoDB", host, port, db)
+}
 
 
 beforeAll(async () => {
@@ -97,7 +110,7 @@ it("teste", async () => {
     // }
     // await BrokerModel.create(broker)
 
-// Conta
+    // Conta
     // const conta: Account = {
     //     profile: {
     //         name: "agnaldo",
@@ -115,63 +128,112 @@ it("teste", async () => {
     // }
     // await AccountModel.create(conta)
 
+    // Profile
+    // const profile: Profile = {
+    //     name: "Agnaldo Citadin",
+    //     nickname: "Agnaldo",
+    //     email: "agnaldo.citadin@gmail.com",
+    //     password: "123456",
+    //     active: true,
+    //     accounts: [
+    //         {
+    //             active: true,
+    //             preference: {
+    //                 language: "pt_BR",
+    //                 addStockTrackerPaused: false,
+    //                 receiveBalanceNotification: false,
+    //                 receiveTradeNotification: false
+    //             },
+    //             simulation: false,
+    //             devices: [
+    //                 {
+    //                     active: true,
+    //                     deviceId: "device1",
+    //                     token: "ASDV456"
+    //                 }
+    //             ]
+    //         }
+    //     ]
 
-    const changes = {
-        profile: {
-            name: "Agnaldo Citadin 2",
-        } as Profile,
-        preference: { 
-            language: "en_BR", 
-            addStockTrackerPaused: false
-        } as Preferences,
-        active: true,
-    } as Account
+    // }
 
-    const ser = (obj: any, last: string = "", serialization: any = {}) => {
-        // let serialization = {}
-        Object.keys(obj).forEach(field => {
-            Logger.info(field)
-            let value = (<any>obj)[field]
-            if (value == undefined || null) return
-            let toSerialize = typeof value === "object"
+    // await ProfileModel.create(profile)
 
-            if (toSerialize) {
-                Logger.info(">", field, value)
-                let idx = (last !== "") ? `${last}.${field}` : `${field}`
-                ser(value, idx, serialization)
-            }
-            else {
-                console.log(field, value)
-                let idx = (last !== "") ? `${last}.${field}` : `${field}`
-                serialization[idx] = (<any>obj)[field]
-            }
-        })
-
-        return serialization
-        // var newobj = {};
-        // Object.keys( data ).forEach((key) => {
-        //     if (typeof(data[key]) == "object" ) {
-        //         Object.keys(data[key]).forEach(function(subkey) {
-        //             (<any>newobj)[`${key}.${subkey}`] = data[key][subkey];
-        //         })
-        //     } 
-        //     else {
-        //         (<any>newobj)[key] = data[key];
-        //     }
-        // })
-
-        // return newobj
+    // tracker
+    const tracker: StockTracker = {
+        account: mongoose.Types.ObjectId("5ebbe3dd81f664438033c774"),
+        brokerAccount: mongoose.Types.ObjectId("5ebbe3dd81f664438033c774"),
+        frequency: "1M",
+        strategy: "STRATEGY_ONE",
+        status: "RUNNING",
+        strategySetting: {
+            autoAmountLimit: false,
+            stockAmountLimit: 5000
+        },
+        stockInfo: {
+            symbol: "MGLU3",
+            stockLot: 100
+        }
     }
+
+    await StockTrackerModel.create(tracker)
+
+    // const changes = {
+    //     profile: {
+    //         name: "Agnaldo Citadin 2",
+    //     } as Profile,
+    //     preference: { 
+    //         language: "en_BR", 
+    //         addStockTrackerPaused: false
+    //     } as Preferences,
+    //     active: true,
+    // } as Account
+
+    // const ser = (obj: any, last: string = "", serialization: any = {}) => {
+    //     // let serialization = {}
+    //     Object.keys(obj).forEach(field => {
+    //         Logger.info(field)
+    //         let value = (<any>obj)[field]
+    //         if (value == undefined || null) return
+    //         let toSerialize = typeof value === "object"
+
+    //         if (toSerialize) {
+    //             Logger.info(">", field, value)
+    //             let idx = (last !== "") ? `${last}.${field}` : `${field}`
+    //             ser(value, idx, serialization)
+    //         }
+    //         else {
+    //             console.log(field, value)
+    //             let idx = (last !== "") ? `${last}.${field}` : `${field}`
+    //             serialization[idx] = (<any>obj)[field]
+    //         }
+    //     })
+
+    //     return serialization
+    //     // var newobj = {};
+    //     // Object.keys( data ).forEach((key) => {
+    //     //     if (typeof(data[key]) == "object" ) {
+    //     //         Object.keys(data[key]).forEach(function(subkey) {
+    //     //             (<any>newobj)[`${key}.${subkey}`] = data[key][subkey];
+    //     //         })
+    //     //     } 
+    //     //     else {
+    //     //         (<any>newobj)[key] = data[key];
+    //     //     }
+    //     // })
+
+    //     // return newobj
+    // }
 
     // let opa = ser(changes)
     // console.log(opa)
 
     // Logger.debug()
     
-    await updateAccount("5eb5b30f4591095c7c86de06", changes)
+    // await updateAccount("5eb5b30f4591095c7c86de06", changes)
 
     // let res = await findByEmailPassword("adasdasd", "456456")
     // console.log(res)
 
-    // console.log("Done.")
+    console.log("Done.")
 })

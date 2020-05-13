@@ -6,7 +6,7 @@ export enum InvestimentType {
     STOCK = "STOCK"
 }
 
-export class StockInfo {
+export class StockInvestimentInfo {
     
     @prop({ required: true })
     symbol!: string
@@ -32,7 +32,7 @@ export class Investiment {
     logo!: string
 
     @prop({ _id: false })
-    stock?: StockInfo
+    stock?: StockInvestimentInfo
     
 }
 

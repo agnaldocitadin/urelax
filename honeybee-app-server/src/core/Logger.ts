@@ -64,7 +64,7 @@ const fatal: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
     msg !== undefined ? Pino.fatal(obj, msg, ...args) : Pino.fatal(obj)
 }
 
-export const Logger = {
+const Logger = {
 
     trace,
     debug,

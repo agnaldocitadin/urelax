@@ -2,6 +2,11 @@ import { Express } from 'express'
 import { invoke } from '../../../core/Utils'
 import { stockTrackerPlayground } from './stock.tracker.playground'
 
+/**
+ *
+ *
+ * @param {Express} app
+ */
 export const registerAPI = (app: Express) => {
 
     app.post("/playStockTracker", (req, res) => {

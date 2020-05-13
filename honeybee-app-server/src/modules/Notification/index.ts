@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import admin from 'firebase-admin'
-import { Logger } from '../../core/Logger'
+import Logger from '../../core/Logger'
 
 const init = (app: Express) => {
     let firebaseCredentials = `./src/modules/Notification/${process.env.FIREBASE_CREDENTIAL_FILE}`

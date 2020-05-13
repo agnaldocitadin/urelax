@@ -1,18 +1,18 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import { TransactionType } from 'honeybee-api'
 import mongoose from 'mongoose'
-import { Account } from '../../Identity/models/profile.model'
+import { Account } from '../../Identity/models'
 
 class Transaction {
 
     @prop({ required: true })
-    dateTime: Date
+    dateTime!: Date
 
     @prop({ required: true, enum: TransactionType })
-    type: string
+    type!: string
 
     @prop({ required: true })
-    value: number
+    value!: number
 }
 
 /**
