@@ -35,9 +35,7 @@ export const resolvers = {
         return findProfileById(userAccountId)
     },
 
-    fetchActiveStockTrackersQuery: async ({ userAccountId }: any) => {
-        return findActivesByAccount(userAccountId)
-    },
+    
 
     fetchBrokerAccountQuery: ({ brokerAccountId }: any) => {
         return findBrokerAccount(brokerAccountId)
@@ -67,14 +65,7 @@ export const resolvers = {
 
 
 
-    createStockTracker: async ({ stockTracker }: any) => {
-        const model = await createNewStockTracker(stockTracker)
-        if (runOnCreate(model)) {
-            let investor = StockTrackerFactory.create(model)
-            stockTrackerPlayground.addInvestor(investor)
-        }
-        return model
-    },
+    
 
     
 
@@ -84,11 +75,7 @@ export const resolvers = {
 
     
 
-    updateStockTracker: async ({ _id, stockTracker }: any) => {
-        let stockTrackerDB = await updateStockTrackerById(_id, stockTracker)
-        stockTrackerPlayground.refreshInvestor(stockTrackerDB)
-        return true
-    },
+    
 
     
     

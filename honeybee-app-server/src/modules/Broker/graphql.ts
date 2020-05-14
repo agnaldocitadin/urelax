@@ -65,6 +65,11 @@ const entry: GraphQLModule = {
             passwd: String
             birthdate: Datetime
         }
+
+        input StockInvestimentInfoInput {
+            symbol: String
+            stockLot: Float
+        }
     `,
     // mutations: `
     //     createBrokerAccount(brokerAccount: BrokerAccountInput!): BrokerAccount

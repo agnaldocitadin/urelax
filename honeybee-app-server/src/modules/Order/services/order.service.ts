@@ -12,16 +12,18 @@ export const makeBaseOrder = (order: Order) => {
 }
 
 /**
- * FIXME update by updateOne()
+ * 
  *
  * @param {Order} order
  * @param {string} orderCode
  * @returns {Promise<Order>}
  */
-export const updateOrderCode = (order: Order, orderCode: string): Promise<Order> => {
-    order.orderBrokerId = orderCode
-    order.updatedAt = new Date()
-    return OrderModel.create(order)
+export const updateOrderCode = async (order: Order, orderCode: string): Promise<Order> => {
+    await OrderModel.updateOne({ _id: order._id }, { 
+        orderBrokerId: orderCode,
+        updatedAt: new Date()
+    })
+    return order
 }
 
 /**

@@ -1,8 +1,7 @@
+import { AdapterCallbacks, BaseBrokerPlugin, OrderExecution } from "."
 import { Utils } from "../../../core/Utils"
-import { Order, OrderPlatforms, OrderSides, OrderStatus } from "../../Order/models/order.model"
-import { StockTracker } from "../../Stock/models/stock.tracker.model"
-import { AdapterCallbacks, BaseBrokerPlugin } from "./base.broker.plugin"
-import { OrderExecution } from "./broker.plugin"
+import { Order, OrderPlatforms, OrderSides, OrderStatus } from "../../Order/models"
+import { StockTracker } from "../../Stock/models"
 
 const EXECUTION_DELAY = 1000
 
@@ -43,10 +42,8 @@ export class MockBrokerPlugin extends BaseBrokerPlugin {
     }
     
     async totalAvailableAmount(stockTracker: StockTracker, plaftorm: OrderPlatforms, orderSide: OrderSides, symbol: string): Promise<number> {
-        // const balance = (await findBalanceSheetOnCache((<UserAccount>stockTracker.userAccount)._id))[0]
         // FIXME
-        const balance = {}
-        return balance.currentAmount || 0
+        return 0
     }
 
 }

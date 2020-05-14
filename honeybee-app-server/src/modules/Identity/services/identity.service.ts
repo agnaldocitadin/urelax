@@ -38,20 +38,14 @@ export const findAllowedAccounts = async (): Promise<Account[]> => {
  * @param {*} { name, nickname, email, password }
  * @returns {Promise<Profile>}
  */
-export const createProfile = async ({ name, nickname, email, password }: any): Promise<Profile> => {
+export const createProfile = async ({ name, nickname, email, password, accounts, active }: any): Promise<Profile> => {
     const profile: Profile = {
         name,
         nickname,
         email,
         password,
-        active: true,
-        accounts: [
-            {
-                active: true,
-                simulation: false,
-                preference: defaultPreferences
-            }
-        ]
+        accounts,
+        active
     }
     validateProfile(profile)
     let _profile = await ProfileModel.create(profile)
@@ -77,7 +71,7 @@ const validateProfile = (profile: Profile) => {
  */
 export const updateAccount = (_id: string, changes: Account) => {
     let _changes = flatObject(changes)
-    return ProfileModel.updateOne({ _id }, { "$set": _changes }).exec()
+    return AccountModel.updateOne({ _id }, { "$set": _changes }).exec()
 }
 
 /**

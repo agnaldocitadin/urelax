@@ -37,6 +37,7 @@ export const createNewStockTracker = async (model: StockTracker): Promise<StockT
  * @returns {Promise<void>}
  */
 const validate = async (stockTracker: StockTracker): Promise<void> => {
+    // FIXME
     // const stockModel = {} //await StockModel.findById(stockTracker.stock).exec()
 
     // if (!stockModel) {
@@ -89,9 +90,9 @@ export const makeStockOrder = async (stockTracker: StockTracker, {
             type: orderType,
             expiresAt
         },
-        platform: platform,
-        price: price,
-        quantity: quantity,
+        platform,
+        price,
+        quantity,
         side: orderSide,
         progress: 0,
         status: OrderStatus.NEW,
@@ -108,7 +109,9 @@ export const makeStockOrder = async (stockTracker: StockTracker, {
  * @returns {Promise<Investor[]>}
  */
 export const buildStockTrackersFrom = async (account: Account): Promise<Investor[]> => {
-    let trackers = await StockTrackerModel.find({ account, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }}).populate("account")
+    let trackers = await StockTrackerModel.find({ account, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }})
+        .populate("brokerAccount")
+        .populate("account")
     return trackers.map(model => StockTrackerFactory.create(model))
 }
 
@@ -136,32 +139,6 @@ const findStockTrackerToGraphql = async (filter: any): Promise<StockTracker[]> =
         .sort({ "createdAt": "desc" })
         .exec()
 }
-
-// /**
-//  *
-//  *
-//  * @param {(StockTracker|any)} stockTracker
-//  * @returns {StockTracker}
-//  */
-// export const populateStockTrackerDependencies = (stockTracker: StockTracker|any): StockTracker => {
-//     let doc = Object.assign({}, stockTracker._doc)
-//     let strategy = StrategyNames.convert(stockTracker.strategy)
-//     let frequency = StockTrackerFrequency.convert(stockTracker.frequency)
-
-//     doc.strategy = {
-//         _id: strategy._id,
-//         description: ts(strategy._id),
-//         file: strategy.file,
-//         impl: strategy.impl
-//     }
-
-//     doc.frequency = {
-//         _id: frequency.type,
-//         description: ts(frequency.type)
-//     }
-
-//     return doc
-// }
 
 /**
  *
@@ -258,8 +235,6 @@ export const destroyStockTracker = async (stockTracker: StockTracker, sendNotifi
  */
 export const isBought = async (stockTracker: StockTracker): Promise<boolean> => {
     // FIXME
-    // const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
-    // return balance.isBought(stockTracker.getSymbol())
     return false
 }
 
@@ -271,8 +246,6 @@ export const isBought = async (stockTracker: StockTracker): Promise<boolean> => 
  */
 export const isSold = async (stockTracker: StockTracker): Promise<boolean> => {
     // FIXME
-    // const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
-    // return balance.isSold(stockTracker.getSymbol())
     return false
 }
 
@@ -284,8 +257,6 @@ export const isSold = async (stockTracker: StockTracker): Promise<boolean> => {
  */
 export const getBoughtQty = async (stockTracker: StockTracker) => {
     // FIXME
-    // const balance = (await findBalanceSheetOnCache(stockTracker.getUserAccountId(), stockTracker.getBrokerAccountId()))[0]
-    // return balance.getQtyFrom(stockTracker.getSymbol())
     return 0
 }
 

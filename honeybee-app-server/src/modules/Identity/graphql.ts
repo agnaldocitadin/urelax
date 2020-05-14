@@ -1,5 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
-import { activateSimulation, createProfile, updateAccount } from "./services"
+import { activateSimulation } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -33,16 +33,17 @@ const entry: GraphQLModule = {
             active: Boolean
             simulation: Boolean
             devices: [Device]
-            preference: [Preferences]
+            preference: Preferences
         }
     `,
+
     inputs: `
         input ProfileInput {
             name: String
             nickname: String
             email: String
             password: String
-            accounts: [AccountInput]
+            accounts: [String]
             active: Boolean
         }
 
@@ -65,20 +66,34 @@ const entry: GraphQLModule = {
             addStockTrackerPaused: Boolean
         }
     `,
-    // mutations: `
-    //     createProfile(userAccount: UserAccountInput!): UserAccount
-    //     updateAccount(_id: ID!, userAccount: UserAccountInput!): Boolean
-    //     activateSimulationAccount(userAccountId: ID!): String
-    // `,
+
+    mutations: `
+        createProfile(input: ProfileInput!): Profile
+        updateProfile(id: ID!, input: ProfileInput!): Boolean
+        createAccount(input: AccountInput!): Account
+        updateAccount(id: ID!, input: AccountInput!): Boolean
+        activateSimulationAccount(profile: ID!): String
+    `,
+
     resolvers: {
-        createProfile: ({ userAccount }: any) => {
-            return createProfile(userAccount)
+        createProfile: ({ input }: any) => {
+            // return createProfile(input)
         },
-        updateAccount: ({ _id, userAccount }: any) => {
-            return updateAccount(_id, userAccount)
+        
+        updateProfile: ({ id, input }: any) => {
+            // return createProfile(userAccount)
         },
-        activateSimulationAccount: ({ userAccountId }: any) => {
-            return activateSimulation(userAccountId)
+        
+        createAccount: ({ input }: any) => {
+            // return createProfile(input)
+        },
+
+        updateAccount: ({ id, input }: any) => {
+            // return updateAccount(id, input)
+        },
+
+        activateSimulationAccount: ({ profile }: any) => {
+            return activateSimulation(profile)
         }
     }
 }

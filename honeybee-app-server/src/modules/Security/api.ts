@@ -4,6 +4,11 @@ import Logger from '../../core/Logger'
 import { invoke } from '../../core/Utils'
 import { findByEmailPassword } from '../Identity/services'
 
+/**
+ *
+ *
+ * @param {Express} app
+ */
 export const registerAPI = (app: Express) => {
 
     app.post("/authenticate", (req, res) => {
