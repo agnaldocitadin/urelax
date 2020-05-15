@@ -5,6 +5,7 @@ import { APIError, Locales } from 'honeybee-api'
 import { ErrorCodes } from '../core/error.codes'
 import { tsLng } from '../core/i18n'
 import Logger, { MessageError } from '../core/Logger'
+import * as modules from './'
 
 export interface GraphQLModule {
     types?: string
@@ -20,7 +21,9 @@ export interface GraphQLModule {
  * @param {any[]} modules
  * @param {Express} app
  */
-const initGraphQLSchema = async (modules: any[], app: Express) => {
+const initGraphQLSchema = async (app: Express) => {
+
+    Logger.info("Loading schemas...")
 
     const scalars = `
         scalar Datetime
@@ -32,32 +35,32 @@ const initGraphQLSchema = async (modules: any[], app: Express) => {
     let mutations = ``
     let resolvers = {}
 
-    await Promise.all(modules.map(async (module) => {
+    const moduleNames = Object.keys(modules)
+    await Promise.all(moduleNames.map( async (name) => {
         if (module) {
-            const defaultEntry = module.default
-            if (defaultEntry && defaultEntry.graphqlSchema) {
-                
-                let gql = await defaultEntry.graphqlSchema
-
-                if (gql.types) {
-                    types = types.concat(gql.types)
+            const moduleSchema = (<any>modules)[name].graphqlSchema
+            if (moduleSchema) {
+                if (moduleSchema.types) {
+                    types = types.concat(moduleSchema.types)
                 }
 
-                if (gql.inputs) {
-                    inputs = inputs.concat(gql.inputs)
+                if (moduleSchema.inputs) {
+                    inputs = inputs.concat(moduleSchema.inputs)
                 }
 
-                if (gql.queries) {
-                    queries = queries.concat(gql.queries)
+                if (moduleSchema.queries) {
+                    queries = queries.concat(moduleSchema.queries)
                 }
                 
-                if (gql.mutations) {
-                    mutations = mutations.concat(gql.mutations)
+                if (moduleSchema.mutations) {
+                    mutations = mutations.concat(moduleSchema.mutations)
                 }
 
-                if (gql.resolvers) {
-                    resolvers = {...resolvers, ...gql.resolvers}
+                if (moduleSchema.resolvers) {
+                    resolvers = {...resolvers, ...moduleSchema.resolvers}
                 }
+
+                Logger.info("- %s GraphQL schema loaded.", name.toUpperCase())
             }
         }
     }))

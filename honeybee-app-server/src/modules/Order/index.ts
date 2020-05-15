@@ -1,7 +1,10 @@
 import { Express } from 'express'
+import { ModuleEntry } from '../Module'
 
-const init = (app: Express) => {}
+const init = async (app: Express) => {}
 
-export default {
+const entry: ModuleEntry = {
     init
 }
+
+export default entry

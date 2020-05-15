@@ -1,12 +1,10 @@
 const path = require('path')
-const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
     mode: process.env.NODE_ENV || "development",
     entry: {
         server: './src/core/server.entrypoint.ts'
     },
-    devtool: 'eval-source-map',
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/',
@@ -18,11 +16,31 @@ module.exports = {
         __dirname: false,   // if you don't put this is, __dirname
         __filename: false,  // and __filename return blank or /
     },
-    externals: [nodeExternals()], // Need this to avoid error when working with Express
     module: {
         rules: [
             // Transpiles ES6-8 into ES5
-            { test: /\.(tsx|ts|js)$/, exclude: /node_modules/, use: "babel-loader" }
+            { 
+                test: /\.(tsx|ts|js)$/, 
+                exclude: /node_modules/, 
+                use: "babel-loader"
+            },
+            { 
+                test: /\.(key|cert)$/,
+                exclude: /node_modules/, 
+                loader: "file-loader",
+                options: {
+                    outputPath: 'ssl',
+                    name: '[name].[ext]'
+                }
+            },
+            { 
+                test: /\.(proto)$/,
+                exclude: /node_modules/, 
+                loader: "file-loader",
+                options: {
+                    name: '[name].[ext]'
+                }
+            }
         ]
     },
     resolve: {

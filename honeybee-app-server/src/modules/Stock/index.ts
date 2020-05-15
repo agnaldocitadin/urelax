@@ -1,4 +1,5 @@
 import { Express } from 'express'
+import { ModuleEntry } from '../Module'
 import graphqlSchema from './graphql'
 import { stockWatcher } from './plugins'
 import { StrategyFactory } from './strategies'
@@ -11,7 +12,9 @@ const init = async (app: Express) => {
     await StrategyFactory.init()
 }
 
-export default {
+const entry: ModuleEntry = {
     init,
     graphqlSchema
 }
+
+export default entry
