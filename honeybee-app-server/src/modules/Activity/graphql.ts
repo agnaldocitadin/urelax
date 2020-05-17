@@ -1,5 +1,4 @@
 import { GraphQLModule } from "../GraphQL"
-import { findActivitiesByAccount, findActivitiesByStockTracker } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -20,17 +19,12 @@ const entry: GraphQLModule = {
             hidden: Boolean
         }
     `,
-    // queries: `
-    //     fetchStockTrackerActivitiesQuery(stockTrackerId: ID!, date: String, page: Int!, qty: Int!): [Activity]
-    //     fetchUserActivitiesQuery(userAccountId: ID!, date: String, page: Int!, qty: Int!): [Activity]
-    // `,
+    queries: `
+        fetchActivities(id: ID, account: ID, ref: ID, activityType: String, date: String, page: Int!, qty: Int!): [Activity]
+    `,
     resolvers: {
-        fetchStockTrackerActivitiesQuery: ({ stockTrackerId, date, page, qty }: any) => {
-            return findActivitiesByStockTracker(stockTrackerId, page, qty)
-        },
-    
-        fetchUserActivitiesQuery: ({ userAccountId, date, page, qty }: any) => {
-            return findActivitiesByAccount(userAccountId, page, qty)
+        fetchActivities: ({ account, ref, activityType, date, page, qty }: any) => {
+            // TODO
         }
     }
 

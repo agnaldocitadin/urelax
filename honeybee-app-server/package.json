@@ -44,14 +44,14 @@
         "yarn-upgrade-all": "^0.5.2"
     },
     "scripts": {
-        "watch": "webpack -w --config webpack.dev.js",
+        "build:dev": "webpack -w --config webpack.dev.js",
+        "build:release": "webpack -p --progress --config webpack.prod.js",
         "nodewatch": "SET \"NODE_ENV=development\" & nodemon --inspect ./dist/server.entrypoint.js",
         "standalone": "SET \"NODE_ENV=development\" & node ./dist/server.entrypoint.js",
         "startdb": "mongod --quiet -dbpath D:\\development\\MongoDB\\Server\\4.0\\data",
         "backupdb": "mongodump --host=localhost:27017 --db=honeybee --verbose --out ./dist/",
         "restoredb": "mongorestore --host=localhost:27017 --db=honeybee --verbose ./dist/investing-bot/",
-        "start": "concurrently --kill-others yarn:watch yarn:nodewatch",
-        "release": "webpack -p --progress --config webpack.prod.js",
+        "start": "concurrently --kill-others yarn:build:dev yarn:nodewatch",
         "test": "jest --detectOpenHandles",
         "test:debug": "node --inspect ./node_modules/jest/bin/jest.js --runInBand --detectOpenHandles",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"

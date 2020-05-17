@@ -42,7 +42,7 @@ const entry: GraphQLModule = {
     `,
 
     queries: `
-        fetchActiveStockTrackersQuery(account: ID!): [StockTracker]
+        fetchStockTrackers(id: ID, account: ID, status: String, frequency: String, page: Int!, qty: Int!): [StockTracker]
     `,
 
     mutations: `
@@ -51,8 +51,8 @@ const entry: GraphQLModule = {
     `,
 
     resolvers: {
-        fetchActiveStockTrackersQuery: async ({ account }: any) => {
-            return findActivesByAccount(account)
+        fetchStockTrackers: async ({ id, account }: any) => {
+            // return findActivesByAccount(account)
         },
 
         createStockTracker: async ({ input }: any) => {

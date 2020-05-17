@@ -14,9 +14,9 @@ export const registerAPI = (app: Express) => {
     app.post("/authenticate", (req, res) => {
         invoke(req, res, async () => {
             const { email, passwd } = req.body
-            const user = await findByEmailPassword(email, passwd)
-            if (user) {
-                res.json({ user, token: "token"})
+            const profile = await findByEmailPassword(email, passwd)
+            if (profile) {
+                res.json({ profile, token: "token"})
                 return
             }
             Logger.throw(ErrorCodes.USER_NOT_AUTHORIZED, "User not authorized")

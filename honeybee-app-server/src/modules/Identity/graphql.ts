@@ -1,5 +1,4 @@
 import { GraphQLModule } from "../GraphQL"
-import { activateSimulation } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -93,7 +92,7 @@ const entry: GraphQLModule = {
         },
 
         activateSimulationAccount: ({ profile }: any) => {
-            return activateSimulation(profile)
+            // return activateSimulation(profile)
         }
     }
 }

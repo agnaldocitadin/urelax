@@ -11,6 +11,11 @@ export enum StockTrackerStatus {
     DESTROYED = "DESTROYED"
 }
 
+export enum ActivityType {
+    STOCK_TRACKER = "STOCK_TRACKER",
+    USER_ACCOUNT = "USER_ACCOUNT"
+}
+
 export enum MessageTypes {
     STOCK_TRACKER_STATUS = "STOCK_TRACKER_STATUS",
     STOCK_TRACKER_ORDER = "STOCK_TRACKER_ORDER",

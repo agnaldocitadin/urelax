@@ -17,6 +17,10 @@ const entry: GraphQLModule = {
             createdAt: Datetime
             updatedAt: Datetime
         }
+
+        type FinancialSummary {
+            label: String
+        }
     `
 }
 

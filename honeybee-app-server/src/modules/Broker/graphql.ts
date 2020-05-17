@@ -1,5 +1,4 @@
 import { GraphQLModule } from "../GraphQL"
-import { createBrokerAccount, updateBrokerAccountById } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -25,7 +24,7 @@ const entry: GraphQLModule = {
 
         type StockInvestimentInfo {
             symbol: String
-            stockLot: Float
+            stockLot: Int
         }
 
         type BrokerAccountExtraData {
@@ -48,6 +47,7 @@ const entry: GraphQLModule = {
             updatedAt: Datetime
         }
     `,
+
     inputs: `
         input BrokerAccountInput {
             account: String
@@ -71,17 +71,32 @@ const entry: GraphQLModule = {
             stockLot: Float
         }
     `,
-    // mutations: `
-    //     createBrokerAccount(brokerAccount: BrokerAccountInput!): BrokerAccount
-    //     updateBrokerAccount(_id: ID!, brokerAccount: BrokerAccountInput!): Boolean
-    // `,
+
+    queries: `
+        fetchBrokers(id: ID, code: String, active: Boolean): [Broker]
+        fetchBrokerAccounts(id: ID, account: ID): [BrokerAccount]
+    `,
+
+    mutations: `
+        createBrokerAccount(input: BrokerAccountInput!): BrokerAccount
+        updateBrokerAccount(id: ID!, input: BrokerAccountInput!): Boolean
+    `,
+    
     resolvers: {
-        createBrokerAccount: ({ brokerAccount }: any) => {
-            return createBrokerAccount(brokerAccount)
+        fetchBrokers: ({ id, code, active }: any) => {
+            // TODO
         },
 
-        updateBrokerAccount: ({ _id, brokerAccount }: any) => {
-            return updateBrokerAccountById(_id, brokerAccount)
+        fetchBrokerAccounts: ({ id, account }: any) => {
+            // TOOD'
+        },
+
+        createBrokerAccount: ({ input }: any) => {
+            // TOOD'
+        },
+
+        updateBrokerAccount: ({ id, input }: any) => {
+            // TOOD'
         }
     }
 }
