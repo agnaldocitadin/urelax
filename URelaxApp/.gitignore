@@ -20,7 +20,6 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-project.xcworkspace
 
 # Android/IntelliJ
 #
@@ -29,6 +28,10 @@ build/
 .gradle
 local.properties
 *.iml
+
+# Visual Studio Code
+#
+.vscode/
 
 # node.js
 #
@@ -57,16 +60,4 @@ buck-out/
 *.jsbundle
 
 # CocoaPods
-honeybee-app/ios/Pods/
-
-yarn.lock
-
-honeybee-api/node_modules/*
-honeybee-api/lib*
-honeybee-app/node_modules*
-honeybee-app-server/node_modules*
-honeybee-app-server/dist*
-URelaxApp/node_modules*
-js-commons/node_modules/*
-js-commons/lib*
-js-commons/yarn.lock
+/ios/Pods/
