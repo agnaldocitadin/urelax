@@ -1,16 +1,21 @@
-// import actions from './actions'
-// import reducer, { ReducerState } from './reducer'
-// import { TemplateUI } from './TemplateUI'
+import { firebase } from '@react-native-firebase/messaging'
+import { useSelector } from 'react-redux'
+import actions from './actions'
+import reducer, { ReducerState } from './reducer'
 
 const MODULE_NAME = "Security"
 
-// type StateProperties = keyof ReducerState
+type StateProperties = keyof ReducerState
 
-// const select = (property: StateProperties) => useSelector((state: any) => state[MODULE_NAME][property])
+const select = (property: StateProperties) => useSelector((state: any) => state[MODULE_NAME][property])
 
-const init = () => {
-    // let act = actions()
-    // act.addTodo()
+const init = async () => {
+    // console.log("--------->>")
+    // const permit = await firebase.messaging().hasPermission()
+    // if (permit) {
+    //     const deviceToken = await firebase.messaging().getToken()
+    //     console.debug(deviceToken)
+    // }
 }
 
 export default {
@@ -19,7 +24,7 @@ export default {
     ...{
         // TemplateUI
     },
-    // select,
-    // actions,
-    // reducer
+    select,
+    actions,
+    reducer
 }

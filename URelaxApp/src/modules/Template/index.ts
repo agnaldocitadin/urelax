@@ -10,8 +10,8 @@ type StateProperties = keyof ReducerState
 const select = (property: StateProperties) => useSelector((state: any) => state[MODULE_NAME][property])
 
 const init = () => {
-    let act = actions()
-    act.addTodo()
+    // let act = actions()
+    // act.addTodo()
 }
 
 export default {

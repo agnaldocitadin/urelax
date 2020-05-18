@@ -2,7 +2,7 @@ import { Express } from 'express'
 import admin from 'firebase-admin'
 import Logger from '../../core/Logger'
 import { ModuleEntry } from '../Module'
-import firebaseCredentials from './push/honeybee-app-firebase-adminsdk-9mcrd-c508a87661.json'
+import firebaseCredentials from './push/urelax-5abcb-firebase-adminsdk-oezxo-f31915072b.json'
 
 const init = async (app: Express) => {
     admin.initializeApp({
