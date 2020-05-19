@@ -1,5 +1,5 @@
 import { APIError } from "."
-import { createBrokerAccount, updateBrokerAccount } from "./mutations"
+import { activateSimulationAccount, createAccount, createBrokerAccount, createProfile, createStockTracker, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
 import { fetchActivities, fetchBrokerAccounts, fetchBrokers } from "./queries"
 import { authenticate, destroyStockTracker, pauseStockTracker, playStockTracker } from './rest'
 
@@ -32,6 +32,12 @@ export const API = {
 
     // mutation
     createBrokerAccount,
-    updateBrokerAccount
-
+    updateBrokerAccount,
+    createProfile,
+    updateProfile,
+    createAccount,
+    updateAccount,
+    activateSimulationAccount,
+    createStockTracker,
+    updateStockTracker
 }

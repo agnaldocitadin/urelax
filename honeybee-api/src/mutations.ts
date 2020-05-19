@@ -1,5 +1,5 @@
 import { gql, mutation } from "./graphql"
-import { BrokerAccount } from "./types"
+import { Account, BrokerAccount, Profile, StockTracker } from "./types"
 
 export const createBrokerAccount = (input: BrokerAccount, fields: string): Promise<BrokerAccount> => {
     const name = "createBrokerAccount"
@@ -11,70 +11,37 @@ export const updateBrokerAccount = (id: string, input: BrokerAccount): Promise<b
     return gql(name, mutation(name, { id, input }))
 }
 
-// export const createUserAccount = (userAccount: UserAccount, fields: string): Promise<UserAccount> => {
-//     const name = "createUserAccount"
-//     return gql(name, mutation(name, { userAccount }, fields))
-// }
+export const createProfile = (input: Profile): Promise<Profile> => {
+    const name = "createProfile"
+    return gql(name, mutation(name, { input }))
+}
 
-// export const createStockTracker = (stockTracker: StockTracker, fields: string): Promise<StockTracker> => {
-//     const name = "createStockTracker"
-//     const clone = transformStockTracker(stockTracker)
-//     return gql(name, mutation(name, { stockTracker: clone }, fields))
-// }
+export const updateProfile = (id: string, input: Profile): Promise<boolean> => {
+    const name = "updateProfile"
+    return gql(name, mutation(name, { id, input }))
+}
 
-// export const createBrokerAccount = (brokerAccount: BrokerAccount, fields: string): Promise<BrokerAccount> => {
-//     const name = "createBrokerAccount"
-//     const clone = transformBrokerAccount(brokerAccount)
-//     return gql(name, mutation(name, { brokerAccount: clone }, fields))
-// }
+export const createAccount = (input: Account): Promise<Account> => {
+    const name = "createAccount"
+    return gql(name, mutation(name, { input }))
+}
 
-// export const updateUserAccount = (_id: string, userAccount: UserAccount): Promise<boolean> => {
-//     const name = "updateUserAccount"
-//     const transformed = {
-//         name: userAccount.name,
-//         nickname: userAccount.nickname,
-//         passwd: userAccount.passwd,
-//         email: userAccount.email,
-//         active: userAccount.active,
-//         deviceToken: userAccount.deviceToken,
-//         preferences: userAccount.preferences
-//     } as UserAccount
-//     return gql(name, mutation(name, { _id, userAccount: transformed }))
-// }
+export const updateAccount = (id: string, input: Account): Promise<boolean> => {
+    const name = "updateAccount"
+    return gql(name, mutation(name, { id, input }))
+}
 
-// export const updateUserPreferences = (_id: string, preferences: Preferences): Promise<boolean> => {
-//     const name = "updateUserPreferences"
-//     return gql(name, mutation(name, { _id, preferences }))
-// }
+export const activateSimulationAccount = (profile: string): Promise<string> => {
+    const name = "activateSimulationAccount"
+    return gql(name, mutation(name, { profile }))
+}
 
-// export const updateBrokerAccount = (_id: string, brokerAccount: BrokerAccount): Promise<boolean> => {
-//     const name = "updateBrokerAccount"
-//     return gql(name, mutation(name, { _id, brokerAccount }))
-// }
+export const createStockTracker = (input: StockTracker): Promise<StockTracker> => {
+    const name = "createStockTracker"
+    return gql(name, mutation(name, { input }))
+}
 
-// export const updateStockTracker = (_id: string, stockTracker: StockTracker): Promise<boolean> => {
-//     const name = "updateStockTracker"
-//     const clone = transformStockTracker(stockTracker)
-//     return gql(name, mutation(name, { _id, stockTracker: clone }))
-// }
-
-// export const activateSimulationAccount = (userAccountId: string): Promise<string> => {
-//     const name = "activateSimulationAccount"
-//     return gql(name, mutation(name, { userAccountId }))
-// }
-
-// const transformStockTracker = (tracker: StockTracker): StockTracker => {
-//     let clone = Object.assign({}, tracker)
-//     clone.userAccount = <any>clone.userAccount?._id
-//     clone.brokerAccount = <any>clone.brokerAccount?._id
-//     clone.stock = <any>clone.stock?._id
-//     clone.frequency = <any>clone.frequency?._id
-//     clone.strategy = <any>clone.strategy?._id
-//     return clone
-// }
-
-// const transformBrokerAccount = (account: BrokerAccount): StockTracker => {
-//     let clone = Object.assign({}, account)
-//     clone.userAccount = <any>clone.userAccount?._id
-//     return clone
-// }
+export const updateStockTracker = (id: string, input: StockTracker): Promise<boolean> => {
+    const name = "updateStockTracker"
+    return gql(name, mutation(name, { id, input }))
+}
