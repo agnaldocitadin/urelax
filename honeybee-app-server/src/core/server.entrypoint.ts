@@ -6,7 +6,6 @@ import fs from 'fs'
 import { ServerOptions } from 'https'
 import path from 'path'
 import { version } from '../../package.json'
-import Auth from '../modules/Security/auth'
 import GraphQL from '../modules/GraphQL'
 import Module from '../modules/Module'
 import './i18n'
@@ -25,10 +24,10 @@ class ServerEntryPoint {
     constructor() {
         dotenv.config()
         this.app = express()
-        
+
         this.httpsOptions = {
-            key: fs.readFileSync(path.resolve(__dirname, "./ssl/server.key")),
-            cert: fs.readFileSync(path.resolve(__dirname, "./ssl/server.cert"))
+            key: fs.readFileSync(path.resolve(__dirname, "./security/server.key")),
+            cert: fs.readFileSync(path.resolve(__dirname, "./security/server.cert"))
         }
 
         process.on("unhandledRejection", (error: Error) => Logger.print(error, Logger.error, "[unhandledRejection]"))
@@ -53,11 +52,9 @@ class ServerEntryPoint {
      * @memberof Server
      */
     private async init(): Promise<void> {
-        this.app.use(Auth)
         this.app.use(bodyParser.json())
         Logger.info("Http body parser: %s", "body-parser[JSON]")
         this.app.use(compression())
-
         await Module.initModules(this.app)
         await GraphQL.initGraphQLSchema(this.app)
     }

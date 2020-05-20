@@ -29,7 +29,7 @@ module.exports = {
                 exclude: /node_modules/, 
                 loader: "file-loader",
                 options: {
-                    outputPath: 'ssl',
+                    outputPath: 'security',
                     name: '[name].[ext]'
                 }
             },
