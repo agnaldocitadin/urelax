@@ -3,8 +3,6 @@ import Logger from '../core/Logger'
 
 export enum RouteVersion {
     V1 = "v1"
-    // V2 = "v2",
-    // V3 = "v3"
 }
 
 type RouteFunction = (req: Request, res: Response, next: NextFunction) => any

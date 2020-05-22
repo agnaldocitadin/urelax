@@ -1,5 +1,6 @@
 import { utils } from "js-commons"
-import { CONFIG, OFFLINE, Profile, StockTrackerStatus } from "."
+import { baseRoute, OFFLINE, Profile, StockTrackerStatus } from "."
+
 
 /**
  *
@@ -10,10 +11,25 @@ import { CONFIG, OFFLINE, Profile, StockTrackerStatus } from "."
  * @returns {Promise<{user: UserAccount, token: string}>}
  */
 export const authenticate = async (email?: string, passwd?: string): Promise<{profile: Profile, token: string}> => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/authenticate`, {
+    let res: Response = await utils.timedPromise(fetch(baseRoute("/authenticate"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, passwd })
+    }), OFFLINE)
+    return handleResponse(res)
+}
+
+/**
+ *
+ *
+ * @param {Profile} profile
+ * @returns {Promise<{profile: Profile, token: string}>}
+ */
+export const signup = async (profile: Profile): Promise<{profile: Profile, token: string}> => {
+    let res: Response = await utils.timedPromise(fetch(baseRoute("/signup"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile)
     }), OFFLINE)
     return handleResponse(res)
 }
@@ -25,7 +41,7 @@ export const authenticate = async (email?: string, passwd?: string): Promise<{pr
  * @returns
  */
 export const playStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/playStockTracker`, {
+    let res: Response = await utils.timedPromise(fetch(baseRoute("/playStockTracker", true), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
@@ -40,7 +56,7 @@ export const playStockTracker = async (id: string): Promise<{ status: StockTrack
  * @returns
  */
 export const pauseStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/pauseStockTracker`, {
+    let res: Response = await utils.timedPromise(fetch(baseRoute("/pauseStockTracker", true), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
@@ -55,7 +71,7 @@ export const pauseStockTracker = async (id: string): Promise<{ status: StockTrac
  * @returns
  */
 export const destroyStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/destroyStockTracker`, {
+    let res: Response = await utils.timedPromise(fetch(baseRoute("/destroyStockTracker", true), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })

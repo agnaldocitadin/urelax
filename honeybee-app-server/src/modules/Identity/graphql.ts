@@ -75,19 +75,15 @@ const entry: GraphQLModule = {
 
     resolvers: {
         updateProfile: ({ id, input }: any) => {
-            // return createProfile(userAccount)
         },
         
         createAccount: ({ input }: any) => {
-            // return createProfile(input)
         },
 
         updateAccount: ({ id, input }: any) => {
-            // return updateAccount(id, input)
         },
 
         activateSimulationAccount: ({ profile }: any) => {
-            // return activateSimulation(profile)
         }
     }
 }

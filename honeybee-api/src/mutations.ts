@@ -11,11 +11,6 @@ export const updateBrokerAccount = (id: string, input: BrokerAccount): Promise<b
     return gql(name, mutation(name, { id, input }))
 }
 
-export const createProfile = (input: Profile): Promise<Profile> => {
-    const name = "createProfile"
-    return gql(name, mutation(name, { input }))
-}
-
 export const updateProfile = (id: string, input: Profile): Promise<boolean> => {
     const name = "updateProfile"
     return gql(name, mutation(name, { id, input }))

@@ -1,5 +1,5 @@
 import { utils } from 'js-commons'
-import { CONFIG, OFFLINE } from "./api"
+import { baseRoute, OFFLINE } from "./api"
 
 const SEPARATOR = ","
 
@@ -38,7 +38,7 @@ export const query = (name: string, params?: object, fields?: string): string =>
  */
 export const gql = async (queryName: string, query: string) => {
     console.log("query:", query)
-    const response: Response = await utils.timedPromise(fetch(CONFIG.graphqlURI, {
+    const response: Response = await utils.timedPromise(fetch(baseRoute("/graphql", true), {
         method: "POST",
         headers: { 
             "Content-Type": "application/json;charset=UTF-8", 
