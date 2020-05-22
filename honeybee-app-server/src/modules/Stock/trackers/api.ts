@@ -1,5 +1,6 @@
 import { Express } from 'express'
 import { invoke } from '../../../core/Utils'
+import Router, { RouteVersion } from '../../Router'
 import { stockTrackerPlayground } from './stock.tracker.playground'
 
 /**
@@ -9,7 +10,7 @@ import { stockTrackerPlayground } from './stock.tracker.playground'
  */
 export const registerAPI = (app: Express) => {
 
-    app.post("/playStockTracker", (req, res) => {
+    Router.addRoute({ route: "/playStockTracker", method: "POST", version: RouteVersion.V1, secure: true }, (req, res) => {
         invoke(req, res, async () => {
             const { id } = req.body
             let stockTracker = await stockTrackerPlayground.playInvestor(id)
@@ -17,15 +18,15 @@ export const registerAPI = (app: Express) => {
         })
     })
 
-    app.post("/pauseStockTracker", (req, res) => {
+    Router.addRoute({ route: "/pauseStockTracker", method: "POST", version: RouteVersion.V1, secure: true }, (req, res) => {
         invoke(req, res, async () => {
             const { id } = req.body
             let stockTracker = await stockTrackerPlayground.pauseInvestor(id)
             res.send({ status: stockTracker.status })
         })
     })
-    
-    app.post("/destroyStockTracker", (req, res) => {
+
+    Router.addRoute({ route: "/destroyStockTracker", method: "POST", version: RouteVersion.V1, secure: true }, (req, res) => {
         invoke(req, res, async () => {
             const { id } = req.body
             let stockTracker = await stockTrackerPlayground.destroyInvestor(id)

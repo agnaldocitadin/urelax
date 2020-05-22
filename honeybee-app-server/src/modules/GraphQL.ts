@@ -2,10 +2,11 @@ import { Express, Request } from 'express'
 import expressGraphql from 'express-graphql'
 import { buildSchema } from 'graphql'
 import { APIError, Locales } from 'honeybee-api'
+import modulePath from '.'
 import { ErrorCodes } from '../core/error.codes'
 import { tsLng } from '../core/i18n'
 import Logger, { MessageError } from '../core/Logger'
-import * as modules from './'
+import Router, { RouteVersion } from './Router'
 
 export interface GraphQLModule {
     types?: string
@@ -23,7 +24,7 @@ export interface GraphQLModule {
  */
 const initGraphQLSchema = async (app: Express) => {
 
-    Logger.info("Loading schemas...")
+    Logger.info("Loading schemas:")
 
     const scalars = `
         scalar Datetime
@@ -35,6 +36,7 @@ const initGraphQLSchema = async (app: Express) => {
     let mutations = ``
     let resolvers = {}
 
+    const modules = modulePath.modules
     const moduleNames = Object.keys(modules)
     await Promise.all(moduleNames.map( async (name) => {
         if (module) {
@@ -73,7 +75,7 @@ const initGraphQLSchema = async (app: Express) => {
         ${mutations.trim().length > 0 ? `type Mutation {${mutations}}` : ""}
     `)
 
-    app.use("/graphql", expressGraphql((request: Request) => ({
+    const graphqlMiddleware = expressGraphql((request: Request) => ({
         schema,
         rootValue: resolvers,
         graphiql: true,
@@ -90,8 +92,9 @@ const initGraphQLSchema = async (app: Express) => {
                 return { code: ErrorCodes.UNKNOWN, message: tsLng(lang, ErrorCodes.UNKNOWN) } as APIError
             }
         }
-    })))
+    }))
 
+    Router.addRoute({ route: "/graphql", version: RouteVersion.V1 }, graphqlMiddleware)
     Logger.info("GrapQL Schema done.")
 }
 

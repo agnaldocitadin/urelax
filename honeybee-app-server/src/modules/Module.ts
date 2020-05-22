@@ -1,7 +1,7 @@
 import { Express } from 'express'
+import modulePath from '.'
 import Logger from '../core/Logger'
 import { GraphQLModule } from './GraphQL'
-import modulePath from './index'
 
 export interface ModuleEntry {
     init(app: Express): Promise<void>
@@ -17,14 +17,21 @@ export interface ModuleExport {
  *
  *
  * @param {Express} app
- * @returns
  */
-const initModules = async (app: Express) => {
-
+const prepare = (app: Express) => {
     if (modulePath.prepare) {
         modulePath.prepare(app)
     }
-    
+}
+
+/**
+ *
+ *
+ * @param {Express} app
+ * @returns
+ */
+const initModules = async (app: Express) => {
+    prepare(app)
     Logger.info("Discovering modules...")
     const moduleNames = Object.keys(modulePath.modules)
     moduleNames.forEach(module => Logger.info("- %s module loaded successfully.", module.toUpperCase()))

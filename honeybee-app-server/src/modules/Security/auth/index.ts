@@ -1,40 +1,50 @@
-import { Express, NextFunction, Request, Response } from 'express'
+import { Express } from 'express'
 import fs from 'fs'
 import { APIError } from 'honeybee-api'
-import jwt from 'jsonwebtoken'
+import passport from 'passport'
+import passportjwt from 'passport-jwt'
 import path from 'path'
 import { ErrorCodes } from '../../../core/error.codes'
-import Logger from '../../../core/Logger'
 import './public.key'
 
 let publicKey: Buffer
 
-const authorization = (req: Request, res: Response, next: NextFunction) => {
+/**
+ *
+ *
+ */
+const configureJWTStrategy = () => {
+    if (!publicKey) publicKey =  fs.readFileSync(path.resolve(__dirname, "./security/public.key"))
+    passport.use(new passportjwt.Strategy({ 
+            secretOrKey: publicKey,
+            algorithms: ["RS256"],
+            ignoreExpiration: true,
+            jwtFromRequest: passportjwt.ExtractJwt.fromAuthHeaderAsBearerToken() 
+        },
+        (payload, done) => done(null, payload))
+    )
+}
 
-    // Don't verify the autentication route
-    if (req.url === "/authenticate") {
-        next()
-        return
-    }
-
-    const token = req.header("Authorization")
-    if (!token) {
-        return res.status(402).send({ code: ErrorCodes.AUTHORIZATION_TOKEN_NOT_PROVIDED, message: "Authorization token not provided" } as APIError)
-    }
-
-    if (!publicKey) {
-        publicKey =  fs.readFileSync(path.resolve(__dirname, "./security/public.key"))
-    }
-
-    jwt.verify(token, publicKey, { algorithms: ["RS256"] }, error => {
-        if (error) return res.status(500).send({ code: ErrorCodes.INVALID_AUTHORIZATION_TOKEN } as APIError)
-        next()
+/**
+ *
+ *
+ * @param {Express} app
+ */
+const applySecurity = (app: Express) => {
+    app.use("*/secure", (req, res, next) => {
+        passport.authenticate("jwt", (err, payload, info) => {
+            if (payload.profile) {
+                return next()
+            }
+            res.status(401).send({ code: ErrorCodes.INVALID_AUTHORIZATION_TOKEN } as APIError)
+        })(req, res, next)
     })
 }
 
 export default {
     applySecurity: (app: Express) => {
-        app.use(authorization)
-        Logger.info("Authorization RS256")
+        app.use(passport.initialize())
+        configureJWTStrategy()
+        applySecurity(app)
     }
 }

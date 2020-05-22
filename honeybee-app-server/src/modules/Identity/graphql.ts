@@ -49,7 +49,7 @@ const entry: GraphQLModule = {
         input AccountInput {
             active: Boolean
             devices: [DeviceInput]
-            preference: [Preferences]
+            preference: [PreferenceInput]
         }
 
         input DeviceInput {
@@ -67,7 +67,6 @@ const entry: GraphQLModule = {
     `,
 
     mutations: `
-        createProfile(input: ProfileInput!): Profile
         updateProfile(id: ID!, input: ProfileInput!): Boolean
         createAccount(input: AccountInput!): Account
         updateAccount(id: ID!, input: AccountInput!): Boolean
@@ -75,10 +74,6 @@ const entry: GraphQLModule = {
     `,
 
     resolvers: {
-        createProfile: ({ input }: any) => {
-            // return createProfile(input)
-        },
-        
         updateProfile: ({ id, input }: any) => {
             // return createProfile(userAccount)
         },

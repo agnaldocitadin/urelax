@@ -8,6 +8,7 @@ import path from 'path'
 import { version } from '../../package.json'
 import GraphQL from '../modules/GraphQL'
 import Module from '../modules/Module'
+import Router from '../modules/Router'
 import './i18n'
 import Logger from './Logger'
 
@@ -57,6 +58,7 @@ class ServerEntryPoint {
         this.app.use(compression())
         await Module.initModules(this.app)
         await GraphQL.initGraphQLSchema(this.app)
+        await Router.registerRoutes(this.app)
     }
 
     /**
