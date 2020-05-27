@@ -1,5 +1,4 @@
-import { utils } from 'js-commons'
-import { baseRoute, OFFLINE } from "./api"
+import { baseRoute, CONFIG, OFFLINE } from "./api"
 
 const SEPARATOR = ","
 
@@ -37,22 +36,26 @@ export const query = (name: string, params?: object, fields?: string): string =>
  * @returns
  */
 export const gql = async (queryName: string, query: string) => {
-    console.log("query:", query)
-    const response: Response = await utils.timedPromise(fetch(baseRoute("/graphql", true), {
-        method: "POST",
-        headers: { 
-            "Content-Type": "application/json;charset=UTF-8", 
-            "Accept-Encoding": "gzip, deflate"
-        },
-        body: JSON.stringify({ query })
-    }), OFFLINE)
-
-    const json = await response.json()
-    console.log("gql response:", json)
-    if (json.errors) {
-        throw json.errors[0]
+    console.debug("Query:", query)
+    try {
+        let response = await CONFIG.axiosInstante.post(baseRoute("/graphql", true), JSON.stringify({ query }))
+        let json = response.data
+        let result = json.data[queryName]
+        console.debug("Result:", result)
+        return result
     }
-    return json.data[queryName]
+    catch(e) {
+        let { data } = e.response
+        if (data && data.errors) {
+            throw data.errors[0]
+        }
+        if (data) {
+            throw data
+        }
+        if (!e.response) {
+            throw OFFLINE
+        }
+    }
 }
 
 /**

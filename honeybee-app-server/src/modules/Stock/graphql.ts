@@ -1,5 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
-import { createNewStockTracker, findActivesByAccount, runOnCreate, updateStockTrackerById } from "./services"
+import { createNewStockTracker, runOnCreate, updateStockTrackerById } from "./services"
 import { StockTrackerFactory, stockTrackerPlayground } from "./trackers"
 
 const entry: GraphQLModule = {

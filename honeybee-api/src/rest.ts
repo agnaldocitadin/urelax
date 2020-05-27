@@ -1,22 +1,18 @@
-import { utils } from "js-commons"
+import { AxiosResponse } from "axios"
 import { baseRoute, OFFLINE, Profile, StockTrackerStatus } from "."
-
+import { CONFIG } from "./api"
 
 /**
  *
  *
  * @param {string} [email]
- * @param {string} [passwd]
- * @param {boolean} [simulation=false]
- * @returns {Promise<{user: UserAccount, token: string}>}
+ * @param {string} [password]
+ * @returns {Promise<{profile: Profile, token: string}>}
  */
-export const authenticate = async (email?: string, passwd?: string): Promise<{profile: Profile, token: string}> => {
-    let res: Response = await utils.timedPromise(fetch(baseRoute("/authenticate"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, passwd })
-    }), OFFLINE)
-    return handleResponse(res)
+export const authenticate = async (email?: string, password?: string): Promise<{profile: Profile, token: string}> => {
+    return invoke(() => (
+        CONFIG.axiosInstante.post(baseRoute("/authenticate"), JSON.stringify({ email, password }))
+    ))
 }
 
 /**
@@ -26,12 +22,9 @@ export const authenticate = async (email?: string, passwd?: string): Promise<{pr
  * @returns {Promise<{profile: Profile, token: string}>}
  */
 export const signup = async (profile: Profile): Promise<{profile: Profile, token: string}> => {
-    let res: Response = await utils.timedPromise(fetch(baseRoute("/signup"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(profile)
-    }), OFFLINE)
-    return handleResponse(res)
+    return invoke(() => (
+        CONFIG.axiosInstante.post(baseRoute("/signup"), JSON.stringify(profile))
+    ))
 }
 
 /**
@@ -41,12 +34,9 @@ export const signup = async (profile: Profile): Promise<{profile: Profile, token
  * @returns
  */
 export const playStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(baseRoute("/playStockTracker", true), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
-    }), OFFLINE)
-    return handleResponse(res)
+    return invoke(() => (
+        CONFIG.axiosInstante.post(baseRoute("/playStockTracker", true), JSON.stringify({ id }))
+    ))
 }
 
 /**
@@ -56,12 +46,9 @@ export const playStockTracker = async (id: string): Promise<{ status: StockTrack
  * @returns
  */
 export const pauseStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(baseRoute("/pauseStockTracker", true), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
-    }), OFFLINE)
-    return handleResponse(res)
+    return invoke(() => (
+        CONFIG.axiosInstante.post(baseRoute("/pauseStockTracker", true), JSON.stringify({ id }))
+    ))
 }
 
 /**
@@ -71,22 +58,31 @@ export const pauseStockTracker = async (id: string): Promise<{ status: StockTrac
  * @returns
  */
 export const destroyStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(baseRoute("/destroyStockTracker", true), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
-    }), OFFLINE)
-    return handleResponse(res)
+    return invoke(() => (
+        CONFIG.axiosInstante.post(baseRoute("/pauseStockTracker", true), JSON.stringify({ id }))
+    ))
 }
 
 /**
  *
  *
- * @param {Response} res
+ * @param {() => Promise<AxiosResponse>} call
  * @returns
  */
-const handleResponse = async (res: Response) => {
-    let json = await res.json()
-    if (!res.ok) throw json
-    return json
+export const invoke = async (call:() => Promise<AxiosResponse>) => {
+    try {
+        let response = await call()
+        return response.data
+    }
+    catch(e) {
+        let response = e.response
+        if (!response) {
+            throw OFFLINE
+        }
+
+        let data = response.data
+        if (data) {
+            throw data
+        }
+    }
 }

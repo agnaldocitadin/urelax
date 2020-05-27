@@ -94,7 +94,7 @@ const initGraphQLSchema = async (app: Express) => {
         }
     }))
 
-    Router.addRoute({ route: "/graphql", version: RouteVersion.V1 }, graphqlMiddleware)
+    Router.addRoute({ route: "/graphql", version: RouteVersion.V1, secure: true }, graphqlMiddleware)
     Logger.info("GrapQL Schema done.")
 }
 

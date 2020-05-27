@@ -37,3 +37,6 @@ https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=PETR3.SA&
     "birthdate" : ISODate("1984-05-28T00:00:00.000Z"),
     "__v" : 0
 }
+
+log levels:
+# fatal,error,warn,info,debug,trace

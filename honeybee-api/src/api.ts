@@ -1,15 +1,23 @@
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { APIError } from "."
 import { activateSimulationAccount, createAccount, createBrokerAccount, createStockTracker, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
-import { fetchActivities, fetchBrokerAccounts, fetchBrokers } from "./queries"
+import { fetchActivities, fetchBrokerAccounts, fetchBrokers, fetchStockTrackers } from "./queries"
 import { authenticate, destroyStockTracker, pauseStockTracker, playStockTracker } from './rest'
 
 interface APIConfiguration {
-    serverURI: string
+    baseURL: string,
+    requestTimeout: number,
+    requestInterceptor?(config: AxiosRequestConfig): AxiosRequestConfig,
+    responseInterceptor?(response: AxiosResponse): AxiosResponse
+}
+
+interface InternAPIConfiguration extends APIConfiguration {
+    axiosInstante: AxiosInstance
 }
 
 export const API_VERSION = "v1"
 export const OFFLINE: APIError = { code: "API_OFFLINE" }
-export const CONFIG = {} as APIConfiguration
+export const CONFIG = {} as InternAPIConfiguration
 
 /**
  *
@@ -19,15 +27,34 @@ export const CONFIG = {} as APIConfiguration
  * @returns
  */
 export const baseRoute = (route: string, secure?: boolean) => {
-    return `${CONFIG.serverURI}/${API_VERSION}${secure && "/secure"}${route}`
+    return `/${API_VERSION}${secure ? "/secure" : ""}${route}`
 }
 
 const configure = (conf: APIConfiguration) => {
-    CONFIG["serverURI"] = conf.serverURI
+    CONFIG["baseURL"] = conf.baseURL
+    CONFIG["requestTimeout"] = conf.requestTimeout
+    CONFIG["requestInterceptor"] = conf.requestInterceptor
+    CONFIG["responseInterceptor"] = conf.responseInterceptor
+}
+
+const init = (conf: APIConfiguration) => {
+    configure(conf)
+    CONFIG["axiosInstante"] = axios.create({
+        baseURL: CONFIG.baseURL,
+        timeout: CONFIG.requestTimeout,
+        responseType: "json",
+        headers: {
+            "Content-Type": "application/json;charset=UTF-8", 
+            "Accept-Encoding": "gzip, deflate"
+        }
+    })
+
+    CONFIG.requestInterceptor && CONFIG.axiosInstante.interceptors.request.use(CONFIG.requestInterceptor)
+    CONFIG.responseInterceptor && CONFIG.axiosInstante.interceptors.response.use(CONFIG.responseInterceptor)
 }
 
 export const API = {
-    configure,
+    init,
 
     // API
     authenticate,
@@ -39,6 +66,8 @@ export const API = {
     fetchActivities,
     fetchBrokers,
     fetchBrokerAccounts,
+    fetchStockTrackers,
+
 
     // mutation
     createBrokerAccount,

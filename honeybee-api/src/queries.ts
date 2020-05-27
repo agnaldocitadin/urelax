@@ -1,5 +1,6 @@
 import { ActivityType, StockTracker } from '.'
 import { gql, query } from './graphql'
+import { Activity, BrokerAccount } from './types'
 
 export const fetchActivities = (options: { 
      id?: string, 
@@ -9,7 +10,7 @@ export const fetchActivities = (options: {
      date: String, 
      page: number, 
      qty: number }, 
-     fields: string) => {
+     fields: string): Promise<Activity[]> => {
      const name = "fetchActivities"
      return gql(name, query(name, options, fields))
 }
@@ -19,12 +20,19 @@ export const fetchBrokers = (options: { id: string, code: String, active: boolea
      return gql(name, query(name, options, fields))
 }
 
-export const fetchBrokerAccounts = (options: { id: string, account: string }, fields: string) => {
+export const fetchBrokerAccounts = (options: { id: string, account: string }, fields: string): Promise<BrokerAccount[]> => {
      const name = "fetchBrokerAccounts"
      return gql(name, query(name, options, fields))
 }
 
-export const fetchStockTrackers = (options: { id: string, account: string, status: String, frequency: String, page: number, qty: number }, fields: string): Promise<StockTracker[]> => {
-     const name = "fetchBrokerAccounts"
+export const fetchStockTrackers = (options: { 
+     id?: string, 
+     account?: string, 
+     status?: String, 
+     frequency?: String, 
+     page: number, 
+     qty: number }, 
+     fields: string): Promise<StockTracker[]> => {
+     const name = "fetchStockTrackers"
      return gql(name, query(name, options, fields))
 }

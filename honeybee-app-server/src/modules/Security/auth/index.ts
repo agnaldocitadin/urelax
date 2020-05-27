@@ -5,6 +5,7 @@ import passport from 'passport'
 import passportjwt from 'passport-jwt'
 import path from 'path'
 import { ErrorCodes } from '../../../core/error.codes'
+import Logger from '../../../core/Logger'
 import './public.key'
 
 let publicKey: Buffer
@@ -31,6 +32,11 @@ const configureJWTStrategy = () => {
  * @param {Express} app
  */
 const applySecurity = (app: Express) => {
+    if (process.env.USE_SECURITY !== "true") {
+        Logger.warn("! Server sewcurity is disabled !")
+        return
+    }
+
     app.use("*/secure", (req, res, next) => {
         passport.authenticate("jwt", (err, payload, info) => {
             if (payload.profile) {

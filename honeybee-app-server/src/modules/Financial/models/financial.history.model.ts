@@ -3,7 +3,7 @@ import { TransactionType } from 'honeybee-api'
 import mongoose from 'mongoose'
 import { Account } from '../../Identity/models'
 
-class Transaction {
+export class Transaction {
 
     @prop({ required: true })
     dateTime!: Date

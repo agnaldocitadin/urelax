@@ -3,4 +3,4 @@ import App from './App'
 import { name as appName } from './app.json'
 
 console.info(`| ===== Initializing App ${appName} ===== |`)
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent(appName, () => App)
