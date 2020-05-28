@@ -1,14 +1,13 @@
-import { useDispatch } from "react-redux"
+
+let TOKEN: string | undefined = undefined
 
 const Actions = () => {
 
-    const dispatch = useDispatch()
-
     return {
-        // addTodo: () => {
-        //     dispatch({ type: "ADD_A" })
-        //     console.debug("000")
-        // }
+        TOKEN,
+        setToken: (token: string) => {
+            TOKEN = token
+        }
     }
 
 }

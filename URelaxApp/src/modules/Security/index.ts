@@ -11,9 +11,9 @@ type StateProperties = keyof ReducerState
 const select = (property: StateProperties) => useSelector((state: any) => state[MODULE_NAME][property])
 
 const init = async () => {
+    
     const requestInterceptor = (config: AxiosRequestConfig) => {
-        // config.headers["Authorization"] = "Baerer XXX"
-        // console.log("---->>>", config.url)
+        config.headers["Authorization"] = `Bearer ${actions().TOKEN}`
         return config
     }
 

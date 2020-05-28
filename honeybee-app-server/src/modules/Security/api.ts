@@ -22,16 +22,16 @@ export const registerAPI = (app: Express) => {
         invoke(req, res, async () => {
             const { email, password } = req.body
             const profile = await findByEmailPassword(email, password)
-            if (profile) {
 
+            if (profile) {
                 if (!privateKey) privateKey = fs.readFileSync(path.resolve(__dirname, "./security/private.key"))
                 const token = jwt.sign({ profile: profile._id }, privateKey, {
                     algorithm: "RS256",
-                    expiresIn: 300
+                    expiresIn: 3000
                 })
-
                 return res.json({ profile, token })
             }
+            
             Logger.throw(ErrorCodes.USER_NOT_AUTHORIZED, "User not authorized")
         }, 401)
     })

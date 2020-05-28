@@ -45,15 +45,17 @@ export const gql = async (queryName: string, query: string) => {
         return result
     }
     catch(e) {
+        if (!e.response) {
+            throw OFFLINE
+        }
+
         let { data } = e.response
         if (data && data.errors) {
             throw data.errors[0]
         }
+
         if (data) {
             throw data
-        }
-        if (!e.response) {
-            throw OFFLINE
         }
     }
 }

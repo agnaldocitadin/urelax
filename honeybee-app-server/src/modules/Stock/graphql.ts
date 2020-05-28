@@ -1,4 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
+import { StockTrackerModel } from "./models"
 import { createNewStockTracker, runOnCreate, updateStockTrackerById } from "./services"
 import { StockTrackerFactory, stockTrackerPlayground } from "./trackers"
 
@@ -52,7 +53,7 @@ const entry: GraphQLModule = {
 
     resolvers: {
         fetchStockTrackers: async ({ id, account }: any) => {
-            // return findActivesByAccount(account)
+            return StockTrackerModel.find({})
         },
 
         createStockTracker: async ({ input }: any) => {

@@ -8,7 +8,7 @@
 const createReducer = (initialState: any, actions: object) => {
     return (state: any = initialState, action: any, ) => {
         const fn = (<any>actions)[action.type]
-        return fn ? fn(state) : state
+        return fn ? fn(state, action.payload) : state
     }
 }
 

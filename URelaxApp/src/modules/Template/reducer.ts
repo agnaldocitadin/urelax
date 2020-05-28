@@ -11,11 +11,11 @@ const INITIAL_STATE: ReducerState = {
 }
 
 const Acts = {
-    ["ADD_A"]: (state: ReducerState): ReducerState => {
+    ["ADD_A"]: (state: ReducerState, payload: any): ReducerState => {
         const todoA = state.todoA + 1
         return {...state, todoA }
     },
-    ["ADD_B"]: (state: ReducerState): ReducerState => {
+    ["ADD_B"]: (state: ReducerState, payload: any): ReducerState => {
         const todoB = state.todoB + 1
         return {...state, todoB }
     }
