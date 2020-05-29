@@ -1,16 +1,8 @@
 import AppModuleState from "../AppModuleState"
+import { ActionTypes } from "./actions"
 
-export interface ReducerState {
-}
+export interface ReducerState {}
 
-const INITIAL_STATE: ReducerState = {
-}
+const INITIAL_STATE: ReducerState = {}
 
-export default AppModuleState.createReducer(INITIAL_STATE, {
-    // ["TOKEN"]: (state: ReducerState, payload: any): ReducerState => {
-    //     return {
-    //         ...state, 
-    //         token: payload
-    //     }
-    // }
-})
+export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {})

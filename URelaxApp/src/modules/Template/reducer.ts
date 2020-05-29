@@ -1,24 +1,22 @@
 import AppModuleState from "../AppModuleState"
-
-export interface ReducerState {
-    todoA: number
-    todoB: number
-}
+import { ActionTypes, ReducerState } from "./actions"
 
 const INITIAL_STATE: ReducerState = {
-    todoA: 0,
-    todoB: 0
+    todoA: 0
 }
 
-const Acts = {
-    ["ADD_A"]: (state: ReducerState, payload: any): ReducerState => {
-        const todoA = state.todoA + 1
-        return {...state, todoA }
+export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
+    ADD_A: (state: ReducerState, payload: any): ReducerState => {
+        console.log("ADD_A")
+        return {
+            ...state, 
+            todoA: state.todoA + payload
+        }
     },
-    ["ADD_B"]: (state: ReducerState, payload: any): ReducerState => {
-        const todoB = state.todoB + 1
-        return {...state, todoB }
+    ADD_B: (state: ReducerState, payload: any): ReducerState => {
+        console.log("ADD_B")
+        return {
+            ...state
+        }
     }
-}
-
-export default AppModuleState.createReducer(INITIAL_STATE, Acts)
+})

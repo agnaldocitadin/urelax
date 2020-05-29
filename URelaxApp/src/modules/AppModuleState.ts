@@ -1,3 +1,8 @@
+export type DispatchType<T> = {
+    type: T,
+    payload?: any
+}
+
 /**
  *
  *
@@ -5,8 +10,8 @@
  * @param {object} actions
  * @returns
  */
-const createReducer = (initialState: any, actions: object) => {
-    return (state: any = initialState, action: any, ) => {
+const createReducer = <A>(initialState: any, actions: A) => {
+    return (state: any = initialState, action: DispatchType<A>, ) => {
         const fn = (<any>actions)[action.type]
         return fn ? fn(state, action.payload) : state
     }
