@@ -2,7 +2,11 @@ import { AxiosRequestConfig } from 'axios'
 import { API } from 'honeybee-api'
 import { useSelector } from 'react-redux'
 import actions from './actions'
+import { Authenticate } from './Authenticate'
+import { FastAuthUI } from './FastAuthUI'
+import { LogInUI } from './LogInUI'
 import reducer, { ReducerState } from './reducer'
+import { SplashAuth } from './SplashAuth'
 
 const MODULE_NAME = "Security"
 
@@ -28,7 +32,10 @@ export default {
     MODULE_NAME,
     init,
     ...{
-        // TemplateUI
+        Authenticate,
+        LogInUI,
+        SplashAuth,
+        FastAuthUI
     },
     select,
     actions,

@@ -10,7 +10,7 @@ let initialized = false, registered = false
  */
 const register = () => {
     if (registered) {
-        throw "You can not register the modules more than once."
+        throw "You can not register the app modules more than once."
     }
 
     registered = true
@@ -33,7 +33,7 @@ const register = () => {
  */
 const init = () => {
     if (initialized) {
-        throw "You can not initialize the modules more than once."
+        throw "You can not initialize the modules app more than once."
     }
 
     initialized = true

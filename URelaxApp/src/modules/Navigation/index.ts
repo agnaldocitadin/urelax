@@ -1,24 +1,21 @@
 import { useSelector } from 'react-redux'
 import actions, { ReducerState } from './actions'
+import { Navigator } from './Navigator'
 import reducer from './reducer'
-import { TemplateUI } from './TemplateUI'
 
-const MODULE_NAME = "Template"
+const MODULE_NAME = "Navigation"
 
 type StateProperties = keyof ReducerState
 
 const select = (property: StateProperties) => useSelector((state: any) => state[MODULE_NAME][property])
 
-const init = () => {
-    // let act = actions()
-    // act.addTodo()
-}
+const init = () => {}
 
 export default {
     MODULE_NAME,
     init,
     ...{
-        TemplateUI
+        Navigator
     },
     select,
     actions,

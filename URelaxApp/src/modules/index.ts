@@ -1,4 +1,6 @@
+import Identity from './Identity'
+import Navigation from './Navigation'
 import Security from './Security'
-import Template from './Template'
 
-export { Template, Security }
+export { Navigation, Security, Identity }
+

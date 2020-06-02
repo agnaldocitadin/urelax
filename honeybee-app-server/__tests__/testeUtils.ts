@@ -3,6 +3,7 @@ import Mongoose from 'mongoose'
 import Logger from '../src/core/Logger'
 import { StockTracker, StockTrackerModel } from '../src/modules/Stock/models'
 import { mongoose } from '@typegoose/typegoose'
+import bcrypt from 'bcrypt'
 
 
 const connectDB = async () => {
@@ -160,23 +161,23 @@ it("teste", async () => {
     // await ProfileModel.create(profile)
 
     // tracker
-    const tracker: StockTracker = {
-        account: mongoose.Types.ObjectId("5ebbe3dd81f664438033c774"),
-        brokerAccount: mongoose.Types.ObjectId("5ebbe3dd81f664438033c774"),
-        frequency: "1M",
-        strategy: "STRATEGY_ONE",
-        status: "RUNNING",
-        strategySetting: {
-            autoAmountLimit: false,
-            stockAmountLimit: 5000
-        },
-        stockInfo: {
-            symbol: "MGLU3",
-            stockLot: 100
-        }
-    }
+    // const tracker: StockTracker = {
+    //     account: mongoose.Types.ObjectId("5ebbe3dd81f664438033c774"),
+    //     brokerAccount: mongoose.Types.ObjectId("5ebbe3dd81f664438033c774"),
+    //     frequency: "1M",
+    //     strategy: "STRATEGY_ONE",
+    //     status: "RUNNING",
+    //     strategySetting: {
+    //         autoAmountLimit: false,
+    //         stockAmountLimit: 5000
+    //     },
+    //     stockInfo: {
+    //         symbol: "MGLU3",
+    //         stockLot: 100
+    //     }
+    // }
 
-    await StockTrackerModel.create(tracker)
+    // await StockTrackerModel.create(tracker)
 
     // const changes = {
     //     profile: {
@@ -234,6 +235,14 @@ it("teste", async () => {
 
     // let res = await findByEmailPassword("adasdasd", "456456")
     // console.log(res)
+
+    const pwd = await bcrypt.hash('agnaldo', 10)
+    console.log(pwd)
+
+    const pwd2 = await bcrypt.hash('agnaldo', 10)
+
+    const eq = await bcrypt.compare("agnaldo", pwd)
+    console.log("pass", eq)
 
     console.log("Done.")
 })
