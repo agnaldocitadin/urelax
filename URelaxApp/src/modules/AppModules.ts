@@ -1,54 +1,52 @@
 import { combineReducers, createStore } from 'redux'
-import * as modules from './'
 
 let initialized = false, registered = false
 
 /**
  *
  *
+ * @param {any[]} modules
  * @returns
  */
-const register = () => {
-    if (registered) {
-        throw "You can not register the app modules more than once."
-    }
-
+const register = (modules: any[]) => {
+    if (registered) throw "You can not register the app modules more than once."
     registered = true
+
     console.info("Creating module reducers...")
     let reducers = {}
-    const moduleNames = Object.keys(modules)
-    moduleNames.forEach(name => {
-        let moduleReducer = (<any>modules)[name].reducer
+    modules.forEach(module => {
+        let moduleReducer = module.reducer
         if (moduleReducer) {
-            (<any>reducers)[name] = moduleReducer
-            console.info(`Reducer for ${name.toUpperCase()}, created.`)
+            (<any>reducers)[module.MODULE_NAME] = moduleReducer
+            console.info(`Reducer for ${module.MODULE_NAME.toUpperCase()}, created.`)
         }
     })
-    return createStore(combineReducers(reducers))
+
+    const store = createStore(reducers === {} ? {} : <any>combineReducers(reducers))
+    init(modules)
+    return store
 }
 
 /**
  *
  *
+ * @param {any[]} modules
+ * @returns
  */
-const init = () => {
-    if (initialized) {
-        throw "You can not initialize the modules app more than once."
-    }
-
+const init = (modules: any[]) => {
+    if (initialized) throw "You can not initialize the modules app more than once."
     initialized = true
+
     console.info("Initializing modules...")
-    const moduleNames = Object.keys(modules)
-    moduleNames.forEach(module => console.info(`${module.toUpperCase()} module found.`))
-    return Promise.all(moduleNames.map(async (name) => {
-        const initFn = (<any>modules)[name].init
+    modules.forEach(module => console.info(`${module.MODULE_NAME.toUpperCase()} module found.`))
+    return Promise.all(modules.map(async (module) => {
+        const initFn = module.init
         if (initFn) {
-            await (<any>modules)[name].init()
+            await module.init()
         }
     }))
 }
 
 export default {
-    init,
     register
 }

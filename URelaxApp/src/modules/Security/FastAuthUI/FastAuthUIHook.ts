@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native"
 import { useCallback, useEffect, useState } from "react"
 import Storage from "../../Storage"
 import { StorageApp } from "../../Storage/actions"
@@ -5,6 +6,7 @@ import { StorageApp } from "../../Storage/actions"
 
 export const useFastAuthUIHook = () => {
 
+    const navigation = useNavigation()
     const [ storage, setStorage ] = useState<StorageApp>()
     const hasCredentials = storage?.email && storage?.password
     const { initStorage } = Storage.actions()
@@ -24,7 +26,7 @@ export const useFastAuthUIHook = () => {
             }
 
             if (storageApp.keepSession === "no") {
-                // navigation.navigate(Routes.LogInUI)
+                navigation.navigate("login")
                 return
             }
         })()
@@ -32,7 +34,7 @@ export const useFastAuthUIHook = () => {
 
     return {
         storage,
-        authenticate: hasCredentials && storage?.keepSession === "yes",
+        authenticate: Boolean(hasCredentials && storage?.keepSession === "yes"),
         handleAuthFailure
     }
 }

@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
+import { Colors } from '../../../theming'
+import { SplashAuth } from '../SplashAuth'
 import { useLogInUIHook } from './LogInUIHook'
 
 const TEXT_SIZE = 16
@@ -28,16 +29,14 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
         <FlatLayout bgStatusBar={authenticate ? Colors.BLUES_1 : Colors.WHITE}>
             
             <SplashAuth
-                navigation={navigation} 
                 authenticating={authenticate}
                 email={email}
                 password={passwd}
-                simulation={false}
                 keepSession={keepSession}
                 onFail={handleAuthFail}
                 noAuthElement={
                     <React.Fragment>
-                        <BackHeader title={ts("sign_in")}/>
+                        {/* <BackHeader title={ts("sign_in")}/>
                         <ScrollViewForm justifyContent="flex-end">
                             <Input
                                 label={ts("email")}
@@ -82,17 +81,17 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
                                 disabled={disabledLogIn}
                                 onPress={handleAuthentication}
                                 animate={false}/>
-                        </ScrollViewForm>
+                        </ScrollViewForm> */}
                     </React.Fragment>
                 }/>
         </FlatLayout>
     )
 }
 
-const Input = styled(InputText)`
-    margin-bottom: ${FORM_PADDING};
-`
+// const Input = styled(InputText)`
+//     margin-bottom: ${FORM_PADDING};
+// `
 
-const Switch = styled(InputSwitch)`
-    margin-bottom: ${FORM_PADDING};
-`
+// const Switch = styled(InputSwitch)`
+//     margin-bottom: ${FORM_PADDING};
+// `

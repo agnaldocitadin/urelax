@@ -3,11 +3,21 @@ import 'react-native-gesture-handler'
 import { enableScreens } from 'react-native-screens'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
-import { Navigation } from './src/modules'
 import AppModules from './src/modules/AppModules'
-import { defaultTheme } from './src/theming'
+import Identity from './src/modules/Identity'
+import Navigation from './src/modules/Navigation'
+import Security from './src/modules/Security'
+import Storage from './src/modules/Storage'
+import { appTheme } from './src/theming'
 
 enableScreens()
+
+const store = AppModules.register([
+    Security,
+    Identity,
+    Navigation,
+    Storage
+])
 
 /**
  *
@@ -15,9 +25,8 @@ enableScreens()
  * @returns
  */
 const Content = () => {
-    AppModules.init()
     return (
-        <ThemeProvider theme={defaultTheme}>
+        <ThemeProvider theme={appTheme}>
             <Navigation.Navigator/>
         </ThemeProvider>
     )
@@ -29,7 +38,7 @@ const Content = () => {
  * @returns
  */
 const App = () => {
-    const store = AppModules.register()
+    
     return (
         <Provider store={store}>
             <Content/>

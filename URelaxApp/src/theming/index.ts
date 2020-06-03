@@ -1,4 +1,4 @@
-import styled from 'styled-components/native'
+import styled, { DefaultTheme } from 'styled-components/native'
 
 export enum Fontsa {
     FONT_REGULAR = "Montserrat-Regular",
@@ -62,31 +62,33 @@ export enum Icons {
     CHART_LINE_VARIANT = "chart-line-variant",
 }
 
-export const defaultTheme = {
-    color: Colors.BLACK_1,
-    fontFamily: Fontsa.FONT_REGULAR,
-    fontSize: "14px"
-}
-
-type ThemeType = typeof defaultTheme
-
-export const Typography = styled.Text`
-    color: ${({ theme }) => (<ThemeType>theme).color};
-    font-family: ${({ theme }) => (<ThemeType>theme).fontFamily};
-    color: ${({ theme }) => (<ThemeType>theme).color};
-`
-
-Typography.defaultProps = {
-    theme: {
-        ...defaultTheme
+declare module 'styled-components' {
+    export interface DefaultTheme {
+        color?: string
+        fontFamily?: string
+        fontSize?: number
     }
 }
+
+export const appTheme: DefaultTheme = {
+    color: Colors.BLACK_1,
+    fontFamily: Fontsa.FONT_REGULAR,
+    fontSize: 14
+}
+
+type AppThemeType = typeof appTheme
+
+export const Typography = styled.Text<AppThemeType>`
+    color: ${({ theme }) => theme.color};
+    font-family: ${({ theme }) => theme.fontFamily};
+    font-size: ${({ theme }) => `${theme.fontSize}px`};
+`
 
 export const TypographyMedium = styled(Typography)``
 
 TypographyMedium.defaultProps = {
     theme: {
-        ...defaultTheme,
+        ...appTheme,
         fontFamily: Fontsa.FONT_MEDIUM   
     }
 }
@@ -95,7 +97,34 @@ export const TypographySemibold = styled(Typography)``
 
 TypographySemibold.defaultProps = {
     theme: {
-        ...defaultTheme,
+        ...appTheme,
         fontFamily: Fontsa.FONT_SEMIBOLD
+    }
+}
+
+export const Input = styled.TextInput<AppThemeType>`
+    font-family: ${({ theme }) => theme.fontFamily};
+    font-size: ${({ theme }) => `${theme.fontSize}px`};
+    color: ${({ theme }) => theme.color};
+`
+
+Input.defaultProps = {
+    theme: {
+        ...appTheme,
+        fontFamily: Fontsa.FONT_REGULAR,
+        fontSize: 20
+    }
+}
+
+export const Label = styled(Typography)`
+    font-size: ${({ theme }) => `${theme.fontSize}px`};
+    color: ${({ theme }) => theme.color};
+`
+
+Label.defaultProps = {
+    theme: {
+        ...appTheme,
+        fontSize: 13,
+        color: Colors.GRAY_1
     }
 }

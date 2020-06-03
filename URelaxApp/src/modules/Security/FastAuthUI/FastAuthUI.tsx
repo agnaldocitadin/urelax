@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { StatusBar } from 'react-native'
+import { StatusBar, Text } from 'react-native'
 import { Colors } from '../../../theming'
 import { SplashAuth } from '../SplashAuth'
 import { useFastAuthUIHook } from './FastAuthUIHook'
@@ -13,11 +13,12 @@ export const FastAuthUI: FC<FastAuthUIProps> = () => {
     return (
         <React.Fragment>
             <StatusBar backgroundColor={Colors.BLUES_1}/>
+            <Text>splash</Text>
             <SplashAuth
                 authenticating={authenticate}
-                email={storage.email}
-                password={storage.passwd}
-                keepSession={storage.keepSession === "yes"}
+                email={storage?.email}
+                password={storage?.password}
+                keepSession={storage?.keepSession === "yes"}
                 onFail={handleAuthFailure}/>
         </React.Fragment>
     )

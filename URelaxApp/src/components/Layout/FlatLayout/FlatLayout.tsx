@@ -1,8 +1,8 @@
 // import { Container, Text } from 'native-base'
 import React, { FC } from 'react'
 import { SafeAreaView, StatusBar, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components/native'
+import { Colors } from '../../../theming'
 // import { ts } from '../../../../core/I18n'
 // import { Colors, Icons, Theme } from '../../../../core/Theme'
 // import { States } from '../../../../reducers/Reducer'
@@ -22,7 +22,6 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
     bgStatusBar = Colors.WHITE,
     fail
 }) => {
-    const simulation = useSelector((state: States) => state.SIGNIN.authenticatedUser.simulation) 
     return (
         <React.Fragment>
             <FlatContainer bgColor={bgColor}>
@@ -30,14 +29,14 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
                 <SafeAreaView style={{ flex: 1 }}>
                     { children }
                     { fail && <ErrorMessage>
-                        <Display
+                        {/* <Display
                             icon={Icons.HEART_BROKEN}
                             iconColor={Colors.RED_ERROR}
                             title={ts("oops")}
-                            message={ts("server_error")}/>
+                            message={ts("server_error")}/> */}
                     </ErrorMessage> }
                 </SafeAreaView>
-                { simulation && <SimulationFlag>{ts("active_simulation")}</SimulationFlag> }
+                {/* { simulation && <SimulationFlag>{ts("active_simulation")}</SimulationFlag> } */}
             </FlatContainer>
         </React.Fragment>
     )
@@ -49,23 +48,23 @@ const FlatContainer: any = styled.View`
     flex: 1;
 `
 
-const SimulationFlag = styled(Text)`
-    background-color: ${Colors.BLUES_3};
-    font-family: ${Theme.FONT_REGULAR};
-    color: ${Colors.WHITE};
-    font-size: 14px;
-    text-align: center;
-    padding: 7px 0;
-`
+// const SimulationFlag = styled.Text`
+//     background-color: ${Colors.BLUES_3};
+//     font-family: ${Theme.FONT_REGULAR};
+//     color: ${Colors.WHITE};
+//     font-size: 14px;
+//     text-align: center;
+//     padding: 7px 0;
+// `
 
 const ErrorMessage = styled(View)`
     justify-content: flex-end;
     flex: 1;
 `
 
-const Display = styled(TextIconDisplay)`
-    background-color: ${Colors.WHITE};
-    border-top-color: ${Colors.BG_2};
-    border-top-width: 1px;
-    padding: 25px 50px 55px 50px;
-`
+// const Display = styled(TextIconDisplay)`
+//     background-color: ${Colors.WHITE};
+//     border-top-color: ${Colors.BG_2};
+//     border-top-width: 1px;
+//     padding: 25px 50px 55px 50px;
+// `
