@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Colors, Icons } from '../../../../core/Theme'
+import { Colors, Icons } from '../../../theming'
 import { BackHeader, BackHeaderProps } from '../../Header/BackHeader'
 import { ButtonHeader } from '../../Header/ButtonHeader'
 import { InteractiveButton, InteractiveButtonProps, InteractiveButtonStates } from '../../InteractiveButton'

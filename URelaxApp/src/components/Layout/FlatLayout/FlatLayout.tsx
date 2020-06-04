@@ -1,12 +1,9 @@
-// import { Container, Text } from 'native-base'
 import React, { FC } from 'react'
-import { SafeAreaView, StatusBar, View } from 'react-native'
+import { SafeAreaView, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
-import { Colors } from '../../../theming'
-// import { ts } from '../../../../core/I18n'
-// import { Colors, Icons, Theme } from '../../../../core/Theme'
-// import { States } from '../../../../reducers/Reducer'
-// import { TextIconDisplay } from '../../TextIconDisplay'
+import { ts } from '../../../core/I18n'
+import { Colors, Icons } from '../../../theming'
+import { TextIconDisplay } from '../../TextIconDisplay'
 
 export interface FlatLayoutProps {
     bgColor?: string
@@ -29,11 +26,11 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
                 <SafeAreaView style={{ flex: 1 }}>
                     { children }
                     { fail && <ErrorMessage>
-                        {/* <Display
+                        <Display
                             icon={Icons.HEART_BROKEN}
                             iconColor={Colors.RED_ERROR}
                             title={ts("oops")}
-                            message={ts("server_error")}/> */}
+                            message={ts("server_error")}/>
                     </ErrorMessage> }
                 </SafeAreaView>
                 {/* { simulation && <SimulationFlag>{ts("active_simulation")}</SimulationFlag> } */}
@@ -42,8 +39,8 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
     )
 }
 
-const FlatContainer: any = styled.View`
-    background-color: ${(props: any) => props.bgColor};
+const FlatContainer = styled.View<{ bgColor: string }>`
+    background-color: ${({ bgColor }) => bgColor};
     justify-content: flex-end;
     flex: 1;
 `
@@ -57,14 +54,14 @@ const FlatContainer: any = styled.View`
 //     padding: 7px 0;
 // `
 
-const ErrorMessage = styled(View)`
+const ErrorMessage = styled.View`
     justify-content: flex-end;
     flex: 1;
 `
 
-// const Display = styled(TextIconDisplay)`
-//     background-color: ${Colors.WHITE};
-//     border-top-color: ${Colors.BG_2};
-//     border-top-width: 1px;
-//     padding: 25px 50px 55px 50px;
-// `
+const Display = styled(TextIconDisplay)`
+    background-color: ${Colors.WHITE};
+    border-top-color: ${Colors.BG_2};
+    border-top-width: 1px;
+    padding: 25px 50px 55px 50px;
+`

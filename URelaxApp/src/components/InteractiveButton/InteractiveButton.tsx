@@ -4,9 +4,9 @@ import styled from 'styled-components/native'
 import { Colors } from '../../theming'
 
 export enum InteractiveButtonStates {
-    NORMAL = "normal",
-    PROCESSING = "processing",
-    SUCCESS = "success"
+    NORMAL,
+    PROCESSING,
+    SUCCESS
 }
 
 export interface InteractiveButtonProps {
@@ -139,7 +139,6 @@ const SButtonNormal: any = styled.Button`
     width: ${(props: any) => props.block ? "auto" : `${props.width}px`};
     border-width: ${(props: any) => `${props.borderWidth}px`};
     border-color: ${(props: any) => props.borderColor};
-    elevation: 0;
 `
 
 const StyledIcon: any = styled(Icon)`

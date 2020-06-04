@@ -1,4 +1,5 @@
-import styled, { DefaultTheme } from 'styled-components/native'
+import styled from 'styled-components/native'
+import { BaseButton } from '../components/BaseButton'
 
 export enum Fontsa {
     FONT_REGULAR = "Montserrat-Regular",
@@ -62,69 +63,31 @@ export enum Icons {
     CHART_LINE_VARIANT = "chart-line-variant",
 }
 
-declare module 'styled-components' {
-    export interface DefaultTheme {
-        color?: string
-        fontFamily?: string
-        fontSize?: number
-    }
-}
-
-export const appTheme: DefaultTheme = {
-    color: Colors.BLACK_1,
-    fontFamily: Fontsa.FONT_REGULAR,
-    fontSize: 14
-}
-
-type AppThemeType = typeof appTheme
-
-export const Typography = styled.Text<AppThemeType>`
-    color: ${({ theme }) => theme.color};
-    font-family: ${({ theme }) => theme.fontFamily};
-    font-size: ${({ theme }) => `${theme.fontSize}px`};
+export const Typography = styled.Text<{ color?: string, fontSize?: number }>`
+    color: ${({ color }) => color || Colors.BLACK_1};
+    font-family: ${Fontsa.FONT_REGULAR};
+    font-size: ${({ fontSize }) => `${fontSize || 14}px`};
 `
 
-export const TypographyMedium = styled(Typography)``
-
-TypographyMedium.defaultProps = {
-    theme: {
-        ...appTheme,
-        fontFamily: Fontsa.FONT_MEDIUM   
-    }
-}
-
-export const TypographySemibold = styled(Typography)``
-
-TypographySemibold.defaultProps = {
-    theme: {
-        ...appTheme,
-        fontFamily: Fontsa.FONT_SEMIBOLD
-    }
-}
-
-export const Input = styled.TextInput<AppThemeType>`
-    font-family: ${({ theme }) => theme.fontFamily};
-    font-size: ${({ theme }) => `${theme.fontSize}px`};
-    color: ${({ theme }) => theme.color};
+export const TypographyMedium = styled(Typography)`
+    font-family: ${Fontsa.FONT_MEDIUM};
 `
 
-Input.defaultProps = {
-    theme: {
-        ...appTheme,
-        fontFamily: Fontsa.FONT_REGULAR,
-        fontSize: 20
-    }
-}
+export const TypographySemibold = styled(Typography)`
+    font-family: ${Fontsa.FONT_SEMIBOLD};
+`
+
+export const Input = styled.TextInput`
+    font-family: ${Fontsa.FONT_REGULAR};
+    color: ${Colors.BLACK_1};
+    font-size: 14px;
+`
 
 export const Label = styled(Typography)`
-    font-size: ${({ theme }) => `${theme.fontSize}px`};
-    color: ${({ theme }) => theme.color};
+    color: ${Colors.GRAY_1};
+    font-size: 13px;
 `
 
-Label.defaultProps = {
-    theme: {
-        ...appTheme,
-        fontSize: 13,
-        color: Colors.GRAY_1
-    }
-}
+export const Button = styled(BaseButton)`
+    border-radius: 5px;
+`

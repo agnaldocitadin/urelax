@@ -4,7 +4,6 @@ import { Typography } from '../../../theming'
 import { Authenticate } from '../Authenticate'
 import { useSplashAuthHook } from './SplashAuthHook'
 
-
 export interface SplashAuthProps {
     email?: string
     password?: string

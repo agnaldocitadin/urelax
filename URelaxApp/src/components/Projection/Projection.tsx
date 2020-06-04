@@ -1,9 +1,8 @@
 import React, { FC } from 'react'
-import { View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
-import styled from 'styled-components'
-import { Colors } from '../../../core/Theme'
+import styled from 'styled-components/native'
+import { Colors } from '../../theming'
 import { SHIMMER_COLORS } from '../Layout/Layout.style'
 
 interface ProjectionProps {
@@ -36,7 +35,7 @@ const SProjection: any = styled(LinearGradient)`
     height: 4px;
 `
 
-const SProjectionTrack = styled(View)`
+const SProjectionTrack = styled.View`
     background-color: ${Colors.BG_3};
     border-radius: 2px;
     width: 100%;

@@ -1,9 +1,10 @@
 
-import { Icon, View } from 'native-base'
 import React, { FC } from 'react'
-import { TouchableNativeFeedback, ViewStyle } from 'react-native'
+import { ViewStyle } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components'
-import { Colors, Icons, Theme } from '../../../core/Theme'
+import { Colors, Icons } from '../../theming'
+import { BaseButton } from '../BaseButton'
 
 interface TouchableProps {
     onPress?(): void
@@ -12,22 +13,15 @@ interface TouchableProps {
 }
 
 export const Touchable: FC<TouchableProps> = ({ children, noChevron, style, onPress }) => (
-    <TouchableNativeFeedback onPress={onPress}>
-        <TouchView style={style}>
-            {children}
-            {!noChevron && <TouchIcon type={Theme.ICON_PACK} name={Icons.CHEVRON_RIGHT}/>}
-        </TouchView>
-    </TouchableNativeFeedback>
+    <BaseButton 
+        style={style} 
+        onPress={onPress} 
+        contentStyle={{ justifyContent: "space-between" }}>
+        {children}
+        {!noChevron && <TouchIcon size={18} color={Colors.BG_2} name={Icons.CHEVRON_RIGHT}/>}
+    </BaseButton>
 )
 
-const TouchView = styled(View)`
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-`
-
 const TouchIcon = styled(Icon)`
-    color: ${Colors.BG_2};
-    font-size: 18px;
     margin-left: 5px;
 `

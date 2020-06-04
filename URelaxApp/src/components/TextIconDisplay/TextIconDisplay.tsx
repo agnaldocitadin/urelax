@@ -1,9 +1,8 @@
-
-import { Icon, Text, View } from 'native-base'
 import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'
-import styled from 'styled-components'
-import { Colors, Theme } from '../../../core/Theme'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import styled from 'styled-components/native'
+import { Colors, Typography, TypographyMedium } from '../../theming'
 
 interface TextIconDisplayProps {
     icon: string
@@ -24,34 +23,26 @@ export const TextIconDisplay: FC<TextIconDisplayProps> = ({
 }) => {
     return (
         <STextIconDisplayView style={style}>
-            <STextIconDisplayIcon type={Theme.ICON_PACK} name={icon} color={iconColor}/>
-            {title && <STextIconDisplayTitle color={textColor}>{title}</STextIconDisplayTitle>}
-            {message && <STextIconDisplayDesc color={textColor}>{message}</STextIconDisplayDesc>}
+            <STextIconDisplayIcon size={60} name={icon} color={iconColor}/>
+            {title && <STextIconDisplayTitle fontSize={19} color={textColor}>{title}</STextIconDisplayTitle>}
+            {message && <STextIconDisplayDesc fontSize={15} color={textColor}>{message}</STextIconDisplayDesc>}
         </STextIconDisplayView>
     )
 }
 
-const STextIconDisplayView = styled(View)`
+const STextIconDisplayView = styled.View`
     align-items: center;
 `
 
-const STextIconDisplayTitle: any = styled(Text)`
-    font-family: ${Theme.FONT_MEDIUM};
-    color: ${(props: any) => props.color};
-    font-size: 19px;
+const STextIconDisplayTitle = styled(TypographyMedium)`
     margin-bottom: 20px;
     text-align: center;
 `
 
-const STextIconDisplayDesc: any = styled(Text)`
-    font-family: ${Theme.FONT_REGULAR};
-    color: ${Colors.GRAY_2};
-    font-size: 15px;
+const STextIconDisplayDesc = styled(Typography)`
     text-align: center;
 `
 
 const STextIconDisplayIcon = styled(Icon)`
-    color: ${(props: any) => props.color};
-    font-size: 60px;
     margin-bottom: 20px;
 `

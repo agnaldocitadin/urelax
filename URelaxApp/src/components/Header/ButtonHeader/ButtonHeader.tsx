@@ -1,27 +1,23 @@
 
 import React, { FC } from 'react'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors, Fontsa } from '../../../theming'
-import { BaseButton } from '../../BaseButton'
+import { Button, Colors } from '../../../theming'
 
 export interface ButtonHeaderProps {
     icon: string,
     color?: string,
-    onPress?(e: any): void
+    onPress?(): void
 }
 
 export const ButtonHeader: FC<ButtonHeaderProps> = ({ icon, color = Colors.BLACK_2, onPress }) => (
-    <BaseButton>
-        {/* <StyledCloseIcon color={color} type={Fontsa.ICON_PACK} name={icon}/> */}
+    <BaseButton onPress={onPress}>
+        <Icon name={icon} color={color} size={23}/>
     </BaseButton>
 )
 
-// const BaseButton = styled.Button`
-//     background-color: ${Colors.TRANSPARENT};
-//     /* elevation: 0; */
-// `
-
-// const StyledCloseIcon = styled(Icon)`
-//     font-size: 21px;
-//     color: ${(props: any) => props.color ? props.color : "black"};
-// `
+const BaseButton = styled(Button)`
+    border-radius: 25px;
+    width: 45px;
+    height: 45px;
+`
