@@ -2,17 +2,15 @@ import React, { FC, ReactElement } from 'react'
 import { ViewStyle } from 'react-native'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import styled from 'styled-components/native'
-import { Typography, Input } from '../../theming'
+import { Typography } from '../../theming'
 import { SHIMMER_COLORS } from '../Layout/Layout.style'
 import { Touchable } from '../Touchable'
 
 interface InfoProps {
     name?: string
     nameFontSize?: number
-    // nameFontStyle?: Theme.FONT_REGULAR | Theme.FONT_MEDIUM | Theme.FONT_SEMIBOLD
     value?: string | ReactElement
     valueFontSize?: number
-    // valueFontStyle?: Theme.FONT_REGULAR | Theme.FONT_MEDIUM | Theme.FONT_SEMIBOLD
     disabled?: boolean
     onPress?(): void
     style?: ViewStyle
@@ -27,8 +25,6 @@ export const Info: FC<InfoProps> = ({
     disabled, 
     nameFontSize = 14, 
     valueFontSize = 16,
-    // nameFontStyle = Theme.FONT_REGULAR,
-    // valueFontStyle = Theme.FONT_REGULAR,
     style,
     bottom,
     loading
@@ -38,13 +34,9 @@ export const Info: FC<InfoProps> = ({
     const touchable =  onPress && !disabled
     const info = (
         <StyledItem style={!touchable && style}>
-
-            <Input placeholder="asada" />
-            
             <ShimmerName autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
                 { name && <Typography fontSize={nameFontSize}>{name}</Typography> }
             </ShimmerName>
-            
             { 
                 typeof value === "object" ? 
                 <ShimmerValue autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
@@ -55,9 +47,7 @@ export const Info: FC<InfoProps> = ({
                     <Typography fontSize={valueFontSize}>{value}</Typography>
                 </ShimmerValue>
             }
-
             { bottom }
-
         </StyledItem>
     )
 
@@ -66,23 +56,9 @@ export const Info: FC<InfoProps> = ({
     )
 }
 
-const StyledItem: any = styled.View`
+const StyledItem = styled.View`
     padding: 18px 0;
 `
-
-// const StyledName: any = styled(Text)`
-//     font-family: ${(props: any) => props.font};
-//     color: ${Colors.GRAY_3};
-//     font-size: ${(props: any) => `${props.fontSize}px`};
-//     width: 100%;
-// `
-
-// const StyledValue: any = styled(Text)`
-//     font-family: ${(props: any) => props.font};
-//     color: ${Colors.BLACK_1};
-//     font-size: ${(props: any) => `${props.fontSize}px`};
-//     width: 100%;
-// `
 
 const ShimmerName = styled(ShimmerPlaceHolder)`
     height: 15px;

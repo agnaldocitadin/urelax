@@ -1,7 +1,9 @@
 import React, { FC, useState } from 'react'
 import { ActivityIndicator } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors } from '../../theming'
+import { Colors, TypographyMedium } from '../../theming'
+import { BaseButton } from '../BaseButton'
 
 export enum InteractiveButtonStates {
     NORMAL,
@@ -26,8 +28,8 @@ export interface InteractiveButtonProps {
     radius?: number
     borderWidth?: number
     borderColor?: string
-    width?: number
-    height?: number
+    width?: string
+    // height?: number
     icon?: string
     iconColor?: string
     iconSize?: number
@@ -51,12 +53,12 @@ export const InteractiveButton: FC<InteractiveButtonProps> = ({
     onPress,
     disabled,
     block,
-    transparent,
+    // transparent,
     radius = 0,
     borderWidth = 0,
     borderColor = Colors.GRAY_3,
     width = "auto",
-    height = 55,
+    // height = 55,
     icon,
     iconColor = Colors.BLACK_2,
     iconSize = 30,
@@ -118,44 +120,50 @@ export const InteractiveButton: FC<InteractiveButtonProps> = ({
             radius={radius}
             borderWidth={borderWidth}
             borderColor={borderColor}
-            transparent={transparent} 
             block={block} 
             onPress={handleOnPress} 
             disabled={disable}
             disabledBgColor={disableBgColor}
             width={width}
-            height={height}>
+            // height={height}
+            >
             { (activityState === InteractiveButtonStates.PROCESSING) && <SActivityIndicator size="large" color={indicatorColor}/> }
-            { (activityState === InteractiveButtonStates.SUCCESS) && <StyledIcon color={iconColor} fontSize={iconSize} type={Theme.ICON_PACK} name="check-circle"/> }
-            { text && <StyledText block={block} color={textColor} disabledTextColor={disabledTextColor} disabled={disable}>{text}</StyledText> }
-            { (activityState === InteractiveButtonStates.NORMAL) && <StyledIcon color={iconColor} fontSize={iconSize} type={Theme.ICON_PACK} name={icon}/>}
+            { (activityState === InteractiveButtonStates.SUCCESS) && <StyledIcon color={iconColor} size={iconSize} name="check-circle"/> }
+            { text && <StyledText block={block} color={disable ? disabledTextColor : textColor} fontSize={13}>{text}</StyledText> }
+            { (activityState === InteractiveButtonStates.NORMAL && icon) && <StyledIcon color={iconColor} size={iconSize} name={icon}/>}
         </SButtonNormal>
     )
 }
 
-const SButtonNormal: any = styled.Button`
-    background-color: ${(props: any) => props.disabled ? props.disabledBgColor : props.bgColor};
-    border-radius: ${(props: any) => `${props.radius}px`};
-    width: ${(props: any) => props.block ? "auto" : `${props.width}px`};
-    border-width: ${(props: any) => `${props.borderWidth}px`};
-    border-color: ${(props: any) => props.borderColor};
+type ButtonProps = {
+    disabled?: boolean
+    disabledBgColor?: string
+    bgColor?: string
+    radius?: number
+    block?: boolean
+    width?: string
+    borderWidth?: number
+    borderColor?: string
+}
+
+const SButtonNormal = styled(BaseButton)<ButtonProps>`
+    background-color: ${({ disabled, disabledBgColor, bgColor }) => disabled ? disabledBgColor : bgColor};
+    border-radius: ${({ radius }) => `${radius}px`};
+    width: ${({ block, width }) => block ? "auto" : width};
+    border-width: ${({ borderWidth}) => `${borderWidth}px`};
+    border-color: ${({ borderColor}) => borderColor};
 `
 
-const StyledIcon: any = styled(Icon)`
-    margin: 0;
-    margin-left: auto;
+const StyledIcon = styled(Icon)`
     margin-right: auto;
-    color: ${(props: any) => props.color};
-    font-size: ${(props: any) => `${props.fontSize}px`};
+    margin-left: auto;
+    margin: 0;
 `
 
-const StyledText: any = styled(Text)`
+const StyledText = styled(TypographyMedium)<{ block?: boolean }>`
     text-transform: uppercase;
-    color: ${(props: any) => props.disabled ? props.disabledTextColor : props.color};
-    font-family: ${Theme.FONT_MEDIUM};
-    font-size: 13px;
     text-align: center;
-    width: ${(props: any) => props.block ? "100%" : "auto"};
+    width: ${({ block }) => block ? "100%" : "auto"};
 `
 
 const SActivityIndicator: any = styled(ActivityIndicator)`

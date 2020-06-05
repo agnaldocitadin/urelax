@@ -77,15 +77,12 @@ export const TypographySemibold = styled(Typography)`
     font-family: ${Fontsa.FONT_SEMIBOLD};
 `
 
-export const Input = styled.TextInput`
+export const InputTextBase = styled.TextInput`
     font-family: ${Fontsa.FONT_REGULAR};
     color: ${Colors.BLACK_1};
-    font-size: 14px;
-`
-
-export const Label = styled(Typography)`
-    color: ${Colors.GRAY_1};
-    font-size: 13px;
+    font-size: 18px;
+    line-height: 18px;
+    flex: 1;
 `
 
 export const Button = styled(BaseButton)`

@@ -1,8 +1,10 @@
 // import actions, { ReducerState } from './actions'
 // import reducer from './reducer'
 // import { TemplateUI } from './TemplateUI'
+import { MODULE_NAME } from './const'
 
-const MODULE_NAME = "Translation"
+
+// const MODULE_NAME = "Translation"
 
 // type StateProperties = keyof ReducerState
 

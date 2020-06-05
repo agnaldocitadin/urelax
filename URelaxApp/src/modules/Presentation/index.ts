@@ -1,12 +1,12 @@
 import actions from './actions'
 import { MODULE_NAME } from './const'
-import { Navigator } from './Navigator'
 import reducer, { select } from './reducer'
+import { TourUI } from './TourUI'
 
 export default {
     MODULE_NAME,
     ...{
-        Navigator
+        TourUI
     },
     select,
     actions,

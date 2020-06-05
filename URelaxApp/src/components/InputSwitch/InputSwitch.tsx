@@ -30,7 +30,7 @@ export const InputSwitch: FC<InputSwitchProps> = ({
     )
 }
 
-const SwitchView: any = styled.View`
+const SwitchView = styled.View`
     justify-content: space-between;
     flex-direction: row;
     width: 100%;

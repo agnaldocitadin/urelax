@@ -1,18 +1,13 @@
 import { AxiosRequestConfig } from 'axios'
 import { API } from 'honeybee-api'
-import { useSelector } from 'react-redux'
 import actions from './actions'
 import { Authenticate } from './Authenticate'
+import { MODULE_NAME } from './const'
+import { FastAuthFailureUI } from './FastAuthFailureUI'
 import { FastAuthUI } from './FastAuthUI'
 import { LogInUI } from './LogInUI'
-import reducer, { ReducerState } from './reducer'
+import reducer, { select } from './reducer'
 import { SplashAuth } from './SplashAuth'
-
-const MODULE_NAME = "Security"
-
-type StateProperties = keyof ReducerState
-
-const select = (property: StateProperties) => useSelector((state: any) => state[MODULE_NAME][property])
 
 const init = async () => {
     
@@ -35,7 +30,8 @@ export default {
         Authenticate,
         LogInUI,
         SplashAuth,
-        FastAuthUI
+        FastAuthUI,
+        FastAuthFailureUI
     },
     select,
     actions,

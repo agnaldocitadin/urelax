@@ -1,18 +1,19 @@
 import { useNavigation } from "@react-navigation/native"
 import { useCallback, useEffect, useState } from "react"
+import Navigation from "../../Navigation"
 import Storage from "../../Storage"
 import { StorageApp } from "../../Storage/actions"
 
-
 export const useFastAuthUIHook = () => {
 
+    const { switchStack } = Navigation.actions()
     const navigation = useNavigation()
     const [ storage, setStorage ] = useState<StorageApp>()
     const hasCredentials = storage?.email && storage?.password
     const { initStorage } = Storage.actions()
 
     const handleAuthFailure = useCallback(() => {
-        // navigation.navigate(Routes.FastAuthFailureUI)
+        switchStack("authFailure")
     }, [])
     
     useEffect(() => {
@@ -21,7 +22,7 @@ export const useFastAuthUIHook = () => {
             setStorage(storageApp)
 
             if (!storageApp.tour) {
-                // navigation.navigate(Routes.StartupStack)
+                switchStack("welcome")
                 return
             }
 

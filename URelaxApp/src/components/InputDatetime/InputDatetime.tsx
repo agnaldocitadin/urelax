@@ -8,21 +8,23 @@ import { useInputDatetimeHook } from './InputDatetimeHook'
 export interface InputDatetimeProps extends InputTextProps {
     dateTimeDispplay?: "spinner" | "default" | "clock" | "calendar"
     dateTimeMode?: "date" | "time"
-    initValue?: Date
-    onChange?(date: Date): void
+    dateValue?: Date
+    dateFormat?: string
+    onChangeDate?(date: Date): void
 }
 
 export const InputDatetime: FC<InputDatetimeProps> = ({
     dateTimeMode,
     dateTimeDispplay,
-    initValue,
-    onChange,
+    dateValue,
+    dateFormat = "MMMM, dd 'of' yyyy",
+    onChangeDate,
     ...others
 }) => {
     
-    const _value = initValue ? new Date(initValue) : undefined
-    const { show, handleShowDatetime, handleSelectDate } = useInputDatetimeHook(onChange, initValue)
-    const inputValue = _value ? format(_value, "dd/MM/yyyy") : undefined
+    const _value = dateValue ? new Date(dateValue) : undefined
+    const { show, handleShowDatetime, handleSelectDate } = useInputDatetimeHook(onChangeDate)
+    const inputValue = _value ? format(_value, dateFormat) : undefined
     
     return (
         <React.Fragment>
@@ -31,7 +33,7 @@ export const InputDatetime: FC<InputDatetimeProps> = ({
                 value={inputValue} 
                 editable={false} 
                 rightIcon={Icons.CALENDAR}
-                onTouchStart={handleShowDatetime}/>
+                onTouchStart={(handleShowDatetime)}/>
             
             { show && <DateTimePicker
                 value={_value ? _value : new Date()}

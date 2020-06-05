@@ -1,6 +1,5 @@
 import actions from './actions'
-
-const MODULE_NAME = "Storage"
+import { MODULE_NAME } from './const'
 
 const init = () => actions().initStorage()
 

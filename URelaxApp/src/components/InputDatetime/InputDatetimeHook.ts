@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react"
 
-export const useInputDatetimeHook = (onChange?:(date: Date) => void, initValue?: Date) => {
+export const useInputDatetimeHook = (onChangeDate?:(date: Date) => void) => {
 
     const [ show, setShow ] = useState(false)
     
@@ -9,8 +9,8 @@ export const useInputDatetimeHook = (onChange?:(date: Date) => void, initValue?:
     const handleSelectDate = (e: any) => {
         setShow(false)
         const timestamp = e.nativeEvent.timestamp
-        if (timestamp && onChange) {
-            onChange(new Date(timestamp))
+        if (timestamp && onChangeDate) {
+            onChangeDate(new Date(timestamp))
         }
     }
 

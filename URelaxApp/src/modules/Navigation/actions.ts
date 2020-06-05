@@ -1,10 +1,11 @@
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
+import { Stacks } from "./const"
 
 type ActionNames = keyof ActionTypes
 
 export interface ReducerState {
-    stack: string
+    stack: Stacks
 }
 
 export type ActionTypes = {
@@ -14,7 +15,7 @@ export type ActionTypes = {
 const Actions = () => {
     const dispatch = useDispatch()
     return {
-        switchStack: (stack: string) => {
+        switchStack: (stack: Stacks) => {
             dispatch({ type: "SWITCH_STACK", payload: stack } as DispatchType<ActionNames>)
         }
     }

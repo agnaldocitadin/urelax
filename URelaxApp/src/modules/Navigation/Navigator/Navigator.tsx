@@ -1,25 +1,54 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
+import Presentation from '../../Presentation'
 import Security from '../../Security'
+import { Routes, Stacks } from '../const'
+import { select } from '../reducer'
 
 const Stack = createStackNavigator()
 
+const defaultOptions = {
+    headerShown: false
+}
+
 export const Navigator: FC = () => {
-    const stack = "auth" //Navigation.select("stack")
+    const selectedStack: Stacks = select("stack")
 
     let stackRoutes
-    switch(stack) {
+    switch(selectedStack) {
+
+        case "authFailure":
+            stackRoutes = (
+                <>
+                </>
+            )
+            break
 
         case "auth":
             stackRoutes = (
                 <>
-                <Stack.Screen name="splash" component={Security.FastAuthUI} options={{
-                    cardOverlayEnabled: false,
-                    headerShown: false,
-                    cardStyle: { backgroundColor: "transparent" }
-                }}/>
-                <Stack.Screen name="login" component={Security.LogInUI} />
+                    <Stack.Screen name={Routes.SPLASH} component={Security.FastAuthUI} options={{
+                        ...defaultOptions,
+                        cardOverlayEnabled: false,
+                        cardStyle: { backgroundColor: "transparent" }
+                    }}/>
+                </>
+            )
+            break
+        
+        case "welcome":
+            stackRoutes = (
+                <>
+                    <Stack.Screen name={Routes.TOUR} component={Presentation.TourUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.SIGNIN} component={Security.LogInUI} options={defaultOptions}/>
+                </>
+            )
+            break
+            
+        case "app":
+            stackRoutes = (
+                <>
                 </>
             )
             break
