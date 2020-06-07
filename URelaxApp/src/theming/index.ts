@@ -1,6 +1,10 @@
 import styled from 'styled-components/native'
 import { BaseButton } from '../components/BaseButton'
 
+export const Images = {
+    LOGO: require("../assets/imgs/logo.png")
+}
+
 export enum Fontsa {
     FONT_REGULAR = "Montserrat-Regular",
     FONT_MEDIUM = "Montserrat-Medium",
@@ -66,7 +70,7 @@ export enum Icons {
 export const Typography = styled.Text<{ color?: string, fontSize?: number }>`
     color: ${({ color }) => color || Colors.BLACK_1};
     font-family: ${Fontsa.FONT_REGULAR};
-    font-size: ${({ fontSize }) => `${fontSize || 14}px`};
+    font-size: ${({ fontSize }) => `${fontSize || 13}px`};
 `
 
 export const TypographyMedium = styled(Typography)`
@@ -80,8 +84,7 @@ export const TypographySemibold = styled(Typography)`
 export const InputTextBase = styled.TextInput`
     font-family: ${Fontsa.FONT_REGULAR};
     color: ${Colors.BLACK_1};
-    font-size: 18px;
-    line-height: 18px;
+    font-size: 15px;
     flex: 1;
 `
 

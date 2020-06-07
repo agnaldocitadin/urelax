@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
 import { Keyboard } from "react-native"
 // import { NavigationStackProp } from "react-navigation-stack"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import { animatedCallback } from "../../../core/Commons.hook"
 // import { animatedCallback } from "../../../../hooks/Commons.hook"
 // import { States } from "../../../../reducers/Reducer"
 // import { showError } from "../../../message"
@@ -11,49 +12,39 @@ export const useLogInUIHook = () => {
 
     const dispatch = useDispatch()
     const [ authenticate, setAuthenticate ] = useState(false)
-    
-    const { 
-        email, 
-        passwd, 
-        keepSession, 
-        validEmail, 
-        validPassword 
-    } = useSelector((state: States) => state.SIGNIN)
+    const [ keepSession, setKeepSession ] = useState(false)
+    const [ email, setEmail ] = useState("")
+    const [ password, setPassword ] = useState("")
 
-    const handleKeepSessionChange = useCallback((value: boolean) => dispatch(registerUserKeepSession(value)), [keepSession])
-
-    const handleEmailChanges = useCallback((chars: string) => dispatch(registerUserEmail(chars)), [email])
-    
-    const handlePasswdChanges = useCallback((chars: string) => dispatch(registerUserPassword(chars)), [passwd])
-    
     const handleAuthentication = animatedCallback(() => {
+        console.log("auth...")
         Keyboard.dismiss()
         setAuthenticate(true)
     }, [])
 
     const handleAuthFail = useCallback((error: any) => {
-        dispatch(showError(JSON.stringify(error.message)))
+        console.log("---", error)
         setAuthenticate(false)
     }, [authenticate])
 
     useEffect(() => {
         return () => {
-            dispatch(resetSignInForm())
+            // dispatch(resetSignInForm())
         }
     }, [])
 
     return {
         authenticate,
         email,
-        passwd,
+        password,
         keepSession,
-        disabledLogIn: !email || !passwd || !validEmail || !validPassword,
-        validEmail: !email || validEmail,
-        validPassword: !passwd || validPassword,
-        handleEmailChanges,
-        handlePasswdChanges,
+        disabledLogIn: !email || !password ,//|| !validEmail || !validPassword,
+        validEmail: !email ,//|| validEmail,
+        validPassword: !password ,//|| validPassword,
+        setEmail,
+        setPassword,
+        setKeepSession,
         handleAuthentication,
-        handleKeepSessionChange,
         handleAuthFail
     }
 }

@@ -152,6 +152,7 @@ const SButtonNormal = styled(BaseButton)<ButtonProps>`
     width: ${({ block, width }) => block ? "auto" : width};
     border-width: ${({ borderWidth}) => `${borderWidth}px`};
     border-color: ${({ borderColor}) => borderColor};
+    /* opacity: .5; */
 `
 
 const StyledIcon = styled(Icon)`

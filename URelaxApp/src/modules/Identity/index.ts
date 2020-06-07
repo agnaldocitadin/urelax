@@ -4,8 +4,6 @@ import reducer, { select } from './reducer'
 
 export default {
     MODULE_NAME,
-    ...{
-    },
     select,
     actions,
     reducer

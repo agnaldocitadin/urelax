@@ -1,8 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
-import Presentation from '../../Presentation'
-import Security from '../../Security'
+import { TourUI } from '../../Presentation/TourUI'
+import { FastAuthUI } from '../../Security/FastAuthUI'
+import { LogInUI } from '../../Security/LogInUI'
 import { Routes, Stacks } from '../const'
 import { select } from '../reducer'
 
@@ -28,7 +29,7 @@ export const Navigator: FC = () => {
         case "auth":
             stackRoutes = (
                 <>
-                    <Stack.Screen name={Routes.SPLASH} component={Security.FastAuthUI} options={{
+                    <Stack.Screen name={Routes.SPLASH} component={FastAuthUI} options={{
                         ...defaultOptions,
                         cardOverlayEnabled: false,
                         cardStyle: { backgroundColor: "transparent" }
@@ -40,8 +41,8 @@ export const Navigator: FC = () => {
         case "welcome":
             stackRoutes = (
                 <>
-                    <Stack.Screen name={Routes.TOUR} component={Presentation.TourUI} options={defaultOptions}/>
-                    <Stack.Screen name={Routes.SIGNIN} component={Security.LogInUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.TOUR} component={TourUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.SIGNIN} component={LogInUI} options={defaultOptions}/>
                 </>
             )
             break

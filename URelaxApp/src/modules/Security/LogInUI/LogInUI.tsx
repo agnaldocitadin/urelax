@@ -1,6 +1,14 @@
 import React, { FC } from 'react'
+import { Image } from 'react-native'
+import styled from 'styled-components/native'
+import { InputSwitch } from '../../../components/InputSwitch'
+import { InputText } from '../../../components/InputText'
+import { InteractiveButton } from '../../../components/InteractiveButton'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { Colors } from '../../../theming'
+import { FORM_PADDING } from '../../../components/Layout/Layout.style'
+import { ScrollViewForm } from '../../../components/Layout/ScrollViewForm'
+import { ts } from '../../../core/I18n'
+import { Colors, Icons, Images } from '../../../theming'
 import { SplashAuth } from '../SplashAuth'
 import { useLogInUIHook } from './LogInUIHook'
 
@@ -13,85 +21,86 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
     const {
         authenticate,
         email,
-        passwd,
+        password,
         keepSession,
         disabledLogIn,
-        validEmail,
-        validPassword,
-        handleEmailChanges, 
-        handlePasswdChanges, 
+        setEmail,
+        setPassword,
+        setKeepSession,
         handleAuthentication,
-        handleKeepSessionChange,
         handleAuthFail
     } = useLogInUIHook()
 
     return (
-        <FlatLayout bgStatusBar={authenticate ? Colors.BLUES_1 : Colors.WHITE}>
-            
+        <FlatLayout 
+            bgStatusBar={Colors.BLUES_1}
+            bgColor={Colors.BLUES_1}>
             <SplashAuth
                 authenticating={authenticate}
                 email={email}
-                password={passwd}
+                password={password}
                 keepSession={keepSession}
                 onFail={handleAuthFail}
                 noAuthElement={
                     <React.Fragment>
-                        {/* <BackHeader title={ts("sign_in")}/>
+                        {/* <BackHeader title={ts("sign_in")}/> */}
+                        <Image source={Images.LOGO} style={{ transform: [{ scale: .7 }] }}/>
                         <ScrollViewForm justifyContent="flex-end">
                             <Input
                                 label={ts("email")}
+                                labelStyle={{ color: Colors.WHITE }}
                                 placeholder={ts("your_email")}
                                 textContentType="emailAddress"
-                                textSize={TEXT_SIZE}
+                                inputStyle={{ fontSize: TEXT_SIZE, color: Colors.WHITE }}
                                 autoCapitalize="none"
                                 autoCorrect={false}
                                 leftIcon={Icons.EMAIL}
-                                invalid={!validEmail}
-                                invalidText={ts("invalid_email")}
+                                // invalid={!validEmail}
+                                // invalidText={ts("invalid_email")}
                                 value={email}
-                                onChangeText={handleEmailChanges}/>
+                                onChangeText={setEmail}/>
 
                             <Input
                                 label={ts("password")}
+                                labelStyle={{ color: Colors.WHITE }}
                                 placeholder={ts("your_password")}
                                 textContentType="password"
                                 autoCapitalize="none"
-                                textSize={TEXT_SIZE}
+                                inputStyle={{ fontSize: TEXT_SIZE, color: Colors.WHITE }}
                                 autoCorrect={false}
                                 secureTextEntry={true}
                                 leftIcon={Icons.PASSWD}
-                                invalid={!validPassword}
-                                invalidText={ts("invalid_password")}
-                                value={passwd}
-                                onChangeText={handlePasswdChanges}/>
+                                // invalid={!validPassword}
+                                // invalidText={ts("invalid_password")}
+                                value={password}
+                                onChangeText={setPassword}/>
 
                             <Switch
-                                text={ts("keep_session")}
+                                label={ts("keep_session")}
+                                labelColor={Colors.WHITE}
                                 value={keepSession}
-                                onChange={handleKeepSessionChange}/>
+                                onChange={setKeepSession}/>
 
                             <InteractiveButton 
                                 block
                                 normalText={ts("sign_in")}
-                                indicatorColor={Colors.WHITE}
-                                processingBgColor={Colors.BLUES_1}
-                                normalBgColor={Colors.BLUES_1}
-                                textColor={Colors.WHITE}
                                 radius={4}
                                 disabled={disabledLogIn}
                                 onPress={handleAuthentication}
                                 animate={false}/>
-                        </ScrollViewForm> */}
+                        </ScrollViewForm>
                     </React.Fragment>
                 }/>
         </FlatLayout>
     )
 }
 
-// const Input = styled(InputText)`
-//     margin-bottom: ${FORM_PADDING};
-// `
+const Input = styled(InputText)`
+    margin-bottom: ${FORM_PADDING};
+    background-color: ${Colors.BLUES_1};
+    border-color: ${Colors.WHITE};
+`
 
-// const Switch = styled(InputSwitch)`
-//     margin-bottom: ${FORM_PADDING};
-// `
+const Switch = styled(InputSwitch)`
+    margin-bottom: ${FORM_PADDING};
+`

@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
-import { Switch, ViewStyle } from 'react-native'
+import { Switch, SwitchProps, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
 import { Colors, Typography } from '../../theming'
 
-interface InputSwitchProps extends Switch {
-    text: string
+interface InputSwitchProps extends SwitchProps {
+    label: string
     labelColor?: string
     fontSize?: number
     value?: boolean
@@ -14,7 +14,7 @@ interface InputSwitchProps extends Switch {
 
 export const InputSwitch: FC<InputSwitchProps> = ({ 
     value,
-    text,
+    label,
     labelColor = Colors.GRAY_2,
     fontSize = 15,
     style,
@@ -24,7 +24,7 @@ export const InputSwitch: FC<InputSwitchProps> = ({
 
     return (
         <SwitchView style={style} onTouchStart={() => onChange && onChange(!value)}>
-            <Typography fontSize={fontSize} color={labelColor}>{text}</Typography>
+            <Typography fontSize={fontSize} color={labelColor}>{label}</Typography>
             <Switch {...others} value={value}/>
         </SwitchView>
     )

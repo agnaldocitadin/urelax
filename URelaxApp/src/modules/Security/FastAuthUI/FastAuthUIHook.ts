@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
 import { useCallback, useEffect, useState } from "react"
-import Navigation from "../../Navigation"
+import { Routes } from "../../Navigation/const"
 import Storage from "../../Storage"
 import { StorageApp } from "../../Storage/actions"
+import Navigation from "../../Navigation"
 
 export const useFastAuthUIHook = () => {
 
@@ -27,7 +28,8 @@ export const useFastAuthUIHook = () => {
             }
 
             if (storageApp.keepSession === "no") {
-                navigation.navigate("login")
+                switchStack("welcome")
+                navigation.navigate(Routes.SIGNIN)
                 return
             }
         })()

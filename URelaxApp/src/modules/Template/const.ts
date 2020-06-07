@@ -1,1 +1,1 @@
-export const MODULE_NAME = "Template"
+export const MODULE_NAME = "Messaging"
