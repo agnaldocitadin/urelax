@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
 import { useCallback, useEffect, useState } from "react"
+import Navigation from "../../Navigation"
 import { Routes } from "../../Navigation/const"
 import Storage from "../../Storage"
 import { StorageApp } from "../../Storage/actions"
-import Navigation from "../../Navigation"
 
 export const useFastAuthUIHook = () => {
 
@@ -13,9 +13,9 @@ export const useFastAuthUIHook = () => {
     const hasCredentials = storage?.email && storage?.password
     const { initStorage } = Storage.actions()
 
-    const handleAuthFailure = useCallback(() => {
-        switchStack("authFailure")
-    }, [])
+    const handleAuthFailure = useCallback(() => switchStack("authFailure"), [])
+
+    const handleAuthSuccess = useCallback(() => switchStack("app"), [])
     
     useEffect(() => {
         (async () => {
@@ -38,6 +38,7 @@ export const useFastAuthUIHook = () => {
     return {
         storage,
         authenticate: Boolean(hasCredentials && storage?.keepSession === "yes"),
+        handleAuthSuccess,
         handleAuthFailure
     }
 }

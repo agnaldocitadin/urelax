@@ -67,10 +67,11 @@ export enum Icons {
     CHART_LINE_VARIANT = "chart-line-variant",
 }
 
-export const Typography = styled.Text<{ color?: string, fontSize?: number }>`
+export const Typography = styled.Text<{ color?: string, fontSize?: number, textAlign?: "left" | "center" | "right" }>`
     color: ${({ color }) => color || Colors.BLACK_1};
     font-family: ${Fontsa.FONT_REGULAR};
     font-size: ${({ fontSize }) => `${fontSize || 13}px`};
+    text-align: ${({ textAlign }) => textAlign || "left"};
 `
 
 export const TypographyMedium = styled(Typography)`

@@ -1,13 +1,18 @@
+// import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
+import { DashboardUI } from '../../Dashboard/DashboardUI'
+import { InvestimentUI } from '../../Investiment/InvestimentUI'
 import { TourUI } from '../../Presentation/TourUI'
+import { FastAuthFailureUI } from '../../Security/FastAuthFailureUI'
 import { FastAuthUI } from '../../Security/FastAuthUI'
 import { LogInUI } from '../../Security/LogInUI'
 import { Routes, Stacks } from '../const'
 import { select } from '../reducer'
 
 const Stack = createStackNavigator()
+// const Stack = createDrawerNavigator()
 
 const defaultOptions = {
     headerShown: false
@@ -22,6 +27,7 @@ export const Navigator: FC = () => {
         case "authFailure":
             stackRoutes = (
                 <>
+                    <Stack.Screen name={Routes.AUTH_FAILURE} component={FastAuthFailureUI} options={defaultOptions}/>
                 </>
             )
             break
@@ -50,6 +56,8 @@ export const Navigator: FC = () => {
         case "app":
             stackRoutes = (
                 <>
+                    <Stack.Screen name={Routes.DASHBOARD} component={DashboardUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
                 </>
             )
             break
@@ -57,7 +65,7 @@ export const Navigator: FC = () => {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator >
                 { stackRoutes }
             </Stack.Navigator>
         </NavigationContainer>

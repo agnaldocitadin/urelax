@@ -1,18 +1,15 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { FC } from 'react'
-import { StatusBar, View } from 'react-native'
-// import { NavigationStackProp } from 'react-navigation-stack'
-import styled from 'styled-components'
-import { Colors } from '../../../theming'
-// import { ts } from '../../../../core/I18n'
-// import { Colors, Icons } from '../../../../core/Theme'
-// import { animatedCallback } from '../../../../hooks/Commons.hook'
-// import { Routes } from '../../../../navigations/Navigator'
-// import { InteractiveButton } from '../../../../ui/components/InteractiveButton'
-// import { GenericTextIcon } from '../../../../ui/components/Layout/Layout.style'
+import { StatusBar } from 'react-native'
+import styled from 'styled-components/native'
+import { InteractiveButton } from '../../../components/InteractiveButton'
+import { GenericTextIcon } from '../../../components/Layout/Layout.style'
+import { animatedCallback } from '../../../core/Commons.hook'
+import { ts } from '../../../core/I18n'
+import { Colors, Icons } from '../../../theming'
+import { Routes } from '../../Navigation/const'
 
-interface FastAuthFailureUIProps {
-    // navigation: NavigationStackProp
-}
+interface FastAuthFailureUIProps {}
 
 /**
  *
@@ -22,12 +19,13 @@ interface FastAuthFailureUIProps {
  */
 export const FastAuthFailureUI: FC<FastAuthFailureUIProps> = ({ }) => {
     
-    // const handleTryAgain = animatedCallback(() => navigation.navigate(Routes.FastAuthUI))
+    const navigation = useNavigation()
+    const handleTryAgain = animatedCallback(() => navigation.navigate(Routes.SPLASH))
 
     return (
         <React.Fragment>
             <StatusBar barStyle="dark-content" backgroundColor={Colors.BG_1}/>
-            {/* <ViewFail>
+            <ViewFail>
                 <Message
                     title={ts("oops")}
                     message={ts("authentication_failed")}
@@ -39,17 +37,17 @@ export const FastAuthFailureUI: FC<FastAuthFailureUIProps> = ({ }) => {
                 normalText={ts("try_again")}
                 onPress={handleTryAgain}
                 normalBgColor={Colors.WHITE}
-                animate={false}/> */}
+                animate={false}/>
         </React.Fragment>
     )
 }
 
-// const ViewFail = styled(View)`
-//     background-color: ${Colors.BG_1};
-//     justify-content: center;
-//     flex: 1;
-// `
+const ViewFail = styled.View`
+    background-color: ${Colors.BG_1};
+    justify-content: center;
+    flex: 1;
+`
 
-// const Message = styled(GenericTextIcon)`
-//     margin: 0 50px;
-// `
+const Message = styled(GenericTextIcon)`
+    margin: 0 50px;
+`

@@ -28,6 +28,7 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
         setPassword,
         setKeepSession,
         handleAuthentication,
+        handleAuthSuccess,
         handleAuthFail
     } = useLogInUIHook()
 
@@ -40,6 +41,7 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
                 email={email}
                 password={password}
                 keepSession={keepSession}
+                onSuccess={handleAuthSuccess}
                 onFail={handleAuthFail}
                 noAuthElement={
                     <React.Fragment>

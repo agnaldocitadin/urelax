@@ -7,4 +7,7 @@ export enum Routes {
     TOUR = "TOUR",
     SIGNIN = "SIGNIN",
     SIGNUP = "SIGNUP",
+    AUTH_FAILURE = "AUTH_FAILURE",
+    DASHBOARD = "DASHBOARD",
+    INVESTIMENT = "INVESTIMENT",
 }

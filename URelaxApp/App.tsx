@@ -2,8 +2,10 @@ import React from 'react'
 import 'react-native-gesture-handler'
 import { enableScreens } from 'react-native-screens'
 import { Provider } from 'react-redux'
+import Activity from './src/modules/Activity'
 import AppModules from './src/modules/AppModules'
 import Identity from './src/modules/Identity'
+import Investiment from './src/modules/Investiment'
 import Messaging from './src/modules/Messaging'
 import { DialogMessage } from './src/modules/Messaging/DialogMessage'
 import Navigation from './src/modules/Navigation'
@@ -18,7 +20,9 @@ const store = AppModules.register([
     Identity,
     Navigation,
     Storage,
-    Messaging
+    Messaging,
+    Activity,
+    Investiment
 ])
     
 /**

@@ -16,6 +16,7 @@ interface InfoProps {
     style?: ViewStyle
     bottom?: ReactElement
     loading?: boolean
+    touchable?: boolean
 }
 
 export const Info: FC<InfoProps> = ({ 
@@ -27,13 +28,14 @@ export const Info: FC<InfoProps> = ({
     valueFontSize = 16,
     style,
     bottom,
-    loading
+    loading,
+    touchable
 }) => {
 
     if (!loading && value === undefined) return null
-    const touchable =  onPress && !disabled
+    const _touchable =  onPress && touchable && !disabled
     const info = (
-        <StyledItem style={!touchable && style}>
+        <StyledItem onTouchEnd={!_touchable ? onPress : undefined} style={!touchable && style}>
             <ShimmerName autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
                 { name && <Typography fontSize={nameFontSize}>{name}</Typography> }
             </ShimmerName>
@@ -52,7 +54,7 @@ export const Info: FC<InfoProps> = ({
     )
 
     return (
-        touchable ? <Touchable style={style} onPress={onPress}>{info}</Touchable> : info
+        _touchable ? <Touchable style={style} onPress={onPress}>{info}</Touchable> : info
     )
 }
 

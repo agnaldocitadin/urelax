@@ -9,19 +9,21 @@ interface VariationMonitorProps {
     fontSize?: number
     textColor?: string
     iconColor?: string
+    showIcon?: boolean
 }
 
 export const VariationMonitor: FC<VariationMonitorProps> = ({
     value = 0,
     fontSize = 14,
     textColor = Colors.WHITE,
-    iconColor = Colors.BLACK_2
+    iconColor = Colors.BLACK_2,
+    showIcon
 }) => (
     <Display>
-        <DisplayIcon 
+        { showIcon && <DisplayIcon 
             name={value === 0 ? Icons.ARROW_RIGHT : (value >= 0 ? Icons.ARROW_UP : Icons.ARROW_DOWN)} 
             size={fontSize} 
-            color={iconColor}/>
+            color={iconColor}/> }
 
         <DisplayValue
             fontSize={fontSize}

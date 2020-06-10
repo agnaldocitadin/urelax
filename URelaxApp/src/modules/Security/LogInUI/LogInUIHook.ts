@@ -1,37 +1,30 @@
-import { useCallback, useEffect, useState } from "react"
+import { APIError } from "honeybee-api"
+import { useCallback, useState } from "react"
 import { Keyboard } from "react-native"
-// import { NavigationStackProp } from "react-navigation-stack"
-import { useDispatch } from "react-redux"
 import { animatedCallback } from "../../../core/Commons.hook"
-// import { animatedCallback } from "../../../../hooks/Commons.hook"
-// import { States } from "../../../../reducers/Reducer"
-// import { showError } from "../../../message"
-// import { registerUserEmail, registerUserKeepSession, registerUserPassword, resetSignInForm } from "../../actions"
+import Messaging from "../../Messaging"
+import Navigation from "../../Navigation"
 
 export const useLogInUIHook = () => {
 
-    const dispatch = useDispatch()
+    const { switchStack } = Navigation.actions()
+    const { showAPIError } = Messaging.actions()
     const [ authenticate, setAuthenticate ] = useState(false)
     const [ keepSession, setKeepSession ] = useState(false)
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
 
+    const handleAuthSuccess = useCallback(() => switchStack("app"), [])
+
     const handleAuthentication = animatedCallback(() => {
-        console.log("auth...")
         Keyboard.dismiss()
         setAuthenticate(true)
     }, [])
 
-    const handleAuthFail = useCallback((error: any) => {
-        console.log("---", error)
+    const handleAuthFail = useCallback((error: APIError) => {
         setAuthenticate(false)
+        showAPIError(error)
     }, [authenticate])
-
-    useEffect(() => {
-        return () => {
-            // dispatch(resetSignInForm())
-        }
-    }, [])
 
     return {
         authenticate,
@@ -45,6 +38,7 @@ export const useLogInUIHook = () => {
         setPassword,
         setKeepSession,
         handleAuthentication,
+        handleAuthSuccess,
         handleAuthFail
     }
 }
