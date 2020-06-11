@@ -2,10 +2,11 @@ import React, { FC } from 'react'
 import { TouchableNativeFeedback, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
 
-interface BaseButtonPros {
+export interface BaseButtonPros {
     style?: ViewStyle
     contentStyle?: ViewStyle
     feedbackColor?: string
+    disabled?: boolean
     onPress?(): void
     onPressIn?(): void
     onPressOut?(): void
@@ -17,13 +18,15 @@ export const BaseButton: FC<BaseButtonPros> = ({
     style, 
     contentStyle, 
     feedbackColor = "silver",
+    disabled,
     onPress,
     onPressIn,
     onPressOut,
     onLongPress
 }) => (
     <Button style={style}>
-        <TouchableNativeFeedback 
+        <TouchableNativeFeedback
+            disabled={disabled}
             background={TouchableNativeFeedback.Ripple(feedbackColor, true)} 
             onPress={onPress}
             onPressIn={onPressIn}

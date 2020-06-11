@@ -26,48 +26,46 @@ export const Navigator: FC = () => {
 
         case "authFailure":
             stackRoutes = (
-                <>
+                <Stack.Navigator initialRouteName={Routes.AUTH_FAILURE}>
                     <Stack.Screen name={Routes.AUTH_FAILURE} component={FastAuthFailureUI} options={defaultOptions}/>
-                </>
+                </Stack.Navigator>
             )
             break
 
         case "auth":
             stackRoutes = (
-                <>
+                <Stack.Navigator initialRouteName={Routes.SPLASH}>
                     <Stack.Screen name={Routes.SPLASH} component={FastAuthUI} options={{
                         ...defaultOptions,
                         cardOverlayEnabled: false,
                         cardStyle: { backgroundColor: "transparent" }
                     }}/>
-                </>
+                </Stack.Navigator>
             )
             break
         
         case "welcome":
             stackRoutes = (
-                <>
+                <Stack.Navigator initialRouteName={Routes.TOUR}>
                     <Stack.Screen name={Routes.TOUR} component={TourUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.SIGNIN} component={LogInUI} options={defaultOptions}/>
-                </>
+                </Stack.Navigator>
             )
             break
             
         case "app":
             stackRoutes = (
-                <>
+                <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
                     <Stack.Screen name={Routes.DASHBOARD} component={DashboardUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
-                </>
+                </Stack.Navigator>
             )
             break
     }
 
     return (
         <NavigationContainer>
-            <Stack.Navigator >
-                { stackRoutes }
-            </Stack.Navigator>
+            { stackRoutes }
         </NavigationContainer>
     )
 }

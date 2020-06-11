@@ -1,9 +1,9 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
 import { Colors, TypographyMedium } from '../../theming'
-import { BaseButton } from '../BaseButton'
+import { BaseButton, BaseButtonPros } from '../BaseButton'
 
 export enum InteractiveButtonStates {
     NORMAL,
@@ -11,149 +11,65 @@ export enum InteractiveButtonStates {
     SUCCESS
 }
 
-export interface InteractiveButtonProps {
-    normalText?: string
-    processingText?: string
-    successText?: string
-    successStatus?: InteractiveButtonStates
-    normalBgColor?: string
-    processingBgColor?: string
-    successBgColor?: string
-    disabledBgColor?: string
-    disabledTextColor?: string
+export interface InteractiveButtonData {
+    text?: string
+    activityState?: InteractiveButtonStates
     textColor?: string
+    disabledTextColor?: string
     disabled?: boolean
-    block?: boolean
-    transparent?: boolean
-    radius?: number
-    borderWidth?: number
-    borderColor?: string
-    width?: string
-    // height?: number
     icon?: string
     iconColor?: string
     iconSize?: number
-    staticState?: boolean
+}
+
+export interface InteractiveButtonProps extends BaseButtonPros {
+    data: InteractiveButtonData
     indicatorColor?: string
-    animate?: boolean
-    onPress?(): Promise<void|unknown>
 }
 
 export const InteractiveButton: FC<InteractiveButtonProps> = ({ 
-    normalText,
-    processingText,
-    successText,
-    successStatus = InteractiveButtonStates.SUCCESS,
-    normalBgColor = Colors.WHITE,
-    processingBgColor = Colors.WHITE,
-    successBgColor = Colors.GREEN_SUCCESS,
-    disabledBgColor = Colors.BG_2,
-    disabledTextColor = Colors.WHITE,
-    textColor = Colors.BLACK_2,
-    onPress,
-    disabled,
-    block,
-    // transparent,
-    radius = 0,
-    borderWidth = 0,
-    borderColor = Colors.GRAY_3,
-    width = "auto",
-    // height = 55,
-    icon,
-    iconColor = Colors.BLACK_2,
-    iconSize = 30,
-    staticState,
-    animate = true,
-    indicatorColor = Colors.BLACK_2
+    data,
+    indicatorColor = Colors.BLACK_2,
+    ...others
 }) => {
 
-    const [ activityState, setActivityState ] = useState(InteractiveButtonStates.NORMAL)
-
-    const handleOnPress = () => {
-        if (!disabled && onPress) {
-            if (animate && !staticState) {
-                setActivityState(InteractiveButtonStates.PROCESSING)
-            }
-            
-            onPress()
-                .then(() => {
-                    if (animate && !staticState) {
-                        setActivityState(successStatus)
-                    }
-                })
-                .catch(() => {
-                    if (animate && !staticState) {
-                        setActivityState(InteractiveButtonStates.NORMAL)
-                    }
-                })
-        }
-    }
+    const {
+        text,
+        activityState = InteractiveButtonStates.NORMAL,
+        textColor = Colors.BLACK_2,
+        disabledTextColor = Colors.WHITE,
+        disabled,
+        icon,
+        iconColor = Colors.BLACK_2,
+        iconSize = 30,
+    } = data
     
-    let text
-    let bgColor
-    let disable
-    let disableBgColor
+    let _text
+    let _disabled
     if (activityState === InteractiveButtonStates.NORMAL) {
-        text = normalText
-        bgColor = normalBgColor
-        disableBgColor = disabledBgColor
-        disable = disabled
+        _disabled = disabled
+        _text = text
     }
 
     if (activityState === InteractiveButtonStates.PROCESSING) {
-        text = processingText
-        bgColor = processingBgColor
-        disableBgColor = bgColor
-        disable = true
+        _disabled = true
+        _text = undefined
     }
 
     if (activityState === InteractiveButtonStates.SUCCESS) {
-        text = successText
-        bgColor = successBgColor
-        disableBgColor = disabledBgColor
-        disable = true
+        _disabled = disabled
+        _text = text
     }
 
     return (
-        <SButtonNormal
-            bgColor={bgColor}
-            radius={radius}
-            borderWidth={borderWidth}
-            borderColor={borderColor}
-            block={block} 
-            onPress={handleOnPress} 
-            disabled={disable}
-            disabledBgColor={disableBgColor}
-            width={width}
-            // height={height}
-            >
+        <BaseButton {...others} disabled={_disabled}>
             { (activityState === InteractiveButtonStates.PROCESSING) && <SActivityIndicator size="large" color={indicatorColor}/> }
             { (activityState === InteractiveButtonStates.SUCCESS) && <StyledIcon color={iconColor} size={iconSize} name="check-circle"/> }
-            { text && <StyledText block={block} color={disable ? disabledTextColor : textColor} fontSize={13}>{text}</StyledText> }
+            { _text && <StyledText color={_disabled ? disabledTextColor : textColor} fontSize={13}>{text}</StyledText> }
             { (activityState === InteractiveButtonStates.NORMAL && icon) && <StyledIcon color={iconColor} size={iconSize} name={icon}/>}
-        </SButtonNormal>
+        </BaseButton>
     )
 }
-
-type ButtonProps = {
-    disabled?: boolean
-    disabledBgColor?: string
-    bgColor?: string
-    radius?: number
-    block?: boolean
-    width?: string
-    borderWidth?: number
-    borderColor?: string
-}
-
-const SButtonNormal = styled(BaseButton)<ButtonProps>`
-    background-color: ${({ disabled, disabledBgColor, bgColor }) => disabled ? disabledBgColor : bgColor};
-    border-radius: ${({ radius }) => `${radius}px`};
-    width: ${({ block, width }) => block ? "auto" : width};
-    border-width: ${({ borderWidth}) => `${borderWidth}px`};
-    border-color: ${({ borderColor}) => borderColor};
-    /* opacity: .5; */
-`
 
 const StyledIcon = styled(Icon)`
     margin-right: auto;
@@ -161,10 +77,9 @@ const StyledIcon = styled(Icon)`
     margin: 0;
 `
 
-const StyledText = styled(TypographyMedium)<{ block?: boolean }>`
+const StyledText = styled(TypographyMedium)`
     text-transform: uppercase;
     text-align: center;
-    width: ${({ block }) => block ? "100%" : "auto"};
 `
 
 const SActivityIndicator: any = styled(ActivityIndicator)`

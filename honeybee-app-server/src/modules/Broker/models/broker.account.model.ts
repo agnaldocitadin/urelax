@@ -50,6 +50,9 @@ export class BrokerAccount {
     @prop({ required: true, _id: false })
     extraData!: BrokerAccountExtraData
 
+    @prop({ required: true })
+    simulation!: boolean
+
     @prop({ default: () => new Date() })
     createdAt?: Date
 

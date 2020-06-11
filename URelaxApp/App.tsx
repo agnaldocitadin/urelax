@@ -4,6 +4,7 @@ import { enableScreens } from 'react-native-screens'
 import { Provider } from 'react-redux'
 import Activity from './src/modules/Activity'
 import AppModules from './src/modules/AppModules'
+import FinancialMoviment from './src/modules/FinancialMoviment'
 import Identity from './src/modules/Identity'
 import Investiment from './src/modules/Investiment'
 import Messaging from './src/modules/Messaging'
@@ -11,6 +12,7 @@ import { DialogMessage } from './src/modules/Messaging/DialogMessage'
 import Navigation from './src/modules/Navigation'
 import { Navigator } from './src/modules/Navigation/Navigator'
 import Security from './src/modules/Security'
+import StockTracker from './src/modules/StockTracker'
 import Storage from './src/modules/Storage'
 
 enableScreens()
@@ -22,7 +24,9 @@ const store = AppModules.register([
     Storage,
     Messaging,
     Activity,
-    Investiment
+    Investiment,
+    StockTracker,
+    FinancialMoviment
 ])
     
 /**
