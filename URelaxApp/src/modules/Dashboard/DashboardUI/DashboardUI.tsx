@@ -40,8 +40,8 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
             <Others>
                 <Typography>Ontem</Typography>
                 <View>
-                <Typography textAlign="center">Lucro</Typography>
-                <VariationMonitor value={1.92} fontSize={19}/>
+                    <Typography textAlign="center">Lucro</Typography>
+                    <VariationMonitor value={1.92} fontSize={19}/>
                 </View>
                 <Info 
                     name="Seu patrimônio era de"

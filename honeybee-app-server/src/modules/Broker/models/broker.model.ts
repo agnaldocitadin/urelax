@@ -1,40 +1,6 @@
-import { arrayProp, getModelForClass, prop } from '@typegoose/typegoose'
+import { getModelForClass, prop } from '@typegoose/typegoose'
 import { Brokers } from 'honeybee-api'
 import mongoose from "mongoose"
-
-export enum InvestimentType {
-    STOCK = "STOCK"
-}
-
-export class StockInvestimentInfo {
-    
-    @prop({ required: true })
-    symbol!: string
-
-    @prop({ required: true })
-    stockLot!: number
-}
-
-export class Investiment {
-    
-    _id?: mongoose.Types.ObjectId
-
-    @prop({ required: true, enum: InvestimentType })
-    type!: string
-    
-    @prop({ required: true })
-    description!: string
-
-    @prop({ required: true })
-    active!: boolean
-
-    @prop({ required: true })
-    logo!: string
-
-    @prop({ _id: false })
-    stock?: StockInvestimentInfo
-    
-}
 
 /**
  * - Dados de corretoras que operam ações, índice, dollar, bitcoin, etc.
@@ -59,9 +25,6 @@ export class Broker {
 
     @prop({ required: true })
     active!: boolean
-
-    @arrayProp({ items: Investiment })
-    investiments?: Investiment[]
 
     @prop({ default: () => new Date() })
     createdAt?: Date

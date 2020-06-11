@@ -1,4 +1,4 @@
-import { Locales, MessageTypes, StockTrackerStatus } from "./Enums"
+import { Locales, MessageTypes, StockTrackerStatus, TransactionType } from "./Enums"
 
 export type NotificationMessage = {
     messageType: MessageTypes
@@ -125,4 +125,37 @@ export interface ActivityDetail {
     title: string
     description: string
     hidden: boolean
+}
+
+export interface StockInvestimentInfo {
+    symbol: string
+    stockLot: number
+}
+
+export interface BrokerInvestiment {
+    _id: string
+    broker: Broker
+    type: string
+    description: string
+    active: boolean
+    logo: string
+    stock: StockInvestimentInfo
+}
+
+export interface FinancialHistory {
+    _id: string
+    date: Date
+    acount: Account
+    brokerAccount: BrokerAccount
+    transactions: Transaction[]
+    locked: boolean
+    createdAt: Date
+    updatedAt: Date
+}
+
+export interface Transaction {
+    dateTime: Date
+    type: TransactionType
+    value: number
+    investiment: BrokerInvestiment
 }

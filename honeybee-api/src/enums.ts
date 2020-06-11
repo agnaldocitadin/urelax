@@ -30,3 +30,7 @@ export enum Brokers {
 export enum TransactionType {
 
 }
+
+export enum InvestimentType {
+    STOCK = "STOCK"
+}

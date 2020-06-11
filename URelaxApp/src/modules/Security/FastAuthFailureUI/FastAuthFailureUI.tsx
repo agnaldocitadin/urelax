@@ -1,16 +1,12 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { StatusBar } from 'react-native'
 import styled from 'styled-components/native'
-import { InteractiveButton, InteractiveButtonStates } from '../../../components/InteractiveButton'
-import { useInteractiveButton } from '../../../components/InteractiveButton/InteractiveButtonHook'
+import { InteractiveButton } from '../../../components/InteractiveButton'
 import { GenericTextIcon } from '../../../components/Layout/Layout.style'
-import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
 import { Colors, Icons } from '../../../theming'
-import Navigation from '../../Navigation'
-import Storage from '../../Storage'
-import { StorageApp } from '../../Storage/actions'
 import { Authenticate } from '../Authenticate'
+import { useFastAuthFailureUIHook } from './FastAuthFailureUIHook'
 
 interface FastAuthFailureUIProps {}
 
@@ -20,31 +16,16 @@ interface FastAuthFailureUIProps {}
  * @param {*} { navigation }
  * @returns
  */
-export const FastAuthFailureUI: FC<FastAuthFailureUIProps> = ({ }) => {
+export const FastAuthFailureUI: FC<FastAuthFailureUIProps> = () => {
     
-    const { switchStack } = Navigation.actions()
-    const { initStorage } = Storage.actions()
-    const [ tryAgainData, setTryAgainBtn ] = useInteractiveButton({ text: ts("try_again") })
-
-    const [ authenticate, setAuthenticate ] = useState(false)
-    const [ storage, setStorage ] = useState<StorageApp>()
-    
-    const handleTryAgain = animatedCallback(async () => {
-        setTryAgainBtn({ activityState: InteractiveButtonStates.PROCESSING })
-        const storageApp: StorageApp = await initStorage()
-        setStorage(storageApp)
-        setAuthenticate(true)
-    })
-
-    const handleSuccess = () => switchStack("app")
-
-    const handleFail = () => {
-        setAuthenticate(false)
-        setTryAgainBtn({ activityState: InteractiveButtonStates.NORMAL })
-    }
-
-    console.log(storage?.email)
-    console.log(storage?.password)
+    const { 
+        authenticate, 
+        storage, 
+        tryAgainData, 
+        handleSuccess, 
+        handleFail, 
+        handleTryAgain 
+    } = useFastAuthFailureUIHook()
 
     return (
         <React.Fragment>

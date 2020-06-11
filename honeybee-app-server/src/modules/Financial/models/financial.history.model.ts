@@ -1,6 +1,8 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import { TransactionType } from 'honeybee-api'
 import mongoose from 'mongoose'
+import { BrokerAccount } from '../../Broker/models'
+import { BrokerInvestiment } from '../../Broker/models/broker.investiment.model'
 import { Account } from '../../Identity/models'
 
 /*
@@ -16,13 +18,16 @@ export class Transaction {
     dateTime!: Date
 
     // STOCK_BUY, STOCK_SELL, STOCK_PRICE_CORRECTION, DIVIDEND
+    // STATEMENT_OPENING = valor do dia anterior (inserido quando o historico do dia é criado)
     @prop({ required: true, enum: TransactionType })
     type!: string
 
     @prop({ required: true })
     value!: number
 
-    // investData: Dados do investimento, e.g: acao, cdb, tesouro, etc
+    // Dados do investimento, e.g: acao, cdb, tesouro, etc
+    @prop({ ref: BrokerInvestiment, required: true })
+    investiment: Ref<BrokerInvestiment>
 }
 
 /**
@@ -42,7 +47,8 @@ export class FinancialHistory {
     @prop({ ref: Account, required: true })
     acount!: Ref<Account>
 
-    // brokerAccount
+    @prop({ ref: BrokerAccount, required: true })
+    brokerAccount!: Ref<BrokerAccount>
 
     @arrayProp({ _id: false, items: Transaction })
     transactions?: Transaction[]

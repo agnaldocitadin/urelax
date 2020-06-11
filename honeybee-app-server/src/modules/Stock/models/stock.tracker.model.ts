@@ -1,6 +1,6 @@
 import { getModelForClass, mongoose, prop, Ref } from "@typegoose/typegoose"
 import { StockTrackerStatus } from "honeybee-api"
-import { BrokerAccount, StockInvestimentInfo } from "../../Broker/models"
+import { BrokerAccount, BrokerInvestiment } from "../../Broker/models"
 import { Account } from "../../Identity/models"
 import { StrategyNames } from "../strategies"
 import { STFrequencyDef, StockTrackerFrequency } from "../trackers"
@@ -47,8 +47,8 @@ export class StockTracker {
     @prop()
     lastFrequencyUpdate?: Date
 
-    @prop({ _id: false, required: true })
-    stockInfo!: StockInvestimentInfo
+    @prop({ ref: BrokerInvestiment, required: true })
+    stockInfo!: Ref<BrokerInvestiment>
 
     @prop({ default: () => new Date() })
     createdAt?: Date
