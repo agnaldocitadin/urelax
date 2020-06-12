@@ -1,4 +1,4 @@
-import { Activity } from 'honeybee-api'
+import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { RefreshControl, View, ViewStyle } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
@@ -7,6 +7,7 @@ import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { SRoundedBox } from '../../../components/Layout/Layout.style'
 import { VariationMonitor } from '../../../components/VariationMonitor'
+import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, Typography, TypographyMedium } from '../../../theming'
 import { useDashboardUIHook } from './DashboardUIHook'
@@ -23,17 +24,11 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
     
     const {
         refreshing,
+        currentPatrimony,
+        history,
         handleInvestiments,
         handleRefresh
     } = useDashboardUIHook()
-
-    const slides = [
-        { key: 1 },
-        { key: 2 },
-        { key: 3 },
-        { key: 4 },
-        { key: 5 }
-    ] as Activity[]
 
     const renderIt = ({ item }: any) => {
         return (
@@ -44,8 +39,8 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                     <VariationMonitor value={1.92} fontSize={19}/>
                 </View>
                 <Info 
-                    name="Seu patrimônio era de"
-                    value="R$ 220,22" 
+                    name={ts("Seu patrimônio era de")}
+                    value="R$ 220,22"
                     style={{ alignItems: "center" }}
                     valueFontSize={20}/>
                 
@@ -60,7 +55,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                     <TypographyMedium fontSize={20}>{ts("welcome")}, {"Nick"}!</TypographyMedium>
                     <Info 
                         name="Patrimônio acumulado"
-                        value="R$ 0,20" 
+                        value={utils.formatCurrency(currentPatrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}
                         style={{ alignItems: "center" }}
                         valueFontSize={39}
                         onPress={handleInvestiments}
@@ -73,7 +68,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                         renderItem={renderIt}
                         dotStyle={dotStyle}
                         activeDotStyle={activeDotStyle}
-                        data={slides} />
+                        data={history} />
                 </Top>
             </Refresher>
         </FlatLayout>
@@ -91,11 +86,6 @@ const activeDotStyle: ViewStyle = {
     width: 8, 
     height: 8
 }
-
-const SNickName = styled(TypographyMedium)`
-    font-size: 16px;
-    color: ${Colors.BLACK_2};
-`
 
 const Refresher = styled(RefreshControl)`
     flex: 1;

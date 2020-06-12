@@ -4,6 +4,8 @@ import { Keyboard } from "react-native"
 import { animatedCallback } from "../../../core/Commons.hook"
 import Messaging from "../../Messaging"
 import Navigation from "../../Navigation"
+import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
+import { ts } from "../../../core/I18n"
 
 export const useLogInUIHook = () => {
 
@@ -13,6 +15,7 @@ export const useLogInUIHook = () => {
     const [ keepSession, setKeepSession ] = useState(false)
     const [ email, setEmail ] = useState("")
     const [ password, setPassword ] = useState("")
+    const [ signinBtn ] = useInteractiveButton({ text: ts("sign_in") })
 
     const handleAuthSuccess = useCallback(() => switchStack("app"), [])
 
@@ -34,6 +37,7 @@ export const useLogInUIHook = () => {
         disabledLogIn: !email || !password ,//|| !validEmail || !validPassword,
         validEmail: !email ,//|| validEmail,
         validPassword: !password ,//|| validPassword,
+        signinBtn,
         setEmail,
         setPassword,
         setKeepSession,

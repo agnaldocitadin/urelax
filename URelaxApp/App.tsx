@@ -4,6 +4,7 @@ import { enableScreens } from 'react-native-screens'
 import { Provider } from 'react-redux'
 import Activity from './src/modules/Activity'
 import AppModules from './src/modules/AppModules'
+import Dashboard from './src/modules/Dashboard'
 import FinancialMoviment from './src/modules/FinancialMoviment'
 import Identity from './src/modules/Identity'
 import Investiment from './src/modules/Investiment'
@@ -23,6 +24,7 @@ const store = AppModules.register([
     Navigation,
     Storage,
     Messaging,
+    Dashboard,
     Activity,
     Investiment,
     StockTracker,

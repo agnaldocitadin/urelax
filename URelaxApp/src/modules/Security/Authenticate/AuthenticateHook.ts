@@ -14,7 +14,7 @@ export const useAuthenticateHook = ({ email, password, authType, onSuccess, onFa
 
     const authenticateByEmailPassword = useCallback(async () => {
         try {
-            let { profile, token } = await API.authenticate(email, password)
+            let { profile, token } = await API.Security.authenticate(email, password)
             setToken(token)
             onSuccess && onSuccess(profile)
         }

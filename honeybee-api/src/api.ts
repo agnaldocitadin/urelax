@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { APIError } from "."
 import { activateSimulationAccount, createAccount, createBrokerAccount, createStockTracker, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
-import { fetchActivities, fetchBrokerAccounts, fetchBrokers, fetchStockTrackers } from "./queries"
+import { fetchActivities, fetchBrokerAccounts, fetchBrokers, fetchFinancialHistory, fetchStockTrackers } from "./queries"
 import { authenticate, destroyStockTracker, pauseStockTracker, playStockTracker } from './rest'
 
 interface APIConfiguration {
@@ -56,26 +56,39 @@ const init = (conf: APIConfiguration) => {
 export const API = {
     init,
 
-    // API
-    authenticate,
-    playStockTracker,
-    pauseStockTracker,
-    destroyStockTracker,
+    Profile: {
+        updateProfile,
+        createAccount,
+        updateAccount,
+        activateSimulationAccount
+    },
 
-    // query
-    fetchActivities,
-    fetchBrokers,
-    fetchBrokerAccounts,
-    fetchStockTrackers,
+    Activity: {
+        fetchActivities
+    },
 
+    Security: {
+        authenticate,
+    },
 
-    // mutation
-    createBrokerAccount,
-    updateBrokerAccount,
-    updateProfile,
-    createAccount,
-    updateAccount,
-    activateSimulationAccount,
-    createStockTracker,
-    updateStockTracker
+    FinancialHistory: {
+        fetchFinancialHistory
+    },
+
+    StockTracker: {
+        playStockTracker,
+        pauseStockTracker,
+        destroyStockTracker,
+        fetchStockTrackers,
+        createStockTracker,
+        updateStockTracker
+    },
+
+    Broker: {
+        fetchBrokers,
+        fetchBrokerAccounts,
+        createBrokerAccount,
+        updateBrokerAccount
+    }
+    
 }

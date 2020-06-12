@@ -23,6 +23,7 @@
     "date-fns": "^2.14.0",
     "honeybee-api": "../honeybee-api/",
     "i18next": "^19.4.5",
+    "js-commons": "../../js-commons",
     "react": "^16.13.1",
     "react-i18next": "^11.5.0",
     "react-native": "^0.62.2",

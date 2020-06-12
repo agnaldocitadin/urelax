@@ -8,13 +8,13 @@ const entry: GraphQLModule = {
             name: String
             logo: String
             active: Boolean
-            investiments: [Investiment]
             createdAt: Datetime
             updatedAt: Datetime
         }
 
-        type Investiment {
+        type BrokerInvestiment {
             _id: ID
+            broker: Broker
             type: String
             description: String
             active: Boolean

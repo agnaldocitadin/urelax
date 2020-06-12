@@ -20,7 +20,7 @@ const entry: GraphQLModule = {
         }
     `,
     queries: `
-        fetchActivities(id: ID, account: ID, ref: ID, activityType: String, date: String, page: Int!, qty: Int!): [Activity]
+        fetchActivities(id: ID, account: ID, ref: ID, activityType: String, date: String, page: Int, qty: Int): [Activity]
     `,
     resolvers: {
         fetchActivities: ({ account, ref, activityType, date, page, qty }: any) => {

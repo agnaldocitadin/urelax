@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { FinancialHistory, Transaction } from '../models'
+import { FinancialHistory, FinancialHistoryModel, Transaction } from '../models'
 
 export const initFinancialHistory = (account: mongoose.Types.ObjectId, date: Date) => {
     // TODO
@@ -9,7 +9,6 @@ export const addTransaction = (account: mongoose.Types.ObjectId, date: Date, tra
     // TODO
 }
 
-export const findFinancialHistoryBy = (account: mongoose.Types.ObjectId, date: Date, page: number, qty: number): Promise<FinancialHistory> => {
-    // TODO
-    return Promise.resolve(null)
+export const findFinancialHistoryBy = (account: mongoose.Types.ObjectId, date: Date, page: number, qty: number): Promise<FinancialHistory[]> => {
+    return FinancialHistoryModel.find().exec()
 }

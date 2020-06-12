@@ -24,6 +24,7 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
         password,
         keepSession,
         disabledLogIn,
+        signinBtn,
         setEmail,
         setPassword,
         setKeepSession,
@@ -84,12 +85,9 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
                                 onChange={setKeepSession}/>
 
                             <InteractiveButton 
-                                block
-                                normalText={ts("sign_in")}
-                                radius={4}
+                                data={signinBtn}
                                 disabled={disabledLogIn}
-                                onPress={handleAuthentication}
-                                animate={false}/>
+                                onPress={handleAuthentication}/>
                         </ScrollViewForm>
                     </React.Fragment>
                 }/>

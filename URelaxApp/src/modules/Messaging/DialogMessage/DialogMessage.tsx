@@ -3,11 +3,10 @@ import { Modal } from 'react-native'
 import styled from 'styled-components/native'
 import { ButtonHeader } from '../../../components/Header/ButtonHeader'
 import { FlatHeader } from '../../../components/Header/FlatHeader'
-import { InteractiveButton, InteractiveButtonStates } from '../../../components/InteractiveButton'
+import { InteractiveButton } from '../../../components/InteractiveButton'
 import { SRoundedBox } from '../../../components/Layout/Layout.style'
 import { TextIconDisplay } from '../../../components/TextIconDisplay'
 import { Colors, Icons } from '../../../theming'
-import { MessageType } from '../const'
 import { useDialogMessageHook } from './DialogMessageHook'
 
 interface DialogMessageProps {}
@@ -44,17 +43,18 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
                         title={payload.title}
                         message={payload.message}/>
                         
-                    <InteractiveButton
-                        block
-                        radius={50}
-                        successStatus={InteractiveButtonStates.NORMAL}
-                        normalText={payload.buttonLabel}
-                        textColor={Colors.BLUES_2}
-                        borderColor={Colors.BLUES_2}
-                        indicatorColor={Colors.BLUES_2}
-                        borderWidth={2}
-                        processingBgColor={Colors.WHITE}
-                        animate={payload.type === MessageType.CONFIRMATION}
+                    <Button
+                        data={{ text: payload.buttonLabel }}
+                        // block
+                        // radius={50}
+                        // successStatus={InteractiveButtonStates.NORMAL}
+                        // normalText={payload.buttonLabel}
+                        // textColor={Colors.BLUES_2}
+                        // borderColor={Colors.BLUES_2}
+                        // indicatorColor={Colors.BLUES_2}
+                        // borderWidth={2}
+                        // processingBgColor={Colors.WHITE}
+                        // animate={payload.type === MessageType.CONFIRMATION}
                         onPress={handleButtonAction}/>
                 </Body>
             </Rounded>
@@ -63,6 +63,12 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
 
     return modal
 }
+
+const Button = styled(InteractiveButton)`
+    border-radius: 50px;
+    border-width: 1px;
+    width: 250px;
+`
 
 const Rounded = styled(SRoundedBox)`
     position: absolute;
