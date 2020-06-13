@@ -38,7 +38,8 @@ export interface Profile {
     nickname: string
     email: string
     password: string
-    accounts: [Account]
+    accounts: Account[]
+    activeAccount: string
     active: boolean
     createdAt: Date
     updatedAt: Date
@@ -61,7 +62,7 @@ export interface Account {
     _id: string
     active: boolean
     simulation: boolean
-    devices: [Device]
+    devices: Device[]
     preference: Preferences
 }
 
@@ -71,7 +72,7 @@ export interface Broker {
     name: string
     logo: string
     active: boolean
-    investiments: [Investiment]
+    investiments: Investiment[]
     createdAt: Date
     updatedAt: Date
 }
@@ -112,12 +113,12 @@ export interface BrokerAccount {
 
 export interface Activity {
     _id: string
-    account: [Account]
+    account: Account
     activityType: string
     ref: string
     icon: string
     title: string
-    details: [ActivityDetail]
+    details: ActivityDetail[]
     createdAt: Date
 }
 

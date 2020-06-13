@@ -1,3 +1,4 @@
+import { Profile } from "honeybee-api"
 import { useCallback, useState } from "react"
 import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
@@ -15,9 +16,9 @@ export const useFastAuthFailureUIHook = () => {
     const [ authenticate, setAuthenticate ] = useState(false)
     const [ storage, setStorage ] = useState<StorageApp>()
 
-    const handleSuccess = useCallback(() => switchStack("app"), [])
+    const handleSuccess = useCallback((profile: Profile) => switchStack("app"), [])
 
-    const handleFail = useCallback(() => {
+    const handleFail = useCallback((error) => {
         setAuthenticate(false)
         setTryAgainBtn({ activityState: InteractiveButtonStates.NORMAL })
     }, [])

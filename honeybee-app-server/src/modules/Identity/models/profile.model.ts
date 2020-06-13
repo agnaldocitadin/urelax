@@ -29,6 +29,9 @@ export class Profile {
     accounts: Ref<Account>[]
 
     @prop({ required: true })
+    activeAccount: mongoose.Types.ObjectId
+
+    @prop({ required: true })
     active!: boolean
 
     @prop({ default: () => new Date() })

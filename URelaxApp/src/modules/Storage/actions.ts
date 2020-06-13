@@ -5,13 +5,15 @@ export interface StorageApp {
     password: string
     keepSession: "yes" | "no"
     tour: boolean
+    accountID: string
 }
 
 interface StorageAppUpdate {
     email?: string
     password?: string
     keepSession?: "yes" | "no"
-    tour?: boolean
+    tour?: boolean,
+    accountID?: string
 }
 
 enum Storage {
@@ -31,7 +33,8 @@ const Actions = () => {
             email: "none", 
             password: "none", 
             keepSession: "no", 
-            tour: false
+            tour: false,
+            accountID: "none"
         })
         return data
     }
@@ -77,7 +80,8 @@ const Actions = () => {
         return updateDataApp({ 
             email: "none", 
             password: "none", 
-            keepSession: "no"
+            keepSession: "no",
+            accountID: "none"
         })
     }
 

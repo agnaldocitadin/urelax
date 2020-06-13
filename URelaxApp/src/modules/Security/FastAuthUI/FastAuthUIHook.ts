@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
+import { Profile } from "honeybee-api"
 import { useCallback, useEffect, useState } from "react"
 import Navigation from "../../Navigation"
 import { Routes } from "../../Navigation/const"
@@ -15,7 +16,7 @@ export const useFastAuthUIHook = () => {
 
     const handleAuthFailure = useCallback(() => switchStack("authFailure"), [])
 
-    const handleAuthSuccess = useCallback(() => switchStack("app"), [])
+    const handleAuthSuccess = useCallback((profile: Profile) => switchStack("app"), [])
     
     useEffect(() => {
         (async () => {

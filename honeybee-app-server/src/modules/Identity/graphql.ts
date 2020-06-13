@@ -9,6 +9,7 @@ const entry: GraphQLModule = {
             email: String
             password: String
             accounts: [Account]
+            activeAccount: String
             active: Boolean
             createdAt: Datetime
             updatedAt: Datetime

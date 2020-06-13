@@ -1,25 +1,27 @@
 import { useNavigation } from "@react-navigation/native"
-import { FinancialHistory } from "honeybee-api"
+import { Account, FinancialHistory } from "honeybee-api"
 import { useCallback, useState } from "react"
 import Dashboard from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
+import Identity from "../../Identity"
 import Messaging from "../../Messaging"
 import { Routes } from "../../Navigation/const"
 import { fetchFinancialHistory } from "../api"
 import { FinancialHistoryApp } from "../const"
-import { select } from "../reducer"
 
 export const useDashboardUIHook = () => {
 
     const navigation = useNavigation()
     const [ refreshing, setRefreshing ] = useState(false)
+    const history = Dashboard.select("history")
+    const account: Account = Identity.select("activeAccount")
     const { showAPIError } = Messaging.actions()
     const { setDashboardHistory } = Dashboard.actions()
-    const history = select("history")
 
     const handleInvestiments = useCallback(() => navigation.navigate(Routes.INVESTIMENT), [])
 
     const handleRefresh = useCallback(async () => {
+        history
         setRefreshing(true)
         await refresh()
         setRefreshing(false)
@@ -27,7 +29,7 @@ export const useDashboardUIHook = () => {
 
     const refresh = useCallback(async () => {
         try {
-            const histories = await fetchFinancialHistory("", 6)
+            const histories = await fetchFinancialHistory(account._id, 6)
             setDashboardHistory(histories.map(history => convertToFinancialHistoryApp(history))) 
         }
         catch(error) {
@@ -36,11 +38,11 @@ export const useDashboardUIHook = () => {
         }
     }, [])
 
-    // useEffectWhenReady(() => refresh())
+    useEffectWhenReady(() => refresh())
 
     return {
         refreshing,
-        currentPatrimony: history[0],
+        currentPatrimony: 0,
         history,
         handleInvestiments,
         handleRefresh

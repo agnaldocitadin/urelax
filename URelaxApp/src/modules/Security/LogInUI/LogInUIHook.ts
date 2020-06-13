@@ -1,11 +1,11 @@
-import { APIError } from "honeybee-api"
+import { APIError, Profile } from "honeybee-api"
 import { useCallback, useState } from "react"
 import { Keyboard } from "react-native"
+import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
 import { animatedCallback } from "../../../core/Commons.hook"
+import { ts } from "../../../core/I18n"
 import Messaging from "../../Messaging"
 import Navigation from "../../Navigation"
-import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
-import { ts } from "../../../core/I18n"
 
 export const useLogInUIHook = () => {
 
@@ -17,7 +17,7 @@ export const useLogInUIHook = () => {
     const [ password, setPassword ] = useState("")
     const [ signinBtn ] = useInteractiveButton({ text: ts("sign_in") })
 
-    const handleAuthSuccess = useCallback(() => switchStack("app"), [])
+    const handleAuthSuccess = useCallback((profile: Profile) => switchStack("app"), [])
 
     const handleAuthentication = animatedCallback(() => {
         Keyboard.dismiss()
