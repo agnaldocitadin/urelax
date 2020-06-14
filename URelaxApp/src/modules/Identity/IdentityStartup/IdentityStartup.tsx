@@ -1,9 +1,9 @@
 import { Profile } from 'honeybee-api'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import Identity from '..'
 import Security from '../../Security'
 
-export const useStartupHook = () => {
+export const IdentityStartup: FC = () => {
     const profile: Profile = Security.select("profile")
     const { setActiveAccount } = Identity.actions()
     useEffect(() => {
@@ -12,4 +12,5 @@ export const useStartupHook = () => {
             account && setActiveAccount(account)
         }
     }, [profile])
+    return null
 }

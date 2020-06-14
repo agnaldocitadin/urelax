@@ -89,7 +89,8 @@ const initGraphQLSchema = async (app: Express) => {
             }
             catch(e) {
                 Logger.error(err)
-                return { code: ErrorCodes.UNKNOWN, message: tsLng(lang, ErrorCodes.UNKNOWN) } as APIError
+                // return { code: ErrorCodes.UNKNOWN, message: tsLng(lang, ErrorCodes.UNKNOWN) } as APIError
+                return { code: ErrorCodes.UNKNOWN, message: err.message } as APIError
             }
         }
     }))

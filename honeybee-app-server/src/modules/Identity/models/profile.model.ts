@@ -14,22 +14,22 @@ export class Profile {
     _id?: mongoose.Types.ObjectId
 
     @prop({ required: true })
-    name: string
+    name!: string
     
     @prop({ required: true })
-    nickname: string
+    nickname!: string
     
     @prop({ required: true })
-    email: string
+    email!: string
     
     @prop({ required: true })
-    password: string
+    password!: string
 
     @arrayProp({ ref: Account })
     accounts: Ref<Account>[]
 
     @prop({ required: true })
-    activeAccount: mongoose.Types.ObjectId
+    activeAccount!: mongoose.Types.ObjectId
 
     @prop({ required: true })
     active!: boolean

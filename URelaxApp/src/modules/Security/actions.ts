@@ -2,7 +2,7 @@ import { Profile } from "honeybee-api"
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 
-let TOKEN: string | undefined = undefined
+export let TOKEN: string | undefined = undefined
 
 type ActionNames = keyof ActionTypes
 

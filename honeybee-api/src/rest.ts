@@ -75,6 +75,7 @@ export const invoke = async (call:() => Promise<AxiosResponse>) => {
         return response.data
     }
     catch(e) {
+        console.warn(e)
         let response = e.response
         if (!response) {
             throw OFFLINE

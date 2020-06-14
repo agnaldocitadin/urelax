@@ -45,6 +45,7 @@ export const createProfile = async ({ name, nickname, email, password, accounts,
         email,
         password,
         accounts,
+        activeAccount: null,
         active
     }
     validateProfile(profile)
@@ -106,5 +107,7 @@ export const activateSimulation = async (profileId: string) => {
  * @returns
  */
 export const findByEmailPassword = (email: string, password: string) => {
-    return ProfileModel.findOne({ email, password }).exec()
+    return ProfileModel.findOne({ email, password })
+        .populate("accounts")
+        .exec()
 }

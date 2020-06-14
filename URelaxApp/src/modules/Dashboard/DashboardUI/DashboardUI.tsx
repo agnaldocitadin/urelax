@@ -5,11 +5,12 @@ import AppIntroSlider from 'react-native-app-intro-slider'
 import styled from 'styled-components/native'
 import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { SRoundedBox } from '../../../components/Layout/Layout.style'
+import { GenericTextIcon, SRoundedBox } from '../../../components/Layout/Layout.style'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Colors, Typography, TypographyMedium } from '../../../theming'
+import { Colors, Icons, Typography, TypographyMedium } from '../../../theming'
+import { FinancialHistoryApp } from '../const'
 import { useDashboardUIHook } from './DashboardUIHook'
 
 interface HomeDashboardProps {}
@@ -30,28 +31,27 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
         handleRefresh
     } = useDashboardUIHook()
 
-    const renderIt = ({ item }: any) => {
+    const renderIt = ({ item }: { item: FinancialHistoryApp }) => {
         return (
-            <Others>
+            <History>
                 <Typography>Ontem</Typography>
                 <View>
                     <Typography textAlign="center">Lucro</Typography>
-                    <VariationMonitor value={1.92} fontSize={19}/>
+                    <VariationMonitor value={item.variation} fontSize={19}/>
                 </View>
                 <Info 
                     name={ts("Seu patrimônio era de")}
-                    value="R$ 220,22"
+                    value={utils.formatCurrency(item.patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
                     style={{ alignItems: "center" }}
                     valueFontSize={20}/>
-                
-            </Others>
+            </History>
         )
     }
 
     return (
         <FlatLayout bgStatusBar={Colors.BG_1}>
             <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
-                <Value>
+                <PatrimonyNow>
                     <TypographyMedium fontSize={20}>{ts("welcome")}, {"Nick"}!</TypographyMedium>
                     <Info 
                         name="Patrimônio acumulado"
@@ -60,16 +60,20 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                         valueFontSize={39}
                         onPress={handleInvestiments}
                         />
-                </Value>
-                <Top>
-                    <AppIntroSlider
-                        renderDoneButton={() => false}
-                        renderNextButton={() => false}
-                        renderItem={renderIt}
-                        dotStyle={dotStyle}
-                        activeDotStyle={activeDotStyle}
-                        data={history} />
-                </Top>
+                </PatrimonyNow>
+                <PatrimonyHistory>
+                    { history.length === 0 
+                        ? <GenericTextIcon icon={Icons.ALERT_CIRCLE} message={ts("nothing")}/> 
+                        : <AppIntroSlider
+                            renderDoneButton={() => false}
+                            renderNextButton={() => false}
+                            renderItem={renderIt}
+                            dotStyle={dotStyle}
+                            activeDotStyle={activeDotStyle}
+                            keyExtractor={(_item, index) => `hs_${index}`}
+                            data={history} />
+                    }
+                </PatrimonyHistory>
             </Refresher>
         </FlatLayout>
     )
@@ -90,18 +94,18 @@ const activeDotStyle: ViewStyle = {
 const Refresher = styled(RefreshControl)`
     flex: 1;
 `
-const Value = styled.View`
+const PatrimonyNow = styled.View`
     text-align: center;
     justify-content: space-evenly;
     align-items: center;
     flex: 1;
 `
 
-const Top = styled(SRoundedBox)`
+const PatrimonyHistory = styled(SRoundedBox)`
     flex: 1;
 `
 
-const Others = styled.View`
+const History = styled.View`
     align-items: center;
     justify-content: space-evenly;
     flex: 1;

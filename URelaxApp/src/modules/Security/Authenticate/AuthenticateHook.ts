@@ -1,6 +1,6 @@
 import { API } from 'honeybee-api'
 import { useCallback, useEffect } from "react"
-import actions from '../actions'
+import Security from '..'
 import { AuthenticateProps } from './Authenticate'
 
 /**
@@ -10,7 +10,7 @@ import { AuthenticateProps } from './Authenticate'
  */
 export const useAuthenticateHook = ({ email, password, authType, onSuccess, onFail, onComplete }: AuthenticateProps) => {
 
-    const { setToken, setProfile } = actions()
+    const { setToken, setProfile } = Security.actions()
 
     const authenticateByEmailPassword = useCallback(async () => {
         try {
@@ -20,8 +20,8 @@ export const useAuthenticateHook = ({ email, password, authType, onSuccess, onFa
             onSuccess && onSuccess(profile)
         }
         catch(e) {
+            console.warn(e)
             onFail && onFail(e)
-            console.log(e)
         }
         finally {
             onComplete && onComplete()
