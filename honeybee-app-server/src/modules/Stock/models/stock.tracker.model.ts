@@ -16,7 +16,8 @@ class StrategySetting {
 }
 
 /**
- *
+ * O rastreador deverá saber quantas ações possui e o valor de compra (médio) delas. Assim cada
+ * operação de compra e venda, será lançado no historico financeiro o valor do ganho/perda do ativo.
  *
  * @export
  * @class StockTracker
@@ -49,6 +50,12 @@ export class StockTracker {
 
     @prop({ ref: BrokerInvestiment, required: true })
     stockInfo!: Ref<BrokerInvestiment>
+
+    @prop()
+    qty?: number
+
+    @prop()
+    buyPrice?: number
 
     @prop({ default: () => new Date() })
     createdAt?: Date

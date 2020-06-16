@@ -52,7 +52,7 @@ export class Activity {
     icon!: string
 
     @prop({ _id: false, required: true })
-    title!: Translation
+    title!: Translation | string
 
     @arrayProp({ _id: false, items: ActivityDetail })
     details?: ActivityDetail[]

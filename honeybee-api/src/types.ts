@@ -23,6 +23,8 @@ export interface StockTracker {
     frequency: string
     lastFrequencyUpdate: Date
     stockInfo: StockInvestimentInfo
+    qty: number
+    buyPrice: number
     createdAt: Date
     updatedAt: Date
 }
@@ -154,9 +156,21 @@ export interface FinancialHistory {
     updatedAt: Date
 }
 
+export interface FinancialSummary {
+    when: string
+    patrimony: number
+    variation: number
+}
+
 export interface Transaction {
     dateTime: Date
     type: TransactionType
     value: number
     investiment: BrokerInvestiment
+}
+
+export interface AppliedInvestiment {
+    investiment: BrokerInvestiment
+    qty: number
+    amount: number
 }

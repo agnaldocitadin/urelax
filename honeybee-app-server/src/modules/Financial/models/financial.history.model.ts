@@ -32,6 +32,8 @@ export class Transaction {
 
 /**
  * OK
+ * !!: Quem vai gerar os STATEMENT_OPENING são os rastreadores (ação, cdb, etc) que sabem da sua posição 
+ * no inicio de cada dia.
  *
  * @export
  * @class FinancialHistory

@@ -2,6 +2,11 @@ import { GraphQLModule } from "../GraphQL"
 
 const entry: GraphQLModule = {
     types: `
+        enum InvestimentType {
+            STOCK
+            CURRENCY
+        }
+
         type Broker {
             _id: ID!
             code: String
@@ -15,7 +20,7 @@ const entry: GraphQLModule = {
         type BrokerInvestiment {
             _id: ID
             broker: Broker
-            type: String
+            type: InvestimentType
             description: String
             active: Boolean
             logo: String

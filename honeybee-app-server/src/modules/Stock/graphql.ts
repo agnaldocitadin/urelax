@@ -15,6 +15,8 @@ const entry: GraphQLModule = {
             frequency: String
             lastFrequencyUpdate: Datetime
             stockInfo: StockInvestimentInfo
+            qty: Int
+            buyPrice: Float
             createdAt: Datetime
             updatedAt: Datetime
         }

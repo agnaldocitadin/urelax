@@ -6,6 +6,7 @@ export enum RouteVersion {
 }
 
 type RouteFunction = (req: Request, res: Response, next: NextFunction) => any
+
 type RouteOptions = { 
     version: RouteVersion, 
     route: string,

@@ -2,7 +2,10 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
+import { ActivityListUI } from '../../ActivityHistory/ActivityListUI'
 import { DashboardUI } from '../../Dashboard/DashboardUI'
+import { AddInvestimentUI } from '../../Investiment/AddInvestimentUI/AddInvestimentUI'
+import { InvestimentAnalysisUI } from '../../Investiment/InvestimentAnalysisUI/InvestimentAnalysisUI'
 import { InvestimentUI } from '../../Investiment/InvestimentUI'
 import { TourUI } from '../../Presentation/TourUI'
 import { FastAuthFailureUI } from '../../Security/FastAuthFailureUI'
@@ -58,6 +61,9 @@ export const Navigator: FC = () => {
                 <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
                     <Stack.Screen name={Routes.DASHBOARD} component={DashboardUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.ACTIVITY_LIST} component={ActivityListUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
                 </Stack.Navigator>
             )
             break

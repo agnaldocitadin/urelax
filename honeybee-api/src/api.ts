@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { APIError } from "."
 import { activateSimulationAccount, createAccount, createBrokerAccount, createStockTracker, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
-import { fetchActivities, fetchBrokerAccounts, fetchBrokers, fetchFinancialHistory, fetchStockTrackers } from "./queries"
+import { fetchActivities, fetchAppiedInvestiments, fetchBrokerAccounts, fetchBrokers, fetchFinancialHistory, fetchFinancialSummary, fetchStockTrackers } from "./queries"
 import { authenticate, destroyStockTracker, pauseStockTracker, playStockTracker } from './rest'
 
 interface APIConfiguration {
@@ -72,7 +72,9 @@ export const API = {
     },
 
     FinancialHistory: {
-        fetchFinancialHistory
+        fetchFinancialHistory,
+        fetchFinancialSummary,
+        fetchAppiedInvestiments
     },
 
     StockTracker: {

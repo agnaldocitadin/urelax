@@ -2,7 +2,7 @@ import React from 'react'
 import 'react-native-gesture-handler'
 import { enableScreens } from 'react-native-screens'
 import { Provider } from 'react-redux'
-import Activity from './src/modules/Activity'
+import ActivityHistory from './src/modules/ActivityHistory'
 import AppModules from './src/modules/AppModules'
 import Dashboard from './src/modules/Dashboard'
 import FinancialMoviment from './src/modules/FinancialMoviment'
@@ -26,7 +26,7 @@ const store = AppModules.register([
     Storage,
     Messaging,
     Dashboard,
-    Activity,
+    ActivityHistory,
     Investiment,
     StockTracker,
     FinancialMoviment

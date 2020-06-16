@@ -1,6 +1,6 @@
 import { ActivityType, StockTracker } from '.'
 import { gql, query } from './graphql'
-import { Activity, BrokerAccount, FinancialHistory } from './types'
+import { Activity, AppliedInvestiment, BrokerAccount, FinancialHistory, FinancialSummary } from './types'
 
 export const fetchActivities = (options: { 
      id?: string, 
@@ -44,5 +44,20 @@ export const fetchFinancialHistory = (options: {
      qty?: number }, 
      fields: string): Promise<FinancialHistory[]> => {
      const name = "fetchFinancialHistory"
+     return gql(name, query(name, options, fields))
+}
+
+export const fetchFinancialSummary = (options: { 
+     account?: string, 
+     date?: string, 
+     page?: number, 
+     qty?: number }, 
+     fields: string): Promise<FinancialSummary[]> => {
+     const name = "fetchFinancialSummary"
+     return gql(name, query(name, options, fields))
+}
+
+export const fetchAppiedInvestiments = (options: { account: string }, fields: string): Promise<AppliedInvestiment[]> => {
+     const name = "fetchAppiedInvestiments"
      return gql(name, query(name, options, fields))
 }

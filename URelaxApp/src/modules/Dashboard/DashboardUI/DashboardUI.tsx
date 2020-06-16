@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { RefreshControl, View, ViewStyle } from 'react-native'
@@ -9,7 +10,8 @@ import { GenericTextIcon, SRoundedBox } from '../../../components/Layout/Layout.
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Colors, Icons, Typography, TypographyMedium } from '../../../theming'
+import { Button, Colors, Icons, Typography, TypographyMedium } from '../../../theming'
+import { Routes } from '../../Navigation/const'
 import { FinancialHistoryApp } from '../const'
 import { useDashboardUIHook } from './DashboardUIHook'
 
@@ -30,6 +32,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
         handleInvestiments,
         handleRefresh
     } = useDashboardUIHook()
+    const navigation = useNavigation()
 
     const renderIt = ({ item }: { item: FinancialHistoryApp }) => {
         return (
@@ -62,6 +65,11 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                         />
                 </PatrimonyNow>
                 <PatrimonyHistory>
+                    
+                    <Button onPress={() => navigation.navigate(Routes.ACTIVITY_LIST)}>
+                        <Typography>Activity</Typography>
+                    </Button>
+
                     { history.length === 0 
                         ? <GenericTextIcon icon={Icons.ALERT_CIRCLE} message={ts("nothing")}/> 
                         : <AppIntroSlider
