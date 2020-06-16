@@ -3,9 +3,16 @@ import { findFinancialHistoryBy } from "./services"
 
 const entry: GraphQLModule = {
     types: `
+        enum TransactionType {
+            STATEMENT_OPENING
+            DESPOSIT
+            TRANSFER
+            YIELD
+        }
+
         type Transaction {
             dateTime: Datetime
-            type: String
+            type: TransactionType
             value: Float
             investiment: BrokerInvestiment
         }

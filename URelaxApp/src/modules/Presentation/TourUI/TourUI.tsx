@@ -18,8 +18,8 @@ interface TourUIProps {}
 export const TourUI: FC<TourUIProps> = () => {
 
     const navigation = useNavigation()
-    const handleCreateAccount = animatedCallback(() => navigation.navigate(Routes.SIGNUP))
-    const handleSignin = animatedCallback(() => navigation.navigate(Routes.SIGNIN))
+    const handleCreateAccount = animatedCallback(() => navigation.navigate(Routes.SIGN_UP))
+    const handleSignin = animatedCallback(() => navigation.navigate(Routes.SIGN_IN))
 
     return (
         <FlatLayout bgStatusBar={Colors.BG_1}>

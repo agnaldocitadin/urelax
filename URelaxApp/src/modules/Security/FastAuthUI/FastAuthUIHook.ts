@@ -30,7 +30,7 @@ export const useFastAuthUIHook = () => {
 
             if (storageApp.keepSession === "no") {
                 switchStack("welcome")
-                navigation.navigate(Routes.SIGNIN)
+                navigation.navigate(Routes.SIGN_IN)
                 return
             }
         })()

@@ -4,9 +4,11 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
 import { ActivityListUI } from '../../ActivityHistory/ActivityListUI'
 import { DashboardUI } from '../../Dashboard/DashboardUI'
+import { SignUpUI } from '../../Identity/SignUpUI'
 import { AddInvestimentUI } from '../../Investiment/AddInvestimentUI/AddInvestimentUI'
 import { InvestimentAnalysisUI } from '../../Investiment/InvestimentAnalysisUI/InvestimentAnalysisUI'
 import { InvestimentUI } from '../../Investiment/InvestimentUI'
+import { StatementUI } from '../../Investiment/StatementUI'
 import { TourUI } from '../../Presentation/TourUI'
 import { FastAuthFailureUI } from '../../Security/FastAuthFailureUI'
 import { FastAuthUI } from '../../Security/FastAuthUI'
@@ -51,7 +53,7 @@ export const Navigator: FC = () => {
             stackRoutes = (
                 <Stack.Navigator initialRouteName={Routes.TOUR}>
                     <Stack.Screen name={Routes.TOUR} component={TourUI} options={defaultOptions}/>
-                    <Stack.Screen name={Routes.SIGNIN} component={LogInUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.SIGN_IN} component={LogInUI} options={defaultOptions}/>
                 </Stack.Navigator>
             )
             break
@@ -60,10 +62,12 @@ export const Navigator: FC = () => {
             stackRoutes = (
                 <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
                     <Stack.Screen name={Routes.DASHBOARD} component={DashboardUI} options={defaultOptions}/>
-                    <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.ACTIVITY_LIST} component={ActivityListUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.SIGN_UP} component={SignUpUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STATEMENT} component={StatementUI} options={defaultOptions}/>
                 </Stack.Navigator>
             )
             break
