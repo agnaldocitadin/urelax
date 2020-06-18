@@ -5,7 +5,6 @@ import { Provider } from 'react-redux'
 import ActivityHistory from './src/modules/ActivityHistory'
 import AppModules from './src/modules/AppModules'
 import Dashboard from './src/modules/Dashboard'
-import FinancialMoviment from './src/modules/FinancialMoviment'
 import Identity from './src/modules/Identity'
 import { IdentityStartup } from './src/modules/Identity/IdentityStartup/IdentityStartup'
 import Investiment from './src/modules/Investiment'
@@ -28,8 +27,7 @@ const store = AppModules.register([
     Dashboard,
     ActivityHistory,
     Investiment,
-    StockTracker,
-    FinancialMoviment
+    StockTracker
 ])
     
 const App = () => {

@@ -27,11 +27,11 @@ export const InvestimentUI: FC = ({ children }) => {
                 valueFontSize={30}/>
             
             <SHeaderDivider>{ts("currency")}</SHeaderDivider>
-            <Typography>{currency.investiment.description} - {currency.amount}</Typography>
+            <Typography>{currency.investiment?.description} - {currency.amount}</Typography>
 
             { stocks.length > 0 && <SHeaderDivider>{ts("stocks")}</SHeaderDivider>}
             { stocks.map(stock => (
-                <Typography>{stock.investiment.description} - {stock.amount} - {stock.investiment.broker.name}</Typography>
+                <Typography>{stock.investiment?.description || ""} - {stock.amount} - {stock.investiment?.broker.name || ""}</Typography>
             )) }
 
         </FlatLayout>

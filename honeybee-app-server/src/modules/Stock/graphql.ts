@@ -14,7 +14,7 @@ const entry: GraphQLModule = {
             status: String
             frequency: String
             lastFrequencyUpdate: Datetime
-            stockInfo: StockInvestimentInfo
+            stockInfo: BrokerInvestiment
             qty: Int
             buyPrice: Float
             createdAt: Datetime
@@ -29,13 +29,13 @@ const entry: GraphQLModule = {
 
     inputs: `
         input StockTrackerInput {
-            account: String
-            brokerAccount: String
+            account: ID
+            brokerAccount: ID
             strategy: String
             strategySetting: StrategySettingInput
             status: String
             frequency: String
-            stockInfo: StockInvestimentInfoInput
+            stockInfo: ID
         }
 
         input StrategySettingInput {

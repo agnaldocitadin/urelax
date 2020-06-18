@@ -37,3 +37,10 @@ export enum InvestimentType {
     STOCK = "STOCK",
     CURRENCY = "CURRENCY"
 }
+
+export enum FinancialAnalysisPeriod {
+    DAILY = "DAILY",
+    WEEKLY = "WEEKLY",
+    MONTHLY = "MONTHLY",
+    YEARLY = "YEARLY"
+}

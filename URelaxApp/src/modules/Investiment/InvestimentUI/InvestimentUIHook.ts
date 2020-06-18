@@ -16,15 +16,18 @@ export const useInvestimentUIHook = () => {
     
     useEffectWhenReady(async () => {
         const appliedInvestiments = await fetchAppiedInvestiments(account._id)
-        const patrimony = arrays.sum(appliedInvestiments, item => item.amount)
-        const currency = appliedInvestiments.filter(inv => inv.investiment.type === InvestimentType.CURRENCY)
-        const stocks = appliedInvestiments.filter(inv => inv.investiment.type === InvestimentType.STOCK)
         
-        setInvestiments({
-            patrimony,
-            currency: currency[0],
-            stocks
-        })
+        if (appliedInvestiments) {
+            const patrimony = arrays.sum(appliedInvestiments, item => item.amount)
+            const currency = appliedInvestiments.filter(inv => inv.investiment.type === InvestimentType.CURRENCY)
+            const stocks = appliedInvestiments.filter(inv => inv.investiment.type === InvestimentType.STOCK)
+            
+            setInvestiments({
+                patrimony,
+                currency: currency[0],
+                stocks
+            })
+        }
     })
 
     return investiments

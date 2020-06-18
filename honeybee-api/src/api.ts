@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { APIError } from "."
-import { activateSimulationAccount, createAccount, createBrokerAccount, createStockTracker, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
-import { fetchActivities, fetchAppiedInvestiments, fetchBrokerAccounts, fetchBrokers, fetchFinancialHistory, fetchFinancialSummary, fetchStockTrackers } from "./queries"
+import { createBrokerAccount, createProfile, createStockTracker, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
+import { fetchActivities, fetchAppiedInvestiments, fetchAvailableInvestiments, fetchBrokerAccounts, fetchBrokers, fetchFinancialAnalysis, fetchFinancialHistory, fetchFinancialSummary, fetchStockTrackers } from "./queries"
 import { authenticate, destroyStockTracker, pauseStockTracker, playStockTracker } from './rest'
 
 interface APIConfiguration {
@@ -57,10 +57,9 @@ export const API = {
     init,
 
     Profile: {
+        createProfile,
         updateProfile,
-        createAccount,
-        updateAccount,
-        activateSimulationAccount
+        updateAccount
     },
 
     Activity: {
@@ -74,7 +73,8 @@ export const API = {
     FinancialHistory: {
         fetchFinancialHistory,
         fetchFinancialSummary,
-        fetchAppiedInvestiments
+        fetchAppiedInvestiments,
+        fetchFinancialAnalysis
     },
 
     StockTracker: {
@@ -90,7 +90,8 @@ export const API = {
         fetchBrokers,
         fetchBrokerAccounts,
         createBrokerAccount,
-        updateBrokerAccount
+        updateBrokerAccount,
+        fetchAvailableInvestiments
     }
     
 }

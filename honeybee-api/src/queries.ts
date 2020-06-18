@@ -1,10 +1,11 @@
 import { ActivityType, StockTracker } from '.'
+import { FinancialAnalysisPeriod } from './enums'
 import { gql, query } from './graphql'
-import { Activity, AppliedInvestiment, BrokerAccount, FinancialHistory, FinancialSummary } from './types'
+import { Activity, AppliedInvestiment, BrokerAccount, BrokerInvestiment, FinancialAnalysis, FinancialHistory, FinancialSummary } from './types'
 
 export const fetchActivities = (options: { 
      id?: string, 
-     account?: string, 
+     accountID?: string, 
      ref?: string, 
      activityType?: ActivityType, 
      date?: string, 
@@ -48,12 +49,23 @@ export const fetchFinancialHistory = (options: {
 }
 
 export const fetchFinancialSummary = (options: { 
-     account?: string, 
-     date?: string, 
-     page?: number, 
+     account?: string
+     date?: string
+     page?: number
      qty?: number }, 
      fields: string): Promise<FinancialSummary[]> => {
      const name = "fetchFinancialSummary"
+     return gql(name, query(name, options, fields))
+}
+
+export const fetchFinancialAnalysis = (options: {
+     accountID: number
+     brokerAccountID?: number
+     page?: number
+     qty?: number
+     period: FinancialAnalysisPeriod
+     }, fields: string): Promise<FinancialAnalysis[]> => {
+     const name = "fetchFinancialAnalysis"
      return gql(name, query(name, options, fields))
 }
 
@@ -61,3 +73,9 @@ export const fetchAppiedInvestiments = (options: { account: string }, fields: st
      const name = "fetchAppiedInvestiments"
      return gql(name, query(name, options, fields))
 }
+
+export const fetchAvailableInvestiments = (options: { brokerIDs?: string[], search: string }, fields: string): Promise<BrokerInvestiment[]> => {
+     const name = "fetchAvailableInvestiments"
+     return gql(name, query(name, options, fields))
+}
+

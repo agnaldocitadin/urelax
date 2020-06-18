@@ -1,4 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
+import { findActivitiesBy } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -20,11 +21,12 @@ const entry: GraphQLModule = {
         }
     `,
     queries: `
-        fetchActivities(id: ID, account: ID, ref: ID, activityType: String, date: String, page: Int, qty: Int): [Activity]
+        fetchActivities(id: ID, accountID: ID, ref: ID, activityType: String, date: String, page: Int, qty: Int): [Activity]
     `,
     resolvers: {
-        fetchActivities: ({ account, ref, activityType, date, page, qty }: any) => {
-            // TODO
+        fetchActivities: ({ id, accountID, ref, activityType, date, page, qty }: any) => {
+            return findActivitiesBy({ id, accountID, ref, activityType, date, page, qty })
+            // return opa({ id, accountID, ref, activityType, date, page, qty })
         }
     }
 

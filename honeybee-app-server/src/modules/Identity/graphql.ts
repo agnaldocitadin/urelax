@@ -68,23 +68,20 @@ const entry: GraphQLModule = {
     `,
 
     mutations: `
+        createProfile(profile: ProfileInput!): Profile
         updateProfile(id: ID!, input: ProfileInput!): Boolean
-        createAccount(input: AccountInput!): Account
         updateAccount(id: ID!, input: AccountInput!): Boolean
-        activateSimulationAccount(profile: ID!): String
     `,
 
     resolvers: {
+        createProfile: ({ profile }: any) => {
+
+        },
+
         updateProfile: ({ id, input }: any) => {
         },
         
-        createAccount: ({ input }: any) => {
-        },
-
         updateAccount: ({ id, input }: any) => {
-        },
-
-        activateSimulationAccount: ({ profile }: any) => {
         }
     }
 }

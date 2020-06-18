@@ -10,7 +10,7 @@ import { useStatementUIHook } from './StatementUIHook'
 export const StatementUI: FC = ({ children }) => {
     
     const {
-        history,
+        statements,
         handleRefresh,
         handleEventPress,
         handleLoadMoreData
@@ -19,6 +19,7 @@ export const StatementUI: FC = ({ children }) => {
     const renderHistory = useCallback(({ item }) => (
         <Touchable onPress={() => handleEventPress(item)} noChevron>
             <Typography>{item.date}</Typography>
+            {/* TODO */}
         </Touchable>
     ), [])
     
@@ -26,12 +27,12 @@ export const StatementUI: FC = ({ children }) => {
         <FlatLayout>
             <BackHeader title={ts("statement")}/>
             <InfiniteFlatList
-                data={history}
+                data={statements}
                 onRefresh={handleRefresh}
                 minLengthToLoadMore={20}
                 onEndPageReached={handleLoadMoreData}
                 renderItem={renderHistory}
-                keyExtractor={(_item, index) => `hy_${index}`}/>
+                keyExtractor={(_item, index) => `stm_${index}`}/>
         </FlatLayout>
     )
 }

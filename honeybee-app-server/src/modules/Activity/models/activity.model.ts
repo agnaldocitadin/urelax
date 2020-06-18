@@ -1,5 +1,6 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import mongoose from 'mongoose'
+import { ts } from '../../../core/i18n'
 import { Account } from '../../Identity/models'
 
 export enum ActivityType {
@@ -7,13 +8,17 @@ export enum ActivityType {
     USER_ACCOUNT = "USER_ACCOUNT"
 }
 
-class Translation {
+export class Translation {
 
     @prop({ required: true })
     text!: string
     
     @arrayProp({ _id: false, items: String })
     args?: string[]
+
+    public translate(): string {
+        return ts(this.text, this.args)
+    }
 }
 
 class ActivityDetail {

@@ -36,7 +36,7 @@ const buildRoute = (option: RouteOptions) => {
  */
 const register = (app: Express, option: RouteOptions, fn: RouteFunction) => {
     const route = buildRoute(option)
-    Logger.info(` |_ Route built [${process.env.HOST_ADDRESS}:${process.env.PORT}${route}]`)
+    Logger.info(` -> Route built @ ${process.env.HOST_ADDRESS}:${process.env.PORT}${route}`)
     switch (option.method) {
         case "GET":
             app.get(route, fn)

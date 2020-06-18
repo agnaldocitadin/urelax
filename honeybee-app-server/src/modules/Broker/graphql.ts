@@ -70,16 +70,12 @@ const entry: GraphQLModule = {
             passwd: String
             birthdate: Datetime
         }
-
-        input StockInvestimentInfoInput {
-            symbol: String
-            stockLot: Float
-        }
     `,
 
     queries: `
         fetchBrokers(id: ID, code: String, active: Boolean): [Broker]
         fetchBrokerAccounts(id: ID, account: ID): [BrokerAccount]
+        fetchAvailableInvestiments(brokerIDs: [ID], search: String!): [BrokerInvestiment]
     `,
 
     mutations: `
@@ -102,6 +98,10 @@ const entry: GraphQLModule = {
 
         updateBrokerAccount: ({ id, input }: any) => {
             // TOOD'
+        },
+
+        fetchAvailableInvestiments: ({ brokerIDs, search }: any) => {
+            // TODO
         }
     }
 }

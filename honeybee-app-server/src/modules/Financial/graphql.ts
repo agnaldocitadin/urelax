@@ -10,6 +10,13 @@ const entry: GraphQLModule = {
             YIELD
         }
 
+        enum FinancialAnalysisPeriod {
+            DAILY
+            WEEKLY
+            MONTHLY
+            YEARLY
+        }
+
         type Transaction {
             dateTime: Datetime
             type: TransactionType
@@ -39,21 +46,43 @@ const entry: GraphQLModule = {
             qty: Int
             amount: Float
         }
+
+        type FinancialAnalysis {
+            label: String
+            amount: Float
+            variation: Float
+            items: [FinancialAnalysisItem]
+        }
+        
+        type FinancialAnalysisItem {
+            refID: ID
+            investiment: BrokerInvestiment
+            amount: Float
+            variation: Float
+        }
     `,
     queries: `
         fetchFinancialHistory(account: ID!, date: Datetime, page: Int, qty: Int): [FinancialHistory]
         fetchFinancialSummary(account: ID!, date: Datetime, page: Int, qty: Int): [FinancialSummary]
         fetchAppiedInvestiments(account: ID!): [AppliedInvestiment]
+        fetchFinancialAnalysis(perios: FinancialAnalysisPeriod): [FinancialAnalysis]
     `,
     resolvers: {
         fetchFinancialHistory: ({ account, date, page, qty }: any) => {
             return findFinancialHistoryBy(account, date, page, qty)
         },
+        
         fetchFinancialSummary: ({ account, date, page, qty }: any) => {
             // TODO
             return Promise.resolve()
         },
+
         fetchAppiedInvestiments: ({ account }: any) => {
+            // TODO
+            return Promise.resolve()
+        },
+
+        fetchFinancialAnalysis: () => {
             // TODO
             return Promise.resolve()
         }

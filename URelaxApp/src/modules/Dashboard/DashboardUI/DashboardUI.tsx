@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
+import { FinancialSummary } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { RefreshControl, View, ViewStyle } from 'react-native'
@@ -12,7 +13,6 @@ import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Button, Colors, Icons, Typography, TypographyMedium } from '../../../theming'
 import { Routes } from '../../Navigation/const'
-import { FinancialHistoryApp } from '../const'
 import { useDashboardUIHook } from './DashboardUIHook'
 
 interface HomeDashboardProps {}
@@ -34,7 +34,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
     } = useDashboardUIHook()
     const navigation = useNavigation()
 
-    const renderIt = ({ item }: { item: FinancialHistoryApp }) => {
+    const renderIt = ({ item }: { item: FinancialSummary }) => {
         return (
             <History>
                 <Typography>Ontem</Typography>

@@ -8,6 +8,7 @@ import { SignUpUI } from '../../Identity/SignUpUI'
 import { AddInvestimentUI } from '../../Investiment/AddInvestimentUI/AddInvestimentUI'
 import { InvestimentAnalysisUI } from '../../Investiment/InvestimentAnalysisUI/InvestimentAnalysisUI'
 import { InvestimentUI } from '../../Investiment/InvestimentUI'
+import { StatementDetailUI } from '../../Investiment/StatementDetailUI'
 import { StatementUI } from '../../Investiment/StatementUI'
 import { TourUI } from '../../Presentation/TourUI'
 import { FastAuthFailureUI } from '../../Security/FastAuthFailureUI'
@@ -68,6 +69,7 @@ export const Navigator: FC = () => {
                     <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STATEMENT} component={StatementUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STATEMENT_DETAIL} component={StatementDetailUI} options={defaultOptions}/>
                 </Stack.Navigator>
             )
             break

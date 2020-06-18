@@ -4,7 +4,7 @@ import { ActionTypes, ReducerState } from "./actions"
 import { MODULE_NAME } from "./const"
 
 const INITIAL_STATE: ReducerState = {
-    // todoA: 0
+    statements: []
 }
 
 export const select = (property: keyof ReducerState) => useSelector((state: any) => state[MODULE_NAME][property])

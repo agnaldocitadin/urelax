@@ -1,26 +1,28 @@
+import { FinancialHistory } from "honeybee-api"
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 
 type ActionNames = keyof ActionTypes
 
 export interface ReducerState {
-    // todoA: number
+    selectedEvent?: FinancialHistory
+    statements: FinancialHistory[]
 }
 
 export type ActionTypes = {
-    // ADD_A(state: ReducerState, payload: any): ReducerState
-    // ADD_B(state: ReducerState, payload: any): ReducerState
+    ADD_HISTORY(state: ReducerState, payload: any): ReducerState
+    SELECT_EVENT(state: ReducerState, payload: any): ReducerState
 }
 
 const Actions = () => {
     const dispatch = useDispatch()
     return {
-        // addTodoA: () => {
-        //     dispatch({ type: "ADD_A" } as DispatchType<ActionNames>)
-        // },
-        // addTodoB: () => {
-        //     dispatch({ type: "ADD_B" } as DispatchType<ActionNames>)
-        // }
+        addHistory: (history: FinancialHistory[], reset?: boolean) => {
+            dispatch({ type: "ADD_HISTORY", payload: { history, reset }} as DispatchType<ActionNames>)
+        },
+        selectEvent: (history: FinancialHistory) => {
+            dispatch({ type: "SELECT_EVENT", payload: history} as DispatchType<ActionNames>)
+        }
     }
 }
 

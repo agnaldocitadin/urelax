@@ -36,8 +36,8 @@ export const ActivityTimeline: FC<ActivityTimelineProps> = ({
         <React.Fragment>
             <Timeline/>
             <InfiniteFlatList
-                showShimmer={loading}
-                numShimmerItens={8}
+                // showShimmer={loading}
+                // numShimmerItens={8}
                 data={activities}
                 onRefresh={onRefresh}
                 minLengthToLoadMore={minLengthToLoadMore}

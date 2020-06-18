@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { Account } from "honeybee-api"
+import { Account, FinancialSummary } from "honeybee-api"
 import { useCallback, useState } from "react"
 import Dashboard from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
@@ -7,13 +7,12 @@ import Identity from "../../Identity"
 import Messaging from "../../Messaging"
 import { Routes } from "../../Navigation/const"
 import { fetchFinancialSummary } from "../api"
-import { FinancialHistoryApp } from "../const"
 
 export const useDashboardUIHook = () => {
 
     const navigation = useNavigation()
     const [ refreshing, setRefreshing ] = useState(false)
-    const history: FinancialHistoryApp[] = Dashboard.select("history")
+    const history: FinancialSummary[] = Dashboard.select("history")
     const account: Account = Identity.select("activeAccount")
     const { showAPIError } = Messaging.actions()
     const { setDashboardHistory } = Dashboard.actions()
@@ -30,7 +29,7 @@ export const useDashboardUIHook = () => {
     const refresh = useCallback(async () => {
         try {
             const history = await fetchFinancialSummary(account._id, 6)
-            setDashboardHistory(history) 
+            setDashboardHistory(history || []) 
         }
         catch(error) {
             console.log(error)
