@@ -16,6 +16,7 @@ import { FastAuthUI } from '../../Security/FastAuthUI'
 import { LogInUI } from '../../Security/LogInUI'
 import { Routes, Stacks } from '../const'
 import { select } from '../reducer'
+import { ActivityDetailUI } from '../../ActivityHistory/ActivityDetailUI'
 
 const Stack = createStackNavigator()
 // const Stack = createDrawerNavigator()
@@ -64,6 +65,7 @@ export const Navigator: FC = () => {
                 <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
                     <Stack.Screen name={Routes.DASHBOARD} component={DashboardUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.ACTIVITY_LIST} component={ActivityListUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.ACTIVITY_DETAIL} component={ActivityDetailUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.SIGN_UP} component={SignUpUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>

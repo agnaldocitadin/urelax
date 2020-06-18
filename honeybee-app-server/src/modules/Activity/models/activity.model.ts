@@ -1,12 +1,8 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
+import { ActivityType } from 'honeybee-api'
 import mongoose from 'mongoose'
 import { ts } from '../../../core/i18n'
 import { Account } from '../../Identity/models'
-
-export enum ActivityType {
-    STOCK_TRACKER = "STOCK_TRACKER",
-    USER_ACCOUNT = "USER_ACCOUNT"
-}
 
 export class Translation {
 
@@ -16,8 +12,8 @@ export class Translation {
     @arrayProp({ _id: false, items: String })
     args?: string[]
 
-    public translate(): string {
-        return ts(this.text, this.args)
+    public static translate(input: Translation): string {
+        return ts(input.text, input.args)
     }
 }
 
@@ -65,6 +61,14 @@ export class Activity {
     @prop({ default: () => new Date() })
     createdAt?: Date
 
+    public static translate(activity: Activity) {
+        activity.title = Translation.translate(<Translation>activity.title)
+        activity.details.forEach(detail => {
+            detail.title = Translation.translate(<Translation>detail.title)
+            detail.description = Translation.translate(<Translation>detail.description)
+        })
+        return activity
+    }
 }
 
 export const ActivityModel = getModelForClass(Activity, {

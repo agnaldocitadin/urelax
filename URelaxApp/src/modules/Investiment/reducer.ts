@@ -10,17 +10,16 @@ const INITIAL_STATE: ReducerState = {
 export const select = (property: keyof ReducerState) => useSelector((state: any) => state[MODULE_NAME][property])
 
 export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
-    // ADD_A: (state: ReducerState, payload: any): ReducerState => {
-    //     console.log("ADD_A")
-    //     return {
-    //         ...state, 
-    //         todoA: state.todoA + payload
-    //     }
-    // },
-    // ADD_B: (state: ReducerState, payload: any): ReducerState => {
-    //     console.log("ADD_B")
-    //     return {
-    //         ...state
-    //     }
-    // }
+    ADD_HISTORY: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state, 
+            statements: payload.reset ? payload.history : [...state.statements, ...payload.history]
+        }
+    },
+    SELECT_EVENT: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            selectedEvent: payload
+        }
+    }
 })

@@ -18,6 +18,8 @@ export const useDashboardUIHook = () => {
     const { setDashboardHistory } = Dashboard.actions()
 
     const handleInvestiments = useCallback(() => navigation.navigate(Routes.INVESTIMENT), [])
+    
+    const handleStartInvesting = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
 
     const handleRefresh = useCallback(async () => {
         history
@@ -44,6 +46,7 @@ export const useDashboardUIHook = () => {
         currentPatrimony: 0,
         history,
         handleInvestiments,
-        handleRefresh
+        handleStartInvesting,
+        handleRefresh,
     }
 }

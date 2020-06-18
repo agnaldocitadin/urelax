@@ -8,13 +8,12 @@ import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { FORM_PADDING } from '../../../components/Layout/Layout.style'
 import { Colors } from '../../../theming'
+import ActivityHistory from '..'
 
 interface ActivityDetailUIProps {}
 
 export const ActivityDetailUI: FC<ActivityDetailUIProps> = () => {
-
-    const activity = {} as Activity
-
+    const activity: Activity = ActivityHistory.select("selectedActiviy")
     return (
         <FlatLayout bgColor={Colors.WHITE}>
             <BackHeader title={activity.title}/>
@@ -28,7 +27,7 @@ export const ActivityDetailUI: FC<ActivityDetailUIProps> = () => {
                 }
                 <ActivityInfo
                     name="Data/Hora"
-                    value={format(activity.createdAt, "dd/MM/yyyy 'at' HH:mm'h'")}/>
+                    value={format(new Date(activity.createdAt), "dd/MM/yyyy 'at' HH:mm'h'")}/>
             </ScrollView>
         </FlatLayout>
     )

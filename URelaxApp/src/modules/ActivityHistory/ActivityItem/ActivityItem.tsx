@@ -12,17 +12,15 @@ interface ActivityItemProps {
     activity: Activity
     showDate?: boolean
     loading?: boolean
-    bgIcon?: string
     style?: ViewStyle
 }
 
-export const ActivityItem: FC<ActivityItemProps> = ({ activity, style, loading, showDate = true, bgIcon = Colors.BG_1 }) => (
+export const ActivityItem: FC<ActivityItemProps> = ({ activity, style, loading, showDate = true }) => (
     <SActivityBody style={style}>
 
         <ShimmerIcon autoRun isInteraction={false} visible={!loading} colorShimmer={SHIMMER_COLORS}>
             <SActivityIcon 
                 name={activity.icon}
-                bgColor={bgIcon}
                 color={Colors.GRAY_3}
                 size={27}/>
         </ShimmerIcon>
@@ -65,17 +63,13 @@ const SActivityBody = styled.View`
 
 const SLeftInfo = styled.View`
     flex: 1;
-    margin-left: 10px;
 `
 
 const SRightInfo = styled.View`
     align-items: flex-end;
 `
 
-const SActivityIcon = styled(Icon)<{ bgColor: string }>`
-    background-color: ${({ bgColor }) => bgColor};
-    border-radius: 20px;
-    margin: 0 5px;
+const SActivityIcon = styled(Icon)`
     padding: 1px;
 `
 
@@ -107,8 +101,4 @@ const ShimmerDate = styled(ShimmerPlaceHolder)`
     width: 70px;
     height: 13px;
     margin-bottom: 5px;
-`
-
-const ShimmerHour = styled(ShimmerDate)`
-    width: 50px;
 `

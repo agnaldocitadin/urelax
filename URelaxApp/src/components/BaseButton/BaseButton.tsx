@@ -1,41 +1,25 @@
 import React, { FC } from 'react'
-import { TouchableNativeFeedback, ViewStyle } from 'react-native'
+import { ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
+import { Touchable, TouchableProps } from '../Touchable'
 
-export interface BaseButtonPros {
+export interface BaseButtonPros extends TouchableProps {
     style?: ViewStyle
     contentStyle?: ViewStyle
-    feedbackColor?: string
-    disabled?: boolean
-    onPress?(): void
-    onPressIn?(): void
-    onPressOut?(): void
-    onLongPress?(): void
 }
 
 export const BaseButton: FC<BaseButtonPros> = ({ 
     children, 
     style, 
-    contentStyle, 
-    feedbackColor = "silver",
-    disabled,
-    onPress,
-    onPressIn,
-    onPressOut,
-    onLongPress
+    contentStyle,
+    ...others
 }) => (
     <Button style={style}>
-        <TouchableNativeFeedback
-            disabled={disabled}
-            background={TouchableNativeFeedback.Ripple(feedbackColor, true)} 
-            onPress={onPress}
-            onPressIn={onPressIn}
-            onPressOut={onPressOut}
-            onLongPress={onLongPress}>
+        <Touchable {...others}>
             <Content style={contentStyle}>
                 { children }
             </Content>
-        </TouchableNativeFeedback>
+        </Touchable>
     </Button>
 )
 

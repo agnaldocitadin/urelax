@@ -1,9 +1,10 @@
+import { ActivityType } from "honeybee-api"
 import { ts } from "../../../core/i18n"
 import { Utils } from "../../../core/Utils"
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
 import { Profile } from "../../Identity/models/profile.model"
 import { StockTracker } from "../../Stock/models/stock.tracker.model"
-import { Activity, ActivityModel, ActivityType, Translation } from "../models/activity.model"
+import { Activity, ActivityModel } from "../models/activity.model"
 
 enum Icons {
     ACCOUNT_CHECK = "account-check",
@@ -20,74 +21,24 @@ enum Icons {
 }
 
 export const findActivitiesBy = (options: { 
-        id?: string, 
-        accountID?: string, 
-        ref?: string, 
-        activityType?: ActivityType, 
-        date?: string, 
-        page?: number, 
+        id?: string
+        accountID?: string
+        ref?: string 
+        activityType?: ActivityType
+        date?: string
+        page?: number
         qty?: number
+        translate?: boolean
     }): Promise<Activity[]> => {
         
-    const { id, accountID, page = 0, qty = 1 } = options
+    const { id, accountID, page = 0, qty = 1, translate } = options
     return ActivityModel.find({ account: accountID })
         .sort({ createdAt: "desc" })
         .skip(page * qty)
         .limit(qty)
+        .map(docs => !translate ? docs : docs.map(doc => Activity.translate(doc)))
         .exec()
 }
-
-export const opa = async (options: { 
-    id?: string, 
-    accountID?: string, 
-    ref?: string, 
-    activityType?: ActivityType, 
-    date?: string, 
-    page?: number, 
-    qty?: number
-}): Promise<Activity[]> => {
-
-    const e = await findActivitiesBy(options)
-    return e.map(i => {
-        i.title = (<Translation>i.title).translate()
-        console.log("----", i)
-        return i
-    })
-}
-
-// /**
-//  *
-//  *
-//  * @param {string} accountId
-//  * @param {number} page
-//  * @param {number} qty
-//  * @returns {Promise<Activity[]>}
-//  */
-// export const findActivitiesByAccount = (accountId: string, page: number, qty: number): Promise<Activity[]> => {
-//     return ActivityModel.find({ account: accountId })
-//         .sort({ dateTime: "desc" })
-//         .skip(page * qty)
-//         .limit(qty)
-//         .populate("account")
-//         .exec()
-// }
-
-// /**
-//  *
-//  *
-//  * @param {string} id
-//  * @param {number} page
-//  * @param {number} qty
-//  * @returns {Promise<Activity[]>}
-//  */
-// export const findActivitiesByStockTracker = (id: string, page: number, qty: number): Promise<Activity[]> => {
-//     return ActivityModel.find({ ref: id, activityType: ActivityType.STOCK_TRACKER })
-//         .sort({ dateTime: "desc" })
-//         .skip(page * qty)
-//         .limit(qty)
-//         .populate("account")
-//         .exec()
-// }
 
 /**
  *

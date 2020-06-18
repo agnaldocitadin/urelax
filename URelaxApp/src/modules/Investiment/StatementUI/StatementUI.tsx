@@ -1,8 +1,9 @@
+import { format } from 'date-fns/esm'
 import React, { FC, useCallback } from 'react'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { InfiniteFlatList } from '../../../components/InfiniteFlatList'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { Touchable } from '../../../components/Touchable'
+import { TouchItem } from '../../../components/TouchItem'
 import { ts } from '../../../core/I18n'
 import { Typography } from '../../../theming'
 import { useStatementUIHook } from './StatementUIHook'
@@ -17,10 +18,10 @@ export const StatementUI: FC = ({ children }) => {
     } = useStatementUIHook()
 
     const renderHistory = useCallback(({ item }) => (
-        <Touchable onPress={() => handleEventPress(item)} noChevron>
-            <Typography>{item.date}</Typography>
+        <TouchItem onPress={() => handleEventPress(item)}>
+            <Typography>{format(item.date, "dd/MM/yyyy")}</Typography>
             {/* TODO */}
-        </Touchable>
+        </TouchItem>
     ), [])
     
     return (

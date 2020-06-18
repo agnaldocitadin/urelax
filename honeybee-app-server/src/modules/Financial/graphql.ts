@@ -1,5 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
-import { findFinancialHistoryBy } from "./services"
+import { findFinancialHistoryBy, groupAppiedInvestimentsBy, groupFinancialAnalysisBy, groupFinancialSummaryBy } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -65,7 +65,7 @@ const entry: GraphQLModule = {
         fetchFinancialHistory(account: ID!, date: Datetime, page: Int, qty: Int): [FinancialHistory]
         fetchFinancialSummary(account: ID!, date: Datetime, page: Int, qty: Int): [FinancialSummary]
         fetchAppiedInvestiments(account: ID!): [AppliedInvestiment]
-        fetchFinancialAnalysis(perios: FinancialAnalysisPeriod): [FinancialAnalysis]
+        fetchFinancialAnalysis(period: FinancialAnalysisPeriod): [FinancialAnalysis]
     `,
     resolvers: {
         fetchFinancialHistory: ({ account, date, page, qty }: any) => {
@@ -73,18 +73,15 @@ const entry: GraphQLModule = {
         },
         
         fetchFinancialSummary: ({ account, date, page, qty }: any) => {
-            // TODO
-            return Promise.resolve()
+            return groupFinancialSummaryBy(account, date, page, qty)
         },
 
         fetchAppiedInvestiments: ({ account }: any) => {
-            // TODO
-            return Promise.resolve()
+            return groupAppiedInvestimentsBy(account)
         },
 
-        fetchFinancialAnalysis: () => {
-            // TODO
-            return Promise.resolve()
+        fetchFinancialAnalysis: ({ period }: any) => {
+            return groupFinancialAnalysisBy(period)
         }
     }
 }

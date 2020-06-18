@@ -5,24 +5,19 @@ import React, { FC } from 'react'
 import { RefreshControl, View, ViewStyle } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import styled from 'styled-components/native'
+import { BaseButton } from '../../../components/BaseButton'
 import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { GenericTextIcon, SRoundedBox } from '../../../components/Layout/Layout.style'
+import { SRoundedBox } from '../../../components/Layout/Layout.style'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Button, Colors, Icons, Typography, TypographyMedium } from '../../../theming'
+import { Button, Colors, Typography, TypographyMedium } from '../../../theming'
 import { Routes } from '../../Navigation/const'
 import { useDashboardUIHook } from './DashboardUIHook'
 
 interface HomeDashboardProps {}
 
-/**
- *
- *
- * @param {*} { navigation }
- * @returns
- */
 export const DashboardUI: FC<HomeDashboardProps> = () => {
     
     const {
@@ -30,6 +25,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
         currentPatrimony,
         history,
         handleInvestiments,
+        handleStartInvesting,
         handleRefresh
     } = useDashboardUIHook()
     const navigation = useNavigation()
@@ -66,20 +62,24 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                 </PatrimonyNow>
                 <PatrimonyHistory>
                     
-                    <Button onPress={() => navigation.navigate(Routes.ACTIVITY_LIST)}>
+                    {/* <Button onPress={() => navigation.navigate(Routes.ACTIVITY_LIST)}>
                         <Typography>Activity</Typography>
-                    </Button>
+                    </Button> */}
 
                     { history.length === 0 
-                        ? <GenericTextIcon icon={Icons.ALERT_CIRCLE} message={ts("nothing")}/> 
-                        : <AppIntroSlider
-                            renderDoneButton={() => false}
-                            renderNextButton={() => false}
-                            renderItem={renderIt}
-                            dotStyle={dotStyle}
-                            activeDotStyle={activeDotStyle}
-                            keyExtractor={(_item, index) => `hs_${index}`}
-                            data={history} />
+                        ?
+                            <StartInvesting onPress={handleStartInvesting}>
+                                <TypographyMedium fontSize={16} color={Colors.WHITE}>Começar a investir</TypographyMedium>
+                            </StartInvesting>
+                        : 
+                            <AppIntroSlider
+                                renderDoneButton={() => false}
+                                renderNextButton={() => false}
+                                renderItem={renderIt}
+                                dotStyle={dotStyle}
+                                activeDotStyle={activeDotStyle}
+                                keyExtractor={(_item, index) => `hs_${index}`}
+                                data={history} />
                     }
                 </PatrimonyHistory>
             </Refresher>
@@ -110,6 +110,7 @@ const PatrimonyNow = styled.View`
 `
 
 const PatrimonyHistory = styled(SRoundedBox)`
+    justify-content: center;
     flex: 1;
 `
 
@@ -117,4 +118,11 @@ const History = styled.View`
     align-items: center;
     justify-content: space-evenly;
     flex: 1;
+`
+
+const StartInvesting = styled(BaseButton)`
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 25px;
+    background-color: ${Colors.BLUES_4};
 `

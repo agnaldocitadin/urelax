@@ -21,7 +21,7 @@ const Actions = () => {
             dispatch({ type: "ADD_HISTORY", payload: { history, reset }} as DispatchType<ActionNames>)
         },
         selectEvent: (history: FinancialHistory) => {
-            dispatch({ type: "SELECT_EVENT", payload: history} as DispatchType<ActionNames>)
+            dispatch({ type: "SELECT_EVENT", payload: history } as DispatchType<ActionNames>)
         }
     }
 }

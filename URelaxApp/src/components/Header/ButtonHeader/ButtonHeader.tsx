@@ -1,4 +1,3 @@
-
 import React, { FC } from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'

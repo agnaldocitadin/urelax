@@ -2,7 +2,7 @@ import { Activity } from 'honeybee-api'
 import React, { FC, ReactElement, useCallback } from 'react'
 import styled from 'styled-components/native'
 import { InfiniteFlatList } from '../../../components/InfiniteFlatList'
-import { Touchable } from '../../../components/Touchable'
+import { TouchItem } from '../../../components/TouchItem'
 import { Colors } from '../../../theming'
 import { ActivityItem } from '../ActivityItem'
 
@@ -27,17 +27,15 @@ export const ActivityTimeline: FC<ActivityTimelineProps> = ({
  }) => {
 
     const renderActivity = useCallback(({ item }: any) => (
-        <Touchable onPress={() => onPress(item)} noChevron>
+        <Item onPress={() => onPress(item)} noChevron>
             <SActivityItem activity={item} loading={loading}/>
-        </Touchable>
+        </Item>
     ), [loading])
 
     return (
         <React.Fragment>
-            <Timeline/>
+            {/* <Timeline/> */}
             <InfiniteFlatList
-                // showShimmer={loading}
-                // numShimmerItens={8}
                 data={activities}
                 onRefresh={onRefresh}
                 minLengthToLoadMore={minLengthToLoadMore}
@@ -50,7 +48,11 @@ export const ActivityTimeline: FC<ActivityTimelineProps> = ({
 }
 
 const SActivityItem = styled(ActivityItem)`
-    padding: 20px 20px;
+    flex: 1;
+`
+
+const Item = styled(TouchItem)`
+    /* padding: 20px 20px; */
 `
 
 const Timeline = styled.View`

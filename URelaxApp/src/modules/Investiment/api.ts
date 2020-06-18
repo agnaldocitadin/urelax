@@ -25,7 +25,7 @@ export const fetchFinancialHistory = (accountID: string, page: number, qty: numb
         _id
         date
         brokerAccount {
-            name
+            accountName
         }
         transactions {
             dateTime

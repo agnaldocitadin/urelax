@@ -26,7 +26,7 @@ export const useActivityListUIHook = () => {
 
     const handleActivityPress = animatedCallback((activity: Activity) => {
         selectActivity(activity)
-        navigation.navigate(Routes.ACTIVITY_LIST)
+        navigation.navigate(Routes.ACTIVITY_DETAIL)
     })
 
     const handleRefresh = useCallback(async (reset?: boolean) => {

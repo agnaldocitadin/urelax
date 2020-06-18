@@ -1,3 +1,4 @@
+import { ActivityType } from "honeybee-api"
 import { GraphQLModule } from "../GraphQL"
 import { findActivitiesBy } from "./services"
 
@@ -24,9 +25,16 @@ const entry: GraphQLModule = {
         fetchActivities(id: ID, accountID: ID, ref: ID, activityType: String, date: String, page: Int, qty: Int): [Activity]
     `,
     resolvers: {
-        fetchActivities: ({ id, accountID, ref, activityType, date, page, qty }: any) => {
-            return findActivitiesBy({ id, accountID, ref, activityType, date, page, qty })
-            // return opa({ id, accountID, ref, activityType, date, page, qty })
+        fetchActivities: (options: {
+                id: string
+                accountID: string
+                ref: string
+                activityType: ActivityType
+                date: string
+                page: number
+                qty: number 
+            }) => {
+            return findActivitiesBy({ ...options, translate: true })
         }
     }
 

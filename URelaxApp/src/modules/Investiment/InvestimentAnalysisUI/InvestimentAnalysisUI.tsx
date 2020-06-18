@@ -8,7 +8,7 @@ export const InvestimentAnalysisUI: FC = () => {
     const { } = useInvestimentAnalysisUIHook()
     return (
         <FlatLayout>
-            <BackHeader title={ts("Analysis")}/>
+            <BackHeader title={ts("analysis")}/>
 
         </FlatLayout>
     )

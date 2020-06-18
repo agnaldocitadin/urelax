@@ -25,7 +25,10 @@ export const useStatementUIHook = () => {
     const handleRefresh = useCallback(async (reset?: boolean) => {
         try {
             let history = await fetchFinancialHistory(account._id, 0, AppConfig.QTY_INITIAL_ACTIVITIES)
-            addHistory(history, reset)
+            // addHistory(history, reset)
+            addHistory([{
+                date: new Date()
+            }], reset)
         }
         catch(error) {
             console.error(error)
@@ -43,6 +46,8 @@ export const useStatementUIHook = () => {
     }, [])
 
     useEffectWhenReady(() => handleRefresh(true))
+
+    console.log(statements)
 
     return {
         statements,
