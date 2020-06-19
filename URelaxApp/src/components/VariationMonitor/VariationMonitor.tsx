@@ -10,6 +10,7 @@ interface VariationMonitorProps {
     textColor?: string
     iconColor?: string
     showIcon?: boolean
+    onPress?(): void
 }
 
 export const VariationMonitor: FC<VariationMonitorProps> = ({
@@ -17,9 +18,10 @@ export const VariationMonitor: FC<VariationMonitorProps> = ({
     fontSize = 14,
     textColor = Colors.WHITE,
     iconColor = Colors.BLACK_2,
-    showIcon
+    showIcon,
+    onPress
 }) => (
-    <Display>
+    <Display onTouchEnd={onPress}>
         { showIcon && <DisplayIcon 
             name={value === 0 ? Icons.ARROW_RIGHT : (value >= 0 ? Icons.ARROW_UP : Icons.ARROW_DOWN)} 
             size={fontSize} 

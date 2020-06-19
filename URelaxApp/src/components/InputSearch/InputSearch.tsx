@@ -2,7 +2,7 @@
 import { Icon, Input } from 'native-base'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
-import { Colors, Fontsa, Icons } from '../../theming'
+import { Colors, Fonts, Icons } from '../../theming'
 import { CORNER_RADIUS, FORM_PADDING } from '../Layout/Layout.style'
 
 interface InputSearchProps {
@@ -20,7 +20,7 @@ export const InputSearch: FC<InputSearchProps> = ({
 }) => {
     return (
         <SSearch>
-            <SSearchIcon color={iconColor} type={Fontsa.ICON_PACK} name={Icons.MAGNIFY}/>
+            <SSearchIcon color={iconColor} type={Fonts.ICON_PACK} name={Icons.MAGNIFY}/>
             <SSearchInput placeholder={placeholder} placeholderTextColor={Colors.BLACK_2} color={textColor} onChangeText={onChangeText}/>
         </SSearch>
     )

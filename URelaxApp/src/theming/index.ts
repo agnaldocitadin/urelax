@@ -1,11 +1,17 @@
 import styled from 'styled-components/native'
 import { BaseButton } from '../components/BaseButton'
+import { BaseTypography } from '../components/BaseTypography'
+
+export const SHIMMER_COLORS = ["#D1D6DA", "#919394", "#D1D6DA"]
+export const DEFAULT_FONTSIZE = 13
+export const DEFAULT_VERTICAL_PADDING = 20
+export const DEFAULT_HORIZONTAL_PADDING = 20
 
 export const Images = {
     LOGO: require("../assets/imgs/logo.png")
 }
 
-export enum Fontsa {
+export enum Fonts {
     FONT_REGULAR = "Montserrat-Regular",
     FONT_MEDIUM = "Montserrat-Medium",
     FONT_SEMIBOLD = "Montserrat-SemiBold",
@@ -67,23 +73,20 @@ export enum Icons {
     CHART_LINE_VARIANT = "chart-line-variant",
 }
 
-export const Typography = styled.Text<{ color?: string, fontSize?: number, textAlign?: "left" | "center" | "right" }>`
-    color: ${({ color }) => color || Colors.BLACK_1};
-    font-family: ${Fontsa.FONT_REGULAR};
-    font-size: ${({ fontSize }) => `${fontSize || 13}px`};
-    text-align: ${({ textAlign }) => textAlign || "left"};
+export const Typography = styled(BaseTypography)`
+    font-family: ${Fonts.FONT_REGULAR};
 `
 
 export const TypographyMedium = styled(Typography)`
-    font-family: ${Fontsa.FONT_MEDIUM};
+    font-family: ${Fonts.FONT_MEDIUM};
 `
 
 export const TypographySemibold = styled(Typography)`
-    font-family: ${Fontsa.FONT_SEMIBOLD};
+    font-family: ${Fonts.FONT_SEMIBOLD};
 `
 
 export const InputTextBase = styled.TextInput`
-    font-family: ${Fontsa.FONT_REGULAR};
+    font-family: ${Fonts.FONT_REGULAR};
     color: ${Colors.BLACK_1};
     font-size: 15px;
     flex: 1;

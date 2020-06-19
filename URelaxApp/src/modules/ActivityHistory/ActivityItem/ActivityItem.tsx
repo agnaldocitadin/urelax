@@ -5,45 +5,37 @@ import { ViewStyle } from 'react-native'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { SHIMMER_COLORS } from '../../../components/Layout/Layout.style'
-import { Colors, Typography, TypographySemibold } from '../../../theming'
+import { TouchItem, TouchItemProps } from '../../../components/TouchItem'
+import { Colors, DEFAULT_HORIZONTAL_PADDING, DEFAULT_VERTICAL_PADDING, SHIMMER_COLORS, Typography, TypographyMedium } from '../../../theming'
 
-interface ActivityItemProps {
+interface ActivityItemProps extends TouchItemProps {
     activity: Activity
-    showDate?: boolean
     loading?: boolean
     style?: ViewStyle
 }
 
-export const ActivityItem: FC<ActivityItemProps> = ({ activity, style, loading, showDate = true }) => (
-    <SActivityBody style={style}>
-
+export const ActivityItem: FC<ActivityItemProps> = ({ 
+    activity, 
+    style, 
+    loading,
+    ...others
+}) => (
+    <Item {...others}>
         <ShimmerIcon autoRun isInteraction={false} visible={!loading} colorShimmer={SHIMMER_COLORS}>
-            <SActivityIcon 
+            <IIcon 
                 name={activity.icon}
                 color={Colors.GRAY_3}
                 size={27}/>
         </ShimmerIcon>
-        
-        <SLeftInfo>
-            <ShimmerActivity  autoRun isInteraction={false} visible={!loading} colorShimmer={SHIMMER_COLORS}>
-                <TypographySemibold 
-                    color={Colors.BLACK_2}
-                    fontSize={13}>
-                    {activity.title}
-                </TypographySemibold>
-            </ShimmerActivity>
-            <ShimmerDetail autoRun isInteraction={false} visible={!loading} colorShimmer={SHIMMER_COLORS}>
-                {renderDetails(activity)}
-            </ShimmerDetail>            
-        </SLeftInfo>
-
-        { showDate && <SRightInfo>
-            { activity.createdAt && <SDate>{format(new Date(activity.createdAt), "dd/MMM")}</SDate>}
-            { activity.createdAt && <SDate>{format(new Date(activity.createdAt), "HH:mm")}</SDate>}
-        </SRightInfo>}
-        
-    </SActivityBody>
+        <LeftContent>
+            <TypographyMedium color={Colors.BLACK_2}>{activity.title}</TypographyMedium>
+            {renderDetails(activity)}
+        </LeftContent>
+        <RightContent>
+            { activity.createdAt && <TypoDate>{format(new Date(activity.createdAt), "dd/MMM")}</TypoDate>}
+            { activity.createdAt && <TypoDate>{format(new Date(activity.createdAt), "HH:mm")}</TypoDate>}
+        </RightContent>
+    </Item>
 )
 
 const renderDetails = (activity: Activity) => {
@@ -57,23 +49,23 @@ const renderDetails = (activity: Activity) => {
     : null)
 }
 
-const SActivityBody = styled.View`
-    flex-direction: row;
+const Item = styled(TouchItem)`
+    padding: ${DEFAULT_VERTICAL_PADDING}px ${DEFAULT_HORIZONTAL_PADDING}px;
 `
 
-const SLeftInfo = styled.View`
+const LeftContent = styled.View`
     flex: 1;
 `
 
-const SRightInfo = styled.View`
+const RightContent = styled.View`
     align-items: flex-end;
 `
 
-const SActivityIcon = styled(Icon)`
+const IIcon = styled(Icon)`
     padding: 1px;
 `
 
-const SDate = styled(Typography)`
+const TypoDate = styled(Typography)`
     color: ${Colors.GRAY_2};
     font-size: 12px;
     text-align: right;
@@ -85,20 +77,4 @@ const ShimmerIcon = styled(ShimmerPlaceHolder)`
     height: 30px;
     border-radius: 15px;
     margin: 0 5px;
-`
-
-const ShimmerActivity = styled(ShimmerPlaceHolder)`
-    width: 55%;
-    margin-bottom: 10px;
-`
-
-const ShimmerDetail = styled(ShimmerPlaceHolder)`
-    width: 85%;
-    margin-bottom: 5px;
-`
-
-const ShimmerDate = styled(ShimmerPlaceHolder)`
-    width: 70px;
-    height: 13px;
-    margin-bottom: 5px;
 `

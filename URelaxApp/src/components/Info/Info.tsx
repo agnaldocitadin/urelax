@@ -1,75 +1,44 @@
 import React, { FC, ReactElement } from 'react'
-import { ViewStyle } from 'react-native'
-import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import { View, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { Typography } from '../../theming'
-import { SHIMMER_COLORS } from '../Layout/Layout.style'
-import { Touchable } from '../Touchable'
+import { DEFAULT_HORIZONTAL_PADDING, DEFAULT_VERTICAL_PADDING } from '../../theming'
+import { TouchableProps } from '../Touchable'
+import { TouchItem } from '../TouchItem'
 
-interface InfoProps {
-    name?: string
-    nameFontSize?: number
-    value?: string | ReactElement
-    valueFontSize?: number
-    disabled?: boolean
-    onPress?(): void
+interface InfoProps extends TouchableProps {
+    title: ReactElement
+    description?: ReactElement
     style?: ViewStyle
-    bottom?: ReactElement
-    loading?: boolean
-    touchable?: boolean
 }
 
-export const Info: FC<InfoProps> = ({ 
-    name, 
-    value, 
-    onPress, 
-    disabled, 
-    nameFontSize = 14, 
-    valueFontSize = 16,
+export const Info: FC<InfoProps> = ({
+    title,
+    description,
     style,
-    bottom,
-    loading,
-    touchable
+    ...others
 }) => {
 
-    if (!loading && value === undefined) return null
-    const _touchable =  onPress && touchable && !disabled
-    const info = (
-        <StyledItem onTouchEnd={!_touchable ? onPress : undefined} style={!touchable && style}>
-            <ShimmerName autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
-                { name && <Typography fontSize={nameFontSize}>{name}</Typography> }
-            </ShimmerName>
-            { 
-                typeof value === "object" ? 
-                <ShimmerValue autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
-                    { value }
-                </ShimmerValue>
-                : 
-                <ShimmerValue autoRun visible={!loading} isInteraction={false} colorShimmer={SHIMMER_COLORS}>
-                    <Typography fontSize={valueFontSize}>{value}</Typography>
-                </ShimmerValue>
-            }
-            { bottom }
-        </StyledItem>
+    const child = (
+        <React.Fragment>
+            { title }
+            { description }
+        </React.Fragment>
     )
 
+    const touchable = others.onPress || others.onPressIn || others.onPressOut || others.onLongPress
+    const info = touchable ? <Item {...others}><View>{ child }</View></Item> : <Content>{ child }</Content>
+    
     return (
-        _touchable ? <Touchable style={style} onPress={onPress}>{info}</Touchable> : info
+        <View>
+            { info }
+        </View>
     )
 }
 
-const StyledItem = styled.View`
-    padding: 18px 0;
+const Item = styled(TouchItem)`
+    padding: ${DEFAULT_VERTICAL_PADDING}px ${DEFAULT_HORIZONTAL_PADDING}px;
 `
 
-const ShimmerName = styled(ShimmerPlaceHolder)`
-    height: 15px;
-    width: 100px;
-    margin: 4px 0;
-`
-
-const ShimmerValue = styled(ShimmerPlaceHolder)`
-    height: 15px;
-    width: 200px;
-    margin: 4px 0;
+const Content = styled.View`
+    padding: ${DEFAULT_VERTICAL_PADDING}px ${DEFAULT_HORIZONTAL_PADDING}px;
 `

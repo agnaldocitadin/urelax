@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 import { Colors, Icons } from "../../theming"
 import { Touchable, TouchableProps } from "../Touchable"
 
-interface TouchItemProps extends TouchableProps {
+export interface TouchItemProps extends TouchableProps {
     noChevron?: boolean
     style?: ViewStyle
 }

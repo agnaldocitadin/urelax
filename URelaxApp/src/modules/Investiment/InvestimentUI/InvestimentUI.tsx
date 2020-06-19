@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { BaseButton } from '../../../components/BaseButton'
@@ -8,6 +9,7 @@ import { SHeaderDivider } from '../../../components/Layout/Layout.style'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, Typography } from '../../../theming'
+import { Routes } from '../../Navigation/const'
 import { useInvestimentUIHook } from './InvestimentUIHook'
 
 export const InvestimentUI: FC = ({ children }) => {
@@ -20,6 +22,7 @@ export const InvestimentUI: FC = ({ children }) => {
     } = useInvestimentUIHook()
 
     const { patrimony, currency, stocks } = investiments
+    const nav = useNavigation()
 
     return (
         <FlatLayout bgColor={Colors.WHITE}>
@@ -34,11 +37,15 @@ export const InvestimentUI: FC = ({ children }) => {
             <BaseButton onPress={handleStatements}>
                 <Typography>STATEMENTS</Typography>
             </BaseButton>
+            <BaseButton onPress={() => nav.navigate(Routes.ACTIVITY_LIST)}>
+                <Typography>ACTIVITIES</Typography>
+            </BaseButton>
 
             <Info 
-                name={ts("patrimony_amount")}
-                value={utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
-                valueFontSize={30}/>
+                title={<Typography>{ts("patrimony_amount")}</Typography>}
+                description={
+                    <Typography fontSize={30}>{utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                }/>
 
             <SHeaderDivider>{ts("currency")}</SHeaderDivider>
             <Typography>{currency.investiment?.description} - {currency.amount}</Typography>

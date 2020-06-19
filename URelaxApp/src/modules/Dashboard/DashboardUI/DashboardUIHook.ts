@@ -8,6 +8,8 @@ import Messaging from "../../Messaging"
 import { Routes } from "../../Navigation/const"
 import { fetchFinancialSummary } from "../api"
 
+const INITIAL_SUMMARIES = 6
+
 export const useDashboardUIHook = () => {
 
     const navigation = useNavigation()
@@ -21,6 +23,8 @@ export const useDashboardUIHook = () => {
     
     const handleStartInvesting = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
 
+    const handleAnalysis = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS), [])
+
     const handleRefresh = useCallback(async () => {
         history
         setRefreshing(true)
@@ -30,7 +34,7 @@ export const useDashboardUIHook = () => {
 
     const refresh = useCallback(async () => {
         try {
-            const history = await fetchFinancialSummary(account._id, 6)
+            const history = await fetchFinancialSummary(account._id, INITIAL_SUMMARIES)
             setDashboardHistory(history || []) 
         }
         catch(error) {
@@ -47,6 +51,7 @@ export const useDashboardUIHook = () => {
         history,
         handleInvestiments,
         handleStartInvesting,
+        handleAnalysis,
         handleRefresh,
     }
 }

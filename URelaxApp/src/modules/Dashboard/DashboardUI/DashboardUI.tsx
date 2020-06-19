@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import { FinancialSummary } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
@@ -6,14 +5,12 @@ import { RefreshControl, View, ViewStyle } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import styled from 'styled-components/native'
 import { BaseButton } from '../../../components/BaseButton'
-import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { SRoundedBox } from '../../../components/Layout/Layout.style'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Button, Colors, Typography, TypographyMedium } from '../../../theming'
-import { Routes } from '../../Navigation/const'
+import { Colors, Typography, TypographyMedium } from '../../../theming'
 import { useDashboardUIHook } from './DashboardUIHook'
 
 interface HomeDashboardProps {}
@@ -26,23 +23,22 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
         history,
         handleInvestiments,
         handleStartInvesting,
+        handleAnalysis,
         handleRefresh
     } = useDashboardUIHook()
-    const navigation = useNavigation()
 
     const renderIt = ({ item }: { item: FinancialSummary }) => {
         return (
             <History>
-                <Typography>Ontem</Typography>
+                <Typography fontSize={15}>{item.when}</Typography>
+                <CenteredView>
+                    <TypographyMedium textAlign="center">{item.variation > 0 ? ts("gain") : ts("loss")}</TypographyMedium>
+                    <VariationMonitor onPress={handleAnalysis} value={item.variation} fontSize={19}/>
+                </CenteredView>
                 <View>
-                    <Typography textAlign="center">Lucro</Typography>
-                    <VariationMonitor value={item.variation} fontSize={19}/>
+                    <Typography color={Colors.GRAY_1}>{ts("your_patrimony_was")}</Typography>
+                    <Typography textAlign="center" fontSize={20}>{utils.formatCurrency(item.patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                 </View>
-                <Info 
-                    name={ts("Seu patrimônio era de")}
-                    value={utils.formatCurrency(item.patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
-                    style={{ alignItems: "center" }}
-                    valueFontSize={20}/>
             </History>
         )
     }
@@ -52,24 +48,16 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
             <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
                 <PatrimonyNow>
                     <TypographyMedium fontSize={20}>{ts("welcome")}, {"Nick"}!</TypographyMedium>
-                    <Info 
-                        name="Patrimônio acumulado"
-                        value={utils.formatCurrency(currentPatrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}
-                        style={{ alignItems: "center" }}
-                        valueFontSize={39}
-                        onPress={handleInvestiments}
-                        />
+                    <View>
+                        <Typography color={Colors.GRAY_1} textAlign="center">Patrimônio acumulado</Typography>
+                        <Typography textAlign="center" fontSize={39} onPress={handleInvestiments}>{utils.formatCurrency(currentPatrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                    </View>
                 </PatrimonyNow>
                 <PatrimonyHistory>
-                    
-                    {/* <Button onPress={() => navigation.navigate(Routes.ACTIVITY_LIST)}>
-                        <Typography>Activity</Typography>
-                    </Button> */}
-
                     { history.length === 0 
                         ?
                             <StartInvesting onPress={handleStartInvesting}>
-                                <TypographyMedium fontSize={16} color={Colors.WHITE}>Começar a investir</TypographyMedium>
+                                <TypographyMedium fontSize={16} color={Colors.WHITE}>{ts("start_investing")}</TypographyMedium>
                             </StartInvesting>
                         : 
                             <AppIntroSlider
@@ -102,6 +90,7 @@ const activeDotStyle: ViewStyle = {
 const Refresher = styled(RefreshControl)`
     flex: 1;
 `
+
 const PatrimonyNow = styled.View`
     text-align: center;
     justify-content: space-evenly;
@@ -125,4 +114,8 @@ const StartInvesting = styled(BaseButton)`
     margin: 0 auto;
     border-radius: 25px;
     background-color: ${Colors.BLUES_4};
+`
+
+const CenteredView = styled.View`
+    align-items: center;
 `

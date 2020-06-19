@@ -22,16 +22,20 @@ export const groupAppiedInvestimentsBy = (account: mongoose.Types.ObjectId): Pro
 
 export const groupFinancialSummaryBy = (account: mongoose.Types.ObjectId, date: Date, page: number, qty: number): Promise<FinancialSummary[]> => {
     // TODO
-    return Promise.resolve([])
-    // return Promise.resolve([{
-    //     patrimony: 100,
-    //     variation: 1,
-    //     when: "hoje"
-    // },{
-    //     patrimony: 200,
-    //     variation: 2,
-    //     when: "Ontem"
-    // }])
+    // return Promise.resolve([])
+    return Promise.resolve([{
+        patrimony: 100,
+        variation: 1,
+        when: "Yesterday-"
+    },{
+        patrimony: 200,
+        variation: -1.21,
+        when: "17/Junho"
+    },{
+        patrimony: 187,
+        variation: 1.58,
+        when: "16/Junho"
+    }])
 }
 
 export const groupFinancialAnalysisBy = (period: FinancialAnalysisPeriod): Promise<FinancialAnalysis[]> => {

@@ -4,7 +4,6 @@ import { TextIconDisplay } from "../TextIconDisplay"
 
 export const CORNER_RADIUS = "10px"
 export const FORM_PADDING = "20px"
-export const SHIMMER_COLORS = ["#D1D6DA", "#919394", "#D1D6DA"]
 
 export const SRoundedBox: any = styled.View`
     background-color: ${(props: any) => props.bgColor ? props.bgColor : Colors.WHITE};
