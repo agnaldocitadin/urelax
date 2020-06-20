@@ -1,6 +1,8 @@
 import { Activity } from 'honeybee-api'
 import React, { FC, ReactElement, useCallback } from 'react'
-import { InfiniteFlatList } from '../../../components/InfiniteFlatList'
+import { ListRenderItem } from 'react-native'
+import { Timeline } from '../../../components/Timeline'
+import { TimelineItem } from '../../../components/Timeline/TimelineItem'
 import { ActivityItem } from '../ActivityItem'
 
 export interface ActivityTimelineProps {
@@ -23,16 +25,24 @@ export const ActivityTimeline: FC<ActivityTimelineProps> = ({
     onLoadMoreData
  }) => {
 
-    const renderActivity = useCallback(({ item }: any) => <ActivityItem onPress={() => onPress(item)} activity={item} loading={loading} noChevron/>, [loading])
+    const render: ListRenderItem<Activity> = useCallback(({ item, index }) => {
+        return <TimelineItem 
+            index={index}
+            icon={item.icon}
+            color="black"
+            content={<ActivityItem color="black" activity={item} />}
+            onPress={() => onPress(item)}
+            contentDirection="row"/>
+    }, [])
 
     return (
-        <InfiniteFlatList
+        <Timeline
             data={activities}
             onRefresh={onRefresh}
             minLengthToLoadMore={minLengthToLoadMore}
             onEndPageReached={onLoadMoreData}
-            renderItem={renderActivity}
-            keyExtractor={(_item, index) => `acty_${index}`}
+            renderItem={render}
+            keyExtractor={(_item, index) => `tmi_${index}`}
             ListHeaderComponent={header}/>
     )
 }

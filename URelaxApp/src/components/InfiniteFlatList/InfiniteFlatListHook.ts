@@ -9,13 +9,13 @@ type ListState = {
     refreshing?: boolean
 }
 
-export const useInfiniteFlatListHook = ({ 
+export const useInfiniteFlatListHook = <T extends {}>({ 
     onRefresh,
     onEndPageReached,
     data,
     minLengthToLoadMore,
     numShimmerItens = 0
-}: InfiniteFlatListProps<{}>) => {
+}: InfiniteFlatListProps<T>) => {
 
     const [ listState, setListState ] = useState({
         infiniteReached: false,
@@ -28,8 +28,8 @@ export const useInfiniteFlatListHook = ({
     const updateState = useCallback((state: ListState) => setListState(old => ({ ...old, ...state })), [listState])
 
     const pseudos = useCallback(() => {
-        let objs = []
-        for (let i = 0; i < numShimmerItens; i++) objs.push({})
+        let objs: T[] = []
+        for (let i = 0; i < numShimmerItens; i++) objs.push({} as any)
         return objs
     }, [numShimmerItens])
 

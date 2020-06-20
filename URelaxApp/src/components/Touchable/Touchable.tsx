@@ -5,6 +5,7 @@ import { Colors } from '../../theming'
 export interface TouchableProps {
     feedbackColor?: string
     disabled?: boolean
+    borderless?: boolean
     onPress?(): void
     onPressIn?(): void
     onPressOut?(): void
@@ -14,7 +15,8 @@ export interface TouchableProps {
 export const Touchable: FC<TouchableProps> = ({ 
     children,
     disabled, 
-    feedbackColor = Colors.BG_2, 
+    feedbackColor = Colors.BG_2,
+    borderless = true,
     onPress, 
     onPressIn, 
     onPressOut, 
@@ -22,7 +24,7 @@ export const Touchable: FC<TouchableProps> = ({
 }) => (
     <TouchableNativeFeedback
         disabled={disabled}
-        background={TouchableNativeFeedback.Ripple(feedbackColor, true)} 
+        background={TouchableNativeFeedback.Ripple(feedbackColor, borderless)} 
         onPress={onPress}
         onPressIn={onPressIn}
         onPressOut={onPressOut}

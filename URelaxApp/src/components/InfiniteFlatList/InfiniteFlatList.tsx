@@ -1,5 +1,5 @@
 
-import React, { FC } from 'react'
+import React from 'react'
 import { ActivityIndicator, FlatList, FlatListProps } from 'react-native'
 import styled from 'styled-components/native'
 import { useInfiniteFlatListHook } from './InfiniteFlatListHook'
@@ -12,7 +12,7 @@ export interface InfiniteFlatListProps<T> extends FlatListProps<T> {
     onEndPageReached?(page: number): Promise<T[]>
 }
 
-export const InfiniteFlatList: FC<InfiniteFlatListProps<{}>> = (props) => {
+export const InfiniteFlatList = <T extends {}>(props: InfiniteFlatListProps<T>) => {
 
     const { 
         internalData,
@@ -24,7 +24,11 @@ export const InfiniteFlatList: FC<InfiniteFlatListProps<{}>> = (props) => {
     } = useInfiniteFlatListHook(props)
 
     if (props.showShimmer) {
-        return <FlatList {...props} keyExtractor={(item, index) => `psdo_${index}`} refreshing={false} data={pseudos()}/>
+        return <FlatList 
+            {...props}
+            keyExtractor={(item, index) => `psdo_${index}`}
+            refreshing={false}
+            data={pseudos()}/>
     }
 
     return <FlatList 

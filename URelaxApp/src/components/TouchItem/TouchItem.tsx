@@ -7,6 +7,7 @@ import { Touchable, TouchableProps } from "../Touchable"
 
 export interface TouchItemProps extends TouchableProps {
     noChevron?: boolean
+    containerBgColor?: string
     style?: ViewStyle
 }
 
@@ -14,11 +15,13 @@ export const TouchItem: FC<TouchItemProps> = ({
     children,
     style,
     noChevron,
+    containerBgColor = Colors.TRANSPARENT,
+    borderless = false,
     ...others
 }) => {
     return (
-        <Container>
-            <Touchable {...others}>
+        <Container bgColor={containerBgColor}>
+            <Touchable {...others} borderless={borderless}>
                 <Content style={style}>
                     { children }
                     { !noChevron && <TouchIcon size={18} color={Colors.BG_2} name={Icons.CHEVRON_RIGHT}/> }
@@ -28,8 +31,8 @@ export const TouchItem: FC<TouchItemProps> = ({
     )
 }
 
-const Container = styled.View`
-    background-color: white;
+const Container = styled.View<{ bgColor: string }>`
+    background-color: ${({ bgColor }) => bgColor};
 `
 
 const Content = styled.View`

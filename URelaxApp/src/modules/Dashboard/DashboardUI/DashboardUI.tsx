@@ -30,14 +30,14 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
     const renderIt = ({ item }: { item: FinancialSummary }) => {
         return (
             <History>
-                <Typography fontSize={15}>{item.when}</Typography>
+                <Typography color={Colors.GRAY_1}>{item.when}</Typography>
                 <CenteredView>
-                    <TypographyMedium textAlign="center">{item.variation > 0 ? ts("gain") : ts("loss")}</TypographyMedium>
-                    <VariationMonitor onPress={handleAnalysis} value={item.variation} fontSize={19}/>
+                    <Typography textAlign="center">{item.variation > 0 ? ts("gain") : ts("loss")}</Typography>
+                    <VariationMonitor onPress={handleAnalysis} value={item.variation}/>
                 </CenteredView>
                 <View>
                     <Typography color={Colors.GRAY_1}>{ts("your_patrimony_was")}</Typography>
-                    <Typography textAlign="center" fontSize={20}>{utils.formatCurrency(item.patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                    <Typography textAlign="center">{utils.formatCurrency(item.patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                 </View>
             </History>
         )
@@ -78,13 +78,15 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
 const dotStyle: ViewStyle = {
     backgroundColor: "rgba(29, 161, 242, .2)", 
     width: 8,
-    height: 8 
+    height: 8,
+    marginTop: 25
 }
 
 const activeDotStyle: ViewStyle = { 
     backgroundColor: "rgba(29, 161, 242, .7)", 
-    width: 8, 
-    height: 8
+    width: 10, 
+    height: 10,
+    marginTop: 25
 }
 
 const Refresher = styled(RefreshControl)`
