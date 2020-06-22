@@ -1,18 +1,15 @@
 import { format } from 'date-fns'
 import { Activity } from 'honeybee-api'
 import React, { FC } from 'react'
-import { ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
 import { Colors, Typography, TypographyMedium } from '../../../theming'
 
 interface ActivityItemProps {
     activity: Activity
-    loading?: boolean
     color?: string
-    style?: ViewStyle
 }
 
-export const ActivityItem: FC<ActivityItemProps> = ({ activity, style, loading, color = Colors.BLACK_2 }) => (
+export const ActivityItem: FC<ActivityItemProps> = ({ activity, color = Colors.BLACK_1 }) => (
     <React.Fragment>
         <LeftContent>
             <TypographyMedium color={color}>{activity.title}</TypographyMedium>

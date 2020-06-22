@@ -71,6 +71,7 @@ export enum Icons {
     ACCOUNT_CIRCLE = "account-circle",
     WALLET = "wallet",
     CHART_LINE_VARIANT = "chart-line-variant",
+    CIRCLE_MEDIUM = "circle-medium",
 }
 
 export const Typography = styled(BaseTypography)`

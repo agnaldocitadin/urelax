@@ -15,7 +15,6 @@ export const ActivityListUI: FC<ActivityListUIProps> = () => {
         <FlatLayout fail={fail} bgColor={Colors.WHITE}>
             <BackHeader title={ts("activities")} right={<ButtonHeader icon={Icons.MAGNIFY}/>}/>
             { !fail && <ActivityTimeline
-                loading={activities.length === 0}
                 activities={activities}
                 minLengthToLoadMore={10}
                 onRefresh={handleRefresh}

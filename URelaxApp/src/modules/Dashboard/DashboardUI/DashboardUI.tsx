@@ -49,7 +49,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                 <PatrimonyNow>
                     <TypographyMedium fontSize={20}>{ts("welcome")}, {"Nick"}!</TypographyMedium>
                     <View>
-                        <Typography color={Colors.GRAY_1} textAlign="center">Patrimônio acumulado</Typography>
+                        <Typography color={Colors.GRAY_1} textAlign="center">{ts("patrimony_amount")}</Typography>
                         <Typography textAlign="center" fontSize={39} onPress={handleInvestiments}>{utils.formatCurrency(currentPatrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                     </View>
                 </PatrimonyNow>

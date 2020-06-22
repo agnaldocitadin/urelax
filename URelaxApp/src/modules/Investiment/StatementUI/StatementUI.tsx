@@ -1,11 +1,11 @@
-import { format } from 'date-fns/esm'
+import { FinancialHistory } from 'honeybee-api'
 import React, { FC, useCallback } from 'react'
+import { ListRenderItem } from 'react-native'
 import { BackHeader } from '../../../components/Header/BackHeader'
-import { InfiniteFlatList } from '../../../components/InfiniteFlatList'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { TouchItem } from '../../../components/TouchItem'
+import { Timeline, TimelineItem } from '../../../components/Timeline'
 import { ts } from '../../../core/I18n'
-import { Typography } from '../../../theming'
+import { Icons, Typography } from '../../../theming'
 import { useStatementUIHook } from './StatementUIHook'
 
 export const StatementUI: FC = ({ children }) => {
@@ -17,17 +17,22 @@ export const StatementUI: FC = ({ children }) => {
         handleLoadMoreData
     } = useStatementUIHook()
 
-    const renderHistory = useCallback(({ item }) => (
-        <TouchItem onPress={() => handleEventPress(item)}>
-            <Typography>{format(item.date, "dd/MM/yyyy")}</Typography>
-            {/* TODO */}
-        </TouchItem>
-    ), [])
+    const renderHistory: ListRenderItem<FinancialHistory> = useCallback(({ item, index }) => {
+
+        return <TimelineItem
+            noChevron
+            disabled
+            index={index}
+            icon={Icons.CIRCLE_MEDIUM}
+            content={<Typography>{item.date.toISOString()}</Typography>}
+            // onPress={handleEventPress}
+            />
+    }, [])
     
     return (
         <FlatLayout>
             <BackHeader title={ts("statement")}/>
-            <InfiniteFlatList
+            <Timeline
                 data={statements}
                 onRefresh={handleRefresh}
                 minLengthToLoadMore={20}

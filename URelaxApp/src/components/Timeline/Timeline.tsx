@@ -1,30 +1,23 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 import { Colors } from '../../theming'
 import { InfiniteFlatList, InfiniteFlatListProps } from '../InfiniteFlatList'
 
-export interface Volta {
-    color: string
-    icon: string
-    content: ReactElement
-    onPress(): void
+interface TimelineProps<T> extends InfiniteFlatListProps<T> {
+
 }
 
-interface TimelineProps<T> extends InfiniteFlatListProps<T> {}
-
-export const Timeline = <T extends {}>({ ...others }: InfiniteFlatListProps<T>) => {
+export const Timeline = <T extends {}>(props: InfiniteFlatListProps<T>) => {
     return (
-        <React.Fragment>
-            <Line/>
-            <InfiniteFlatList {...others}/>
-        </React.Fragment>
+        <InfiniteFlatList 
+            {...props}
+            ListFooterComponent={<Line/>}/>
     )
 }
 
 const Line = styled.View`
-    border-right-width: 1px;
     border-color: ${Colors.BG_2};
-    position: absolute;
-    height: 100%;
+    border-right-width: 1px;
     width: 32.6px;
+    height: 100%;
 `

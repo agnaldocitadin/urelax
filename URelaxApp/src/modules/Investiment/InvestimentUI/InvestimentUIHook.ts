@@ -15,13 +15,37 @@ export const useInvestimentUIHook = () => {
     const account: Account = Identity.select("activeAccount")
     const [ investiments, setInvestiments ] = useState({
         patrimony: 0,
-        currency: {
-            amount: 100,
-            qty: 10
-        } as AppliedInvestiment,
+        currency: [{
+            amount: 234,
+            qty: 10,
+            investiment: {
+                description: "Real (R$)"
+            }
+        },{
+            amount: 839,
+            qty: 10,
+            investiment: {
+                description: "Real (R$)"
+            }
+        },{
+            amount: 3249,
+            qty: 10,
+            investiment: {
+                description: "Real (R$)"
+            }
+        }] as AppliedInvestiment[],
         stocks: [{
-            amount: 10,
-            qty: 10
+            amount: 2039,
+            qty: 10,
+            investiment: {
+                description: "Azul Linhas Aéreas (AZUL4)"
+            }
+        },{
+            amount: 1293,
+            qty: 10,
+            investiment: {
+                description: "Lojas Renner (RENN3)"
+            }
         }] as AppliedInvestiment[]
     })
 
@@ -42,7 +66,7 @@ export const useInvestimentUIHook = () => {
                 
                 // setInvestiments({
                 //     patrimony,
-                //     currency: currency[0],
+                //     currency,
                 //     stocks
                 // })
             }

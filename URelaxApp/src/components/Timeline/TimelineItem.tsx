@@ -22,7 +22,7 @@ export const TimelineItem: FC<TimelineItemProps> = ({
     ...others
 }) => {
     return (
-        <Touch {...others} noChevron containerBgColor={Colors.WHITE}>
+        <Touch {...others}>
             <IconContent>
                 <LineBefore noBorder={index === 0}/>
                 <Icon name={icon} size={25} color={color}/>
@@ -51,7 +51,7 @@ const LineAfter = styled(Line)`
 
 const LineBefore = styled(Line)<{ noBorder: boolean }>`
     border-right-width: ${({ noBorder }) => noBorder ? 0 : "1px"};
-    height: 20px;
+    height: 18px;
 `
 
 const IconContent = styled.View`
