@@ -1,36 +1,27 @@
-import { Activity, API, StockTrackerStatus } from "honeybee-api"
+import { Activity, Transaction, StockTracker } from "honeybee-api"
 import { useCallback, useState } from "react"
-import { NavigationStackProp } from "react-navigation-stack"
-import { useDispatch, useSelector } from "react-redux"
-import AppConfig from "../../../../core/AppConfig"
-import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.hook"
-import { Routes } from "../../../../navigations/Navigator"
-import { States } from "../../../../reducers/Reducer"
-import { selectActivity } from "../../../activity"
-import { setLastActivityOnDashboard } from "../../../dashboard"
-import { showAPIError } from "../../../message"
-import { appendStockTrackerActivities, clearStockTrackerPreview, selectStockTrackerToUpdate, updateMainStockTracker } from "../../actions"
-import { fetchStockTrackerActivitiesQuery } from "../../api"
+import { useDispatch } from "react-redux"
+import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 
-export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) => {
+export const useStockTrackerPreviewUIHook = () => {
 
     const dispatch = useDispatch()
     const [ fail, setFail] = useState(false)
-    const stockTracker = useSelector((state: States) => state.STOCK_TRACKER.selectedStockTracker || {})
-    const { selectedStockTrackerActivities, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
+    // const stockTracker = useSelector((state: States) => state.STOCK_TRACKER.selectedStockTracker || {})
+    // const { selectedStockTrackerActivities, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
 
     const findStockBalance = useCallback(() => {
-        if (balanceSheet) {
-            let stock = balanceSheet[0]?.stocks.find(stock => stock.symbol === stockTracker?.stock?.symbol)
+        // if (balanceSheet) {
+        //     let stock = balanceSheet[0]?.stocks.find(stock => stock.symbol === stockTracker?.stock?.symbol)
             
-            if (stock) {
-                return {
-                    amount: ((stock?.lastAvailablePrice || 0) * stock?.qty),
-                    averagePrice: stock.averagePrice || 0,
-                    quantity: stock.qty
-                }
-            }
-        }
+        //     if (stock) {
+        //         return {
+        //             amount: ((stock?.lastAvailablePrice || 0) * stock?.qty),
+        //             averagePrice: stock.averagePrice || 0,
+        //             quantity: stock.qty
+        //         }
+        //     }
+        // }
 
         return {
             amount: 0,
@@ -38,75 +29,78 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
             quantity: 0
         }
 
-    }, [balanceSheet])
+    }, [])
     
     const handleSettings = animatedCallback(() => {
-        dispatch(selectStockTrackerToUpdate(stockTracker))
-        navigation.navigate(Routes.StockTrackerSettingUI)
-    }, [stockTracker])
+        // dispatch(selectStockTrackerToUpdate(stockTracker))
+        // navigation.navigate(Routes.StockTrackerSettingUI)
+    }, [])
     
     const handleSelectActivity = animatedCallback((activity: Activity) => {
-        dispatch(selectActivity(activity))
-        navigation.navigate(Routes.ActivityDetailUI)
+        // dispatch(selectActivity(activity))
+        // navigation.navigate(Routes.ActivityDetailUI)
     })
     
     const handleStockTrackerAction = animatedCallback(async () => {
         try {
             let result
-            switch(stockTracker.status) {
-                case(StockTrackerStatus.RUNNING):
-                    result = await API.pauseStockTracker(stockTracker._id || "")
-                    break
+            // switch(stockTracker.status) {
+            //     case(StockTrackerStatus.RUNNING):
+            //         result = await API.StockTracker.pauseStockTracker(stockTracker._id || "")
+            //         break
     
-                case(StockTrackerStatus.PAUSED):
-                    result = await API.playStockTracker(stockTracker._id || "")
-                    break
-            }
+            //     case(StockTrackerStatus.PAUSED):
+            //         result = await API.StockTracker.playStockTracker(stockTracker._id || "")
+            //         break
+            // }
             
-            let lastActivity = await fetchStockTrackerActivitiesQuery(stockTracker._id || "", 0, 1)
-            dispatch(updateMainStockTracker({ status: result?.status }))
-            dispatch(appendStockTrackerActivities(lastActivity, "begin"))
-            dispatch(setLastActivityOnDashboard(lastActivity[0]))
+            // let lastActivity = await fetchStockTrackerActivitiesQuery(stockTracker._id || "", 0, 1)
+            // dispatch(updateMainStockTracker({ status: result?.status }))
+            // dispatch(appendStockTrackerActivities(lastActivity, "begin"))
+            // dispatch(setLastActivityOnDashboard(lastActivity[0]))
         }
         catch(error) {
-            dispatch(showAPIError(error))
+            // dispatch(showAPIError(error))
         }
-    }, [stockTracker])
+    }, [])
 
     const handleRefresh = animatedCallback(async () => {
         try {
-            let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
-            dispatch(appendStockTrackerActivities(activities, "end", true))
+            // let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
+            // dispatch(appendStockTrackerActivities(activities, "end", true))
         }
         catch(error) {
-            dispatch(showAPIError(error))
+            // dispatch(showAPIError(error))
         }
     })
 
     const handleLoadMoreData = animatedCallback(async (page: number) => {
         try {
-            return await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", page, AppConfig.QTY_INITIAL_ACTIVITIES)
+            // return await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", page, AppConfig.QTY_INITIAL_ACTIVITIES)
+            return Promise.resolve([] as Transaction[])
         }
         catch(error) {
-            dispatch(showAPIError(error))
+            // dispatch(showAPIError(error))
             return Promise.reject()
         }
     })
 
     useEffectWhenReady(async () => {
         try {
-            let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
-            dispatch(appendStockTrackerActivities(activities, "begin", true))
+            // let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
+            // dispatch(appendStockTrackerActivities(activities, "begin", true))
         }
         catch(error) {
             setFail(true)
         }
-    }, () => dispatch(clearStockTrackerPreview()))
+    }, 
+    // () => dispatch(clearStockTrackerPreview())
+    )
 
     return {
-        stockTracker,
-        activities: selectedStockTrackerActivities,
-        stockBalance: findStockBalance(),
+        stockTracker: {} as StockTracker,
+        amount: 0,
+        transactions: [] as Transaction[], //selectedStockTrackerActivities,
         fail,
         handleStockTrackerAction,
         handleSettings,

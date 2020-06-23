@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native"
-import { FinancialHistory } from "honeybee-api"
+import { FinancialHistory, Transaction } from "honeybee-api"
 import { useCallback } from "react"
-import Investiment from ".."
+import Investiment from "../../Investiment"
 import AppConfig from "../../../core/AppConfig"
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import Identity from "../../Identity"
 import Messaging from "../../Messaging"
 import { Routes } from "../../Navigation/const"
-import { fetchFinancialHistory } from "../api"
+import { fetchFinancialHistory } from "../../Investiment/api"
 
 export const useStatementUIHook = () => {
 
@@ -17,9 +17,9 @@ export const useStatementUIHook = () => {
     const { addHistory, selectEvent } = Investiment.actions()
     const statements: FinancialHistory[] = Investiment.select("statements")
 
-    const handleEventPress = animatedCallback((event: FinancialHistory) => {
-        selectEvent(event)
-        navigation.navigate(Routes.STATEMENT_DETAIL)
+    const handleEventPress = animatedCallback((transaction: Transaction) => {
+        // selectEvent(event)
+        // navigation.navigate(Routes.STATEMENT_DETAIL)
     })
 
     const handleRefresh = useCallback(async (reset?: boolean) => {
@@ -37,7 +37,9 @@ export const useStatementUIHook = () => {
 
     const handleLoadMoreData = useCallback(async (page: number) => {
         try {
-            return await fetchFinancialHistory(account._id, page, AppConfig.QTY_INITIAL_ACTIVITIES)
+            // TODO Transformar FinancialHistory[] em Transaction[]
+            // return await fetchFinancialHistory(account._id, page, AppConfig.QTY_INITIAL_ACTIVITIES)
+            return [] as Transaction[]
         }
         catch(error) {
             showAPIError(error)

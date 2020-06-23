@@ -16,35 +16,51 @@ export const useInvestimentUIHook = () => {
     const [ investiments, setInvestiments ] = useState({
         patrimony: 0,
         currency: [{
+            brokerAccountName: "0001-0",
             amount: 234,
             qty: 10,
             investiment: {
-                description: "Real (R$)"
+                description: "Real (R$)",
+                broker:{
+                    name: "Clear"
+                }
             }
         },{
+            brokerAccountName: "0001-0",
             amount: 839,
             qty: 10,
             investiment: {
-                description: "Real (R$)"
+                description: "Real (R$)",
+                broker:{
+                    name: "Easyinvest"
+                }
             }
-        },{
+        }/*,{
             amount: 3249,
             qty: 10,
             investiment: {
                 description: "Real (R$)"
             }
-        }] as AppliedInvestiment[],
+        }*/] as AppliedInvestiment[],
         stocks: [{
-            amount: 2039,
+            brokerAccountName: "0123456",
+            amount: 2039000,
             qty: 10,
             investiment: {
-                description: "Azul Linhas Aéreas (AZUL4)"
+                description: "Azul Linhas Aéreas (AZUL4)",
+                broker: {
+                    name: "XP Investimentos"
+                }
             }
         },{
+            brokerAccountName: "0001-0",
             amount: 1293,
             qty: 10,
             investiment: {
-                description: "Lojas Renner (RENN3)"
+                description: "Lojas Renner (RENN3)",
+                broker: {
+                    name: "Modalmais"
+                }
             }
         }] as AppliedInvestiment[]
     })
@@ -54,6 +70,10 @@ export const useInvestimentUIHook = () => {
     const handleAnalysis = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS), [])
 
     const handleStatements = useCallback(() => navigation.navigate(Routes.STATEMENT), [])
+
+    const handleFilter = useCallback(() => navigation.navigate(Routes.INVESTIMENT_FILTER), [])
+
+    const handleStockTracker = useCallback(() => navigation.navigate(Routes.STOCKTRACKER_PREVIEW), [])
     
     useEffectWhenReady(async () => {
         try {
@@ -80,6 +100,8 @@ export const useInvestimentUIHook = () => {
         investiments,
         handleAdd,
         handleAnalysis,
-        handleStatements
+        handleFilter,
+        handleStatements,
+        handleStockTracker
     }
 }

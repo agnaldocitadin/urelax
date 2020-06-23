@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, ReactElement } from 'react'
 import styled from 'styled-components/native'
 import { Colors, TypographyMedium } from '../../../theming'
 
@@ -6,8 +6,8 @@ export interface FlatHeaderProps {
     title: string,
     titleColor?: string,
     bgHeaderColor?: string
-    left?: Element
-    right?: Element
+    left?: ReactElement
+    right?: ReactElement
     borderBottomWidth?: number
     borderBottomColor?: string
 }
@@ -22,50 +22,45 @@ export const FlatHeader: FC<FlatHeaderProps> = ({
     borderBottomColor = Colors.GRAY_4
 }) => {
     return (
-        <StyledHeader 
+        <Container 
             bgColor={bgHeaderColor} 
             borderBottomWidth={borderBottomWidth} 
             borderBottomColor={borderBottomColor}>
-            <StyledLeftHeader >
+            <Left>
                 { left }
-            </StyledLeftHeader>
-            <StyledBody>
-                <StyledHeaderTitle color={titleColor}>{ title }</StyledHeaderTitle>
-            </StyledBody>
-            <StyledRightHeader>
+            </Left>
+            <Content>
+                <TypographyMedium fontSize={14} color={titleColor}>{ title }</TypographyMedium>
+            </Content>
+            <Right>
                 { right }
-            </StyledRightHeader>
-        </StyledHeader>
+            </Right>
+        </Container>
     )
 }
 
-const StyledHeader = styled.View<{ bgColor: string, borderBottomWidth: number, borderBottomColor: string }>`
-    background-color: ${({ bgColor }) => bgColor};
-    border-bottom-width: ${({ borderBottomWidth }) => `${borderBottomWidth}px`};
+const Container = styled.View<{ bgColor: string, borderBottomWidth: number, borderBottomColor: string }>`
+    border-bottom-width: ${({ borderBottomWidth }) => borderBottomWidth}px;
     border-bottom-color: ${({ borderBottomColor }) => borderBottomColor};
+    background-color: ${({ bgColor }) => bgColor};
     flex-direction: row;
-    padding: 0 5px;
     min-height: 60px;
+    padding: 0 5px;
     width: 100%;
-    z-index: 1;
 `
 
-const StyledLeftHeader = styled.View`
+const Left = styled.View`
     justify-content: center;
     min-width: 50px;
 `
 
-const StyledRightHeader = styled.View`
+const Right = styled.View`
     justify-content: center;
     min-width: 50px;
 `
 
-const StyledBody = styled.View`
+const Content = styled.View`
     justify-content: center;
     align-items: center;
     flex: 2;
-`
-
-const StyledHeaderTitle: any = styled(TypographyMedium)`
-    font-size: 14px;
 `

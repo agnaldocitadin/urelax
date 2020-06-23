@@ -1,15 +1,11 @@
-import { Strategy } from 'honeybee-api'
 import React, { FC } from 'react'
-import { NavigationStackProp } from 'react-navigation-stack'
-import { ts } from '../../../../core/I18n'
-import { InputOptions } from '../../../../ui/components/InputOptions'
-import { FormLayout } from '../../../../ui/components/Layout/FormLayout'
-import { FormView, SFormDescription, SFormTitle } from '../../../../ui/components/Layout/Layout.style'
+import { InputOptions } from '../../../components/InputOptions'
+import { FormLayout } from '../../../components/Layout/FormLayout'
+import { FormView, SFormDescription, SFormTitle } from '../../../components/Layout/Layout.style'
+import { ts } from '../../../core/I18n'
 import { useStockTrackerStrategyUIHook } from './StockTrackerStrategyUIHook'
 
-interface StockTrackerStrategyUIProps {
-    navigation: NavigationStackProp
-}
+interface StockTrackerStrategyUIProps {}
 
 /**
  *
@@ -17,7 +13,7 @@ interface StockTrackerStrategyUIProps {
  * @param {*} { navigation }
  * @returns
  */
-export const StockTrackerStrategyUI: FC<StockTrackerStrategyUIProps> = ({ navigation }) => {
+export const StockTrackerStrategyUI: FC<StockTrackerStrategyUIProps> = ({}) => {
     
     const { 
         selectedValue, 
@@ -27,15 +23,15 @@ export const StockTrackerStrategyUI: FC<StockTrackerStrategyUIProps> = ({ naviga
         validForm,
         fail,
         handleClose, 
-        handleValueChanges, 
-        handleButtonPress 
-    } = useStockTrackerStrategyUIHook(navigation)
+        // handleValueChanges, 
+        // handleButtonPress 
+    } = useStockTrackerStrategyUIHook()
 
     return (
         <FormLayout
+            data={{}}
             title={formTitle}
-            normalText={btnLabel}
-            onProcess={handleButtonPress}
+            // onProcess={handleButtonPress}
             onClose={handleClose}
             disabled={!validForm}
             fail={fail}>
@@ -43,7 +39,7 @@ export const StockTrackerStrategyUI: FC<StockTrackerStrategyUIProps> = ({ naviga
             { !fail && <InputOptions
                 loading={strategies.length === 0}
                 shimmers={1}
-                horizontalOptionPadding={20}
+                // horizontalOptionPadding={20}
                 header={
                     <FormView>
                         <SFormTitle>{ts("stock_tracker_strategy")}</SFormTitle>
@@ -51,9 +47,10 @@ export const StockTrackerStrategyUI: FC<StockTrackerStrategyUIProps> = ({ naviga
                     </FormView>
                 }
                 options={strategies}
-                renderOption={(strategy: Strategy) => ({ value: strategy, body: strategy.description })}
+                renderOption={(strategy) => ({ value: strategy, body: ts(strategy) })}
                 selectedOption={selectedValue}
-                onSelect={handleValueChanges}/>}
+                // onSelect={handleValueChanges}
+                />}
         </FormLayout>
     )
 }

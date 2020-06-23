@@ -1,23 +1,19 @@
 import React, { FC } from 'react'
-import { ScrollView, View } from 'react-native'
-import { NavigationStackProp } from 'react-navigation-stack'
-import styled from 'styled-components'
-import { ts } from '../../../../core/I18n'
-import { Colors } from '../../../../core/Theme'
-import { BackHeader } from '../../../../ui/components/Header/BackHeader'
-import { InteractiveButton } from '../../../../ui/components/InteractiveButton'
-import { FlatLayout } from '../../../../ui/components/Layout/FlatLayout'
-import { FORM_PADDING } from '../../../../ui/components/Layout/Layout.style'
+import { ScrollView } from 'react-native'
+import styled from 'styled-components/native'
+import { BackHeader } from '../../../components/Header/BackHeader'
+import { InteractiveButton } from '../../../components/InteractiveButton'
+import { FlatLayout } from '../../../components/Layout/FlatLayout'
+import { ts } from '../../../core/I18n'
+import { Colors } from '../../../theming'
 import { StockTrackerData } from '../StockTrackerData'
 import { useStockTrackerSettingUIHook } from './StockTrackerSettingUIHook'
 
-interface StockTrackerSettingUIProps {
-    navigation: NavigationStackProp
-}
+interface StockTrackerSettingUIProps {}
 
-export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({ navigation }) => {
+export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({}) => {
 
-    const { stockTracker, showDestroyBtn, handleDestroyStockTracker } = useStockTrackerSettingUIHook(navigation)
+    const { stockTracker, showDestroyBtn, handleDestroyStockTracker } = useStockTrackerSettingUIHook()
 
     return (
         <FlatLayout>
@@ -25,22 +21,16 @@ export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({ navigati
             <ScrollView>
                 <StockTrackerData isReview={!showDestroyBtn} stockTracker={stockTracker}/>
                 { showDestroyBtn && <ButtonView>
-                    <InteractiveButton 
-                        block 
-                        normalText={ts("destroy_stock_tracker")}
-                        normalBgColor={Colors.RED_ERROR}
-                        textColor={Colors.WHITE}
-                        onPress={handleDestroyStockTracker}
-                        animate={false}
-                        radius={6}/>
+                    <InteractiveButton
+                        data={{}}
+                        onPress={handleDestroyStockTracker}/>
                 </ButtonView>}
             </ScrollView>
         </FlatLayout>
     )
 }
 
-const ButtonView = styled(View)`
+const ButtonView = styled.View`
     border-top-color: ${Colors.BG_3};
     border-top-width: 1px;
-    padding: ${FORM_PADDING};
 `

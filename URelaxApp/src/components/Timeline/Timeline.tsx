@@ -3,9 +3,7 @@ import styled from 'styled-components/native'
 import { Colors } from '../../theming'
 import { InfiniteFlatList, InfiniteFlatListProps } from '../InfiniteFlatList'
 
-interface TimelineProps<T> extends InfiniteFlatListProps<T> {
-
-}
+export interface TimelineProps<T> extends InfiniteFlatListProps<T> {}
 
 export const Timeline = <T extends {}>(props: InfiniteFlatListProps<T>) => {
     return (

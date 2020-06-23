@@ -26,7 +26,7 @@ export const Info: FC<InfoProps> = ({
     )
 
     const touchable = others.onPress || others.onPressIn || others.onPressOut || others.onLongPress
-    const info = touchable ? <Item {...others}><View>{ child }</View></Item> : <Content>{ child }</Content>
+    const info = touchable ? <Item {...others} style={style}><View>{ child }</View></Item> : <Content style={style}>{ child }</Content>
     
     return (
         <View>

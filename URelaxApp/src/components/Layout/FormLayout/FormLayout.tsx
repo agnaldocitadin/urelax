@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Colors, Icons } from '../../../theming'
 import { BackHeader, BackHeaderProps } from '../../Header/BackHeader'
 import { ButtonHeader } from '../../Header/ButtonHeader'
-import { InteractiveButton, InteractiveButtonProps, InteractiveButtonStates } from '../../InteractiveButton'
+import { InteractiveButton, InteractiveButtonProps } from '../../InteractiveButton'
 import { FlatLayout, FlatLayoutProps } from '../FlatLayout'
 import { SFlatFooter } from '../Layout.style'
 
@@ -54,13 +54,13 @@ export const FormLayout: FC<Props> = (props) => {
             { !fail && <SFlatFooter>
                 <InteractiveButton
                     {...buttonProps}
-                    block
-                    textColor={Colors.BLUES_1}
-                    indicatorColor={Colors.BLUES_1}
-                    successStatus={InteractiveButtonStates.NORMAL}
-                    disabledBgColor={Colors.WHITE}
-                    disabledTextColor={Colors.BG_2}
-                    height={55}
+                    // block
+                    // textColor={Colors.BLUES_1}
+                    // indicatorColor={Colors.BLUES_1}
+                    // successStatus={InteractiveButtonStates.NORMAL}
+                    // disabledBgColor={Colors.WHITE}
+                    // disabledTextColor={Colors.BG_2}
+                    // height={55}
                     onPress={onProcess}/>
             </SFlatFooter>}
 

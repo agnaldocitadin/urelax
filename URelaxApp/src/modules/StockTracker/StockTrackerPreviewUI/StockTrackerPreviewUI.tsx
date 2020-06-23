@@ -1,43 +1,38 @@
 import { utils } from 'js-commons'
-import { View } from 'native-base'
 import React, { FC } from 'react'
 import { Image } from 'react-native'
-import { NavigationStackProp } from 'react-navigation-stack'
-import styled from 'styled-components'
-import AppConfig from '../../../../core/AppConfig'
-import { ts } from '../../../../core/I18n'
-import { Colors, Icons, SymbolsImg } from '../../../../core/Theme'
-import { BackHeader } from '../../../../ui/components/Header/BackHeader'
-import { ButtonHeader } from '../../../../ui/components/Header/ButtonHeader'
-import { Info } from '../../../../ui/components/Info'
-import { FlatLayout } from '../../../../ui/components/Layout/FlatLayout'
-import { FORM_PADDING } from '../../../../ui/components/Layout/Layout.style'
-import { ActivityTimeline } from '../../../activity/components/ActivityTimeline'
+import styled from 'styled-components/native'
+import { BackHeader } from '../../../components/Header/BackHeader'
+import { ButtonHeader } from '../../../components/Header/ButtonHeader'
+import { Info } from '../../../components/Info'
+import { FlatLayout } from '../../../components/Layout/FlatLayout'
+import AppConfig from '../../../core/AppConfig'
+import { ts } from '../../../core/I18n'
+import { Colors, DEFAULT_HORIZONTAL_PADDING, DEFAULT_VERTICAL_PADDING, Icons, SymbolsImg, Typography } from '../../../theming'
+import { StatementTimeline } from '../../Statement/StatementTimeline'
 import { StockTrackerControlButton } from '../StockTrackerControlButton'
 import { useStockTrackerPreviewUIHook } from './StockTrackerPreviewUIHook'
 
-interface StockTrackerPreviewUIProps {
-    navigation: NavigationStackProp
-}
+interface StockTrackerPreviewUIProps {}
 
-export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({ navigation }) => {
+export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
     
     const { 
-        stockTracker, 
-        activities, 
-        stockBalance,
+        stockTracker,
+        amount,
+        transactions, 
         fail,
         handleSettings, 
         handleSelectActivity, 
         handleRefresh, 
         handleLoadMoreData,
         handleStockTrackerAction
-    } = useStockTrackerPreviewUIHook(navigation)
+    } = useStockTrackerPreviewUIHook()
 
     return (
         <FlatLayout fail={fail}>
             <BackHeader 
-                title={stockTracker.stock?.description || ""}
+                title={stockTracker.stockInfo?.description || ""}
                 right={
                     <ButtonHeader
                         color={Colors.BLUES_1} 
@@ -45,85 +40,74 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({ navigati
                         onPress={handleSettings}/>
                 }/>
 
-            { !fail && <ActivityTimeline
-                loading={activities.length === 0}
-                activities={activities}
-                minLengthToLoadMore={30}
-                onRefresh={handleRefresh}
-                onLoadMoreData={handleLoadMoreData}
-                onPress={handleSelectActivity}
-                header={
-                    <React.Fragment>
-                        <InfoHeader>
-                            <LeftColumn>
-                                <InfoItem 
-                                    name={ts("stock_amount")}
-                                    value={utils.formatCurrency(stockBalance.amount, { prefix: AppConfig.CURRENCY_PREFIX })}
-                                    nameFontSize={15}
-                                    valueFontSize={24}/>
+            { !fail && 
+                <StatementTimeline
+                    data={transactions}
+                    minLengthToLoadMore={30}
+                    onRefresh={handleRefresh}
+                    onEndPageReached={handleLoadMoreData}
+                    onPress={handleSelectActivity}
+                    ListHeaderComponent={
+                        <React.Fragment>
+                            <InfoHeader>
+                                <LeftColumn>
+                                    <InfoItem 
+                                        title={<Typography>{ts("stock_amount")}</Typography>} 
+                                        description={<Typography>{utils.formatCurrency(amount, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}/>
 
-                                <InfoItem 
-                                    name={ts("buy_average_price")}
-                                    value={utils.formatCurrency(stockBalance.averagePrice, { prefix: AppConfig.CURRENCY_PREFIX })}
-                                    valueFontSize={18}/>
+                                    <InfoItem 
+                                        title={<Typography>{ts("buy_average_price")}</Typography>} 
+                                        description={<Typography>{utils.formatCurrency(stockTracker.buyPrice, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}/>
 
-                                <InfoItem 
-                                    name={ts("quantity")}
-                                    value={String(stockBalance.quantity)}
-                                    valueFontSize={18}/>
-
-                                <InfoItem 
-                                    name={ts("stock_tracker_status")}
-                                    value={ts(stockTracker?.status || "")}/>
-
-                            </LeftColumn>
-                            <RightColumn>
-                                <Image 
-                                    source={SymbolsImg[stockTracker.stock.symbol]} 
-                                    resizeMode="contain"
-                                    style={{ maxWidth: 100, maxHeight: 60 }}/>
-                            </RightColumn>
-                        </InfoHeader>
-                        <ButtonView>
-                            <StockTrackerControlButton 
-                                buttonSize={60} 
-                                iconSize={30}
-                                status={stockTracker?.status} 
-                                onPress={handleStockTrackerAction}/>
-                        </ButtonView>
-                    </React.Fragment>
-                }/>}
+                                    <InfoItem 
+                                        title={<Typography>{ts("quantity")}</Typography>} 
+                                        description={<Typography>{stockTracker.qty}</Typography>}/>
+                                </LeftColumn>
+                                <RightColumn>
+                                    <Image 
+                                        source={SymbolsImg.AZUL4} 
+                                        resizeMode="contain"
+                                        style={{ maxWidth: 100, maxHeight: 60 }}/>
+                                </RightColumn>
+                            </InfoHeader>
+                            <ButtonView>
+                                <StockTrackerControlButton 
+                                    status={stockTracker?.status} 
+                                    onPress={handleStockTrackerAction}/>
+                            </ButtonView>
+                        </React.Fragment>
+                    }
+                />}
         </FlatLayout>
     )
 }
 
-const InfoHeader = styled(View)`
-    background-color: ${Colors.WHITE};
-    flex-direction: row;
-    margin-bottom: 30px;
-    border-bottom-width: 1px;
+const InfoHeader = styled.View`
+    padding-bottom: ${DEFAULT_HORIZONTAL_PADDING}px;
     border-bottom-color: ${Colors.BG_3};
-    padding-left: ${FORM_PADDING};
-    padding-bottom: 10px;
-    padding-top: 10px;
+    background-color: ${Colors.WHITE};
+    border-bottom-width: 1px;
+    flex-direction: row;
 `
 
-const LeftColumn = styled(View)`
+const LeftColumn = styled.View`
+    padding-left: ${DEFAULT_HORIZONTAL_PADDING}px;
     flex: 1;
 `
 
-const RightColumn = styled(View)`
+const RightColumn = styled.View`
     justify-content: space-between;
-    width: 130px;
     margin-top: 15px;
+    width: 130px;
 `
 
 const InfoItem = styled(Info)`
-    padding: 10px 0;
+    padding-bottom: ${DEFAULT_VERTICAL_PADDING / 2}px;
+    padding-left: 0;
 `
 
-const ButtonView = styled(View)`
+const ButtonView = styled.View`
     position: absolute;
-    bottom: 0;
     right: 30px;
+    bottom: 0;
 `

@@ -1,15 +1,11 @@
-import { Frequency } from 'honeybee-api'
 import React, { FC } from 'react'
-import { NavigationStackProp } from 'react-navigation-stack'
-import { ts } from '../../../../core/I18n'
-import { InputOptions } from '../../../../ui/components/InputOptions'
-import { FormLayout } from '../../../../ui/components/Layout/FormLayout'
-import { FormView, SFormDescription, SFormTitle } from '../../../../ui/components/Layout/Layout.style'
+import { InputOptions } from '../../../components/InputOptions'
+import { FormLayout } from '../../../components/Layout/FormLayout'
+import { FormView, SFormDescription, SFormTitle } from '../../../components/Layout/Layout.style'
+import { ts } from '../../../core/I18n'
 import { useStockTrackerFrequencyUIHook } from './StockTrackerFrequencyUIHook'
 
-interface StockTrackerFrequencyUIProps {
-    navigation: NavigationStackProp
-}
+interface StockTrackerFrequencyUIProps {}
 
 /**
  *
@@ -17,7 +13,7 @@ interface StockTrackerFrequencyUIProps {
  * @param {*} { navigation }
  * @returns
  */
-export const StockTrackerFrequencyUI: FC<StockTrackerFrequencyUIProps> = ({ navigation }) => {
+export const StockTrackerFrequencyUI: FC<StockTrackerFrequencyUIProps> = ({}) => {
     
     const { 
         selectedValue, 
@@ -29,12 +25,13 @@ export const StockTrackerFrequencyUI: FC<StockTrackerFrequencyUIProps> = ({ navi
         handleClose, 
         handleValueChanges, 
         handleButtonPress 
-    } = useStockTrackerFrequencyUIHook(navigation)
+    } = useStockTrackerFrequencyUIHook()
 
     return (
-        <FormLayout 
+        <FormLayout
+            data={{}}
             title={formTitle}
-            normalText={btnLabel}
+            // normalText={btnLabel}
             onProcess={handleButtonPress}
             onClose={handleClose}
             disabled={!validForm}
@@ -42,7 +39,7 @@ export const StockTrackerFrequencyUI: FC<StockTrackerFrequencyUIProps> = ({ navi
 
             { !fail && <InputOptions
                 loading={frequencies.length === 0}
-                horizontalOptionPadding={20}
+                // horizontalOptionPadding={20}
                 header={
                     <FormView>
                         <SFormTitle>{ts("stock_tracker_frequency")}</SFormTitle>
@@ -50,7 +47,7 @@ export const StockTrackerFrequencyUI: FC<StockTrackerFrequencyUIProps> = ({ navi
                     </FormView>
                 }
                 options={frequencies}
-                renderOption={(frequency: Frequency) => ({ value: frequency, body: frequency.description })}
+                renderOption={(frequency) => ({ value: frequency, body: ts(frequency) })}
                 selectedOption={selectedValue}
                 onSelect={handleValueChanges}/>}
         </FormLayout>

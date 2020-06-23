@@ -13,6 +13,7 @@ import { DialogMessage } from './src/modules/Messaging/DialogMessage'
 import Navigation from './src/modules/Navigation'
 import { Navigator } from './src/modules/Navigation/Navigator'
 import Security from './src/modules/Security'
+import Statement from './src/modules/Statement'
 import StockTracker from './src/modules/StockTracker'
 import Storage from './src/modules/Storage'
 
@@ -27,7 +28,8 @@ const store = AppModules.register([
     Dashboard,
     ActivityHistory,
     Investiment,
-    StockTracker
+    StockTracker,
+    Statement
 ])
     
 const App = () => {

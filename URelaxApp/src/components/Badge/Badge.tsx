@@ -11,7 +11,7 @@ interface BadgeProps {
 }
 
 export const Badge: FC<BadgeProps> = ({
-    bgColor = Colors.BLUES_1,
+    bgColor = Colors.BG_2,
     color = Colors.WHITE, 
     style,
     text

@@ -11,6 +11,20 @@ export const Images = {
     LOGO: require("../assets/imgs/logo.png")
 }
 
+export const SymbolsImg = {
+    AZUL4 : require("../assets/imgs/AZUL4.png"),
+    MGLU3 : require("../assets/imgs/MGLU3.png"),
+    PETR4 : require("../assets/imgs/PETR4.png"),
+    VALE3 : require("../assets/imgs/VALE3.png"),
+    ITUB4 : require("../assets/imgs/ITUB4.png"),
+    BBDC4 : require("../assets/imgs/BBDC4.png"),
+    BBAS3 : require("../assets/imgs/BBAS3.png"),
+    VVAR3 : require("../assets/imgs/VVAR3.png"),
+    ABEV3 : require("../assets/imgs/ABEV3.png"),
+    LREN3 : require("../assets/imgs/LREN3.png"),
+    WEGE3 : require("../assets/imgs/WEGE3.png")
+}
+
 export enum Fonts {
     FONT_REGULAR = "Montserrat-Regular",
     FONT_MEDIUM = "Montserrat-Medium",

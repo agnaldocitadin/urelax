@@ -42,7 +42,7 @@ class StockTrackerPlayground {
      * @memberof StockTrackerPlayground
      */
     schedule(): void {
-        if (process.env.STOCKTRACKER_PLAYGROUND_ACTIVE) {
+        if (process.env.STOCKTRACKER_PLAYGROUND_ACTIVE === "true") {
             Logger.info("StockTracker playground # STARTS: %s", cronstrue.toString(process.env.STOCKTRACKER_PLAYGROUND_START))
             Logger.info("StockTracker playground # STOPS: %s", cronstrue.toString(process.env.STOCKTRACKER_PLAYGROUND_STOP))
             schedule.scheduleJob(process.env.STOCKTRACKER_PLAYGROUND_START, () => this.start())

@@ -1,11 +1,12 @@
 import { StockTrackerStatus } from 'honeybee-api'
 import React, { FC } from 'react'
-import { Colors, Icons } from '../../../../core/Theme'
-import { InteractiveButton, InteractiveButtonStates } from '../../../../ui/components/InteractiveButton'
+import { InteractiveButton, InteractiveButtonStates } from '../../../components/InteractiveButton'
+import { ts } from '../../../core/I18n'
+import { Icons } from '../../../theming'
 
 export interface StockTrackerControlButtonProps {
-    buttonSize: number
-    iconSize: number
+    // buttonSize: number
+    // iconSize: number
     status?: string
     onPress?(): Promise<unknown>
 }
@@ -27,23 +28,18 @@ export const isDisabled = (status?: string): boolean => {
     return status === StockTrackerStatus.WAITING_DESTROY || status === StockTrackerStatus.WAITING_PAUSE
 }
 
-export const StockTrackerControlButton: FC<StockTrackerControlButtonProps> = ({ buttonSize, iconSize, status, onPress }) => {
+export const StockTrackerControlButton: FC<StockTrackerControlButtonProps> = ({ status, onPress }) => {
     const btActionIcon = getBtIcon(status)
     const disabled = isDisabled(status)
     if (isDestroyed(status)) return null
     return (
         <InteractiveButton
-            icon={btActionIcon} 
-            width={buttonSize} 
-            height={buttonSize} 
-            radius={100} 
-            iconSize={iconSize}
-            iconColor={Colors.WHITE}
-            indicatorColor={Colors.WHITE}
-            normalBgColor={Colors.BLUES_1}
-            processingBgColor={Colors.BG_2}
-            successStatus={InteractiveButtonStates.NORMAL}
             onPress={onPress}
-            disabled={disabled}/>
+            data={{
+                activityState: InteractiveButtonStates.NORMAL,
+                text: ts(status||""),
+                icon: btActionIcon,
+                disabled
+            }}/>
     )
 }

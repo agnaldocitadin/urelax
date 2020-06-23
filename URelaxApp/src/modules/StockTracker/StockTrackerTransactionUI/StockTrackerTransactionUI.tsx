@@ -1,20 +1,14 @@
 import React, { FC } from 'react'
-import { Text } from 'react-native'
-import { NavigationStackProp } from 'react-navigation-stack'
-import styled from 'styled-components'
-import AppConfig from '../../../../core/AppConfig'
-import { ts } from '../../../../core/I18n'
-import { Colors, Theme } from '../../../../core/Theme'
-import { InputSwitch } from '../../../../ui/components/InputSwitch'
-import { InputText } from '../../../../ui/components/InputText'
-import { FormLayout } from '../../../../ui/components/Layout/FormLayout'
-import { SFormDescription, SFormTitle } from '../../../../ui/components/Layout/Layout.style'
-import { ScrollViewForm } from '../../../../ui/components/Layout/ScrollViewForm'
+import { InputSwitch } from '../../../components/InputSwitch'
+import { InputText } from '../../../components/InputText'
+import { FormLayout } from '../../../components/Layout/FormLayout'
+import { SFormDescription, SFormTitle } from '../../../components/Layout/Layout.style'
+import { ScrollViewForm } from '../../../components/Layout/ScrollViewForm'
+import { ts } from '../../../core/I18n'
+import { TypographyMedium } from '../../../theming'
 import { useStockTrackerTransactionUIHook } from './StockTrackerTransactionUIHook'
 
-interface StockTrackerTransactionUIProps {
-    navigation: NavigationStackProp
-}
+interface StockTrackerTransactionUIProps {}
 
 /**
  *
@@ -22,7 +16,7 @@ interface StockTrackerTransactionUIProps {
  * @param {*} { navigation }
  * @returns
  */
-export const StockTrackerTransactionUI: FC<StockTrackerTransactionUIProps> = ({ navigation }) => {
+export const StockTrackerTransactionUI: FC<StockTrackerTransactionUIProps> = ({}) => {
     
     const {
         selectedValue,
@@ -34,12 +28,13 @@ export const StockTrackerTransactionUI: FC<StockTrackerTransactionUIProps> = ({ 
         handleValueChanges, 
         handleButtonPress,
         handleAutoLimit
-    } = useStockTrackerTransactionUIHook(navigation)
+    } = useStockTrackerTransactionUIHook()
 
     return (
-        <FormLayout 
+        <FormLayout
+            data={{}}
             title={formTitle}
-            normalText={btnLabel}
+            // normalText={btnLabel}
             onProcess={handleButtonPress}
             onClose={handleClose}
             disabled={!validForm}>
@@ -48,31 +43,26 @@ export const StockTrackerTransactionUI: FC<StockTrackerTransactionUIProps> = ({ 
                 <SFormTitle>{ts("stock_tracker_transaction_amount")}</SFormTitle>
                 <SFormDescription>{ts("stock_tracker_transaction_amount_tip")}</SFormDescription>
                 <InputText
+                    label="opao"
                     value={selectedValue}
                     autoCapitalize="words"
                     textContentType="name"
-                    textSize={20}
-                    tip={ts("stock_tracker_transaction_amount_eg")}
+                    // textSize={20}
+                    // tip={ts("stock_tracker_transaction_amount_eg")}
                     onChangeText={handleValueChanges}
-                    includeRawValueInChangeText
-                    type="money"
-                    options={{
-                        delimiter: ".",
-                        precision: 2,
-                        unit: `${AppConfig.CURRENCY_PREFIX} `,
-                    }}/>
+                    // includeRawValueInChangeText
+                    // type="money"
+                    // options={{
+                    //     delimiter: ".",
+                    //     precision: 2,
+                    //     unit: `${AppConfig.CURRENCY_PREFIX} `,
+                    // }}
+                    />
                 
-                <Or>{ts("or_you_can")}</Or>
-                <InputSwitch text={ts("stock_tracker_auto_transaction_amount")} value={autoLimit} onChange={handleAutoLimit}/>
+                <TypographyMedium>{ts("or_you_can")}</TypographyMedium>
+                <InputSwitch label={ts("stock_tracker_auto_transaction_amount")} value={autoLimit} onChange={handleAutoLimit}/>
             </ScrollViewForm>
             
         </FormLayout>
     )
 }
-
-const Or = styled(Text)`
-    font-family: ${Theme.FONT_MEDIUM};
-    color: ${Colors.BLUES_4};
-    font-size: 16px;
-    margin: 15px 0;
-`

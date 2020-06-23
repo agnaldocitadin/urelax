@@ -22,7 +22,7 @@ export interface StockTracker {
     status: string
     frequency: string
     lastFrequencyUpdate: Date
-    stockInfo: StockInvestimentInfo
+    stockInfo: BrokerInvestiment
     qty: number
     buyPrice: number
     createdAt: Date
@@ -74,7 +74,6 @@ export interface Broker {
     name: string
     logo: string
     active: boolean
-    investiments: Investiment[]
     createdAt: Date
     updatedAt: Date
 }
@@ -145,7 +144,7 @@ export interface BrokerInvestiment {
     stock: StockInvestimentInfo
 }
 
-export interface FinancialHistory {
+export interface FinancialHistory { //alterar p/ DailyFinancialHistory
     _id: string
     date: Date
     acount: Account
@@ -170,11 +169,13 @@ export interface Transaction {
 }
 
 export interface AppliedInvestiment {
+    brokerAccountName: string
     investiment: BrokerInvestiment
     qty: number
     amount: number
 }
 
+// Corresponde 1 barra do gráfico
 export interface FinancialAnalysis {
     label: string
     amount: number
@@ -182,6 +183,7 @@ export interface FinancialAnalysis {
     items: FinancialAnalysisItem[]
 }
 
+// Corresponde as movimentações de cada investimento de 1 barra do grafico
 export interface FinancialAnalysisItem {
     refID: string
     investiment: BrokerInvestiment

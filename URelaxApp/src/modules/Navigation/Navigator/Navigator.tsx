@@ -2,21 +2,28 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
+import { ActivityDetailUI } from '../../ActivityHistory/ActivityDetailUI'
 import { ActivityListUI } from '../../ActivityHistory/ActivityListUI'
 import { DashboardUI } from '../../Dashboard/DashboardUI'
 import { SignUpUI } from '../../Identity/SignUpUI'
 import { AddInvestimentUI } from '../../Investiment/AddInvestimentUI/AddInvestimentUI'
+import { FilterUI } from '../../Investiment/FilterUI'
 import { InvestimentAnalysisUI } from '../../Investiment/InvestimentAnalysisUI/InvestimentAnalysisUI'
 import { InvestimentUI } from '../../Investiment/InvestimentUI'
-import { StatementDetailUI } from '../../Investiment/StatementDetailUI'
-import { StatementUI } from '../../Investiment/StatementUI'
 import { TourUI } from '../../Presentation/TourUI'
 import { FastAuthFailureUI } from '../../Security/FastAuthFailureUI'
 import { FastAuthUI } from '../../Security/FastAuthUI'
 import { LogInUI } from '../../Security/LogInUI'
+import { StatementDetailUI } from '../../Statement/StatementDetailUI'
+import { StatementUI } from '../../Statement/StatementUI'
+import { StockTrackerFrequencyUI } from '../../StockTracker/StockTrackerFrequencyUI'
+import { StockTrackerPreviewUI } from '../../StockTracker/StockTrackerPreviewUI'
+import { StockTrackerReviewUI } from '../../StockTracker/StockTrackerReviewUI'
+import { StockTrackerSettingUI } from '../../StockTracker/StockTrackerSettingUI'
+import { StockTrackerStrategyUI } from '../../StockTracker/StockTrackerStrategyUI'
+import { StockTrackerTransactionUI } from '../../StockTracker/StockTrackerTransactionUI'
 import { Routes, Stacks } from '../const'
 import { select } from '../reducer'
-import { ActivityDetailUI } from '../../ActivityHistory/ActivityDetailUI'
 
 const Stack = createStackNavigator()
 // const Stack = createDrawerNavigator()
@@ -69,9 +76,16 @@ export const Navigator: FC = () => {
                     <Stack.Screen name={Routes.SIGN_UP} component={SignUpUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.INVESTIMENT_FILTER} component={FilterUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STATEMENT} component={StatementUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STATEMENT_DETAIL} component={StatementDetailUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STOCKTRACKER_PREVIEW} component={StockTrackerPreviewUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STOCKTRACKER_REVIEW} component={StockTrackerReviewUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STOCKTRACKER_FREQUENCY} component={StockTrackerFrequencyUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STOCKTRACKER_SETTING} component={StockTrackerSettingUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STOCKTRACKER_STRATEGY} component={StockTrackerStrategyUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STOCKTRACKER_TRANSACTION} component={StockTrackerTransactionUI} options={defaultOptions}/>
                 </Stack.Navigator>
             )
             break
