@@ -1,10 +1,10 @@
+import { useNavigation } from "@react-navigation/native"
 import { useCallback, useState } from "react"
-import { NavigationStackProp } from "react-navigation-stack"
-import { BROKER_FLOW_VIEW } from "../modules/broker"
 import { animatedCallback } from "./Commons.hook"
 
+const BROKER_FLOW_VIEW = 'BROKER_FLOW_VIEW'
+
 export interface WizardExecution {
-    navigation: NavigationStackProp
     flow: string[]
     currentView: string
     onRequestEdit: (value: any) => any
@@ -13,8 +13,9 @@ export interface WizardExecution {
     isEditing: boolean
 }
 
-export const useWizardHook = ({ navigation, flow, currentView, isEditing, onRequestEdit, onRequestPersist, onRequestFail }: WizardExecution, ...args: any[]) => {
+export const useWizardHook = ({ flow, currentView, isEditing, onRequestEdit, onRequestPersist, onRequestFail }: WizardExecution, ...args: any[]) => {
 
+    const navigation = useNavigation()
     const [ selectedValue, setSelectedValue ] = useState()
 
     const handleButtonPress = animatedCallback(async () => {

@@ -6,7 +6,7 @@ import { isDisabled } from "../StockTrackerControlButton"
 export const useStockTrackerSettingUIHook = () => {
 
     const dispatch = useDispatch()
-    const stockTracker = {} as StockTracker //useSelector((state: States) => state.STOCK_TRACKER.stockTrackerToUpdate)
+    const stockTracker = { strategySetting: { }, stockInfo: { stock: { symbol: "AZUL4" }} } as StockTracker //useSelector((state: States) => state.STOCK_TRACKER.stockTrackerToUpdate)
 
     const handleDestroyStockTracker = animatedCallback(() => {
         // dispatch(showConfirm(ts("destroy_stock_tracker"), ts("destroy_stock_tracker_msg"), async () => {

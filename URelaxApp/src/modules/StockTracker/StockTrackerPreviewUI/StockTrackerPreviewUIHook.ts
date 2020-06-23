@@ -1,11 +1,12 @@
-import { Activity, Transaction, StockTracker } from "honeybee-api"
+import { useNavigation } from "@react-navigation/native"
+import { Activity, StockTracker, Transaction } from "honeybee-api"
 import { useCallback, useState } from "react"
-import { useDispatch } from "react-redux"
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
+import { Routes } from "../../Navigation/const"
 
 export const useStockTrackerPreviewUIHook = () => {
 
-    const dispatch = useDispatch()
+    const navigation = useNavigation()
     const [ fail, setFail] = useState(false)
     // const stockTracker = useSelector((state: States) => state.STOCK_TRACKER.selectedStockTracker || {})
     // const { selectedStockTrackerActivities, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
@@ -33,7 +34,7 @@ export const useStockTrackerPreviewUIHook = () => {
     
     const handleSettings = animatedCallback(() => {
         // dispatch(selectStockTrackerToUpdate(stockTracker))
-        // navigation.navigate(Routes.StockTrackerSettingUI)
+        navigation.navigate(Routes.STOCKTRACKER_SETTING)
     }, [])
     
     const handleSelectActivity = animatedCallback((activity: Activity) => {
@@ -98,7 +99,7 @@ export const useStockTrackerPreviewUIHook = () => {
     )
 
     return {
-        stockTracker: {} as StockTracker,
+        stockTracker: { buyPrice: 0 } as StockTracker,
         amount: 0,
         transactions: [] as Transaction[], //selectedStockTrackerActivities,
         fail,

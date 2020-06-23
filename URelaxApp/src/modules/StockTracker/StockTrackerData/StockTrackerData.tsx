@@ -42,31 +42,17 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
 }
 
 const StockLogo: any = styled.Image`
-    /* width: 150px;
-    height: 100px;
-    margin-left: ${(props: any) => props.noPadding ? 0 : FORM_PADDING};
-    margin-top: ${FORM_PADDING};
-    margin-left: auto;
-    margin-right: auto; */
+    
 `
 
 const SInfo: any = styled(Info)`
-    /* padding-left: ${(props: any) => props.noPadding ? 0 : FORM_PADDING};
-    padding-right: ${(props: any) => props.noPadding ? 0 : FORM_PADDING}; */
+    
 `
 
 const Divider: any = styled(SHeaderDivider)`
-    /* margin-left: ${(props: any) => props.noPadding ? 0 : FORM_PADDING}; */
+    
 `
 
 const AutoAmountLimit: any = styled(Typography)`
-    /* font-family: ${Theme.FONT_REGULAR};
-    padding: 10px 15px;
-    margin: 0 ${(props: any) => props.noPadding ? 0 : FORM_PADDING};
-    margin-bottom: ${FORM_PADDING};
-    border-width: 1px;
-    border-color: ${Colors.BLUES_2};
-    color: ${Colors.BLUES_2};
-    font-size: 14px;
-    border-radius: 5px; */
+    
 `
