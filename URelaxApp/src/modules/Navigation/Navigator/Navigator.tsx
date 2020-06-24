@@ -8,6 +8,7 @@ import { DashboardUI } from '../../Dashboard/DashboardUI'
 import { SignUpUI } from '../../Identity/SignUpUI'
 import { AddInvestimentUI } from '../../Investiment/AddInvestimentUI/AddInvestimentUI'
 import { FilterUI } from '../../Investiment/FilterUI'
+import { InvestimentAnalysisDetailUI } from '../../Investiment/InvestimentAnalysisDetailUI'
 import { InvestimentAnalysisUI } from '../../Investiment/InvestimentAnalysisUI/InvestimentAnalysisUI'
 import { InvestimentUI } from '../../Investiment/InvestimentUI'
 import { TourUI } from '../../Presentation/TourUI'
@@ -76,6 +77,7 @@ export const Navigator: FC = () => {
                     <Stack.Screen name={Routes.SIGN_UP} component={SignUpUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS_DETAIL} component={InvestimentAnalysisDetailUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.INVESTIMENT_FILTER} component={FilterUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STATEMENT} component={StatementUI} options={defaultOptions}/>

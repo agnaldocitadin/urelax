@@ -14,7 +14,7 @@ import { SHeaderDivider } from '../../../components/Layout/Layout.style'
 import { TouchItem } from '../../../components/TouchItem'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Colors, DEFAULT_HORIZONTAL_PADDING, Icons, Typography, TypographyMedium } from '../../../theming'
+import { Colors, DEFAULT_HORIZONTAL_SPACING, Icons, Typography, TypographyMedium } from '../../../theming'
 import { Routes } from '../../Navigation/const'
 import { useInvestimentUIHook } from './InvestimentUIHook'
 
@@ -118,7 +118,7 @@ const Patrimony = styled.View`
 `
 
 const Content = styled.View`
-    padding-bottom: ${DEFAULT_HORIZONTAL_PADDING}px;
+    padding-bottom: ${DEFAULT_HORIZONTAL_SPACING}px;
 `
 
 const Item = styled.View`
@@ -137,9 +137,9 @@ const AddInvestimentBtn = styled(BaseButton)`
 `
 
 const Touch = styled(TouchItem)`
-    padding: 0 ${DEFAULT_HORIZONTAL_PADDING}px;
+    padding: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
 `
 
 const Divider = styled(SHeaderDivider)`
-    padding: 0 ${DEFAULT_HORIZONTAL_PADDING}px;
+    padding: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
 `

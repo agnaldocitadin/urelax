@@ -7,6 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "emulator": "emulator @Pixel_API_29 -no-snapshot-load",
+    "pixel3": "emulator @Pixel_3_API_29 -no-snapshot-load",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },

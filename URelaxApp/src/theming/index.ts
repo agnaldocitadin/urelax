@@ -4,8 +4,8 @@ import { BaseTypography } from '../components/BaseTypography'
 
 export const SHIMMER_COLORS = ["#D1D6DA", "#919394", "#D1D6DA"]
 export const DEFAULT_FONTSIZE = 13
-export const DEFAULT_VERTICAL_PADDING = 20
-export const DEFAULT_HORIZONTAL_PADDING = 20
+export const DEFAULT_VERTICAL_SPACING = 20
+export const DEFAULT_HORIZONTAL_SPACING = 20
 
 export const Images = {
     LOGO: require("../assets/imgs/logo.png")
@@ -41,6 +41,7 @@ export enum Colors {
     BG_1 = "#e5ebf0",
     BG_2 = "#afb4b9",
     BG_3 = "#dde7f2",
+    BG_4 = "#d3dfec",
     BLUES_1 = "#1099f5",
     BLUES_2 = "#0ea2ff",
     BLUES_3 = "#3497d4",

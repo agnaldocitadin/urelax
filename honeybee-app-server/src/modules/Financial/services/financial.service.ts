@@ -24,7 +24,7 @@ export const groupFinancialSummaryBy = (account: mongoose.Types.ObjectId, date: 
     // TODO
     // return Promise.resolve([])
     return Promise.resolve([{
-        patrimony: 100,
+        patrimony: 128989,
         variation: 1,
         when: "Yesterday-"
     },{

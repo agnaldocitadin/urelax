@@ -9,6 +9,7 @@ import AppConfig from '../../../core/AppConfig'
 import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
 import { SymbolsImg, Typography } from '../../../theming'
+import { Routes } from '../../Navigation/const'
 
 interface StockTrackerDataProps {
     stockTracker: StockTracker
@@ -22,9 +23,9 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
     const { autoAmountLimit, stockAmountLimit } = strategySetting
 
     const navigation = useNavigation()
-    const handleStrategy = animatedCallback(() => navigation.navigate(""))
-    const handleFrequency = animatedCallback(() => navigation.navigate(""))
-    const handleTransaction = animatedCallback(() => navigation.navigate(""))
+    const handleStrategy = animatedCallback(() => navigation.navigate(Routes.STOCKTRACKER_STRATEGY))
+    const handleFrequency = animatedCallback(() => navigation.navigate(Routes.STOCKTRACKER_FREQUENCY))
+    const handleTransaction = animatedCallback(() => navigation.navigate(Routes.STOCKTRACKER_TRANSACTION))
 
     return (
         <React.Fragment>

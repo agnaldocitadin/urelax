@@ -15,7 +15,7 @@ export interface BaseTypographyProps {
 
 export const BaseTypography: FC<BaseTypographyProps> = ({ children, loading, ...others }) => {
     return (
-        <ShimmerName 
+        <ShimmerName
             autoRun 
             visible={!loading} 
             isInteraction={false}
@@ -37,4 +37,5 @@ const Typography = styled.Text<{ color?: string, fontSize?: number, textAlign?: 
 const ShimmerName = styled(ShimmerPlaceHolder)<{ height?: number }>`
     height: ${({ height }) => `${(height || DEFAULT_FONTSIZE) * 1.35}px`};
     margin: 3px 0;
+    /* flex:1; */
 `

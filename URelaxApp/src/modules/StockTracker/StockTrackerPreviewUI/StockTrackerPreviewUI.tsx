@@ -8,7 +8,7 @@ import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Colors, DEFAULT_HORIZONTAL_PADDING, DEFAULT_VERTICAL_PADDING, Icons, SymbolsImg, Typography } from '../../../theming'
+import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Icons, SymbolsImg, Typography } from '../../../theming'
 import { StatementTimeline } from '../../Statement/StatementTimeline'
 import { StockTrackerControlButton } from '../StockTrackerControlButton'
 import { useStockTrackerPreviewUIHook } from './StockTrackerPreviewUIHook'
@@ -65,7 +65,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                                 </LeftColumn>
                                 <RightColumn>
                                     <Image 
-                                        source={SymbolsImg.AZUL4} 
+                                        source={SymbolsImg.VALE3} 
                                         resizeMode="contain"
                                         style={{ maxWidth: 100, maxHeight: 60 }}/>
                                 </RightColumn>
@@ -83,7 +83,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
 }
 
 const InfoHeader = styled.View`
-    padding-bottom: ${DEFAULT_HORIZONTAL_PADDING}px;
+    padding-bottom: ${DEFAULT_HORIZONTAL_SPACING}px;
     border-bottom-color: ${Colors.BG_3};
     background-color: ${Colors.WHITE};
     border-bottom-width: 1px;
@@ -91,7 +91,7 @@ const InfoHeader = styled.View`
 `
 
 const LeftColumn = styled.View`
-    padding-left: ${DEFAULT_HORIZONTAL_PADDING}px;
+    padding-left: ${DEFAULT_HORIZONTAL_SPACING}px;
     flex: 1;
 `
 
@@ -102,7 +102,7 @@ const RightColumn = styled.View`
 `
 
 const InfoItem = styled(Info)`
-    padding-bottom: ${DEFAULT_VERTICAL_PADDING / 2}px;
+    padding-bottom: ${DEFAULT_VERTICAL_SPACING / 2}px;
     padding-left: 0;
 `
 

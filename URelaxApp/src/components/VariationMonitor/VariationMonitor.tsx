@@ -15,7 +15,7 @@ interface VariationMonitorProps {
 
 export const VariationMonitor: FC<VariationMonitorProps> = ({
     value = 0,
-    fontSize = 14,
+    fontSize = 13,
     textColor = Colors.WHITE,
     iconColor = Colors.BLACK_2,
     showIcon,

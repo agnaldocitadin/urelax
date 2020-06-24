@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 import { View, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { DEFAULT_HORIZONTAL_PADDING, DEFAULT_VERTICAL_PADDING } from '../../theming'
+import { DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING } from '../../theming'
 import { TouchableProps } from '../Touchable'
 import { TouchItem } from '../TouchItem'
 
@@ -36,9 +36,9 @@ export const Info: FC<InfoProps> = ({
 }
 
 const Item = styled(TouchItem)`
-    padding: ${DEFAULT_VERTICAL_PADDING}px ${DEFAULT_HORIZONTAL_PADDING}px;
+    padding: ${DEFAULT_VERTICAL_SPACING}px ${DEFAULT_HORIZONTAL_SPACING}px;
 `
 
 const Content = styled.View`
-    padding: ${DEFAULT_VERTICAL_PADDING}px ${DEFAULT_HORIZONTAL_PADDING}px;
+    padding: ${DEFAULT_VERTICAL_SPACING}px ${DEFAULT_HORIZONTAL_SPACING}px;
 `
