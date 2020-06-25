@@ -4,19 +4,22 @@ import styled from 'styled-components/native'
 import { Colors, Typography } from '../../../theming'
 
 interface GraphBarPros {
+    index: number
     value: number
     mainLabel: string
     label?: string
+    color: string
+    onPress?(index: number): void
 }
 
-export const GraphBar: FC<GraphBarPros> = ({ value, mainLabel, label}) => {
+export const GraphBar: FC<GraphBarPros> = ({ value, mainLabel, label, color, onPress, index }) => {
     return (
-        <Container>
-            <Bar>
-                <BarInter/>
+        <Container onTouchStart={() => onPress && onPress(index)}>
+            <Bar hei={value}>
+                <BarInter hei={value} cor={color}/>
             </Bar>
             <Label>
-                <Typography textAlign="center">{mainLabel}</Typography>
+                <Typography fontSize={11} textAlign="center">{mainLabel}</Typography>
                 { label && <Typography textAlign="center">{label}</Typography> }
             </Label>
         </Container>
@@ -24,25 +27,31 @@ export const GraphBar: FC<GraphBarPros> = ({ value, mainLabel, label}) => {
 }
 
 const Container = styled.View`
-    width: 65px;
+    background-color: ${Colors.WHITE};
     align-items: center;
+    width: 50px;
 `
 
 const Bar = styled.View`
-    background-color: ${Colors.BG_4};
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
+    background-color: ${Colors.GRAY_4};
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     justify-content: flex-end;
     align-items: center;
-    width: 15px;
+    width: 12px;
     flex: 1;
 `
 const BarInter = styled.View`
-    background-color: ${Colors.BLUES_4};
-    height: 25%;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    background-color: ${({ cor }) => cor};
+    height: ${({ hei }) => hei}%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     width: 100%;
+    opacity: ${({ hei }) => hei === 53 ? 1: .5};
 `
 
 const Label = styled.View`

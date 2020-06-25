@@ -51,7 +51,6 @@ export const InvestimentUI: FC = ({ children }) => {
                     <Stocks investiments={investiments.stocks} handle={handleStockTracker}/>
                 </Content>
             </ScrollView>
-            
 
             {/* <BaseButton onPress={handleAdd}>
                 <Typography>ADD</Typography>

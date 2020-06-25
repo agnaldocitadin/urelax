@@ -9,21 +9,25 @@ import { GraphBar } from './GraphBar'
 export interface DataGraph {
     label: string
     value: number
+    color: string
 }
 
 interface AnalysisGraphicPros {
     data: DataGraph[]
     minLengthToLoadMore: InfiniteFlatListProps<DataGraph>["minLengthToLoadMore"]
     onEndPageReached?: InfiniteFlatListProps<DataGraph>["onEndPageReached"]
+    onSelect?(index: number): void
 }
 
-export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({ data, onEndPageReached }) => {
+export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({ data, onEndPageReached, onSelect }) => {
     
     const render: ListRenderItem<DataGraph> = ({ item, index }) => {
-        return <GraphBar 
-            key={index}
+        return <GraphBar
+            index={index}
             value={item.value}
-            mainLabel={item.label}/>
+            mainLabel={item.label}
+            color={item.color}
+            onPress={onSelect}/>
     }
 
     return (

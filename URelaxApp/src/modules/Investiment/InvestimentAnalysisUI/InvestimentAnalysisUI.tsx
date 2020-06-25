@@ -1,3 +1,4 @@
+import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
@@ -5,63 +6,61 @@ import { BackHeader } from '../../../components/Header/BackHeader'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { TouchItem } from '../../../components/TouchItem'
 import { VariationMonitor } from '../../../components/VariationMonitor'
+import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Button, Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Typography, TypographyMedium } from '../../../theming'
-import { AnalysisGraphic, DataGraph } from './AnalysisGraphic'
+import { AnalysisGraphic } from './AnalysisGraphic'
 import { useInvestimentAnalysisUIHook } from './InvestimentAnalysisUIHook'
 
 export const InvestimentAnalysisUI: FC = () => {
     
-    const { 
-        handleAnalysisDetail
+    const {
+        dataGraph,
+        patrimony,
+        patrimonyVariation,
+        period,
+        setPeriod,
+        handleAnalysisDetail,
+        handleSelectGraph
     } = useInvestimentAnalysisUIHook()
 
     return (
         <FlatLayout bgColor={Colors.WHITE}>
             <BackHeader title={ts("analysis")}/>
             <Soet>
-                <Typography>R$ 128.989,00</Typography>
-                <VariationMonitor value={-2.35}/>
+                <Typography>{utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                <VariationMonitor value={patrimonyVariation}/>
             </Soet>
 
             <Graph>
                 <AnalysisGraphic
-                    data={[{
-                        label: "03/Jan",
-                        value: 10
-                    }
-                    ,{
-                        label: "04/Jan",
-                        value: 10
-                    },{
-                        label: "05/Jan",
-                        value: 10
-                    },{
-                        label: "06/Jan",
-                        value: 10
-                    },{
-                        label: "07/Jan",
-                        value: 10
-                    },{
-                        label: "08/Jan",
-                        value: 10
-                    },{
-                        label: "09/Jan",
-                        value: 10
-                    }
-                ] as DataGraph[]}
+                    data={dataGraph}
                     minLengthToLoadMore={20}
-                    />
+                    onSelect={handleSelectGraph}/>
             </Graph>
             
             <Row>
-                <MyButton label="Diário" selected/>
-                <MyButton label="Semanal" />
-                <MyButton label="Mensal"/>
-                <MyButton label="Anual" />
+                <MyButton 
+                    label={ts("daily")}
+                    selected={period === "daily"}
+                    onPress={() => setPeriod("daily")}/>
+
+                <MyButton
+                    label={ts("weekly")}
+                    selected={period === "weekly"}
+                    onPress={() => setPeriod("weekly")}/>
+
+                <MyButton
+                    label={ts("monthly")}
+                    selected={period === "monthly"}
+                    onPress={() => setPeriod("monthly")}/>
+
+                <MyButton
+                    label={ts("yearly")}
+                    selected={period === "yearly"}
+                    onPress={() => setPeriod("yearly")}/>
             </Row>
-            {/* <Divider>{ts("currency")}</Divider> */}
-            {/* <Divider>{ts("stocks")}</Divider> */}
+
             <Inves onPress={handleAnalysisDetail}>
                 <View style={{ flex: 1 }}>
                     <TypographyMedium textAlign="center">{ts("period_investiment")}</TypographyMedium>
@@ -71,9 +70,9 @@ export const InvestimentAnalysisUI: FC = () => {
     )
 }
 
-export const MyButton: FC<{ label: string, selected?: boolean }> = ({ label, selected = false }) => {
+export const MyButton: FC<{ label: string, selected?: boolean, onPress?(): void }> = ({ label, selected = false, onPress }) => {
     return (
-        <But selected={selected}>
+        <But selected={selected} onPress={onPress}>
             <Typography color={selected ? Colors.BLUES_4 : Colors.BLACK_1}>{label}</Typography>
         </But>
     ) 
@@ -86,7 +85,7 @@ const Soet = styled.View`
 `
 
 const Graph = styled.View`
-    background-color: ${Colors.BG_1};
+    /* background-color: ${Colors.BG_1}; */
     flex: 1;
 `
 
@@ -96,8 +95,8 @@ export const Row = styled.View`
 `
 
 const But = styled(Button)<{ selected: boolean }>`
-    border-width: ${({ selected }) => selected ? 1 : 0}px;
-    border-color: ${Colors.BLUES_4};
+    border-width: 1px;
+    border-color: ${({ selected }) => selected ? Colors.BLUES_4 : Colors.WHITE};
     border-radius: 25px;
     margin: 0 2px;
     height: 40px;
