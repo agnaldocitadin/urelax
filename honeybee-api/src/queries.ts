@@ -59,8 +59,9 @@ export const fetchFinancialSummary = (options: {
 }
 
 export const fetchFinancialAnalysis = (options: {
-     accountID: number
-     brokerAccountID?: number
+     account: string
+     brokerAccount?: string
+     date?: string
      page?: number
      qty?: number
      period: FinancialAnalysisPeriod

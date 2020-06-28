@@ -65,8 +65,8 @@ export const InteractiveButton: FC<InteractiveButtonProps> = ({
         <BaseButton {...others} disabled={_disabled}>
             { (activityState === InteractiveButtonStates.PROCESSING) && <SActivityIndicator size="large" color={indicatorColor}/> }
             { (activityState === InteractiveButtonStates.SUCCESS) && <StyledIcon color={iconColor} size={iconSize} name="check-circle"/> }
-            { _text && <StyledText color={_disabled ? disabledTextColor : textColor} fontSize={13}>{text}</StyledText> }
             { (activityState === InteractiveButtonStates.NORMAL && icon) && <StyledIcon color={iconColor} size={iconSize} name={icon}/>}
+            { _text && <StyledText hasIcon={!!icon} color={_disabled ? disabledTextColor : textColor} fontSize={13}>{text}</StyledText> }
         </BaseButton>
     )
 }
@@ -77,7 +77,8 @@ const StyledIcon = styled(Icon)`
     margin: 0;
 `
 
-const StyledText = styled(TypographyMedium)`
+const StyledText = styled(TypographyMedium)<{ hasIcon: boolean }>`
+    margin-left: ${({ hasIcon }) => hasIcon ? 10 : 0}px;
     text-transform: uppercase;
     text-align: center;
 `

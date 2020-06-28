@@ -81,7 +81,7 @@ export enum Icons {
     HEART_BROKEN = "heart-broken",
     PLAY = "play",
     PAUSE = "pause",
-    CLOCK = "clock",
+    CLOCK = "clock-outline",
     HOME_VARIANT = "home-variant",
     ACCOUNT_CIRCLE = "account-circle",
     WALLET = "wallet",

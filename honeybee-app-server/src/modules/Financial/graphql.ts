@@ -43,8 +43,10 @@ const entry: GraphQLModule = {
 
         type AppliedInvestiment {
             investiment: BrokerInvestiment
-            qty: Int
+            brokerAccountName: String
+            refID: ID
             amount: Float
+            qty: Int
         }
 
         type FinancialAnalysis {
@@ -65,23 +67,23 @@ const entry: GraphQLModule = {
         fetchFinancialHistory(account: ID!, date: Datetime, page: Int, qty: Int): [FinancialHistory]
         fetchFinancialSummary(account: ID!, date: Datetime, page: Int, qty: Int): [FinancialSummary]
         fetchAppiedInvestiments(account: ID!): [AppliedInvestiment]
-        fetchFinancialAnalysis(period: FinancialAnalysisPeriod): [FinancialAnalysis]
+        fetchFinancialAnalysis(account: ID!, brokerAccount: ID, date: Datetime, page: Int, qty: Int, period: FinancialAnalysisPeriod): [FinancialAnalysis]
     `,
     resolvers: {
-        fetchFinancialHistory: ({ account, date, page, qty }: any) => {
-            return findFinancialHistoryBy(account, date, page, qty)
+        fetchFinancialHistory: (options: any) => {
+            return findFinancialHistoryBy(options)
         },
         
-        fetchFinancialSummary: ({ account, date, page, qty }: any) => {
-            return groupFinancialSummaryBy(account, date, page, qty)
+        fetchFinancialSummary: (options: any) => {
+            return groupFinancialSummaryBy(options)
         },
 
         fetchAppiedInvestiments: ({ account }: any) => {
             return groupAppiedInvestimentsBy(account)
         },
 
-        fetchFinancialAnalysis: ({ period }: any) => {
-            return groupFinancialAnalysisBy(period)
+        fetchFinancialAnalysis: (options: any) => {
+            return groupFinancialAnalysisBy(options)
         }
     }
 }

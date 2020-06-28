@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import { AppliedInvestiment } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
@@ -15,22 +14,18 @@ import { TouchItem } from '../../../components/TouchItem'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, DEFAULT_HORIZONTAL_SPACING, Icons, Typography, TypographyMedium } from '../../../theming'
-import { Routes } from '../../Navigation/const'
 import { useInvestimentUIHook } from './InvestimentUIHook'
 
-export const InvestimentUI: FC = ({ children }) => {
+export const InvestimentUI: FC = () => {
     
     const {
         investiments,
         handleAdd,
-        handleAnalysis,
-        handleStatements,
         handleFilter,
         handleStockTracker
     } = useInvestimentUIHook()
 
     const { patrimony, currency, stocks } = investiments
-    const nav = useNavigation()
 
     return (
         <FlatLayout bgColor={Colors.WHITE}>
@@ -39,47 +34,33 @@ export const InvestimentUI: FC = ({ children }) => {
             }/>
             <ScrollView>
                 <Patrimony>
-                    <Typography textAlign="center">{ts("patrimony_amount")}</Typography>
-                    <Typography textAlign="center" fontSize={28}>{utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                    <Typography textAlign="center">{ts("available_to_invest")}</Typography>
+                    <Typography textAlign="center" fontSize={28}>{utils.formatCurrency(patrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                 </Patrimony>
-                <AddInvestimentBtn onPress={handleAdd}>
-                    <TypographyMedium color={Colors.WHITE}>{"Investir "}</TypographyMedium>
-                    <Icon size={15} color={Colors.WHITE} name={Icons.PLUS_CIRCLE}/>
-                </AddInvestimentBtn>
+                <BtnContainer>
+                    <AddInvestimentBtn onPress={handleAdd}>
+                        <TypographyMedium color={Colors.WHITE}>{ts("invest")}</TypographyMedium>
+                        <Icon size={15} color={Colors.WHITE} name={Icons.PLUS_CIRCLE}/>
+                    </AddInvestimentBtn>
+                </BtnContainer>
                 <Content>
-                    <Currency investiments={investiments.currency} />
-                    <Stocks investiments={investiments.stocks} handle={handleStockTracker}/>
+                    <Currency investiments={currency} />
+                    <Stocks investiments={stocks} handle={handleStockTracker}/>
                 </Content>
             </ScrollView>
-
-            {/* <BaseButton onPress={handleAdd}>
-                <Typography>ADD</Typography>
-            </BaseButton>
-            <BaseButton onPress={handleAnalysis}>
-                <Typography>ANALYSIS</Typography>
-            </BaseButton>
-            <BaseButton onPress={handleStatements}>
-                <Typography>STATEMENTS</Typography>
-            </BaseButton>
-            <BaseButton onPress={() => nav.navigate(Routes.ACTIVITY_LIST)}>
-                <Typography>ACTIVITIES</Typography>
-            </BaseButton> */}
-
         </FlatLayout>
     )
 }
 
 const Currency: FC<{ investiments: AppliedInvestiment[] }> = ({ investiments }) => (
     <React.Fragment>
-        { investiments.length > 0 && <Divider>{ts("currency")}</Divider> }
-        { investiments.map((currency, key) => (
+        { investiments?.length > 0 && <Divider>{ts("currency")}</Divider> }
+        { investiments?.map((currency, key) => (
             <Touch key={key} noChevron disabled>
                 <Item>
                     <Typography>{currency.investiment?.description}</Typography>
-                    <Row>
-                    <Badge text={currency.brokerAccountName}/>
                     <Badge text={currency.investiment.broker.name} bgColor={Colors.BLUES_3}/>
-                    </Row>
+                    <Badge text={currency.brokerAccountName}/>
                 </Item>
                 <TypographyMedium>{utils.formatCurrency(currency.amount, { prefix: AppConfig.CURRENCY_PREFIX })}</TypographyMedium>
             </Touch>
@@ -87,27 +68,21 @@ const Currency: FC<{ investiments: AppliedInvestiment[] }> = ({ investiments }) 
     </React.Fragment>
 )
 
-const Stocks: FC<{ investiments: AppliedInvestiment[], handle(): void }> = ({ investiments, handle }) => (
+const Stocks: FC<{ investiments: AppliedInvestiment[], handle(item: AppliedInvestiment): void }> = ({ investiments, handle }) => (
     <React.Fragment>
-        { investiments.length > 0 && <Divider>{ts("stocks")}</Divider>}
-        { investiments.map((stock, key) => (
-            <Touch key={key} onPress={handle}>
+        { investiments?.length > 0 && <Divider>{ts("stocks")}</Divider>}
+        { investiments?.map((stock, key) => (
+            <Touch key={key} onPress={() => handle(stock)}>
                 <Item>
                     <Typography>{stock.investiment?.description}</Typography>
-                    <Row>
-                        <Badge text={stock.brokerAccountName}/>
-                        <Badge text={stock.investiment?.broker?.name} bgColor={Colors.BLUES_3}/>
-                    </Row>
+                    <Badge text={stock.investiment?.broker?.name} bgColor={Colors.BLUES_3}/>
+                    <Badge text={stock.brokerAccountName}/>
                 </Item>
                 <TypographyMedium>{utils.formatCurrency(stock.amount, { prefix: AppConfig.CURRENCY_PREFIX })}</TypographyMedium>
             </Touch>
         )) }
     </React.Fragment>
 )
-
-const Row = styled.View`
-    flex-direction: row;
-`
 
 const Patrimony = styled.View`
     background-color: ${Colors.BG_3};
@@ -121,7 +96,9 @@ const Content = styled.View`
 `
 
 const Item = styled.View`
-    margin: 12px 0;
+    justify-content: space-between;
+    margin: 15px 0;
+    height: 70px;
     flex: 1;
 `
 
@@ -129,9 +106,13 @@ const AddInvestimentBtn = styled(BaseButton)`
     background-color: ${Colors.BLUES_2};
     border-radius: 7px;
     height: 40px;
-    width: 120px;
+    width: 50%;
+`
+
+const BtnContainer = styled.View`
+    align-items: center;
     position: absolute;
-    right: 140px;
+    width: 100%;
     top: 140px;
 `
 
@@ -142,3 +123,20 @@ const Touch = styled(TouchItem)`
 const Divider = styled(SHeaderDivider)`
     padding: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
 `
+
+
+
+// const handleAnalysis = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS), [])
+// const handleStatements = useCallback(() => navigation.navigate(Routes.STATEMENT), [])
+{/* <BaseButton onPress={handleAdd}>
+<Typography>ADD</Typography>
+</BaseButton>
+<BaseButton onPress={handleAnalysis}>
+<Typography>ANALYSIS</Typography>
+</BaseButton>
+<BaseButton onPress={handleStatements}>
+<Typography>STATEMENTS</Typography>
+</BaseButton>
+<BaseButton onPress={() => nav.navigate(Routes.ACTIVITY_LIST)}>
+<Typography>ACTIVITIES</Typography>
+</BaseButton> */}

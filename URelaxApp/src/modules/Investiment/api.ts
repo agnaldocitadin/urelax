@@ -1,9 +1,11 @@
-import { API, AppliedInvestiment, FinancialHistory } from "honeybee-api"
+import { API, AppliedInvestiment, FinancialHistory, FinancialAnalysisPeriod } from "honeybee-api"
 
 export const fetchAppiedInvestiments = (accountID: string): Promise<AppliedInvestiment[]> => {
     return API.FinancialHistory.fetchAppiedInvestiments({ account: accountID }, `
         qty
         amount
+        brokerAccountName
+        refID
         investiment {
             broker {
                 code
@@ -38,6 +40,19 @@ export const fetchFinancialHistory = (accountID: string, page: number, qty: numb
                     symbol
                 }
             }
+        }
+    `)
+}
+
+export const fetchFinancialAnalysis = (account: string) => {
+    return API.FinancialHistory.fetchFinancialAnalysis({ account }, `
+        label
+        amount
+        variation
+        items {
+            refID
+            amount
+            variation
         }
     `)
 }

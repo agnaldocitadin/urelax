@@ -4,7 +4,8 @@ import { ActionTypes, ReducerState } from "./actions"
 import { MODULE_NAME } from "./const"
 
 const INITIAL_STATE: ReducerState = {
-    statements: []
+    statements: [],
+    analysis: []
 }
 
 export const select = (property: keyof ReducerState) => useSelector((state: any) => state[MODULE_NAME][property])
@@ -20,6 +21,18 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
         return {
             ...state,
             selectedEvent: payload
+        }
+    },
+    ADD_ANALYSIS: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            analysis: payload.reset ? payload.analysis : [...state.analysis, ...payload.analysis]
+        }
+    },
+    SELECT_ANALYSIS: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            selectedFinancialAnalysis: payload
         }
     }
 })

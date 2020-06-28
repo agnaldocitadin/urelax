@@ -21,15 +21,15 @@ enum Icons {
 }
 
 export const findActivitiesBy = (options: { 
-        id?: string
-        accountID?: string
-        ref?: string 
-        activityType?: ActivityType
-        date?: string
-        page?: number
-        qty?: number
-        translate?: boolean
-    }): Promise<Activity[]> => {
+    id?: string
+    accountID?: string
+    ref?: string 
+    activityType?: ActivityType
+    date?: string
+    page?: number
+    qty?: number
+    translate?: boolean
+}): Promise<Activity[]> => {
         
     const { id, accountID, page = 0, qty = 1, translate } = options
     return ActivityModel.find({ account: accountID })

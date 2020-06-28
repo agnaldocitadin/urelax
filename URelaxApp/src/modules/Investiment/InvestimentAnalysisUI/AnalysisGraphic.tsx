@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { ListRenderItem } from 'react-native'
 import styled from 'styled-components/native'
 import { InfiniteFlatList, InfiniteFlatListProps } from '../../../components/InfiniteFlatList'
-import { DEFAULT_VERTICAL_SPACING, TypographyMedium } from '../../../theming'
+import { DEFAULT_VERTICAL_SPACING, Typography } from '../../../theming'
 import { GraphBar } from './GraphBar'
 
 export interface DataGraph {
@@ -15,11 +15,12 @@ export interface DataGraph {
 interface AnalysisGraphicPros {
     data: DataGraph[]
     minLengthToLoadMore: InfiniteFlatListProps<DataGraph>["minLengthToLoadMore"]
+    selectedIndex?: number
     onEndPageReached?: InfiniteFlatListProps<DataGraph>["onEndPageReached"]
     onSelect?(index: number): void
 }
 
-export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({ data, onEndPageReached, onSelect }) => {
+export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({ data, selectedIndex, onEndPageReached, onSelect }) => {
     
     const render: ListRenderItem<DataGraph> = ({ item, index }) => {
         return <GraphBar
@@ -27,14 +28,17 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({ data, onEndPageReache
             value={item.value}
             mainLabel={item.label}
             color={item.color}
+            selected={index === selectedIndex}
             onPress={onSelect}/>
     }
 
+    const selectedItem = (selectedIndex !== undefined && data[selectedIndex]) || undefined
+
     return (
         <React.Fragment>
-            <Title textAlign="center">02/Jan</Title>
+            <Title textAlign="center">{ selectedItem?.label }</Title>
             <Container>
-                <InfiniteFlatList
+                { data.length > 0 && <InfiniteFlatList
                     horizontal
                     bounces
                     showsHorizontalScrollIndicator={false}
@@ -43,20 +47,18 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({ data, onEndPageReache
                     renderItem={render}
                     onEndPageReached={onEndPageReached}
                     initialScrollIndex={data.length - 1}
-                    keyExtractor={(item, index) => `op_${index}`}/>
+                    keyExtractor={(item, index) => `op_${index}`}/>}
             </Container>
         </React.Fragment>
     )
 }
 
 const Container = styled.View`
+    justify-content: center;
     flex-direction: row;
     flex: 1;
-    /* align-items: center; */
-    justify-content: center;
-    /* background-color: blue; */
 `
 
-const Title = styled(TypographyMedium)`
+const Title = styled(Typography)`
     margin: ${DEFAULT_VERTICAL_SPACING}px 0;
 `

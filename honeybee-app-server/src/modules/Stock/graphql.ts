@@ -1,6 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
-import { StockTrackerModel } from "./models"
-import { createNewStockTracker, runOnCreate, updateStockTrackerById } from "./services"
+import { createNewStockTracker, findStockTrackers, runOnCreate, updateStockTrackerById } from "./services"
 import { StockTrackerFactory, stockTrackerPlayground } from "./trackers"
 
 const entry: GraphQLModule = {
@@ -54,8 +53,8 @@ const entry: GraphQLModule = {
     `,
 
     resolvers: {
-        fetchStockTrackers: async ({ id, account }: any) => {
-            return StockTrackerModel.find({})
+        fetchStockTrackers: (options: any) => {
+            return findStockTrackers(options)
         },
 
         createStockTracker: async ({ input }: any) => {

@@ -1,13 +1,12 @@
 import { useNavigation } from "@react-navigation/native"
 import { FinancialHistory, Transaction } from "honeybee-api"
 import { useCallback } from "react"
-import Investiment from "../../Investiment"
 import AppConfig from "../../../core/AppConfig"
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import Identity from "../../Identity"
-import Messaging from "../../Messaging"
-import { Routes } from "../../Navigation/const"
+import Investiment from "../../Investiment"
 import { fetchFinancialHistory } from "../../Investiment/api"
+import Messaging from "../../Messaging"
 
 export const useStatementUIHook = () => {
 
@@ -48,8 +47,6 @@ export const useStatementUIHook = () => {
     }, [])
 
     useEffectWhenReady(() => handleRefresh(true))
-
-    console.log(statements)
 
     return {
         statements,

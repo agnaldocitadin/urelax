@@ -9,14 +9,15 @@ interface GraphBarPros {
     mainLabel: string
     label?: string
     color: string
+    selected?: boolean
     onPress?(index: number): void
 }
 
-export const GraphBar: FC<GraphBarPros> = ({ value, mainLabel, label, color, onPress, index }) => {
+export const GraphBar: FC<GraphBarPros> = ({ value, mainLabel, label, color, onPress, index, selected }) => {
     return (
-        <Container onTouchStart={() => onPress && onPress(index)}>
+        <Container onTouchEnd={() => onPress && onPress(index)}>
             <Bar hei={value}>
-                <BarInter hei={value} cor={color}/>
+                <BarInter hei={value} cor={color} selected={selected}/>
             </Bar>
             <Label>
                 <Typography fontSize={11} textAlign="center">{mainLabel}</Typography>
@@ -45,13 +46,14 @@ const Bar = styled.View`
 `
 const BarInter = styled.View`
     background-color: ${({ cor }) => cor};
+    opacity: ${({ selected }) => selected ? 1 : .3};
     height: ${({ hei }) => hei}%;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     width: 100%;
-    opacity: ${({ hei }) => hei === 53 ? 1: .5};
+    
 `
 
 const Label = styled.View`

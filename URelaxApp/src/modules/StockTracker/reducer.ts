@@ -3,24 +3,21 @@ import AppModuleState from "../AppModuleState"
 import { ActionTypes, ReducerState } from "./actions"
 import { MODULE_NAME } from "./const"
 
-const INITIAL_STATE: ReducerState = {
-    // todoA: 0
-}
+const INITIAL_STATE: ReducerState = {}
 
 export const select = (property: keyof ReducerState) => useSelector((state: any) => state[MODULE_NAME][property])
 
 export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
-    // ADD_A: (state: ReducerState, payload: any): ReducerState => {
-    //     console.log("ADD_A")
-    //     return {
-    //         ...state, 
-    //         todoA: state.todoA + payload
-    //     }
-    // },
-    // ADD_B: (state: ReducerState, payload: any): ReducerState => {
-    //     console.log("ADD_B")
-    //     return {
-    //         ...state
-    //     }
-    // }
+    SELECT_STOCKTRACKER_ID: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state, 
+            selectedStockTrackerID: payload
+        }
+    },
+    SELECT_STOCKTRACKER: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            selectedStockTracker: payload
+        }
+    }
 })

@@ -21,7 +21,7 @@ class BrokerAccountExtraData {
     cpf?: string
 
     @prop()
-    passwd?: string
+    password?: string
 
     @prop()
     birthdate?: Date

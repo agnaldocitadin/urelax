@@ -1,57 +1,64 @@
 import { useNavigation } from "@react-navigation/native"
-import { FinancialAnalysis } from "honeybee-api"
+import { Account, FinancialAnalysis, FinancialAnalysisPeriod } from "honeybee-api"
 import { useCallback, useState } from "react"
+import Investiment from ".."
+import { useEffectWhenReady } from "../../../core/Commons.hook"
 import { Colors } from "../../../theming"
+import Identity from "../../Identity"
+import Messaging from "../../Messaging"
 import { Routes } from "../../Navigation/const"
+import { fetchFinancialAnalysis } from "../api"
 import { DataGraph } from "./AnalysisGraphic"
 
 export const useInvestimentAnalysisUIHook = () => {
 
     const navigation = useNavigation()
-    const uu: FinancialAnalysis[] = []
-    const [ period, setPeriod ] = useState<"daily" | "weekly" | "monthly" | "yearly">("daily")
+    const { showAPIError } = Messaging.actions()
+    const { addAnalysis, selectAnalysis } = Investiment.actions()
+    const account: Account = Identity.select("activeAccount")
+    const analysis: FinancialAnalysis[] = Investiment.select("analysis")
+    const [ period, setPeriod ] = useState<FinancialAnalysisPeriod>(FinancialAnalysisPeriod.DAILY)
+    const [ selectedGraph, setSelectedGraph ] = useState<number>()
 
     const handleAnalysisDetail = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS_DETAIL), [])
 
-    const handleSelectGraph = useCallback((index) => console.log("seleced", index), [])
+    const handleSelectGraph = useCallback((index?: number) => {
+        setSelectedGraph(index)
+        index && selectAnalysis(analysis[index])
+    }, [analysis])
+
+    const handlePeriodSelection = useCallback((period) => {
+        handleSelectGraph(analysis.length -1)
+        setPeriod(period)
+    }, [])
+
+    useEffectWhenReady(async () => {
+        try {
+            const analysis = await fetchFinancialAnalysis(account._id)
+            addAnalysis(analysis, true)
+        }
+        catch(error) {
+            showAPIError(error)
+        }
+    })
+
+    const dataGraph = analysis.map(item => {
+        return {
+            label: item.label,
+            value: item.amount,
+            color: Colors.BLUES_3        
+        } as DataGraph
+    })
+
+    const graph = selectedGraph !== undefined && analysis[selectedGraph] || undefined
 
     return {
-        dataGraph: [{
-            label: "03/Jan 2020",
-            value: 12,
-            color: Colors.BLUES_2
-        }
-        ,{
-            label: "04/Jan 2020",
-            value: 32,
-            color: Colors.BLUES_2
-        },{
-            label: "Jan/2020",
-            value: 53,
-            color: Colors.BLUES_2
-        },{
-            label: "Jan/2020",
-            value: 34,
-            color: Colors.BLUES_2
-        },{
-            label: "Jan/2020",
-            value: 29,
-            color: Colors.BLUES_2
-        },{
-            label: "Jan/2020",
-            value: 32,
-            color: Colors.BLUES_2
-        },{
-            label: "Jan/2020",
-            value: 6,
-            color: Colors.BLUES_2
-        }
-        ] as DataGraph[],
-        
-        patrimony: 0,
-        patrimonyVariation: 0,
+        dataGraph,
+        patrimony: graph?.amount || 0,
+        patrimonyVariation: graph?.variation || 0,
         period,
-        setPeriod,
+        selectedGraph,
+        handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph
     }

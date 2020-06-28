@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { TextStyle } from 'react-native'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { Colors, Typography } from '../../theming'
 
 interface BadgeProps {
@@ -16,13 +16,20 @@ export const Badge: FC<BadgeProps> = ({
     style,
     text
 }) => {
-    return <Text style={style} color={color} bgColor={bgColor}>{text}</Text>
+    return (
+        <Container>
+            <Text style={style} color={color} bgColor={bgColor}>{text}</Text>
+        </Container>
+    )
 }
+
+const Container = styled.View`
+    flex-direction: row;
+`
 
 const Text = styled(Typography)<{ bgColor: string }>`
     color: ${({ color }) => color};
     background-color: ${({ bgColor }) => bgColor};
     border-radius: 20px;
     padding: 0 10px;
-    margin-right: 5px; 
 `

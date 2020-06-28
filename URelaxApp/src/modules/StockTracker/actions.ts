@@ -1,26 +1,28 @@
+import { StockTracker } from "honeybee-api"
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 
 type ActionNames = keyof ActionTypes
 
 export interface ReducerState {
-    // todoA: number
+    selectedStockTrackerID?: string
+    selectedStockTracker?: StockTracker
 }
 
 export type ActionTypes = {
-    // ADD_A(state: ReducerState, payload: any): ReducerState
-    // ADD_B(state: ReducerState, payload: any): ReducerState
+    SELECT_STOCKTRACKER_ID(state: ReducerState, payload: any): ReducerState
+    SELECT_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
 }
 
 const Actions = () => {
     const dispatch = useDispatch()
     return {
-        // addTodoA: () => {
-        //     dispatch({ type: "ADD_A" } as DispatchType<ActionNames>)
-        // },
-        // addTodoB: () => {
-        //     dispatch({ type: "ADD_B" } as DispatchType<ActionNames>)
-        // }
+        selectStockTrackerID: (id: string) => {
+            dispatch({ type: "SELECT_STOCKTRACKER_ID", payload: id } as DispatchType<ActionNames>)
+        },
+        selectStockTracker: (stockTracker: StockTracker) => {
+            dispatch({ type: "SELECT_STOCKTRACKER", payload: stockTracker } as DispatchType<ActionNames>)
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 import { StockTrackerStatus } from "honeybee-api"
+import mongoose from 'mongoose'
 import { onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
 import { Account } from "../../Identity/models"
 import { notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
@@ -6,7 +7,7 @@ import { Order, OrderStatus } from "../../Order/models"
 import { makeBaseOrder } from "../../Order/services"
 import { StockTracker, StockTrackerModel } from "../models"
 import { PredictionResult } from "../strategies"
-import { Investor, StockTrackerFactory } from "../trackers"
+import { Investor, StockTrackerFactory, StockTrackerFrequency } from "../trackers"
 
 export const STOCK_TRACKER_STATUS_INACTIVE = [StockTrackerStatus.DESTROYED]
 export const STOCK_TRACKER_STATUS_DONT_UPDATE = [StockTrackerStatus.PAUSED].concat(STOCK_TRACKER_STATUS_INACTIVE)
@@ -115,28 +116,44 @@ export const buildStockTrackersFrom = async (account: Account): Promise<Investor
     return trackers.map(model => StockTrackerFactory.create(model))
 }
 
-/**
- *
- *
- * @param {string} accountId
- * @returns {Promise<StockTracker[]>}
- */
-export const findActivesByAccount = (accountId: string): Promise<StockTracker[]> => {
-    const filter = { userAccount: accountId, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }}
-    return findStockTrackerToGraphql(filter)
-}
+// /**
+//  *
+//  *
+//  * @param {string} accountId
+//  * @returns {Promise<StockTracker[]>}
+//  */
+// export const findActivesByAccount = (accountId: string): Promise<StockTracker[]> => {
+//     const filter = { userAccount: accountId, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }}
+//     return findStockTrackerToGraphql(filter)
+// }
 
-/**
- *
- *
- * @param {*} filter
- * @returns {Promise<StockTracker[]>}
- */
-const findStockTrackerToGraphql = async (filter: any): Promise<StockTracker[]> => {
-    return StockTrackerModel.find(filter)
+// /**
+//  *
+//  *
+//  * @param {*} filter
+//  * @returns {Promise<StockTracker[]>}
+//  */
+// const findStockTrackerToGraphql = async (filter: any): Promise<StockTracker[]> => {
+//     return StockTrackerModel.find(filter)
+//         .populate("account")
+//         .populate("brokerAccount")
+//         .sort({ "createdAt": "desc" })
+//         .exec()
+// }
+
+export const findStockTrackers = async (options: {
+    id: mongoose.Types.ObjectId
+    account: mongoose.Types.ObjectId
+    status: StockTrackerStatus
+    frequency: StockTrackerFrequency
+    page: number
+    qty: number
+}) => {
+    // TODO
+    return StockTrackerModel.find({ _id: options.id })
         .populate("account")
+        .populate("stockInfo")
         .populate("brokerAccount")
-        .sort({ "createdAt": "desc" })
         .exec()
 }
 

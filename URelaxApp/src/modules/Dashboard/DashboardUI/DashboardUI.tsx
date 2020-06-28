@@ -20,7 +20,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
     const {
         refreshing,
         currentPatrimony,
-        history,
+        summaries,
         handleInvestiments,
         handleStartInvesting,
         handleAnalysis,
@@ -54,7 +54,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                     </View>
                 </PatrimonyNow>
                 <PatrimonyHistory>
-                    { history.length === 0 
+                    { summaries.length === 0 
                         ?
                             <StartInvesting onPress={handleStartInvesting}>
                                 <TypographyMedium fontSize={16} color={Colors.WHITE}>{ts("start_investing")}</TypographyMedium>
@@ -67,7 +67,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                                 dotStyle={dotStyle}
                                 activeDotStyle={activeDotStyle}
                                 keyExtractor={(_item, index) => `hs_${index}`}
-                                data={history} />
+                                data={summaries} />
                     }
                 </PatrimonyHistory>
             </Refresher>

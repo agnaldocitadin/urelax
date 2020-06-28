@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { ButtonHeader } from '../../../components/Header/ButtonHeader'
 import { Info } from '../../../components/Info'
+import { InteractiveButtonStates } from '../../../components/InteractiveButton'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
@@ -32,7 +33,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
     return (
         <FlatLayout fail={fail}>
             <BackHeader 
-                title={stockTracker.stockInfo?.description || ""}
+                title={stockTracker?.stockInfo?.description || ""}
                 right={
                     <ButtonHeader
                         color={Colors.BLUES_1} 
@@ -40,7 +41,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                         onPress={handleSettings}/>
                 }/>
 
-            { !fail && 
+            { stockTracker && !fail && 
                 <StatementTimeline
                     data={transactions}
                     minLengthToLoadMore={30}
@@ -57,24 +58,23 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
 
                                     <InfoItem 
                                         title={<Typography>{ts("buy_average_price")}</Typography>} 
-                                        description={<Typography>{utils.formatCurrency(stockTracker.buyPrice, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}/>
+                                        description={<Typography>{utils.formatCurrency(stockTracker.buyPrice || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}/>
 
                                     <InfoItem 
                                         title={<Typography>{ts("quantity")}</Typography>} 
-                                        description={<Typography>{stockTracker.qty}</Typography>}/>
+                                        description={<Typography>{stockTracker.qty || 0}</Typography>}/>
                                 </LeftColumn>
                                 <RightColumn>
-                                    <Image 
-                                        source={SymbolsImg.VALE3} 
+                                    { stockTracker && <Image 
+                                        source={SymbolsImg[stockTracker.stockInfo.stock.symbol]}
                                         resizeMode="contain"
-                                        style={{ maxWidth: 100, maxHeight: 60 }}/>
+                                        style={{ maxWidth: 100, maxHeight: 60 }}/>}
                                 </RightColumn>
                             </InfoHeader>
-                            <ButtonView>
-                                <StockTrackerControlButton 
-                                    status={stockTracker?.status} 
-                                    onPress={handleStockTrackerAction}/>
-                            </ButtonView>
+                            <StockTrackerControlButton 
+                                status={stockTracker?.status} 
+                                onPress={handleStockTrackerAction}
+                                activityState={InteractiveButtonStates.NORMAL}/>
                         </React.Fragment>
                     }
                 />}
@@ -104,10 +104,4 @@ const RightColumn = styled.View`
 const InfoItem = styled(Info)`
     padding-bottom: ${DEFAULT_VERTICAL_SPACING / 2}px;
     padding-left: 0;
-`
-
-const ButtonView = styled.View`
-    position: absolute;
-    right: 30px;
-    bottom: 0;
 `

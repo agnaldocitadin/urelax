@@ -38,7 +38,7 @@ const entry: GraphQLModule = {
             platformUID: String
             sessionId: String
             cpf: String
-            passwd: String
+            password: String
             birthdate: Datetime
         }
 

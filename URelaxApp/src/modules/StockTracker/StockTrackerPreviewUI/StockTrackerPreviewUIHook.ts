@@ -1,13 +1,18 @@
 import { useNavigation } from "@react-navigation/native"
 import { Activity, StockTracker, Transaction } from "honeybee-api"
 import { useCallback, useState } from "react"
+import * as StockTracker2 from ".."
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import { Routes } from "../../Navigation/const"
+import { fetchStockTrackerByID } from "../api"
 
 export const useStockTrackerPreviewUIHook = () => {
 
     const navigation = useNavigation()
     const [ fail, setFail] = useState(false)
+    const stockTrackerID: string = StockTracker2.default.select("selectedStockTrackerID")
+    const stockTracker: StockTracker = StockTracker2.default.select("selectedStockTracker")
+    const { selectStockTracker } = StockTracker2.default.actions()
     // const stockTracker = useSelector((state: States) => state.STOCK_TRACKER.selectedStockTracker || {})
     // const { selectedStockTrackerActivities, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
 
@@ -88,19 +93,18 @@ export const useStockTrackerPreviewUIHook = () => {
 
     useEffectWhenReady(async () => {
         try {
-            // let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
-            // dispatch(appendStockTrackerActivities(activities, "begin", true))
+            const stockTracker = await fetchStockTrackerByID(stockTrackerID)
+            stockTracker && selectStockTracker(stockTracker)
         }
         catch(error) {
+            console.error(error)
             setFail(true)
         }
-    }, 
-    // () => dispatch(clearStockTrackerPreview())
-    )
+    })
 
     return {
-        stockTracker: { buyPrice: 0 } as StockTracker,
-        amount: 0,
+        stockTracker,
+        amount: stockTracker && (stockTracker.buyPrice * stockTracker.qty) || 0,
         transactions: [] as Transaction[], //selectedStockTrackerActivities,
         fail,
         handleStockTrackerAction,

@@ -17,7 +17,6 @@ export const select = (property: keyof ReducerState) => useSelector((state: any)
 
 export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
     SHOW_SUCCESS_MESSAGE: (state: ReducerState, payload: any): ReducerState => {
-        console.log("--", )
         return {
             ...state,
             payload,

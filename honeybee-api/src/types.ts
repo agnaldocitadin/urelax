@@ -19,7 +19,7 @@ export interface StockTracker {
     brokerAccount: BrokerAccount
     strategy: string
     strategySetting: StrategySetting
-    status: string
+    status: StockTrackerStatus
     frequency: string
     lastFrequencyUpdate: Date
     stockInfo: BrokerInvestiment
@@ -98,7 +98,7 @@ export interface BrokerAccountExtraData {
     platformUID: string
     sessionId: string
     cpf: string
-    passwd: string
+    password: string
     birthdate: Date
 }
 
@@ -171,6 +171,7 @@ export interface Transaction {
 export interface AppliedInvestiment {
     brokerAccountName: string
     investiment: BrokerInvestiment
+    refID: string
     qty: number
     amount: number
 }

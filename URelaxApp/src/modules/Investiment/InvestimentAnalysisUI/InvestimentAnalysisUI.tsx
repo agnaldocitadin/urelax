@@ -1,3 +1,4 @@
+import { FinancialAnalysisPeriod } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { View } from 'react-native'
@@ -19,7 +20,8 @@ export const InvestimentAnalysisUI: FC = () => {
         patrimony,
         patrimonyVariation,
         period,
-        setPeriod,
+        selectedGraph,
+        handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph
     } = useInvestimentAnalysisUIHook()
@@ -36,29 +38,30 @@ export const InvestimentAnalysisUI: FC = () => {
                 <AnalysisGraphic
                     data={dataGraph}
                     minLengthToLoadMore={20}
+                    selectedIndex={selectedGraph}
                     onSelect={handleSelectGraph}/>
             </Graph>
             
             <Row>
                 <MyButton 
                     label={ts("daily")}
-                    selected={period === "daily"}
-                    onPress={() => setPeriod("daily")}/>
+                    selected={period === FinancialAnalysisPeriod.DAILY}
+                    onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.DAILY)}/>
 
                 <MyButton
                     label={ts("weekly")}
-                    selected={period === "weekly"}
-                    onPress={() => setPeriod("weekly")}/>
+                    selected={period === FinancialAnalysisPeriod.WEEKLY}
+                    onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.WEEKLY)}/>
 
                 <MyButton
                     label={ts("monthly")}
-                    selected={period === "monthly"}
-                    onPress={() => setPeriod("monthly")}/>
+                    selected={period === FinancialAnalysisPeriod.MONTHLY}
+                    onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.MONTHLY)}/>
 
                 <MyButton
                     label={ts("yearly")}
-                    selected={period === "yearly"}
-                    onPress={() => setPeriod("yearly")}/>
+                    selected={period === FinancialAnalysisPeriod.YEARLY}
+                    onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.YEARLY)}/>
             </Row>
 
             <Inves onPress={handleAnalysisDetail}>

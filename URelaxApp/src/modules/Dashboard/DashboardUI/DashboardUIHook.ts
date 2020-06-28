@@ -14,7 +14,7 @@ export const useDashboardUIHook = () => {
 
     const navigation = useNavigation()
     const [ refreshing, setRefreshing ] = useState(false)
-    const history: FinancialSummary[] = Dashboard.select("history")
+    const summaries: FinancialSummary[] = Dashboard.select("history")
     const account: Account = Identity.select("activeAccount")
     const { showAPIError } = Messaging.actions()
     const { setDashboardHistory } = Dashboard.actions()
@@ -26,7 +26,6 @@ export const useDashboardUIHook = () => {
     const handleAnalysis = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS), [])
 
     const handleRefresh = useCallback(async () => {
-        history
         setRefreshing(true)
         await refresh()
         setRefreshing(false)
@@ -34,8 +33,8 @@ export const useDashboardUIHook = () => {
 
     const refresh = useCallback(async () => {
         try {
-            const history = await fetchFinancialSummary(account._id, INITIAL_SUMMARIES)
-            setDashboardHistory(history || []) 
+            const summary = await fetchFinancialSummary(account._id, INITIAL_SUMMARIES)
+            setDashboardHistory(summary || []) 
         }
         catch(error) {
             console.log(error)
@@ -47,8 +46,8 @@ export const useDashboardUIHook = () => {
 
     return {
         refreshing,
-        currentPatrimony: 0,
-        history,
+        currentPatrimony: summaries[0]?.patrimony || 0,
+        summaries: summaries.slice(1),
         handleInvestiments,
         handleStartInvesting,
         handleAnalysis,
