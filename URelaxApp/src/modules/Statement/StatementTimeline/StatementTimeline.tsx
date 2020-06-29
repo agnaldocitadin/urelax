@@ -27,9 +27,7 @@ export const StatementTimeline: FC<StatementTimelineProps> = ({ onPress, ...othe
             disabled
             index={index}
             icon={item.icon}
-            content={item.content}
-            // onPress={() => onPress && onPress(item)}
-            />
+            content={item.content}/>
     }, [])
 
     return (

@@ -39,10 +39,9 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({ data, selectedIndex, 
             <Title textAlign="center">{ selectedItem?.label }</Title>
             <Container>
                 { data.length > 0 && <InfiniteFlatList
-                    horizontal
-                    bounces
-                    showsHorizontalScrollIndicator={false}
                     data={data}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
                     minLengthToLoadMore={10}
                     renderItem={render}
                     onEndPageReached={onEndPageReached}

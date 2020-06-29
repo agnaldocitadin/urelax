@@ -23,6 +23,9 @@ export const findFinancialHistoryBy = (options: {
             transactions: [{
                 dateTime: new Date(),
                 value: 230
+            },{
+                dateTime: new Date(),
+                value: 40
             }]
         }
     ] as FinancialHistory[])
@@ -174,15 +177,15 @@ export const groupFinancialSummaryBy = (options: {
     },{
         patrimony: 187,
         variation: 1.58,
-        when: "23/Junho"
+        when: "03/Jan"
     },{
         patrimony: 18734,
         variation: 2.58,
-        when: "22/Junho"
+        when: "02/Jan"
     },{
         patrimony: 1734,
         variation: 4.58,
-        when: "21/Junho"
+        when: "01/Jan"
     }])
 }
 

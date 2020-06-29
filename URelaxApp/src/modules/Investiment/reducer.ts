@@ -4,6 +4,7 @@ import { ActionTypes, ReducerState } from "./actions"
 import { MODULE_NAME } from "./const"
 
 const INITIAL_STATE: ReducerState = {
+    selectedGraphIndex: 0,
     statements: [],
     analysis: []
 }
@@ -33,6 +34,12 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
         return {
             ...state,
             selectedFinancialAnalysis: payload
+        }
+    },
+    SELECT_GRAPH_INDEX: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            selectedGraphIndex: payload
         }
     }
 })

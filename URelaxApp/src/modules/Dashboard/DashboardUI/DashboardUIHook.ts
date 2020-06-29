@@ -4,6 +4,7 @@ import { useCallback, useState } from "react"
 import Dashboard from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
 import Identity from "../../Identity"
+import Investiment from "../../Investiment"
 import Messaging from "../../Messaging"
 import { Routes } from "../../Navigation/const"
 import { fetchFinancialSummary } from "../api"
@@ -18,12 +19,16 @@ export const useDashboardUIHook = () => {
     const account: Account = Identity.select("activeAccount")
     const { showAPIError } = Messaging.actions()
     const { setDashboardHistory } = Dashboard.actions()
+    const { selectGraphIndex } = Investiment.actions()
 
     const handleInvestiments = useCallback(() => navigation.navigate(Routes.INVESTIMENT), [])
     
     const handleStartInvesting = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
 
-    const handleAnalysis = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS), [])
+    const handleAnalysis = useCallback((index: number) => {
+        selectGraphIndex(summaries.length - 2 - index)
+        navigation.navigate(Routes.INVESTIMENT_ANALYSIS)
+    }, [summaries])
 
     const handleRefresh = useCallback(async () => {
         setRefreshing(true)

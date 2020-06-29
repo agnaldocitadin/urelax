@@ -88,7 +88,6 @@ const Soet = styled.View`
 `
 
 const Graph = styled.View`
-    /* background-color: ${Colors.BG_1}; */
     flex: 1;
 `
 
@@ -110,13 +109,4 @@ const Inves = styled(TouchItem)`
     padding: ${DEFAULT_VERTICAL_SPACING + 5}px ${DEFAULT_HORIZONTAL_SPACING}px;
     border-top-width: 1px;
     border-color: ${Colors.BG_1};
-`
-
-const Tex = styled(TypographyMedium)`
-    background-color: blue;
-    /* width: 100%; */
-    /* margin: 0 auto; */
-    /* flex: 2; */
-    /* flex-direction: row; */
-    /* flex: 1; */
 `

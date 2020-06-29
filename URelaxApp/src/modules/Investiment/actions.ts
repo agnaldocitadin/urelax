@@ -12,6 +12,7 @@ export interface ReducerState {
 
     // useInvestimentAnalysisUIHook
     analysis: FinancialAnalysis[]
+    selectedGraphIndex: number
     selectedFinancialAnalysis?: FinancialAnalysis
 }
 
@@ -20,6 +21,7 @@ export type ActionTypes = {
     SELECT_EVENT(state: ReducerState, payload: any): ReducerState
     ADD_ANALYSIS(state: ReducerState, payload: any): ReducerState
     SELECT_ANALYSIS(state: ReducerState, payload: any): ReducerState
+    SELECT_GRAPH_INDEX(state: ReducerState, payload: any): ReducerState
 }
 
 const Actions = () => {
@@ -32,10 +34,13 @@ const Actions = () => {
             dispatch({ type: "SELECT_EVENT", payload: history } as DispatchType<ActionNames>)
         },
         addAnalysis: (analysis: FinancialAnalysis[], reset?: boolean) => {
-            dispatch({ type: "ADD_ANALYSIS", payload: { analysis, reset } })
+            dispatch({ type: "ADD_ANALYSIS", payload: { analysis, reset }} as DispatchType<ActionNames>)
         },
         selectAnalysis: (analysis: FinancialAnalysis) => {
-            dispatch({ type: "SELECT_ANALYSIS", payload: analysis })
+            dispatch({ type: "SELECT_ANALYSIS", payload: analysis } as DispatchType<ActionNames>)
+        },
+        selectGraphIndex: (index: number) => {
+            dispatch({ type: "SELECT_GRAPH_INDEX", payload: index } as DispatchType<ActionNames>)
         }
     }
 }

@@ -1,7 +1,7 @@
 import { FinancialSummary } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
-import { RefreshControl, View, ViewStyle } from 'react-native'
+import { ListRenderItem, RefreshControl, View, ViewStyle } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import styled from 'styled-components/native'
 import { BaseButton } from '../../../components/BaseButton'
@@ -27,13 +27,13 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
         handleRefresh
     } = useDashboardUIHook()
 
-    const renderIt = ({ item }: { item: FinancialSummary }) => {
+    const renderSummary: ListRenderItem<FinancialSummary> = ({ item, index }) => {
         return (
             <History>
                 <Typography color={Colors.GRAY_1}>{item.when}</Typography>
                 <CenteredView>
                     <Typography textAlign="center">{item.variation > 0 ? ts("gain") : ts("loss")}</Typography>
-                    <VariationMonitor onPress={handleAnalysis} value={item.variation}/>
+                    <VariationMonitor onPress={() => handleAnalysis(index)} value={item.variation}/>
                 </CenteredView>
                 <View>
                     <Typography color={Colors.GRAY_1}>{ts("your_patrimony_was")}</Typography>
@@ -63,7 +63,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                             <AppIntroSlider
                                 renderDoneButton={() => false}
                                 renderNextButton={() => false}
-                                renderItem={renderIt}
+                                renderItem={renderSummary}
                                 dotStyle={dotStyle}
                                 activeDotStyle={activeDotStyle}
                                 keyExtractor={(_item, index) => `hs_${index}`}

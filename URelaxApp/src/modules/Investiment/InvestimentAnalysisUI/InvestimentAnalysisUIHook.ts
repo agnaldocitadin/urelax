@@ -14,33 +14,34 @@ export const useInvestimentAnalysisUIHook = () => {
 
     const navigation = useNavigation()
     const { showAPIError } = Messaging.actions()
-    const { addAnalysis, selectAnalysis } = Investiment.actions()
+    const { addAnalysis, selectAnalysis, selectGraphIndex } = Investiment.actions()
     const account: Account = Identity.select("activeAccount")
     const analysis: FinancialAnalysis[] = Investiment.select("analysis")
+    const selectedGraph: number = Investiment.select("selectedGraphIndex")
     const [ period, setPeriod ] = useState<FinancialAnalysisPeriod>(FinancialAnalysisPeriod.DAILY)
-    const [ selectedGraph, setSelectedGraph ] = useState<number>()
 
-    const handleAnalysisDetail = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS_DETAIL), [])
+    const handleAnalysisDetail = useCallback(() => {
+        navigation.navigate(Routes.INVESTIMENT_ANALYSIS_DETAIL)
+    }, [])
 
-    const handleSelectGraph = useCallback((index?: number) => {
-        setSelectedGraph(index)
+    const handleSelectGraph = useCallback((index: number) => {
+        selectGraphIndex(index)
         index && selectAnalysis(analysis[index])
     }, [analysis])
 
-    const handlePeriodSelection = useCallback((period) => {
-        handleSelectGraph(analysis.length -1)
-        setPeriod(period)
-    }, [])
-
-    useEffectWhenReady(async () => {
+    const handlePeriodSelection = useCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean = true) => {
         try {
-            const analysis = await fetchFinancialAnalysis(account._id)
+            setPeriod(period)
+            const analysis = await fetchFinancialAnalysis(account._id, period)
             addAnalysis(analysis, true)
+            resetIndex && handleSelectGraph(analysis.length -1)
         }
         catch(error) {
             showAPIError(error)
         }
-    })
+    }, [])
+
+    useEffectWhenReady(() => handlePeriodSelection(period, false))
 
     const dataGraph = analysis.map(item => {
         return {
@@ -50,12 +51,12 @@ export const useInvestimentAnalysisUIHook = () => {
         } as DataGraph
     })
 
-    const graph = selectedGraph !== undefined && analysis[selectedGraph] || undefined
+    const graphBar = selectedGraph !== undefined && analysis[selectedGraph] || undefined
 
     return {
         dataGraph,
-        patrimony: graph?.amount || 0,
-        patrimonyVariation: graph?.variation || 0,
+        patrimony: graphBar?.amount || 0,
+        patrimonyVariation: graphBar?.variation || 0,
         period,
         selectedGraph,
         handlePeriodSelection,
