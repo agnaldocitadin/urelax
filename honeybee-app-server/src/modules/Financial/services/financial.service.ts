@@ -1,6 +1,6 @@
 import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisPeriod, FinancialSummary, InvestimentType } from 'honeybee-api'
 import mongoose from 'mongoose'
-import { FinancialHistory, FinancialHistoryModel, Transaction } from '../models'
+import { FinancialHistory, Transaction } from '../models'
 
 export const initFinancialHistory = (account: mongoose.Types.ObjectId, date: Date) => {
     // TODO
@@ -17,7 +17,15 @@ export const findFinancialHistoryBy = (options: {
     qty: number
 }): Promise<FinancialHistory[]> => {
     // TODO
-    return FinancialHistoryModel.find().exec()
+    return Promise.resolve([
+        {
+            date: new Date(),
+            transactions: [{
+                dateTime: new Date(),
+                value: 230
+            }]
+        }
+    ] as FinancialHistory[])
 }
 
 export const groupAppiedInvestimentsBy = (account: mongoose.Types.ObjectId): Promise<AppliedInvestiment[]> => {

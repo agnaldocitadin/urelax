@@ -7,6 +7,7 @@ import Identity from "../../Identity"
 import Investiment from "../../Investiment"
 import { fetchFinancialHistory } from "../../Investiment/api"
 import Messaging from "../../Messaging"
+import { adaptStatementTimeline } from "../StatementTimeline"
 
 export const useStatementUIHook = () => {
 
@@ -24,10 +25,10 @@ export const useStatementUIHook = () => {
     const handleRefresh = useCallback(async (reset?: boolean) => {
         try {
             let history = await fetchFinancialHistory(account._id, 0, AppConfig.QTY_INITIAL_ACTIVITIES)
-            // addHistory(history, reset)
-            addHistory([{
-                date: new Date()
-            }], reset)
+            addHistory(history, reset)
+            // addHistory([{
+            //     date: new Date()
+            // }], reset)
         }
         catch(error) {
             console.error(error)
@@ -38,7 +39,7 @@ export const useStatementUIHook = () => {
         try {
             // TODO Transformar FinancialHistory[] em Transaction[]
             // return await fetchFinancialHistory(account._id, page, AppConfig.QTY_INITIAL_ACTIVITIES)
-            return [] as Transaction[]
+            return adaptStatementTimeline([] as FinancialHistory[])
         }
         catch(error) {
             showAPIError(error)
@@ -49,7 +50,7 @@ export const useStatementUIHook = () => {
     useEffectWhenReady(() => handleRefresh(true))
 
     return {
-        statements,
+        statements: adaptStatementTimeline(statements),
         handleEventPress,
         handleRefresh,
         handleLoadMoreData

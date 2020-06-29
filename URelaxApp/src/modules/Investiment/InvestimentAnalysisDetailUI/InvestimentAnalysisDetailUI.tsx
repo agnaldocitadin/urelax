@@ -15,7 +15,7 @@ export const InvestimentAnalysisDetailUI: FC = () => {
                 <MyButton label="Lucro" selected/>
                 <MyButton label="Perda" selected/>
             </Row>
-            { analysis.items?.map(item => <Typography>{item.amount} - {item.variation}</Typography>) }
+            { analysis.items?.map((item, key) => <Typography key={key}>{item.amount} - {item.variation}</Typography>) }
         </FlatLayout>
     )
 }

@@ -1,9 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
-import { Activity, StockTracker, Transaction } from "honeybee-api"
+import { Activity, FinancialHistory, StockTracker, Transaction } from "honeybee-api"
 import { useCallback, useState } from "react"
 import * as StockTracker2 from ".."
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
+import { fetchFinancialHistory } from "../../Investiment/api"
 import { Routes } from "../../Navigation/const"
+import { adaptStatementTimeline } from "../../Statement/StatementTimeline"
 import { fetchStockTrackerByID } from "../api"
 
 export const useStockTrackerPreviewUIHook = () => {
@@ -12,7 +14,8 @@ export const useStockTrackerPreviewUIHook = () => {
     const [ fail, setFail] = useState(false)
     const stockTrackerID: string = StockTracker2.default.select("selectedStockTrackerID")
     const stockTracker: StockTracker = StockTracker2.default.select("selectedStockTracker")
-    const { selectStockTracker } = StockTracker2.default.actions()
+    const history: FinancialHistory[] = StockTracker2.default.select("stockTrackerStatements")
+    const { selectStockTracker, addStockTrackerStatements } = StockTracker2.default.actions()
     // const stockTracker = useSelector((state: States) => state.STOCK_TRACKER.selectedStockTracker || {})
     // const { selectedStockTrackerActivities, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
 
@@ -95,6 +98,9 @@ export const useStockTrackerPreviewUIHook = () => {
         try {
             const stockTracker = await fetchStockTrackerByID(stockTrackerID)
             stockTracker && selectStockTracker(stockTracker)
+
+            const history = await fetchFinancialHistory("", 0, 10)
+            history && addStockTrackerStatements(history, true)
         }
         catch(error) {
             console.error(error)
@@ -105,7 +111,7 @@ export const useStockTrackerPreviewUIHook = () => {
     return {
         stockTracker,
         amount: stockTracker && (stockTracker.buyPrice * stockTracker.qty) || 0,
-        transactions: [] as Transaction[], //selectedStockTrackerActivities,
+        transactions: adaptStatementTimeline(history),
         fail,
         handleStockTrackerAction,
         handleSettings,

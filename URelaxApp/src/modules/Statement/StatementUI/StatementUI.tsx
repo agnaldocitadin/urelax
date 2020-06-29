@@ -19,7 +19,7 @@ export const StatementUI: FC = () => {
         <FlatLayout>
             <BackHeader title={ts("statement")}/>
             <StatementTimeline
-                data={[] as Transaction[]}
+                data={statements}
                 onRefresh={handleRefresh}
                 minLengthToLoadMore={20}
                 onEndPageReached={handleLoadMoreData}

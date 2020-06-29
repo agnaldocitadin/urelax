@@ -29,7 +29,7 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
 
     return (
         <React.Fragment>
-            <StockLogo source={SymbolsImg[stockTracker.stockInfo.stock.symbol]} noPadding={noPadding} resizeMode="contain"/>
+            <StockLogo source={SymbolsImg[String(stockTracker?.stockInfo?.stock?.symbol)]} noPadding={noPadding} resizeMode="contain"/>
             <SInfo name="Ativo" value={`${stockInfo.description} (${stockInfo.stock.symbol})`} disabled={isReview} noPadding={noPadding}/>
             <SInfo name="Corretora" value={brokerAccount?.brokerCode} disabled={isReview} noPadding={noPadding}/>
             <SInfo name="Conta" value={brokerAccount?.accountName} disabled={isReview} noPadding={noPadding}/>

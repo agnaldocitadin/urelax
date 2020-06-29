@@ -55,7 +55,8 @@ const Left = styled.View`
 `
 
 const Right = styled.View`
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
     min-width: 50px;
 `
 

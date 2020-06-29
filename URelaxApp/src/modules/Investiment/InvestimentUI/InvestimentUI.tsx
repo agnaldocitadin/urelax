@@ -22,7 +22,8 @@ export const InvestimentUI: FC = () => {
         investiments,
         handleAdd,
         handleFilter,
-        handleStockTracker
+        handleStockTracker,
+        handleStatements,
     } = useInvestimentUIHook()
 
     const { patrimony, currency, stocks } = investiments
@@ -30,7 +31,10 @@ export const InvestimentUI: FC = () => {
     return (
         <FlatLayout bgColor={Colors.WHITE}>
             <BackHeader title={ts("investiments")} right={
-                <ButtonHeader icon="filter-variant" color={Colors.BLUES_1} onPress={handleFilter}/>
+                <React.Fragment>
+                    <ButtonHeader icon="filter-variant" color={Colors.BLUES_1} onPress={handleFilter}/>
+                    <ButtonHeader icon={Icons.CLOCK} color={Colors.BLUES_1} onPress={handleStatements}/>
+                </React.Fragment>
             }/>
             <ScrollView>
                 <Patrimony>

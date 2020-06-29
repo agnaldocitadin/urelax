@@ -25,7 +25,7 @@ const entry: GraphQLModule = {
         }
 
         type FinancialHistory {
-            _id: ID!
+            _id: ID
             date: Datetime
             acount: Account
             brokerAccount: BrokerAccount

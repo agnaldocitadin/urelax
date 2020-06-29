@@ -66,7 +66,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                                 </LeftColumn>
                                 <RightColumn>
                                     { stockTracker && <Image 
-                                        source={SymbolsImg[stockTracker.stockInfo.stock.symbol]}
+                                        source={SymbolsImg[stockTracker.stockInfo?.stock?.symbol]}
                                         resizeMode="contain"
                                         style={{ maxWidth: 100, maxHeight: 60 }}/>}
                                 </RightColumn>
@@ -92,13 +92,12 @@ const InfoHeader = styled.View`
 
 const LeftColumn = styled.View`
     padding-left: ${DEFAULT_HORIZONTAL_SPACING}px;
-    flex: 1;
+    flex: 2;
 `
 
 const RightColumn = styled.View`
-    justify-content: space-between;
-    margin-top: 15px;
-    width: 130px;
+    padding-top: ${DEFAULT_VERTICAL_SPACING}px;
+    padding-right: ${DEFAULT_HORIZONTAL_SPACING}px;
 `
 
 const InfoItem = styled(Info)`

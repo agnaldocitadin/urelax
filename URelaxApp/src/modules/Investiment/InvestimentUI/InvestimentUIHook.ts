@@ -33,6 +33,8 @@ export const useInvestimentUIHook = () => {
 
     const handleFilter = useCallback(() => navigation.navigate(Routes.INVESTIMENT_FILTER), [])
 
+    const handleStatements = useCallback(() => navigation.navigate(Routes.STATEMENT), [])
+
     const handleStockTracker = useCallback((item: AppliedInvestiment) => {
         selectStockTrackerID(item.refID)
         navigation.navigate(Routes.STOCKTRACKER_PREVIEW)
@@ -63,6 +65,7 @@ export const useInvestimentUIHook = () => {
         investiments,
         handleAdd,
         handleFilter,
-        handleStockTracker
+        handleStockTracker,
+        handleStatements
     }
 }
