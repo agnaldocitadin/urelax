@@ -45,7 +45,7 @@ export const fetchFinancialHistory = (accountID: string, page: number, qty: numb
 }
 
 export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysisPeriod) => {
-    return API.FinancialHistory.fetchFinancialAnalysis({ account }, `
+    return API.FinancialHistory.fetchFinancialAnalysis({ account, period }, `
         label
         amount
         variation

@@ -10,8 +10,8 @@ const SEPARATOR = ","
  * @param {string} [fields]
  * @returns {string}
  */
-export const mutation = (name: string, params?: object, fields?: string): string => {
-    const _params = serialize(params)
+export const mutation = (name: string, params?: object, fields?: string, howToSerialize?: object): string => {
+    const _params = serialize(params, howToSerialize)
     return `mutation{${name}${_params ? `(${_params})` : ""}${fields ? `{${fields}}` : ""}}`
 }
 
@@ -23,8 +23,8 @@ export const mutation = (name: string, params?: object, fields?: string): string
  * @param {string} [fields]
  * @returns {string}
  */
-export const query = (name: string, params?: object, fields?: string): string => {
-    const _params = serialize(params)
+export const query = (name: string, params?: object, fields?: string, howToSerialize?: object): string => {
+    const _params = serialize(params, howToSerialize)
     return `query{${name}${_params ? `(${_params})` : ""}${fields ? `{${fields}}` : ""}}`
 }
 
@@ -66,7 +66,7 @@ export const gql = async (queryName: string, query: string) => {
  * @param {Object} [obj]
  * @returns {string}
  */
-const serialize = (obj?: Object): string => {
+const serialize = (obj?: Object, howToSerialize?: object): string => {
     if (!obj) return ""
 
     let serialization = ""
@@ -74,8 +74,8 @@ const serialize = (obj?: Object): string => {
         let value = (<any>obj)[field]
         if (value == undefined || null) return
         let toSerialize = typeof value === "object" && !(value instanceof Date)
-        if (toSerialize) serialization = serialization.concat(`${serialization.length > 0 ? SEPARATOR : ""}${field}:{${serialize(value)}}`)
-        else serialization = serialization.concat(`${serialization.length > 0 ? SEPARATOR : ""}${field}:${serializeValue((<any>obj)[field])}`)
+        if (toSerialize) serialization = serialization.concat(`${serialization.length > 0 ? SEPARATOR : ""}${field}:{${serialize(value, howToSerialize)}}`)
+        else serialization = serialization.concat(`${serialization.length > 0 ? SEPARATOR : ""}${field}:${serializeValue((<any>obj)[field], field, howToSerialize)}`)
     })
 
     return serialization
@@ -87,7 +87,13 @@ const serialize = (obj?: Object): string => {
  * @param {*} value
  * @returns
  */
-const serializeValue = (value: any) => {
+const serializeValue = (value: any, field: string, howToSerialize?: object) => {
+    if (howToSerialize) {
+        let serialize = (<any>howToSerialize)[field]
+        if (serialize) {
+            return serialize(value)
+        }
+    }
     if (value instanceof Date) {
         return `"${(<Date>value).toISOString()}"`
     }

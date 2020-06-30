@@ -67,7 +67,9 @@ export const fetchFinancialAnalysis = (options: {
      period: FinancialAnalysisPeriod
      }, fields: string): Promise<FinancialAnalysis[]> => {
      const name = "fetchFinancialAnalysis"
-     return gql(name, query(name, options, fields))
+     return gql(name, query(name, options, fields, {
+          period: (value: FinancialAnalysisPeriod) => value
+     }))
 }
 
 export const fetchAppiedInvestiments = (options: { account: string }, fields: string): Promise<AppliedInvestiment[]> => {
