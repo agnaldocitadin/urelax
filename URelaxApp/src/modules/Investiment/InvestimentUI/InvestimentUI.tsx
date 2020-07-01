@@ -43,8 +43,8 @@ export const InvestimentUI: FC = () => {
                 </Patrimony>
                 <BtnContainer>
                     <AddInvestimentBtn onPress={handleAdd}>
+                        <Icon size={18} color={Colors.WHITE} name={"cart-outline"}/>
                         <TypographyMedium color={Colors.WHITE}>{ts("invest")}</TypographyMedium>
-                        <Icon size={15} color={Colors.WHITE} name={Icons.PLUS_CIRCLE}/>
                     </AddInvestimentBtn>
                 </BtnContainer>
                 <Content>
