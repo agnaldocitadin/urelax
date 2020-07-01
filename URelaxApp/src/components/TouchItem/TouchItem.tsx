@@ -24,7 +24,7 @@ export const TouchItem: FC<TouchItemProps> = ({
             <Touchable {...others} borderless={borderless}>
                 <Content style={style}>
                     { children }
-                    { !noChevron && <TouchIcon size={18} color={Colors.BG_2} name={Icons.CHEVRON_RIGHT}/> }
+                    { !others.disabled && !noChevron && <TouchIcon size={18} color={Colors.BG_2} name={Icons.CHEVRON_RIGHT}/> }
                 </Content>
             </Touchable>
         </Container>

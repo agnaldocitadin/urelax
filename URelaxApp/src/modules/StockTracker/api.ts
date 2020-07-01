@@ -14,6 +14,7 @@ export const fetchStockTrackerByID = async (id: string) => {
         page: 0,
         qty: 1
     }, `
+        _id
         strategy
         strategySetting {
             stockAmountLimit

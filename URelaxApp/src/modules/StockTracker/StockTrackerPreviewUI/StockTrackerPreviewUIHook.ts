@@ -1,9 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
-import { Activity, FinancialHistory, StockTracker, Transaction } from "honeybee-api"
+import { Activity, API, FinancialHistory, StockTracker, StockTrackerStatus, Transaction } from "honeybee-api"
 import { useCallback, useState } from "react"
 import * as StockTracker2 from ".."
+import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import { fetchFinancialHistory } from "../../Investiment/api"
+import Messaging from "../../Messaging"
 import { Routes } from "../../Navigation/const"
 import { adaptStatementTimeline } from "../../Statement/StatementTimeline"
 import { fetchStockTrackerByID } from "../api"
@@ -12,12 +14,12 @@ export const useStockTrackerPreviewUIHook = () => {
 
     const navigation = useNavigation()
     const [ fail, setFail] = useState(false)
+    const [ btnState, setBtnState ] = useState(InteractiveButtonStates.NORMAL)
+    const { showAPIError } = Messaging.actions()
+    const { selectStockTracker, addStockTrackerStatements, updateSelectedStockTracker } = StockTracker2.default.actions()
     const stockTrackerID: string = StockTracker2.default.select("selectedStockTrackerID")
     const stockTracker: StockTracker = StockTracker2.default.select("selectedStockTracker")
     const history: FinancialHistory[] = StockTracker2.default.select("stockTrackerStatements")
-    const { selectStockTracker, addStockTrackerStatements } = StockTracker2.default.actions()
-    // const stockTracker = useSelector((state: States) => state.STOCK_TRACKER.selectedStockTracker || {})
-    // const { selectedStockTrackerActivities, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
 
     const findStockBalance = useCallback(() => {
         // if (balanceSheet) {
@@ -52,26 +54,26 @@ export const useStockTrackerPreviewUIHook = () => {
     
     const handleStockTrackerAction = animatedCallback(async () => {
         try {
-            let result
-            // switch(stockTracker.status) {
-            //     case(StockTrackerStatus.RUNNING):
-            //         result = await API.StockTracker.pauseStockTracker(stockTracker._id || "")
-            //         break
-    
-            //     case(StockTrackerStatus.PAUSED):
-            //         result = await API.StockTracker.playStockTracker(stockTracker._id || "")
-            //         break
-            // }
+            let result = { status: stockTracker.status }
+            setBtnState(InteractiveButtonStates.PROCESSING)
             
-            // let lastActivity = await fetchStockTrackerActivitiesQuery(stockTracker._id || "", 0, 1)
-            // dispatch(updateMainStockTracker({ status: result?.status }))
-            // dispatch(appendStockTrackerActivities(lastActivity, "begin"))
-            // dispatch(setLastActivityOnDashboard(lastActivity[0]))
+            switch(stockTracker.status) {
+                case(StockTrackerStatus.RUNNING):
+                    result = await API.StockTracker.pauseStockTracker(stockTracker._id || "")
+                    break
+    
+                case(StockTrackerStatus.PAUSED):
+                    result = await API.StockTracker.playStockTracker(stockTracker._id || "")
+                    break
+            }
+
+            updateSelectedStockTracker({ status: result.status } as StockTracker)
+            setBtnState(InteractiveButtonStates.NORMAL)
         }
         catch(error) {
-            // dispatch(showAPIError(error))
+            showAPIError(error)
         }
-    }, [])
+    }, [stockTracker])
 
     const handleRefresh = animatedCallback(async () => {
         try {
@@ -113,6 +115,7 @@ export const useStockTrackerPreviewUIHook = () => {
         amount: stockTracker && (stockTracker.buyPrice * stockTracker.qty) || 0,
         transactions: adaptStatementTimeline(history),
         fail,
+        btnState,
         handleStockTrackerAction,
         handleSettings,
         handleSelectActivity,

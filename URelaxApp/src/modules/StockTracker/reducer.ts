@@ -27,5 +27,11 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             ...state,
             stockTrackerStatements: payload.reset ? payload.statements : [...state.stockTrackerStatements, ...payload.statements]
         }
+    },
+    UPDATE_SELECTED_STOCKTRACKER: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            selectedStockTracker: {...state.selectedStockTracker, ...payload}
+        }
     }
 })

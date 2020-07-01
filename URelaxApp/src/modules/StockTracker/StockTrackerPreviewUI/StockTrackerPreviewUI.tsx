@@ -23,6 +23,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
         amount,
         transactions, 
         fail,
+        btnState,
         handleSettings, 
         handleSelectActivity, 
         handleRefresh, 
@@ -74,7 +75,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                             <StockTrackerControlButton 
                                 status={stockTracker?.status} 
                                 onPress={handleStockTrackerAction}
-                                activityState={InteractiveButtonStates.NORMAL}/>
+                                activityState={btnState}/>
                         </React.Fragment>
                     }
                 />}

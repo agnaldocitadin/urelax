@@ -34,12 +34,17 @@ export const useInvestimentAnalysisUIHook = () => {
             setPeriod(period)
             const analysis = await fetchFinancialAnalysis(account._id, period)
             addAnalysis(analysis, true)
-            resetIndex && handleSelectGraph(analysis.length -1)
+            if (resetIndex) {
+                handleSelectGraph(analysis.length -1)
+            }
+            else {
+                selectAnalysis(analysis[selectedGraph])
+            }
         }
         catch(error) {
             showAPIError(error)
         }
-    }, [])
+    }, [selectedGraph])
 
     useEffectWhenReady(() => handlePeriodSelection(period, false))
 

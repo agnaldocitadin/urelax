@@ -8,7 +8,7 @@ import { SHeaderDivider } from '../../../components/Layout/Layout.style'
 import AppConfig from '../../../core/AppConfig'
 import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
-import { SymbolsImg, Typography } from '../../../theming'
+import { DEFAULT_VERTICAL_SPACING, SymbolsImg, Typography } from '../../../theming'
 import { Routes } from '../../Navigation/const'
 
 interface StockTrackerDataProps {
@@ -19,7 +19,7 @@ interface StockTrackerDataProps {
 
 export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isReview, noPadding }) => {
     
-    const { strategy, strategySetting, frequency, brokerAccount, stockInfo } = stockTracker
+    const { strategy, strategySetting, frequency, brokerAccount, stockInfo, status } = stockTracker
     const { autoAmountLimit, stockAmountLimit } = strategySetting
 
     const navigation = useNavigation()
@@ -29,31 +29,59 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
 
     return (
         <React.Fragment>
-            <StockLogo source={SymbolsImg[String(stockTracker?.stockInfo?.stock?.symbol)]} noPadding={noPadding} resizeMode="contain"/>
-            <SInfo name="Ativo" value={`${stockInfo.description} (${stockInfo.stock.symbol})`} disabled={isReview} noPadding={noPadding}/>
-            <SInfo name="Corretora" value={brokerAccount?.brokerCode} disabled={isReview} noPadding={noPadding}/>
-            <SInfo name="Conta" value={brokerAccount?.accountName} disabled={isReview} noPadding={noPadding}/>
-            <SInfo name="Estratégia" value={strategy} onPress={handleStrategy} disabled={isReview} noPadding={noPadding}/>
-            <SInfo name="Frequência" value={frequency} onPress={handleFrequency} disabled={isReview} noPadding={noPadding}/>
-            <Divider noPadding={noPadding}>Negociação</Divider>
-            <SInfo name="Valor máximo negociável" value={utils.formatCurrency(stockAmountLimit || 0, { prefix: AppConfig.CURRENCY_PREFIX })} onPress={handleTransaction} disabled={isReview} noPadding={noPadding}/>
-            { autoAmountLimit && <AutoAmountLimit noPadding={noPadding}>{ts("stock_tracker_auto_transaction_active")}</AutoAmountLimit>}
+            <StockLogo
+                source={SymbolsImg[String(stockTracker?.stockInfo?.stock?.symbol)]}
+                resizeMode="contain"/>
+
+            <Info 
+                title={<Typography>{ts("stock")}</Typography>}
+                description={<Typography>{`${stockInfo.description} (${stockInfo.stock.symbol})`}</Typography>}
+                disabled={isReview}/>
+
+            <Info
+                title={<Typography>{ts("broker")}</Typography>}
+                description={<Typography>{brokerAccount?.brokerCode}</Typography>}
+                disabled={isReview}/>
+
+            <Info
+                title={<Typography>{ts("account")}</Typography>}
+                description={<Typography>{brokerAccount?.accountName}</Typography>}
+                disabled={isReview}/>
+
+            <Info
+                title={<Typography>{ts("strategy")}</Typography>}
+                description={<Typography>{strategy}</Typography>}
+                onPress={handleStrategy}
+                disabled={isReview}/>
+
+            <Info
+                title={<Typography>{ts("frequency")}</Typography>}
+                description={<Typography>{frequency}</Typography>}
+                onPress={handleFrequency}
+                disabled={isReview}/>
+
+            <Info
+                title={<Typography>{ts("status")}</Typography>}
+                description={<Typography>{ts(status)}</Typography>}
+                disabled={isReview}/>
+
+            <Divider>Negociação</Divider>
+            <Info
+                title={<Typography>{ts("max_trade_amount")}</Typography>}
+                description={<Typography>{utils.formatCurrency(stockAmountLimit || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}
+                onPress={handleTransaction}
+                disabled={isReview}/>
+
+            { autoAmountLimit && <Typography>{ts("stock_tracker_auto_transaction_active")}</Typography>}
         </React.Fragment>
     )
 }
 
-const StockLogo: any = styled.Image`
-    
+const StockLogo = styled.Image`
+    margin: 0 auto;
+    margin-top: ${DEFAULT_VERTICAL_SPACING}px;
 `
 
-const SInfo: any = styled(Info)`
-    
-`
-
-const Divider: any = styled(SHeaderDivider)`
-    
-`
-
-const AutoAmountLimit: any = styled(Typography)`
-    
+const Divider = styled(SHeaderDivider)`
+    margin: 0 ${DEFAULT_VERTICAL_SPACING}px;
 `

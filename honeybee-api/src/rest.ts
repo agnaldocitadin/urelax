@@ -59,7 +59,7 @@ export const pauseStockTracker = async (id: string): Promise<{ status: StockTrac
  */
 export const destroyStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
     return invoke(() => (
-        CONFIG.axiosInstante.post(baseRoute("/pauseStockTracker", true), JSON.stringify({ id }))
+        CONFIG.axiosInstante.post(baseRoute("/destroyStockTracker", true), JSON.stringify({ id }))
     ))
 }
 

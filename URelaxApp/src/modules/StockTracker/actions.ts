@@ -13,6 +13,7 @@ export interface ReducerState {
 export type ActionTypes = {
     SELECT_STOCKTRACKER_ID(state: ReducerState, payload: any): ReducerState
     SELECT_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
+    UPDATE_SELECTED_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
     ADD_STOCKTRACKER_STATEMENTS(state: ReducerState, payload: any): ReducerState
 }
 
@@ -27,6 +28,9 @@ const Actions = () => {
         },
         addStockTrackerStatements: (statements: FinancialHistory[], reset?: boolean) => {
             dispatch({ type: "ADD_STOCKTRACKER_STATEMENTS", payload: { statements, reset } } as DispatchType<ActionNames>)
+        },
+        updateSelectedStockTracker: (updates: StockTracker) => {
+            dispatch({ type: "UPDATE_SELECTED_STOCKTRACKER", payload: updates } as DispatchType<ActionNames>)
         }
     }
 }

@@ -2,10 +2,9 @@ import React, { FC } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
-import { InteractiveButton } from '../../../components/InteractiveButton'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { ts } from '../../../core/I18n'
-import { Colors } from '../../../theming'
+import { Button, DEFAULT_HORIZONTAL_SPACING, TypographyMedium, Colors } from '../../../theming'
 import { StockTrackerData } from '../StockTrackerData'
 import { useStockTrackerSettingUIHook } from './StockTrackerSettingUIHook'
 
@@ -19,18 +18,22 @@ export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({}) => {
         <FlatLayout>
             <BackHeader title={ts("stock_tracker_settings")}/>
             <ScrollView>
-                <StockTrackerData isReview={!showDestroyBtn} stockTracker={stockTracker}/>
-                { showDestroyBtn && <ButtonView>
-                    <InteractiveButton
-                        data={{}}
-                        onPress={handleDestroyStockTracker}/>
-                </ButtonView>}
+                <StockTrackerData
+                    isReview={!showDestroyBtn}
+                    stockTracker={stockTracker}/>
+                    
+                { showDestroyBtn && (
+                    <DestroyButton onPress={handleDestroyStockTracker}>
+                        <TypographyMedium color={Colors.WHITE}>{ts("destroy_tracker")}</TypographyMedium>
+                    </DestroyButton>
+                )}
             </ScrollView>
         </FlatLayout>
     )
 }
 
-const ButtonView = styled.View`
-    border-top-color: ${Colors.BG_3};
-    border-top-width: 1px;
+const DestroyButton = styled(Button)`
+    margin: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
+    margin-bottom: ${DEFAULT_HORIZONTAL_SPACING}px;
+    background-color: ${Colors.RED_ERROR};
 `
