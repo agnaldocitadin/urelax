@@ -44,7 +44,10 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
     }
 
     return (
-        <FlatLayout bgStatusBar={Colors.BG_1}>
+        <FlatLayout 
+            bgColor={Colors.BG_3} 
+            bgStatusBar={Colors.BG_3}>
+                
             <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
                 <PatrimonyNow>
                     <TypographyMedium fontSize={20}>{ts("welcome")}, {"Nick"}!</TypographyMedium>

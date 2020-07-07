@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { SafeAreaView, StatusBar } from 'react-native'
+import { ActivityIndicator, SafeAreaView, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import { ts } from '../../../core/I18n'
 import { Colors, Icons, TypographyMedium } from '../../../theming'
@@ -10,13 +10,17 @@ export interface FlatLayoutProps {
     bgStatusBar?: string
     barStyle?: "light-content" | "dark-content" | "default"
     fail?: boolean
+    loading?: boolean
+    indicatorColor?: string
 }
 
 export const FlatLayout: FC<FlatLayoutProps> = ({ 
     children, 
     barStyle = "dark-content",
-    bgColor = Colors.BG_1,
+    bgColor = Colors.BG_5,
     bgStatusBar = Colors.WHITE,
+    indicatorColor = Colors.BLUES_1,
+    loading,
     fail
 }) => {
     return (
@@ -31,8 +35,12 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
                         title={ts("oops")}
                         message={ts("server_error")}/>
                 </ErrorMessage> }
+                { loading && <LoadContainer>
+                    <ActivityIndicator
+                        color={indicatorColor}
+                        size="large"/>
+                </LoadContainer> }
             </SafeAreaView>
-            {/* <SimulationFlag textAlign="center" color={Colors.WHITE}>{ts("active_simulation")}</SimulationFlag> */}
         </FlatContainer>
     )
 }
@@ -40,8 +48,6 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
 const FlatContainer = styled.View<{ bgColor: string }>`
     background-color: ${({ bgColor }) => bgColor};
     justify-content: flex-end;
-    border-color: ${Colors.BLUES_3};
-    /* border-width: 3px; */
     flex: 1;
 `
 
@@ -60,4 +66,10 @@ const Display = styled(TextIconDisplay)`
     border-top-color: ${Colors.BG_2};
     border-top-width: 1px;
     padding: 25px 50px 55px 50px;
+`
+
+const LoadContainer = styled.View`
+    justify-content: center;
+    flex: 1;
+
 `

@@ -1,22 +1,20 @@
 import React, { FC, ReactElement } from 'react'
 import styled from 'styled-components/native'
-import { Colors, TypographyMedium } from '../../../theming'
+import { Colors } from '../../../theming'
 
 export interface FlatHeaderProps {
-    title: string,
-    titleColor?: string,
     bgHeaderColor?: string
     left?: ReactElement
+    center?: ReactElement | boolean
     right?: ReactElement
     borderBottomWidth?: number
     borderBottomColor?: string
 }
 
 export const FlatHeader: FC<FlatHeaderProps> = ({ 
-    left, 
+    left,
+    center,
     right, 
-    title, 
-    titleColor = Colors.BLACK_1,
     bgHeaderColor = Colors.WHITE,
     borderBottomWidth = 1,
     borderBottomColor = Colors.GRAY_4
@@ -30,7 +28,7 @@ export const FlatHeader: FC<FlatHeaderProps> = ({
                 { left }
             </Left>
             <Content>
-                <TypographyMedium fontSize={14} color={titleColor}>{ title }</TypographyMedium>
+                { center }
             </Content>
             <Right>
                 { right }

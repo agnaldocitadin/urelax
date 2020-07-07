@@ -30,8 +30,7 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
             onRequestClose={handleCloseDialog}>
             <Overlay/>
             <Rounded>
-                <FlatHeader 
-                    title=""
+                <FlatHeader
                     borderBottomWidth={0}
                     bgHeaderColor={Colors.TRANSPARENT}
                     right={<ButtonHeader color={Colors.BLUES_2} icon={Icons.CLOSE} onPress={handleCloseDialog}/>}/>
@@ -45,16 +44,6 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
                         
                     <Button
                         data={{ text: payload.buttonLabel }}
-                        // block
-                        // radius={50}
-                        // successStatus={InteractiveButtonStates.NORMAL}
-                        // normalText={payload.buttonLabel}
-                        // textColor={Colors.BLUES_2}
-                        // borderColor={Colors.BLUES_2}
-                        // indicatorColor={Colors.BLUES_2}
-                        // borderWidth={2}
-                        // processingBgColor={Colors.WHITE}
-                        // animate={payload.type === MessageType.CONFIRMATION}
                         onPress={handleButtonAction}/>
                 </Body>
             </Rounded>

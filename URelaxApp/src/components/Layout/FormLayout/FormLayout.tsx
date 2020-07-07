@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
+import styled from 'styled-components/native'
 import { Colors, Icons } from '../../../theming'
 import { BackHeader, BackHeaderProps } from '../../Header/BackHeader'
 import { ButtonHeader } from '../../Header/ButtonHeader'
-import { InteractiveButton, InteractiveButtonProps } from '../../InteractiveButton'
+import { InteractiveButton, InteractiveButtonData, InteractiveButtonProps } from '../../InteractiveButton'
 import { FlatLayout, FlatLayoutProps } from '../FlatLayout'
 import { SFlatFooter } from '../Layout.style'
 
@@ -34,6 +35,11 @@ export const FormLayout: FC<Props> = (props) => {
         ...buttonProps
     } = props
 
+    const btnData = {...buttonProps.data, ...{ 
+        textColor: Colors.BLUES_2,
+        disabledTextColor: Colors.GRAY_3
+    } as InteractiveButtonData}
+
     return (
         <FlatLayout 
             bgColor={bgColor}
@@ -47,23 +53,21 @@ export const FormLayout: FC<Props> = (props) => {
                 left={left}
                 borderBottomWidth={borderBottomWidth}
                 borderBottomColor={borderBottomColor}
-                right={onClose && <ButtonHeader color={Colors.BLUES_1} icon={Icons.CLOSE} onPress={onClose}/>}/>
+                right={onClose && <ButtonHeader color={Colors.BLUES_3} icon={Icons.CLOSE} onPress={onClose}/>}/>
             
             { children }
 
             { !fail && <SFlatFooter>
-                <InteractiveButton
+                <Button
                     {...buttonProps}
-                    // block
-                    // textColor={Colors.BLUES_1}
-                    // indicatorColor={Colors.BLUES_1}
-                    // successStatus={InteractiveButtonStates.NORMAL}
-                    // disabledBgColor={Colors.WHITE}
-                    // disabledTextColor={Colors.BG_2}
-                    // height={55}
+                    data={btnData}
                     onPress={onProcess}/>
             </SFlatFooter>}
 
         </FlatLayout>
     )
 }
+
+const Button = styled(InteractiveButton)`
+    width: 100%;
+`

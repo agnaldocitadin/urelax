@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { ts } from '../../../core/I18n'
-import { Button, DEFAULT_HORIZONTAL_SPACING, TypographyMedium, Colors } from '../../../theming'
+import { Button, Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, TypographyMedium } from '../../../theming'
 import { StockTrackerData } from '../StockTrackerData'
 import { useStockTrackerSettingUIHook } from './StockTrackerSettingUIHook'
 
@@ -15,7 +15,7 @@ export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({}) => {
     const { stockTracker, showDestroyBtn, handleDestroyStockTracker } = useStockTrackerSettingUIHook()
 
     return (
-        <FlatLayout>
+        <FlatLayout bgColor={Colors.WHITE}>
             <BackHeader title={ts("stock_tracker_settings")}/>
             <ScrollView>
                 <StockTrackerData
@@ -33,7 +33,6 @@ export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({}) => {
 }
 
 const DestroyButton = styled(Button)`
-    margin: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
-    margin-bottom: ${DEFAULT_HORIZONTAL_SPACING}px;
+    margin: ${DEFAULT_VERTICAL_SPACING}px ${DEFAULT_HORIZONTAL_SPACING}px;
     background-color: ${Colors.RED_ERROR};
 `

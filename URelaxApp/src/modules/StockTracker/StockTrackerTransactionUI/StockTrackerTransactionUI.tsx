@@ -32,9 +32,11 @@ export const StockTrackerTransactionUI: FC<StockTrackerTransactionUIProps> = ({}
 
     return (
         <FormLayout
-            data={{}}
+            data={{
+                text: btnLabel,
+                disabled: false
+            }}
             title={formTitle}
-            // normalText={btnLabel}
             onProcess={handleButtonPress}
             onClose={handleClose}
             disabled={!validForm}>

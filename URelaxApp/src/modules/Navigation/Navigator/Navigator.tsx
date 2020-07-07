@@ -23,6 +23,7 @@ import { StockTrackerReviewUI } from '../../StockTracker/StockTrackerReviewUI'
 import { StockTrackerSettingUI } from '../../StockTracker/StockTrackerSettingUI'
 import { StockTrackerStrategyUI } from '../../StockTracker/StockTrackerStrategyUI'
 import { StockTrackerTransactionUI } from '../../StockTracker/StockTrackerTransactionUI'
+import { StockTrackerWizardUI } from '../../StockTracker/StockTrackerWizardUI'
 import { Routes, Stacks } from '../const'
 import { select } from '../reducer'
 
@@ -88,6 +89,7 @@ export const Navigator: FC = () => {
                     <Stack.Screen name={Routes.STOCKTRACKER_SETTING} component={StockTrackerSettingUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STOCKTRACKER_STRATEGY} component={StockTrackerStrategyUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STOCKTRACKER_TRANSACTION} component={StockTrackerTransactionUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.STOCKTRACKER_WIZARD} component={StockTrackerWizardUI} options={defaultOptions}/>
                 </Stack.Navigator>
             )
             break

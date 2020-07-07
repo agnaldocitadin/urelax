@@ -42,6 +42,7 @@ export enum Colors {
     BG_2 = "#afb4b9",
     BG_3 = "#dde7f2",
     BG_4 = "#d3dfec",
+    BG_5 = "#f2f5f5",
     BLUES_1 = "#1099f5",
     BLUES_2 = "#0ea2ff",
     BLUES_3 = "#3497d4",

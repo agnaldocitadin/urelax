@@ -1,4 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
+import { findAvailableInvestiments } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -102,7 +103,7 @@ const entry: GraphQLModule = {
         },
 
         fetchAvailableInvestiments: ({ brokerIDs, search }: any) => {
-            // TODO
+            return findAvailableInvestiments(search, brokerIDs)
         }
     }
 }

@@ -56,3 +56,11 @@ export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysi
         }
     `)
 }
+
+export const fetchAvailableInvestiments = (search: string, brokerIDs?: string[]) => {
+    return API.Broker.fetchAvailableInvestiments({ search, brokerIDs }, `
+        type
+        active
+        description
+    `)
+}
