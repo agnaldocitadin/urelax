@@ -33,5 +33,11 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             ...state,
             selectedStockTracker: {...state.selectedStockTracker, ...payload}
         }
+    },
+    SET_STOCKTRACKER_INPUT: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            stockTrackerInput: payload
+        }
     }
 })

@@ -10,7 +10,7 @@ interface InputRadioProps {
     checkedColor?: string
     size?: number
     style?: TextStyle
-    onPress(value: any): void
+    onPress?(value: any): void
 }
 
 export const InputRadio: FC<InputRadioProps> = ({ 
@@ -22,7 +22,7 @@ export const InputRadio: FC<InputRadioProps> = ({
     style,
     onPress 
 }) => {
-    const handlePress = useCallback(() => onPress(value), [value])
+    const handlePress = useCallback(() => onPress && onPress(value), [value])
     return <Check 
         name={checked ? "radiobox-marked" : "radiobox-blank"} 
         onPress={handlePress}

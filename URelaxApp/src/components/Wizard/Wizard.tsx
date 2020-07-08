@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { Colors, DEFAULT_VERTICAL_SPACING, TypographyMedium } from '../../theming'
+import { Colors, TypographyMedium } from '../../theming'
 import { WizardIcon, WizardState } from './WizardIcon'
 
-interface WizardProps {
+export interface WizardProps {
     style?: ViewStyle
     index?: number
 }
@@ -83,12 +83,10 @@ const IconContent = styled.View`
 `
 
 const Content = styled.View`
-    margin-top: ${DEFAULT_VERTICAL_SPACING}px;
     flex: 1;
 `
 
 const Box = styled.View`
-    justify-content: center;
     align-items: center;
     flex: 1;
 `

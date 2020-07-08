@@ -1,89 +1,68 @@
-import React, { FC, ReactElement, useCallback } from 'react'
-import { TouchableNativeFeedback } from 'react-native'
-import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import React, { ReactElement, useCallback } from 'react'
+import { ListRenderItem, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { Colors, Typography } from '../../theming'
+import { Colors, DEFAULT_HORIZONTAL_SPACING } from '../../theming'
 import { InfiniteFlatList } from '../InfiniteFlatList'
 import { InputRadio } from '../InputRadio/InputRadio'
+import { Touchable } from '../Touchable'
 
-export type FormOptionType = {
-    value: any
-    body?: string
+export type FormOptionType<T> = {
+    value: T
+    body: ReactElement
 }
 
-interface InputOptionsProps {
+interface InputOptionsProps<T> {
+    options: T[]
     header?: ReactElement
-    options: any[]
-    selectedOption?: any
-    loading?: boolean
-    shimmers?: number
-    // verticalOptionPadding?: number
-    // horizontalOptionPadding?: number
-    onSelect?(option: any): void
-    renderOption(item: any): FormOptionType
+    selectedOption?: T
+    style?: ViewStyle
+    onSelect?(option: T): void
+    renderOption(item: T, checked: boolean): FormOptionType<T>
 }
 
-export const InputOptions: FC<InputOptionsProps> = ({ 
+export const InputOptions = <T extends {}>({
     header,
-    selectedOption,
-    onSelect,
     options,
-    loading,
-    shimmers = 10,
-    // verticalOptionPadding = 10,
-    // horizontalOptionPadding = 10,
+    selectedOption,
+    style,
+    onSelect,
     renderOption
-}) => {
-
-    const onPress = (checkedItem: any) => onSelect && onSelect(checkedItem)
+}: InputOptionsProps<T>) => {
     
-    const _render = useCallback(({ item }: any) => {
-        // if (loading) {
-        //     return <Shimmer autoRun isInteraction={false} horizontalPadding={horizontalOptionPadding} colorShimmer={SHIMMER_COLORS}/>
-        // }
-
-        const option = renderOption(item)
-        if (JSON.stringify(option.value) === JSON.stringify({})) {
-            return null
-        }
-        const selected = JSON.stringify(option.value) === JSON.stringify(selectedOption)
-
+    const _renderItem: ListRenderItem<T> = useCallback(({ item }) => {
+        const option = renderOption(item, false)
+        const checked = JSON.stringify(option.value) === JSON.stringify(selectedOption)
         return (
-            <TouchableNativeFeedback onPress={onPress}>
-                <SView verticalPadding={verticalOptionPadding} horizontalPadding={horizontalOptionPadding}>
-                    <SRadio value={item} checkedColor={Colors.BLACK_2} checked={selected} onPress={onPress}/>
-                    <Typography color={selected ? Colors.BLACK_2 : Colors.GRAY_3}>{option.body}</Typography>
-                </SView>
-            </TouchableNativeFeedback>
+            <Touchable
+                onPress={() => onSelect && onSelect(item)}
+                borderless={false}>
+                    
+                <Content style={style}>
+                    <Radio 
+                        value={option.value}
+                        checkedColor={Colors.BLACK_2}
+                        checked={checked}/>
+                        {option.body}
+                </Content>
+            </Touchable>
         )
-    }, [loading, selectedOption])
+    }, [selectedOption])
 
     return (
         <InfiniteFlatList
-            showShimmer={loading}
-            numShimmerItens={shimmers}
-            ListHeaderComponent={header}
             data={options}
+            renderItem={_renderItem}
             minLengthToLoadMore={0}
-            keyExtractor={(item, key) => `opt${key}`}
-            renderItem={_render}/>
+            ListHeaderComponent={header}
+            keyExtractor={(item, key) => `opt${key}`}/>
     )
 }
 
-const SView: any = styled.View`
-    /* padding-left: ${(props: any) => `${props.horizontalPadding}px`};
-    padding-right: ${(props: any) => `${props.horizontalPadding}px`};
-    padding-top: ${(props: any) => `${props.verticalPadding}px`};
-    padding-bottom: ${(props: any) => `${props.verticalPadding}px`}; */
+const Content = styled.View`
     flex-direction: row;
+    align-items: center;
 `
 
-const SRadio = styled(InputRadio)`
-    margin-right: 15px;
-`
-
-const Shimmer: any = styled(ShimmerPlaceHolder)`
-    width: 80%;
-    height: 25px;
-    margin: 10px ${(props: any) => `${props.horizontalPadding}px`};
+const Radio = styled(InputRadio)`
+    margin-right: ${DEFAULT_HORIZONTAL_SPACING}px;
 `

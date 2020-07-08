@@ -6,7 +6,7 @@ import { useEffectWhenReady } from "../../../core/Commons.hook"
 import Identity from "../../Identity"
 import Messaging from "../../Messaging"
 import { Routes } from "../../Navigation/const"
-import StockTracker from "../../StockTracker"
+import StockTrackerModule from "../../StockTrackerModule"
 import { fetchAppiedInvestiments } from "../api"
 
 type InvestimentHook = {
@@ -25,7 +25,7 @@ export const useInvestimentUIHook = () => {
     
     const navigation = useNavigation()
     const { showAPIError } = Messaging.actions()
-    const { selectStockTrackerID } = StockTracker.actions()
+    const { selectStockTrackerID } = StockTrackerModule.actions()
     const account: Account = Identity.select("activeAccount")
     const [ investiments, setInvestiments ] = useState<InvestimentHook>(empty)
 

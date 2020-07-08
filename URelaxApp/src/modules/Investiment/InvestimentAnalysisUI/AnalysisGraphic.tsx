@@ -20,7 +20,12 @@ interface AnalysisGraphicPros {
     onSelect?(index: number): void
 }
 
-export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({ data, selectedIndex, onEndPageReached, onSelect }) => {
+export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
+    data,
+    selectedIndex,
+    onEndPageReached,
+    onSelect
+}) => {
     
     const render: ListRenderItem<DataGraph> = ({ item, index }) => {
         return <GraphBar

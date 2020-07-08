@@ -1,4 +1,4 @@
-import { FinancialHistory, StockTracker } from "honeybee-api"
+import { FinancialHistory, StockTracker, StockTrackerInput } from "honeybee-api"
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 
@@ -8,6 +8,7 @@ export interface ReducerState {
     selectedStockTrackerID?: string
     selectedStockTracker?: StockTracker
     stockTrackerStatements: FinancialHistory[]
+    stockTrackerInput?: StockTracker
 }
 
 export type ActionTypes = {
@@ -15,6 +16,7 @@ export type ActionTypes = {
     SELECT_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
     UPDATE_SELECTED_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
     ADD_STOCKTRACKER_STATEMENTS(state: ReducerState, payload: any): ReducerState
+    SET_STOCKTRACKER_INPUT(state: ReducerState, payload: any): ReducerState
 }
 
 const Actions = () => {
@@ -31,6 +33,9 @@ const Actions = () => {
         },
         updateSelectedStockTracker: (updates: StockTracker) => {
             dispatch({ type: "UPDATE_SELECTED_STOCKTRACKER", payload: updates } as DispatchType<ActionNames>)
+        },
+        setStockTrackerInput: (input: StockTrackerInput) => {
+            dispatch({ type: "SET_STOCKTRACKER_INPUT", payload: input } as DispatchType<ActionNames>)
         }
     }
 }

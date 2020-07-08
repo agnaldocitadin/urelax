@@ -13,6 +13,8 @@ export type APIError = {
 
 export type GroupBy = "day" | "week" | "month" | "year"
 
+export interface ID extends String {}
+
 export interface StockTracker {
     _id?: string
     account: Account

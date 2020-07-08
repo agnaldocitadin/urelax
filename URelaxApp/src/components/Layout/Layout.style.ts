@@ -1,9 +1,18 @@
 import styled from "styled-components/native"
-import { Colors, Typography, TypographyMedium } from "../../theming"
+import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Typography, TypographyMedium } from "../../theming"
 import { TextIconDisplay } from "../TextIconDisplay"
 
 export const CORNER_RADIUS = "10px"
 export const FORM_PADDING = "20px"
+
+export const MarginBox = styled.View<{ noMarginLeft?: boolean, noMarginRight?: boolean, noMarginTop?: boolean, noMarginBottom?: boolean }>`
+    margin-left: ${({ noMarginLeft }) => noMarginLeft ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+    margin-right: ${({ noMarginRight }) => noMarginRight ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+    margin-top: ${({ noMarginTop }) => noMarginTop ? 0 : DEFAULT_VERTICAL_SPACING}px;
+    margin-bottom: ${({ noMarginBottom }) => noMarginBottom ? 0 : DEFAULT_VERTICAL_SPACING}px;
+`
+
+// --------------- Shit -----------------------
 
 export const SRoundedBox: any = styled.View`
     background-color: ${(props: any) => props.bgColor ? props.bgColor : Colors.WHITE};
@@ -32,14 +41,14 @@ export const SForm: any = styled.View`
 `
 
 export const SFormTitle = styled(TypographyMedium)`
+    margin-bottom: ${DEFAULT_VERTICAL_SPACING}px;
     color: ${Colors.BLACK_2};
     font-size: 18px;
-    margin-bottom: 20px;
 `
 
 export const SFormDescription = styled(Typography)`
+    margin-bottom: ${DEFAULT_VERTICAL_SPACING}px;
     color: ${Colors.GRAY_1};
-    margin-bottom: 25px;
     font-size: 15px;
 `
 
@@ -56,7 +65,7 @@ export const GenericTextIcon = styled(TextIconDisplay)`
 `
 
 export const FormView = styled.View`
-    margin-top: ${FORM_PADDING};
-    margin-left: ${FORM_PADDING};
-    margin-right: ${FORM_PADDING};
+    margin: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
 `
+
+

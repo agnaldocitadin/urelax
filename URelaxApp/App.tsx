@@ -14,7 +14,7 @@ import Navigation from './src/modules/Navigation'
 import { Navigator } from './src/modules/Navigation/Navigator'
 import Security from './src/modules/Security'
 import Statement from './src/modules/Statement'
-import StockTracker from './src/modules/StockTracker'
+import StockTrackerModule from './src/modules/StockTrackerModule'
 import Storage from './src/modules/Storage'
 
 enableScreens()
@@ -28,7 +28,7 @@ const store = AppModules.register([
     Dashboard,
     ActivityHistory,
     Investiment,
-    StockTracker,
+    StockTrackerModule,
     Statement
 ])
     

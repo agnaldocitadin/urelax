@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { BrokerInvestiment } from "honeybee-api"
+import { BrokerInvestiment, InvestimentType } from "honeybee-api"
 import { useCallback, useState } from "react"
 import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
@@ -7,11 +7,13 @@ import { animatedCallback } from "../../../core/Commons.hook"
 import { ts } from "../../../core/I18n"
 import { Colors } from "../../../theming"
 import { Routes } from "../../Navigation/const"
+import { useStockTracker } from "../../StockTrackerModule/hook"
 import { fetchAvailableInvestiments } from "../api"
 
 export const useAddInvestimentUIHook = () => {
 
     const navigation = useNavigation()
+    const { initStockTrackerByInvestiment } = useStockTracker()
     const [ finding, showFinding ] = useState(false)
     const [ investiments, setInvestiments ] = useState<BrokerInvestiment[]>()
 
@@ -35,8 +37,12 @@ export const useAddInvestimentUIHook = () => {
     }, [])
 
     const handleAddInvestiment = animatedCallback((investiment: BrokerInvestiment) => {
-        console.log(investiment.type)
-        navigation.navigate(Routes.STOCKTRACKER_WIZARD)
+        switch (investiment.type) {
+            case InvestimentType.STOCK:
+                initStockTrackerByInvestiment(investiment)
+                navigation.navigate(Routes.STOCKTRACKER_WIZARD)
+                break
+        }
     })
 
     return {

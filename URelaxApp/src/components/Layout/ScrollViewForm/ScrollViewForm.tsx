@@ -23,5 +23,4 @@ export const ScrollViewForm: FC<ScrollViewFormProps> = ({
 )
 
 export const Content = styled(View)`
-    padding: ${FORM_PADDING};
 `
