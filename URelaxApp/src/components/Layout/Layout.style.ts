@@ -52,7 +52,7 @@ export const SFormDescription = styled(Typography)`
     font-size: 15px;
 `
 
-export const SHeaderDivider = styled(TypographyMedium)`
+export const HeaderDivider = styled(TypographyMedium)`
     color: ${Colors.BLUES_4};
     font-size: 14px;
     margin-top: 30px;

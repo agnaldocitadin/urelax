@@ -1,4 +1,5 @@
-import React, { FC, useState } from 'react'
+import { Frequency, Strategy } from 'honeybee-api'
+import React, { FC } from 'react'
 import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { InputOptions, InputTextOption } from '../../../components/InputOptions'
@@ -10,31 +11,43 @@ import { ScrollViewForm } from '../../../components/Layout/ScrollViewForm'
 import { WizardView } from '../../../components/Wizard/WizardView'
 import { WizardForm } from '../../../components/WizardForm'
 import { ts } from '../../../core/I18n'
-import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, TypographyMedium, Icons } from '../../../theming'
+import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Icons, TypographyMedium } from '../../../theming'
+import { StockTrackerData } from '../StockTrackerData'
 import { useStockTrackerWizardUIHook } from './StockTrackerWizardUIHook'
 
 interface StockTrackerWizardProps {}
 
 export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
 
-    const {} = useStockTrackerWizardUIHook()
-    const [ idx, setIdx ] = useState(0)
+    const { 
+        idx,
+        transient,
+        frequencies,
+        strategies,
+        selectFrequency,
+        selectStrategy,
+        handleChangeAutoAmountLimit,
+        handleChangeStockAmountLimit,
+        handleProcessWizard
+    } = useStockTrackerWizardUIHook()
+    
+    
 
     return (
         <FlatLayout bgColor={Colors.WHITE}>
             <BackHeader title={ts("stock_tracker_settings")}/>
             <WizardForm
                 index={idx}
-                onButtonPress={() => setIdx(old => (old + 1))}>
+                onButtonPress={handleProcessWizard}>
                 
                 <WizardView icon="settings">
                     <Options
-                        options={["pri", "sec", "ter"]}
-                        renderOption={item => InputTextOption({ value: item, text: String(item) })}
-                        selectedOption={"null"}
-                        onSelect={item => console.log(">", item)}
+                        options={frequencies}
+                        renderOption={(item: Frequency) => InputTextOption({ value: item._id, text: item.description })}
+                        selectedOption={transient.frequency}
+                        onSelect={selectFrequency}
                         header={
-                            <MarginBox noMarginBottom>
+                            <MarginBox noMarginBottom noMarginTop>
                                 <SFormTitle>{ts("stock_tracker_frequency")}</SFormTitle>
                                 <SFormDescription>{ts("stock_tracker_frequency_tip")}</SFormDescription>
                             </MarginBox>        
@@ -43,12 +56,12 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
 
                 <WizardView icon="settings">
                     <Options
-                        options={["Estrategia 1", "Estrategia 2"]}
-                        renderOption={item => InputTextOption({ value: item, text: String(item)}) }
-                        selectedOption={"null"}
-                        onSelect={item => console.log(">", item)}
+                        options={strategies}
+                        renderOption={(item: Strategy) => InputTextOption({ value: item._id, text: item.description }) }
+                        selectedOption={transient.strategy}
+                        onSelect={selectStrategy}
                         header={
-                            <MarginBox noMarginBottom>
+                            <MarginBox noMarginBottom noMarginTop>
                                 <SFormTitle>{ts("stock_tracker_strategy")}</SFormTitle>
                                 <SFormDescription>{ts("stock_tracker_strategy_tip")}</SFormDescription>
                             </MarginBox>
@@ -56,36 +69,29 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                 </WizardView>
 
                 <WizardView icon="settings">
-                    <MarginBox>
+                    <MarginBox noMarginTop>
                         <SFormTitle>{ts("stock_tracker_transaction_amount")}</SFormTitle>
                         <SFormDescription>{ts("stock_tracker_transaction_amount_tip")}</SFormDescription>
                         <InputText
                             label="opao"
-                            value={null}
+                            value={String(transient.strategySetting?.stockAmountLimit) || "0"}
                             autoCapitalize="words"
                             textContentType="name"
-                            // textSize={20}
-                            // tip={ts("stock_tracker_transaction_amount_eg")}
-                            onChangeText={null}
-                            // includeRawValueInChangeText
-                            // type="money"
-                            // options={{
-                            //     delimiter: ".",
-                            //     precision: 2,
-                            //     unit: `${AppConfig.CURRENCY_PREFIX} `,
-                            // }}
-                            />
+                            onChangeText={handleChangeStockAmountLimit}/>
                         
                         <OrElse>{ts("or_you_can")}</OrElse>
-                        <InputSwitch label={ts("stock_tracker_auto_transaction_amount")} value={0} onChange={null}/>
+                        <InputSwitch 
+                            label={ts("stock_tracker_auto_transaction_amount")}
+                            value={transient.strategySetting?.autoAmountLimit}
+                            onChange={handleChangeAutoAmountLimit}/>
                     </MarginBox>
                 </WizardView>
 
                 <WizardView icon="settings">
                     <ScrollViewForm>
-                        <MarginBox>
+                        <MarginBox noMarginTop>
                             <SFormDescription>{ts("stock_tracker_data_review")}</SFormDescription>
-                            {/* <StockTrackerData stockTracker={{}} isReview={true} noPadding/> */}
+                            <StockTrackerData stockTracker={transient} isReview={true}/>
                         </MarginBox>
                     </ScrollViewForm>
                 </WizardView>

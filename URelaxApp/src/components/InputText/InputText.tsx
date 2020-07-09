@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import { Colors, Icons, InputTextBase, Typography } from '../../theming'
 
 export interface InputTextProps extends TextInputProps {
-    label: string
+    label?: string
     labelStyle?: TextStyle,
     style?: ViewProps
     inputStyle?: StyleProp<TextStyle>

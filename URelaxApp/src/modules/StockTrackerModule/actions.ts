@@ -1,4 +1,4 @@
-import { FinancialHistory, StockTracker, StockTrackerInput } from "honeybee-api"
+import { FinancialHistory, Frequency, StockTracker, Strategy } from "honeybee-api"
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 
@@ -8,7 +8,9 @@ export interface ReducerState {
     selectedStockTrackerID?: string
     selectedStockTracker?: StockTracker
     stockTrackerStatements: FinancialHistory[]
-    stockTrackerInput?: StockTracker
+    // stockTrackerTransient?: StockTracker
+    frequencies?: Frequency[]
+    strategies?: Strategy[]
 }
 
 export type ActionTypes = {
@@ -16,7 +18,9 @@ export type ActionTypes = {
     SELECT_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
     UPDATE_SELECTED_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
     ADD_STOCKTRACKER_STATEMENTS(state: ReducerState, payload: any): ReducerState
-    SET_STOCKTRACKER_INPUT(state: ReducerState, payload: any): ReducerState
+    // SET_STOCKTRACKER_TRANSIENT(state: ReducerState, payload: any): ReducerState
+    SET_STRATEGIES(state: ReducerState, payload: any): ReducerState
+    SET_FREQUENCIES(state: ReducerState, payload: any): ReducerState
 }
 
 const Actions = () => {
@@ -34,8 +38,14 @@ const Actions = () => {
         updateSelectedStockTracker: (updates: StockTracker) => {
             dispatch({ type: "UPDATE_SELECTED_STOCKTRACKER", payload: updates } as DispatchType<ActionNames>)
         },
-        setStockTrackerInput: (input: StockTrackerInput) => {
-            dispatch({ type: "SET_STOCKTRACKER_INPUT", payload: input } as DispatchType<ActionNames>)
+        // setStockTrackerTransient: (transient: StockTracker) => {
+        //     dispatch({ type: "SET_STOCKTRACKER_TRANSIENT", payload: transient } as DispatchType<ActionNames>)
+        // },
+        setStrategies: (strategies: Strategy[]) => {
+            dispatch({ type: "SET_STRATEGIES", payload: strategies } as DispatchType<ActionNames>)
+        },
+        setFrequencies: (frequencies: Frequency[]) => {
+            dispatch({ type: "SET_FREQUENCIES", payload: frequencies } as DispatchType<ActionNames>)
         }
     }
 }

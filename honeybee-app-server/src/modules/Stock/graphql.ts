@@ -1,6 +1,7 @@
 import { GraphQLModule } from "../GraphQL"
 import { createNewStockTracker, findStockTrackers, runOnCreate, updateStockTrackerById } from "./services"
-import { StockTrackerFactory, stockTrackerPlayground } from "./trackers"
+import { StrategyNames } from "./strategies"
+import { StockTrackerFactory, StockTrackerFrequency, stockTrackerPlayground } from "./trackers"
 
 const entry: GraphQLModule = {
     types: `
@@ -24,6 +25,16 @@ const entry: GraphQLModule = {
             stockAmountLimit: Float
             autoAmountLimit: Boolean
         }
+
+        type Strategy {
+            _id: ID
+            description: String
+        }
+
+        type Frequency {
+            _id: ID
+            description: String
+        }
     `,
 
     inputs: `
@@ -45,6 +56,8 @@ const entry: GraphQLModule = {
 
     queries: `
         fetchStockTrackers(id: ID, account: ID, status: String, frequency: String, page: Int!, qty: Int!): [StockTracker]
+        fetchAvailableStrategies: [Strategy]
+        fetchAvailableFrequencies: [Frequency]
     `,
 
     mutations: `
@@ -70,6 +83,20 @@ const entry: GraphQLModule = {
             let stockTrackerDB = await updateStockTrackerById(id, input)
             stockTrackerPlayground.refreshInvestor(stockTrackerDB)
             return true
+        },
+
+        fetchAvailableStrategies: () => {
+            return Object.values(StrategyNames).map(strategy => ({
+                _id: strategy._id,
+                description: `Stra ${strategy._id}`
+            }))
+        },
+
+        fetchAvailableFrequencies: () => {
+            return Object.values(StockTrackerFrequency).map(frequency => ({
+                _id: frequency.type,
+                description: `Fr ${frequency.type}`
+            }))
         }
     }
 }

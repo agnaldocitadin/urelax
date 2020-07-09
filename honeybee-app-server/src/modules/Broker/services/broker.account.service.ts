@@ -11,24 +11,32 @@ export interface BrokerHelperInterface {
     loadExtraData(brokerAccount: BrokerAccount): Promise<void>
 }
 
-/**
- *
- *
- * @param {string} id
- * @returns
- */
-export const findBrokerAccount = (id: string) => {
-    return BrokerAccountModel.findById(id).exec()
-}
+// /**
+//  *
+//  *
+//  * @param {string} id
+//  * @returns
+//  */
+// export const findBrokerAccount = (id: string) => {
+//     return BrokerAccountModel.findById(id).exec()
+// }
 
-/**
- *
- *
- * @param {string} accountId
- * @returns
- */
-export const findBrokerAccountByUser = (accountId: string) => {
-    return BrokerAccountModel.find({ account: accountId }).exec()
+// /**
+//  *
+//  *
+//  * @param {string} accountId
+//  * @returns
+//  */
+// export const findBrokerAccountByUser = (accountId: string) => {
+//     return BrokerAccountModel.find({ account: accountId }).exec()
+// }
+
+export const findBrokerAccounts = (options: {
+    id: string,
+    account: string
+}) => {
+    const { id, account } = options
+    return BrokerAccountModel.find({ account }).exec()
 }
 
 /**

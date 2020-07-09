@@ -36,9 +36,9 @@ export const Info: FC<InfoProps> = ({
 }
 
 const Item = styled(TouchItem)`
-    padding: ${DEFAULT_VERTICAL_SPACING}px ${DEFAULT_HORIZONTAL_SPACING}px;
+    padding: ${DEFAULT_VERTICAL_SPACING}px 0;
 `
 
 const Content = styled.View`
-    padding: ${DEFAULT_VERTICAL_SPACING}px ${DEFAULT_HORIZONTAL_SPACING}px;
+    padding: ${DEFAULT_VERTICAL_SPACING}px 0;
 `

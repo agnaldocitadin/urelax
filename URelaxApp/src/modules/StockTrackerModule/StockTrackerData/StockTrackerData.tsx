@@ -4,7 +4,7 @@ import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
 import { Info } from '../../../components/Info'
-import { SHeaderDivider } from '../../../components/Layout/Layout.style'
+import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import AppConfig from '../../../core/AppConfig'
 import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
@@ -14,13 +14,12 @@ import { Routes } from '../../Navigation/const'
 interface StockTrackerDataProps {
     stockTracker: StockTracker
     isReview: boolean
-    noPadding?: boolean
 }
 
-export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isReview, noPadding }) => {
+export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isReview }) => {
     
     const { strategy, strategySetting, frequency, brokerAccount, stockInfo, status } = stockTracker
-    const { autoAmountLimit, stockAmountLimit } = strategySetting
+    const { autoAmountLimit, stockAmountLimit } = strategySetting || {}
 
     const navigation = useNavigation()
     const handleStrategy = animatedCallback(() => navigation.navigate(Routes.STOCKTRACKER_STRATEGY))
@@ -35,7 +34,7 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
 
             <Info 
                 title={<Typography>{ts("stock")}</Typography>}
-                description={<Typography>{`${stockInfo.description} (${stockInfo.stock.symbol})`}</Typography>}
+                description={<Typography>{`${stockInfo?.description} (${stockInfo?.stock.symbol})`}</Typography>}
                 disabled={isReview}/>
 
             <Info
@@ -62,10 +61,10 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
 
             <Info
                 title={<Typography>{ts("status")}</Typography>}
-                description={<Typography>{ts(status)}</Typography>}
+                description={<Typography>{ts(String(status))}</Typography>}
                 disabled={isReview}/>
 
-            <Divider>Negociação</Divider>
+            <HeaderDivider>Negociação</HeaderDivider>
             <Info
                 title={<Typography>{ts("max_trade_amount")}</Typography>}
                 description={<Typography>{utils.formatCurrency(stockAmountLimit || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}
@@ -80,8 +79,4 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
 const StockLogo = styled.Image`
     margin: 0 auto;
     margin-top: ${DEFAULT_VERTICAL_SPACING}px;
-`
-
-const Divider = styled(SHeaderDivider)`
-    margin: 0 ${DEFAULT_VERTICAL_SPACING}px;
 `

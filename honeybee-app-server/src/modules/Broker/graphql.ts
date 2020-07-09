@@ -1,5 +1,6 @@
+import mongoose from 'mongoose'
 import { GraphQLModule } from "../GraphQL"
-import { findAvailableInvestiments } from "./services"
+import { findAvailableInvestiments, findBrokerAccounts } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -90,8 +91,11 @@ const entry: GraphQLModule = {
             // TODO
         },
 
-        fetchBrokerAccounts: ({ id, account }: any) => {
-            // TOOD'
+        fetchBrokerAccounts: (options: {
+            id: string
+            account: string
+        }) => {
+            return findBrokerAccounts(options)
         },
 
         createBrokerAccount: ({ input }: any) => {
@@ -102,8 +106,11 @@ const entry: GraphQLModule = {
             // TOOD'
         },
 
-        fetchAvailableInvestiments: ({ brokerIDs, search }: any) => {
-            return findAvailableInvestiments(search, brokerIDs)
+        fetchAvailableInvestiments: (options: {
+            search?: string
+            brokerIDs?: mongoose.Types.ObjectId[]
+        }) => {
+            return findAvailableInvestiments(options)
         }
     }
 }

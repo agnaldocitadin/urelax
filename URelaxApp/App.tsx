@@ -4,9 +4,11 @@ import { enableScreens } from 'react-native-screens'
 import { Provider } from 'react-redux'
 import ActivityHistory from './src/modules/ActivityHistory'
 import AppModules from './src/modules/AppModules'
+import BrokerModule from './src/modules/BrokerModule'
+import { BrokerStartup } from './src/modules/BrokerModule/BrokerStartup'
 import Dashboard from './src/modules/Dashboard'
 import Identity from './src/modules/Identity'
-import { IdentityStartup } from './src/modules/Identity/IdentityStartup/IdentityStartup'
+import { IdentityStartup } from './src/modules/Identity/IdentityStartup'
 import Investiment from './src/modules/Investiment'
 import Messaging from './src/modules/Messaging'
 import { DialogMessage } from './src/modules/Messaging/DialogMessage'
@@ -29,7 +31,8 @@ const store = AppModules.register([
     ActivityHistory,
     Investiment,
     StockTrackerModule,
-    Statement
+    Statement,
+    BrokerModule
 ])
     
 const App = () => {
@@ -37,6 +40,7 @@ const App = () => {
         <Provider store={store}>
             <Navigator/>
             <IdentityStartup/>
+            <BrokerStartup/>
             <DialogMessage/>
         </Provider>
     )

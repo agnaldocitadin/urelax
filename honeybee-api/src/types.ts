@@ -17,23 +17,33 @@ export interface ID extends String {}
 
 export interface StockTracker {
     _id?: string
-    account: Account
-    brokerAccount: BrokerAccount
-    strategy: string
-    strategySetting: StrategySetting
-    status: StockTrackerStatus
-    frequency: string
-    lastFrequencyUpdate: Date
-    stockInfo: BrokerInvestiment
-    qty: number
-    buyPrice: number
-    createdAt: Date
-    updatedAt: Date
+    account?: Account
+    brokerAccount?: BrokerAccount
+    strategy?: string
+    strategySetting?: StrategySetting
+    status?: StockTrackerStatus
+    frequency?: string
+    lastFrequencyUpdate?: Date
+    stockInfo?: BrokerInvestiment
+    qty?: number
+    buyPrice?: number
+    createdAt?: Date
+    updatedAt?: Date
+}
+
+export interface Strategy {
+    _id: ID
+    description: string
+}
+
+export interface Frequency {
+    _id: ID
+    description: string
 }
 
 export interface StrategySetting {
-    stockAmountLimit: number
-    autoAmountLimit: boolean
+    stockAmountLimit?: number
+    autoAmountLimit?: boolean
 }
 
 export interface Profile {
@@ -71,13 +81,13 @@ export interface Account {
 }
 
 export interface Broker {
-    _id: string
-    code: string
-    name: string
-    logo: string
-    active: boolean
-    createdAt: Date
-    updatedAt: Date
+    _id?: string
+    code?: string
+    name?: string
+    logo?: string
+    active?: boolean
+    createdAt?: Date
+    updatedAt?: Date
 }
 
 export interface Investiment {

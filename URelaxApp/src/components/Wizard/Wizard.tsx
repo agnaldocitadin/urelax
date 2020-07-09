@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { Colors, TypographyMedium } from '../../theming'
+import { Colors, DEFAULT_VERTICAL_SPACING, TypographyMedium } from '../../theming'
 import { WizardIcon, WizardState } from './WizardIcon'
 
 export interface WizardProps {
@@ -79,6 +79,7 @@ const Container = styled.View`
 `
 
 const IconContent = styled.View`
+    margin-bottom: ${DEFAULT_VERTICAL_SPACING}px;
     flex-direction: row;
 `
 

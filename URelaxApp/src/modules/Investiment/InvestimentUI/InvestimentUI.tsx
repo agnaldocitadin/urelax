@@ -9,7 +9,7 @@ import { BaseButton } from '../../../components/BaseButton'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { ButtonHeader } from '../../../components/Header/ButtonHeader'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { SHeaderDivider } from '../../../components/Layout/Layout.style'
+import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import { TouchItem } from '../../../components/TouchItem'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
@@ -124,7 +124,7 @@ const Touch = styled(TouchItem)`
     padding: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
 `
 
-const Divider = styled(SHeaderDivider)`
+const Divider = styled(HeaderDivider)`
     padding: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
 `
 

@@ -1,42 +1,46 @@
-import { Account, BrokerInvestiment, StockTracker, StockTrackerInput, StockTrackerStatus } from "honeybee-api"
+import { Account, BrokerAccount, BrokerInvestiment, StockTracker, StockTrackerInput, StockTrackerStatus } from "honeybee-api"
 import { useCallback } from "react"
 import StockTrackerModule from "."
+import BrokerModule from "../BrokerModule"
 import Identity from "../Identity"
 
 export const useStockTracker = () => {
 
     const account: Account = Identity.select("activeAccount")
-    const { setStockTrackerInput } = StockTrackerModule.actions()
+    const brokerAccounts: BrokerAccount[] = BrokerModule.select("userBrokerAccounts")
+    const { selectStockTracker } = StockTrackerModule.actions()
 
     const convertToStockTrackerInput = useCallback((stockTracker: StockTracker): StockTrackerInput => {
         return {
-            account: stockTracker.account._id,
-            brokerAccount: stockTracker.brokerAccount._id,
+            account: stockTracker?.account?._id,
+            brokerAccount: stockTracker?.brokerAccount?._id,
             frequency: stockTracker.frequency,
             status: stockTracker.status,
             strategy: stockTracker.strategy,
-            strategySetting: stockTracker.strategySetting,
-            stockInfo: stockTracker.stockInfo._id
+            stockInfo: stockTracker?.stockInfo?._id,
+            strategySetting: {
+                autoAmountLimit: stockTracker.strategySetting?.autoAmountLimit,
+                stockAmountLimit: stockTracker.strategySetting?.stockAmountLimit
+            }
         }
     }, [])
 
     
     const initStockTrackerByInvestiment = useCallback((investiment: BrokerInvestiment) => {
-        setStockTrackerInput({
-            account: account._id,
-            brokerAccount: "22",
-            stockInfo: investiment._id,
-            status: StockTrackerStatus.RUNNING
+        const brokerAccount = brokerAccounts.find(account => account.brokerCode === investiment.broker.code)
+        selectStockTracker({
+            account,
+            brokerAccount: brokerAccount,
+            stockInfo: investiment,
+            status: StockTrackerStatus.RUNNING,
+            strategySetting: {
+                autoAmountLimit: false,
+                stockAmountLimit: 0
+            }
         })
     }, [])
 
-    const initStockTrackerByEntity = useCallback((stockTracker: StockTracker) => {
-        const input = convertToStockTrackerInput(stockTracker)
-        setStockTrackerInput(input)
-    }, [])
-
     return {
-        initStockTrackerByEntity,
         initStockTrackerByInvestiment,
         convertToStockTrackerInput
     }

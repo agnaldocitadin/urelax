@@ -31,13 +31,25 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
     UPDATE_SELECTED_STOCKTRACKER: (state: ReducerState, payload: any): ReducerState => {
         return {
             ...state,
-            selectedStockTracker: {...state.selectedStockTracker, ...payload}
+            selectedStockTracker: {...payload}
         }
     },
-    SET_STOCKTRACKER_INPUT: (state: ReducerState, payload: any): ReducerState => {
+    // SET_STOCKTRACKER_TRANSIENT: (state: ReducerState, payload: any): ReducerState => {
+    //     return {
+    //         ...state,
+    //         stockTrackerTransient: payload
+    //     }
+    // },
+    SET_STRATEGIES: (state: ReducerState, payload: any): ReducerState => {
         return {
             ...state,
-            stockTrackerInput: payload
+            strategies: payload
+        }
+    },
+    SET_FREQUENCIES: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            frequencies: payload
         }
     }
 })
