@@ -29,13 +29,19 @@ export const InvestimentUI: FC = () => {
     const { patrimony, currency, stocks } = investiments
 
     return (
-        <FlatLayout bgColor={Colors.WHITE}>
-            <BackHeader title={ts("investiments")} right={
-                <React.Fragment>
-                    <ButtonHeader icon="filter-variant" color={Colors.BLUES_1} onPress={handleFilter}/>
-                    <ButtonHeader icon={Icons.CLOCK} color={Colors.BLUES_1} onPress={handleStatements}/>
-                </React.Fragment>
-            }/>
+        <FlatLayout
+            bgColor={Colors.WHITE}
+            header={
+                <BackHeader
+                    title={ts("investiments")}
+                    right={
+                    <React.Fragment>
+                        <ButtonHeader icon="filter-variant" color={Colors.BLUES_1} onPress={handleFilter}/>
+                        <ButtonHeader icon={Icons.CLOCK} color={Colors.BLUES_1} onPress={handleStatements}/>
+                    </React.Fragment>
+                }/>
+            }>
+            
             <ScrollView>
                 <Patrimony>
                     <Typography textAlign="center">{ts("available_to_invest")}</Typography>

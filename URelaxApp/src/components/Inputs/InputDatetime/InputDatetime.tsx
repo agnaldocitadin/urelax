@@ -1,11 +1,12 @@
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { format } from 'date-fns'
 import React, { FC } from 'react'
-import { Icons } from '../../theming'
-import { InputText, InputTextProps } from '../InputText'
+import { Icons } from '../../../theming'
+import { InputText } from '../InputText'
+import { InputWrapperProps } from '../InputWrapper'
 import { useInputDatetimeHook } from './InputDatetimeHook'
 
-export interface InputDatetimeProps extends InputTextProps {
+export interface InputDatetimeProps extends InputWrapperProps {
     dateTimeDispplay?: "spinner" | "default" | "clock" | "calendar"
     dateTimeMode?: "date" | "time"
     dateValue?: Date
@@ -33,7 +34,7 @@ export const InputDatetime: FC<InputDatetimeProps> = ({
                 value={inputValue} 
                 editable={false} 
                 rightIcon={Icons.CALENDAR}
-                onTouchStart={(handleShowDatetime)}/>
+                onTouchStart={handleShowDatetime}/>
             
             { show && <DateTimePicker
                 value={_value ? _value : new Date()}

@@ -9,8 +9,9 @@ import { useInvestimentAnalysisDetailUIHook } from './InvestimentAnalysisDetailU
 export const InvestimentAnalysisDetailUI: FC = () => {
     const { analysis } = useInvestimentAnalysisDetailUIHook()
     return (
-        <FlatLayout bgColor={Colors.WHITE}>
-            <BackHeader title={ts("details")}/>
+        <FlatLayout
+            bgColor={Colors.WHITE}
+            header={<BackHeader title={ts("details")}/>}>
             <Row>
                 <MyButton label="Lucro" selected/>
                 <MyButton label="Perda" selected/>

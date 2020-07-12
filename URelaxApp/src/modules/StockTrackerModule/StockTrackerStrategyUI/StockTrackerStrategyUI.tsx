@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { InputOptions } from '../../../components/InputOptions'
+import { InputOptions } from '../../../components/Inputs/InputOptions'
 import { FormLayout } from '../../../components/Layout/FormLayout'
 import { FormView, SFormDescription, SFormTitle } from '../../../components/Layout/Layout.style'
 import { ts } from '../../../core/I18n'

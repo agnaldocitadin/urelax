@@ -1,9 +1,9 @@
 
-import { Icon, Input } from 'native-base'
+// import { Icon, Input } from 'native-base'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
-import { Colors, Fonts, Icons } from '../../theming'
-import { CORNER_RADIUS, FORM_PADDING } from '../Layout/Layout.style'
+import { Colors, Fonts, Icons } from '../../../theming'
+import { CORNER_RADIUS, FORM_PADDING } from '../../Layout/Layout.style'
 
 interface InputSearchProps {
     placeholder?: string

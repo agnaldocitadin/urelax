@@ -1,42 +1,46 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import { BackHeader } from '../../../components/Header/BackHeader'
+import { CurrencyInput } from '../../../components/Inputs/CurrencyInput'
+import { InputText } from '../../../components/Inputs/InputText/InputText'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { Wizard } from '../../../components/Wizard'
-import { WizardView } from '../../../components/Wizard/WizardView'
+import { WizardForm } from '../../../components/WizardForm'
 import { ts } from '../../../core/I18n'
-import { Button, Icons, Typography } from '../../../theming'
 
 export const FilterUI: FC = () => {
-    const [ idx, setIdx ] = useState(0)
+
+    const [ val, setVal ] = useState(0)
+    console.log(val)
+
     return (
-        <FlatLayout bgColor="white">
-            <BackHeader title={ts("filter")}/>
+        <FlatLayout
+            bgColor="white"
+            header={<BackHeader title={ts("filter")}/>}>
+
             
-            <NewWizard index={idx}>
-                <WizardView label="Init" icon={Icons.SETTINGS}>
-                    <Typography>first</Typography>
-                </WizardView>
+            {/* <InputSecure label="Password" /> */}
+            {/* <InputDatetime label="data" /> */}
+            <InputText
+                // label="dddd"
+                // rightIcon="wallet"
+                // leftIcon="settings"
+                />
+            <CurrencyInput label="eita" value={val} onChangeValue={setVal}/>
+            
+            {/* <InputWrapper
+                El={<InputTextBase />}
+                value={val}
+                onChangeText={setVal}
+                onChange={s => {
+                    console.log("---")
+                    // return s.preventDefault()
+                    return s.stopPropagation()
+                }}/> */}
 
-                <WizardView label="Frequência" icon={Icons.USER}>
-                    <Typography>second</Typography>
-                </WizardView>
-
-                <WizardView label="Transação" icon={Icons.ALERT_CIRCLE}>
-                    <Typography>Transação</Typography>
-                </WizardView>
-
-                <WizardView label="Revisão" icon={Icons.ALERT_CIRCLE}>
-                    <Typography>Final!</Typography>
-                </WizardView>
-            </NewWizard>
-            <Button onPress={() => setIdx(old => (old + 1))}>
-                <Typography>Next</Typography>
-            </Button>
         </FlatLayout>
     )
 }
 
-const NewWizard = styled(Wizard)`
+const NewWizard = styled(WizardForm)`
     padding: 20px 0;
 `

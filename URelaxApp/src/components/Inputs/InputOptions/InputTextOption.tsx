@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { Typography } from '../../theming'
+import { Typography } from '../../../theming'
 import { FormOptionType } from './InputOptions'
 
 interface InputTextOptionProps<T> {

@@ -1,10 +1,10 @@
 import React, { ReactElement, useCallback } from 'react'
 import { ListRenderItem, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { Colors, DEFAULT_HORIZONTAL_SPACING } from '../../theming'
-import { InfiniteFlatList } from '../InfiniteFlatList'
+import { Colors, DEFAULT_HORIZONTAL_SPACING } from '../../../theming'
+import { InfiniteFlatList } from '../../InfiniteFlatList'
+import { Touchable } from '../../Touchable'
 import { InputRadio } from '../InputRadio/InputRadio'
-import { Touchable } from '../Touchable'
 
 export type FormOptionType<T> = {
     value: T

@@ -22,25 +22,26 @@ export const AddInvestimentUI: FC = () => {
     } = useAddInvestimentUIHook()
 
     return (
-        <FlatLayout bgColor={Colors.WHITE}>
-            <BackHeader
-                title={ts("add_investiments")}
-                center={finding && <Input placeholder={ts("find_for")} autoFocus onChangeText={handleFindInvestiments}/>}
-                right={
-                    finding
-                        ? <ButtonHeader
-                            icon={Icons.CLOSE}
-                            color={Colors.BLUES_1}
-                            onPress={() => showFinding(false)}/>
-                        : <ButtonHeader 
-                            icon={Icons.MAGNIFY}
-                            color={Colors.BLUES_1}
-                            onPress={() => showFinding(true)}/>
-                }/>
+        <FlatLayout
+            bgColor={Colors.WHITE}
+            header={
+                <BackHeader
+                    title={ts("add_investiments")}
+                    center={finding && <Input placeholder={ts("find_for")} autoFocus onChangeText={handleFindInvestiments}/>}
+                    right={
+                        finding
+                            ? <ButtonHeader
+                                icon={Icons.CLOSE}
+                                color={Colors.BLUES_1}
+                                onPress={() => showFinding(false)}/>
+                            : <ButtonHeader 
+                                icon={Icons.MAGNIFY}
+                                color={Colors.BLUES_1}
+                                onPress={() => showFinding(true)}/>
+                    }/>
+            }>
             <Container>
-
                 { investiments && investiments.map((inve, key) => <Typography key={key} onPress={() => handleAddInvestiment(inve)}>{inve.description}</Typography>) }
-
                 { !finding && <React.Fragment>
                     <GenericTextIcon title="Não sabe no que investir?" message="Podemos ajudar você" icon="auto-fix" />
                     <SuggestionBtn data={suggestionBtnData} indicatorColor={Colors.WHITE} onPress={handleSuggestion}/>

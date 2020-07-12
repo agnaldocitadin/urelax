@@ -59,8 +59,8 @@ export const HeaderDivider = styled(TypographyMedium)`
 `
 
 export const GenericTextIcon = styled(TextIconDisplay)`
-    margin: 0 25px;
     justify-content: center;
+    margin: 0 25px;
     flex: 1;
 `
 

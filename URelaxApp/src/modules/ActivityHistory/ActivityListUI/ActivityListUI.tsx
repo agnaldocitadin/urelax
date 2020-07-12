@@ -12,8 +12,16 @@ interface ActivityListUIProps {}
 export const ActivityListUI: FC<ActivityListUIProps> = () => {
     const { activities, fail, handleRefresh, handleLoadMoreData, handleActivityPress } = useActivityListUIHook()
     return (
-        <FlatLayout fail={fail} bgColor={Colors.WHITE}>
-            <BackHeader title={ts("activities")} right={<ButtonHeader icon={Icons.MAGNIFY}/>}/>
+        <FlatLayout
+            fail={fail}
+            bgColor={Colors.WHITE}
+            header={
+                <BackHeader 
+                    title={ts("activities")}
+                    right={<ButtonHeader icon={Icons.MAGNIFY}/>
+                }/>
+            }>
+            
             { !fail && <ActivityTimeline
                 activities={activities}
                 minLengthToLoadMore={10}

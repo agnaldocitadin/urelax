@@ -10,8 +10,10 @@ import Investiment from '../../Investiment'
 export const StatementDetailUI: FC = () => {
     const event: FinancialHistory = Investiment.select("selectedEvent")
     return (
-        <FlatLayout bgColor={Colors.WHITE}>
-            <BackHeader title={ts("statement_detail")}/>
+        <FlatLayout
+            bgColor={Colors.WHITE}
+            header={<BackHeader title={ts("statement_detail")}/>}>
+            
             <ScrollView>
                 {/* TODO */}
             </ScrollView>

@@ -27,8 +27,10 @@ export const InvestimentAnalysisUI: FC = () => {
     } = useInvestimentAnalysisUIHook()
 
     return (
-        <FlatLayout bgColor={Colors.WHITE}>
-            <BackHeader title={ts("analysis")}/>
+        <FlatLayout
+            bgColor={Colors.WHITE}
+            header={<BackHeader title={ts("analysis")}/>}>
+            
             <Soet>
                 <Typography>{utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                 <VariationMonitor value={patrimonyVariation}/>

@@ -5,7 +5,6 @@ import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { ButtonHeader } from '../../../components/Header/ButtonHeader'
 import { Info } from '../../../components/Info'
-import { InteractiveButtonStates } from '../../../components/InteractiveButton'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
@@ -32,15 +31,18 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
     } = useStockTrackerPreviewUIHook()
 
     return (
-        <FlatLayout fail={fail}>
-            <BackHeader 
-                title={stockTracker?.stockInfo?.description || ""}
-                right={
-                    <ButtonHeader
-                        color={Colors.BLUES_1} 
-                        icon={Icons.SETTINGS} 
-                        onPress={handleSettings}/>
-                }/>
+        <FlatLayout
+            fail={fail}
+            header={
+                <BackHeader 
+                    title={stockTracker?.stockInfo?.description || ""}
+                    right={
+                        <ButtonHeader
+                            color={Colors.BLUES_1} 
+                            icon={Icons.SETTINGS} 
+                            onPress={handleSettings}/>
+                    }/>
+            }>
 
             { stockTracker && !fail && 
                 <StatementTimeline

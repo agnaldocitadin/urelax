@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
-import { InputText } from '../../../components/InputText'
+import { InputText } from '../../../components/Inputs/InputText'
 import { InteractiveButton } from '../../../components/InteractiveButton'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { FORM_PADDING } from '../../../components/Layout/Layout.style'
@@ -37,8 +37,7 @@ export const SignUpUI: FC<SignUpUIProps> = ({}) => {
     } = useSignUpUIHook()
 
     return (
-        <FlatLayout>
-            <BackHeader title={ts("sign_up")}/>
+        <FlatLayout header={<BackHeader title={ts("sign_up")}/>}>
 
             <SplashAuth
                 authenticating={authenticate}

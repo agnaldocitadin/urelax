@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
-import { View, ViewStyle } from 'react-native'
+import { ViewStyle } from 'react-native'
+import styled from 'styled-components/native'
 
-interface WizardViewProps {
+export interface WizardViewProps {
     icon: string
     label?: string
     style?: ViewStyle
@@ -9,8 +10,12 @@ interface WizardViewProps {
 
 export const WizardView: FC<WizardViewProps> = ({ children, style }) => {
     return (
-        <View style={style}>
+        <Content style={style}>
             { children }
-        </View>
+        </Content>
     )
 }
+
+const Content = styled.View`
+    flex: 1;
+`

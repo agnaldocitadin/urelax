@@ -1,29 +1,64 @@
-import React, { FC } from "react"
+import { useBackHandler } from '@react-native-community/hooks'
+import React, { FC, useCallback, useState } from "react"
+import { ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import { Colors, DEFAULT_VERTICAL_SPACING } from "../../theming"
 import { InteractiveButton, InteractiveButtonData } from "../InteractiveButton"
 import { Wizard, WizardProps } from "../Wizard"
 
-interface WizardFormProps extends WizardProps {
+interface WizardFormProps {
+    views: WizardProps["views"]
+    sequence: WizardProps["sequence"]
+    style?: ViewStyle
     buttonData?: InteractiveButtonData
-    onButtonPress?(): void
+    finishViewName: string
+    onValidate(index: number): boolean
+    onFinish(): Promise<void>
+    onFlowEnded?(): void
 }
 
 export const WizardForm: FC<WizardFormProps> = ({ 
-    children,
     buttonData = {
         text: "Next",
         textColor: Colors.BLUES_2
     },
-    onButtonPress,
+    finishViewName,
+    onFinish,
+    onValidate,
+    onFlowEnded,
     ...others
 }) => {
+
+    const [ index, setIndex ] = useState(0)
+
+    const handleNext = useCallback(async () => {
+        if (others.sequence[index] === finishViewName) {
+            onFlowEnded && onFlowEnded()
+            return
+        }
+        if (onValidate(index)) {
+            try {
+                others.sequence[index + 1] === finishViewName && await onFinish()
+                setIndex(old => (old + 1))
+            }
+            catch(error) {
+                console.log(error)
+            }
+        }
+    }, [others.sequence, index, finishViewName])
+
+    useBackHandler(() => {
+        if (index !== 0) {
+            setIndex(old => (old - 1))
+            return true
+        }
+        return false
+    })
+
     return (
         <React.Fragment>
-            <WizardFlow {...others}>
-                { children }
-            </WizardFlow>
-            <Button data={buttonData} onPress={onButtonPress}/>
+            <WizardFlow {...others} index={index}/>
+            <Button data={buttonData} onPress={handleNext}/>
         </React.Fragment>
     )
 }

@@ -24,8 +24,9 @@ export const useAddInvestimentUIHook = () => {
         iconColor: Colors.WHITE,
     })
 
-    const handleSuggestion = animatedCallback(() => {
+    const handleSuggestion = animatedCallback(async () => {
         updateSuggestionBtn({ activityState: InteractiveButtonStates.PROCESSING })
+        await handleFindInvestiments("invest")
         updateSuggestionBtn({ activityState: InteractiveButtonStates.NORMAL })
     })
 

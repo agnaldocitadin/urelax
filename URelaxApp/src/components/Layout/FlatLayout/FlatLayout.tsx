@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, ReactElement } from 'react'
 import { ActivityIndicator, SafeAreaView, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import { ts } from '../../../core/I18n'
@@ -12,10 +12,12 @@ export interface FlatLayoutProps {
     fail?: boolean
     loading?: boolean
     indicatorColor?: string
+    header?: ReactElement
 }
 
 export const FlatLayout: FC<FlatLayoutProps> = ({ 
-    children, 
+    children,
+    header,
     barStyle = "dark-content",
     bgColor = Colors.BG_5,
     bgStatusBar = Colors.WHITE,
@@ -27,7 +29,8 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
         <FlatContainer bgColor={bgColor}>
             <StatusBar barStyle={barStyle} backgroundColor={bgStatusBar} />
             <SafeAreaView style={{ flex: 1 }}>
-                { children }
+                { header }
+                { !loading && children }
                 { fail && <ErrorMessage>
                     <Display
                         icon={Icons.HEART_BROKEN}

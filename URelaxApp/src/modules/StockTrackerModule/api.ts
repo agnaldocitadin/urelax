@@ -1,6 +1,6 @@
 import { API, StockTrackerInput } from "honeybee-api"
 
-const StockTrackerFragment = `
+const stockTrackerFragment = `
     _id
     strategy
     strategySetting {
@@ -29,12 +29,12 @@ export const fetchStockTrackerByID = async (id: string) => {
         id,
         page: 0,
         qty: 1
-    }, StockTrackerFragment)
+    }, stockTrackerFragment)
 
     if (stockTrackers.length >= 0) return stockTrackers[0]
     return null
 }
 
 export const createStockTracker = (input: StockTrackerInput) => {
-    return API.StockTracker.createStockTracker(input, StockTrackerFragment)
+    return API.StockTracker.createStockTracker(input, stockTrackerFragment)
 }

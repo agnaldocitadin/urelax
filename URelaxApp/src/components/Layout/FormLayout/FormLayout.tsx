@@ -44,16 +44,18 @@ export const FormLayout: FC<Props> = (props) => {
         <FlatLayout 
             bgColor={bgColor}
             barStyle={barStyle}
-            fail={fail}>
+            fail={fail}
+            header={
+                <BackHeader 
+                    title={title}
+                    titleColor={titleColor}
+                    bgHeaderColor={bgHeaderColor}
+                    left={left}
+                    borderBottomWidth={borderBottomWidth}
+                    borderBottomColor={borderBottomColor}
+                    right={onClose && <ButtonHeader color={Colors.BLUES_3} icon={Icons.CLOSE} onPress={onClose}/>}/>
+            }>
 
-            <BackHeader 
-                title={title}
-                titleColor={titleColor}
-                bgHeaderColor={bgHeaderColor}
-                left={left}
-                borderBottomWidth={borderBottomWidth}
-                borderBottomColor={borderBottomColor}
-                right={onClose && <ButtonHeader color={Colors.BLUES_3} icon={Icons.CLOSE} onPress={onClose}/>}/>
             
             { children }
 

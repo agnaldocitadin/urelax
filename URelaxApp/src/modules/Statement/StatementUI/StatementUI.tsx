@@ -14,8 +14,7 @@ export const StatementUI: FC = () => {
     } = useStatementUIHook()
 
     return (
-        <FlatLayout>
-            <BackHeader title={ts("statement")}/>
+        <FlatLayout header={<BackHeader title={ts("statement")}/>}>
             <StatementTimeline
                 data={statements}
                 onRefresh={handleRefresh}

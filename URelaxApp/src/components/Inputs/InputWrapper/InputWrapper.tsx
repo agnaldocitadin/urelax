@@ -1,61 +1,50 @@
-import React, { FC, useCallback, useState } from 'react'
-import { StyleProp, TextInputProps, TextStyle, ViewProps } from 'react-native'
+import React, { FC, ReactElement } from 'react'
+import { GestureResponderEvent, TextStyle, ViewProps } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors, Icons, InputTextBase, Typography } from '../../theming'
+import { Colors, Typography } from '../../../theming'
 
-export interface InputTextProps extends TextInputProps {
+export interface InputWrapperProps {
     label?: string
     labelStyle?: TextStyle,
-    style?: ViewProps
-    inputStyle?: StyleProp<TextStyle>
+    wrapperStyle?: ViewProps
     leftIcon?: string
     leftIconSize?: number
     leftIconColor?: string
     rightIcon?: string
     rightIconSize?: number
     rightIconColor?: string
-    securityIconSize?: number
     disabled?: boolean
     rightIconAction?(): void
+    onTouchStart?(event: GestureResponderEvent): void
+    wrapped?: ReactElement
 }
 
 const DEFAULT_ICON_SIZE = 20
 
-export const InputText: FC<InputTextProps> = ({
+export const InputWrapper: FC<InputWrapperProps> = ({
     label,
     labelStyle,
-    style,
-    inputStyle,
+    wrapperStyle,
     leftIcon,
     leftIconSize = DEFAULT_ICON_SIZE,
     leftIconColor,
     rightIcon,
     rightIconSize = DEFAULT_ICON_SIZE,
     rightIconColor,
-    secureTextEntry,
-    securityIconSize = DEFAULT_ICON_SIZE,
     rightIconAction,
     onTouchStart,
+    wrapped,
     ...others
 }) => {
-
-    const [ secure, setSecure ] = useState(secureTextEntry)
-    const handletoggleSecure = useCallback(() => setSecure(oldValue => !oldValue), [secure])
-
     return (
-        <Container onTouchStart={onTouchStart} style={style}>
+        <Container 
+            onTouchStart={onTouchStart}
+            style={wrapperStyle}>
             { label && <Typography style={labelStyle}>{label}</Typography> }
             <Content>
                 { leftIcon && <SIcon name={leftIcon} size={leftIconSize} color={leftIconColor}/> }
-                <InputTextBase {...others} secureTextEntry={secure} style={inputStyle}/>
-                { secureTextEntry && 
-                    <SIcon 
-                        name={secure ? Icons.EYE_OFF_OUTLINE : Icons.EYE_OUTLINE} 
-                        color={rightIconColor} 
-                        size={securityIconSize} 
-                        onPress={handletoggleSecure}/>
-                }
+                { wrapped }
                 { rightIcon && 
                     <SIcon 
                         name={rightIcon} 

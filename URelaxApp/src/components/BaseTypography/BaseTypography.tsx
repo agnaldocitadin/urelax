@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
-import { TextStyle } from 'react-native'
+import { TextProps, TextStyle } from 'react-native'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import styled from 'styled-components/native'
 import { Colors, DEFAULT_FONTSIZE, SHIMMER_COLORS } from '../../theming'
 
-export interface BaseTypographyProps {
+export interface BaseTypographyProps extends TextProps {
     loading?: boolean
     color?: string
     fontSize?: number
@@ -37,5 +37,4 @@ const Typography = styled.Text<{ color?: string, fontSize?: number, textAlign?: 
 const ShimmerName = styled(ShimmerPlaceHolder)<{ height?: number }>`
     height: ${({ height }) => `${(height || DEFAULT_FONTSIZE) * 1.35}px`};
     margin: 3px 0;
-    /* flex:1; */
 `

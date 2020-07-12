@@ -1,48 +1,63 @@
-import React, { FC } from 'react'
+import React, { FC, ReactElement } from 'react'
 import { ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
 import { Colors, DEFAULT_VERTICAL_SPACING, TypographyMedium } from '../../theming'
 import { WizardIcon, WizardState } from './WizardIcon'
+import { WizardViewProps } from './WizardView'
+
+interface WizardChild {
+    id: string
+    view: ReactElement<WizardViewProps>
+}
 
 export interface WizardProps {
+    index: number
+    views: WizardChild[]
+    sequence: string[]
     style?: ViewStyle
-    index?: number
 }
 
 export const Wizard: FC<WizardProps> = ({
     style,
     index = 0,
-    children
+    views,
+    sequence
 }) => {
+
+    const viewName = sequence[index]
+    const child = views.find(view => view.id === viewName)
+
     return (
         <Container style={style}>
             <IconContent>
                 {
-                    React.Children.map(children, (child, i) => {
-                        const { label, icon } = child?.props
+                    sequence.map((viewName, viewIndex) => {
+                        const child = views.find(view => view.id === viewName)
+                        const { icon, label } = (child?.view?.props as WizardViewProps)
+                        
                         let state = WizardState.NOT_SELECTED
                         let labelColor
                         
-                        if (index > i) {
+                        if (index > viewIndex) {
                             state = WizardState.REACHED
                             labelColor = Colors.BG_4
                         }
 
-                        if (index === i) {
+                        if (index === viewIndex) {
                             state = WizardState.SELECTED
                             labelColor= Colors.BLUES_1
                         }
 
-                        if (index < i) {
+                        if (index < viewIndex) {
                             state = WizardState.NOT_SELECTED
                             labelColor = Colors.BG_4
                         }
 
-                        const hiddenLeftLine = i === 0 || state === WizardState.NOT_SELECTED
-                        const hiddenRightLine = React.Children.count(children) - 1 === i || state !== WizardState.REACHED
+                        const hiddenLeftLine = viewIndex === 0 || state === WizardState.NOT_SELECTED
+                        const hiddenRightLine = sequence.length - 1 === viewIndex || state !== WizardState.REACHED
 
                         return (
-                            <Box>
+                            <Box key={`view_${viewName}`}>
                                 <IconBox>
                                     <Line hidden={hiddenLeftLine}/>
                                     <WizardIcon state={state} icon={icon}/>
@@ -55,13 +70,7 @@ export const Wizard: FC<WizardProps> = ({
                 }
             </IconContent>
             <Content>
-                {
-                    React.Children.map(children, (child, i) => {
-                        if (i === index) {
-                            return child
-                        }
-                    })
-                }
+                { child?.view }
             </Content>
         </Container>        
     )
@@ -71,7 +80,6 @@ const Line = styled.View<{ hidden: boolean }>`
     background-color: ${({ hidden }) => hidden ? Colors.TRANSPARENT : Colors.BLUES_3};
     height: 3px;
     flex: 1;
-
 `
 
 const Container = styled.View`

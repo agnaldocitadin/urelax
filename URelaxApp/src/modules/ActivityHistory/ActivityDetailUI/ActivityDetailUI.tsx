@@ -13,8 +13,10 @@ interface ActivityDetailUIProps {}
 export const ActivityDetailUI: FC<ActivityDetailUIProps> = () => {
     const activity: Activity = ActivityHistory.select("selectedActiviy")
     return (
-        <FlatLayout bgColor={Colors.WHITE}>
-            <BackHeader title={activity.title}/>
+        <FlatLayout
+            bgColor={Colors.WHITE}
+            header={<BackHeader title={activity.title}/>}>
+                
             <ScrollView>
                 { activity && activity.details.map((detail, key) => 
                     <ActivityInfo

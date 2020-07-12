@@ -1,18 +1,22 @@
+import { useNavigation } from "@react-navigation/native"
 import { API, Frequency, StockTracker, Strategy } from "honeybee-api"
 import { useCallback, useState } from "react"
 import StockTrackerModule from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
+import { Routes } from "../../Navigation/const"
 import { createStockTracker } from "../api"
 import { useStockTracker } from "../hook"
 
 export const useStockTrackerWizardUIHook = () => {
 
-    const [ idx, setIdx ] = useState(0)
+    const navigation = useNavigation()
+    const [ loading, setLoading ] = useState(true)
     const transient: StockTracker = StockTrackerModule.select("selectedStockTracker")
     const frequencies: Frequency[] = StockTrackerModule.select("frequencies")
     const strategies: Strategy[] = StockTrackerModule.select("strategies")
     const { setStrategies, setFrequencies, updateSelectedStockTracker } = StockTrackerModule.actions()
     const { convertToStockTrackerInput } = useStockTracker()
+    
 
     const selectFrequency = useCallback((frequency: Frequency) => {
         transient["frequency"] = String(frequency._id)
@@ -24,9 +28,9 @@ export const useStockTrackerWizardUIHook = () => {
         updateSelectedStockTracker(transient)
     }, [transient])
 
-    const handleChangeStockAmountLimit = useCallback((value: string) => {
+    const handleChangeStockAmountLimit = useCallback((value: number) => {
         if (transient.strategySetting) {
-            transient.strategySetting["stockAmountLimit"] = Number(value)
+            transient.strategySetting["stockAmountLimit"] = value
             updateSelectedStockTracker(transient)
         }
     }, [transient])
@@ -38,16 +42,18 @@ export const useStockTrackerWizardUIHook = () => {
         } 
     }, [transient])
 
-    const handleProcessWizard = useCallback(async () => {
-        if (idx === 3) {
-            const input = convertToStockTrackerInput(transient)
-            await createStockTracker(input)
-            setIdx(old => (old + 1))
-        }
-        else {
-            setIdx(old => (old + 1))
-        }
-    }, [idx])
+    const handleFinish = useCallback(async () => {
+        const input = convertToStockTrackerInput(transient)
+        await createStockTracker(input)
+    }, [transient])
+
+    const handleValidation = useCallback((index: number) => {
+        return true
+    }, [])
+
+    const handleFlowEnded = useCallback(() => {
+        navigation.navigate(Routes.ADD_INVESTIMENT)
+    }, [])
 
     useEffectWhenReady(async () => {
         const frequencies = await API.StockTracker.fetchAvailableFrequencies(`
@@ -61,17 +67,22 @@ export const useStockTrackerWizardUIHook = () => {
             description
         `)
         setStrategies(strategies)
+        setLoading(false)
     })
 
+    console.log("------>>>", transient)
+
     return {
-        idx,
         transient,
         frequencies,
         strategies,
+        loading,
         selectFrequency,
         selectStrategy,
         handleChangeStockAmountLimit,
         handleChangeAutoAmountLimit,
-        handleProcessWizard
+        handleFinish,
+        handleValidation,
+        handleFlowEnded
     }
 }

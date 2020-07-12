@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
-import { InputSwitch } from '../../../components/InputSwitch'
-import { InputText } from '../../../components/InputText'
+import { InputSwitch } from '../../../components/Inputs/InputSwitch'
+import { InputText } from '../../../components/Inputs/InputText'
 import { FormLayout } from '../../../components/Layout/FormLayout'
 import { SFormDescription, SFormTitle } from '../../../components/Layout/Layout.style'
 import { ScrollViewForm } from '../../../components/Layout/ScrollViewForm'

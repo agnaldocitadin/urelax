@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Switch, SwitchProps, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { Colors, Typography } from '../../theming'
+import { Colors, Typography } from '../../../theming'
 
 interface InputSwitchProps extends SwitchProps {
     label: string
