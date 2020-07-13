@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import AppModuleState from "../AppModuleState"
 import { ActionTypes, ReducerState } from "./actions"
-import { MODULE_NAME } from "./const"
+import { MODULE_NAME, StockTrackerWizardViews } from "./const"
 
 const INITIAL_STATE: ReducerState = {
     stockTrackerStatements: []
@@ -19,6 +19,7 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
     SELECT_STOCKTRACKER: (state: ReducerState, payload: any): ReducerState => {
         return {
             ...state,
+            edit: false,
             selectedStockTracker: payload
         }
     },
@@ -34,12 +35,6 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             selectedStockTracker: {...payload}
         }
     },
-    // SET_STOCKTRACKER_TRANSIENT: (state: ReducerState, payload: any): ReducerState => {
-    //     return {
-    //         ...state,
-    //         stockTrackerTransient: payload
-    //     }
-    // },
     SET_STRATEGIES: (state: ReducerState, payload: any): ReducerState => {
         return {
             ...state,
@@ -50,6 +45,27 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
         return {
             ...state,
             frequencies: payload
+        }
+    },
+    EDIT_FREQUENCY: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            edit: true,
+            viewToEdit: String(StockTrackerWizardViews.FREQUENCY)
+        }
+    },
+    EDIT_STRATEGY: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            edit: true,
+            viewToEdit: String(StockTrackerWizardViews.STRATEGY)
+        }
+    },
+    EDIT_TRANSACTION: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            edit: true,
+            viewToEdit: String(StockTrackerWizardViews.TRANSACTION)
         }
     }
 })

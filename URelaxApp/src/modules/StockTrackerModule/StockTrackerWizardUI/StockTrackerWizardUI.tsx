@@ -13,22 +13,17 @@ import { WizardForm } from '../../../components/WizardForm'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Icons, TypographyMedium } from '../../../theming'
+import { StockTrackerWizardViews } from '../const'
 import { StockTrackerData } from '../StockTrackerData'
 import { useStockTrackerWizardUIHook } from './StockTrackerWizardUIHook'
-
-enum StockTrackerWizardViews {
-    FREQUENCY,
-    STRATEGY,
-    TRANSACTION,
-    REVIEW,
-    DONE
-}
 
 interface StockTrackerWizardProps {}
 
 export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
 
-    const { 
+    const {
+        sequence,
+        messageDone,
         transient,
         frequencies,
         strategies,
@@ -49,13 +44,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
             header={<BackHeader title={ts("stock_tracker_settings")}/>}>
             
             <WizardForm
-                sequence={[
-                    String(StockTrackerWizardViews.FREQUENCY),
-                    String(StockTrackerWizardViews.STRATEGY),
-                    String(StockTrackerWizardViews.TRANSACTION),
-                    String(StockTrackerWizardViews.REVIEW),
-                    String(StockTrackerWizardViews.DONE)
-                ]}
+                sequence={sequence}
                 finishViewName={String(StockTrackerWizardViews.DONE)}
                 onFinish={handleFinish}
                 onValidate={handleValidation}
@@ -136,8 +125,8 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                         view: (
                             <WizardView icon={Icons.CHECK_CIRCLE}>
                                 <GenericTextIcon
-                                    title="Ebaaaa!"
-                                    message="Rastreador cadastrado com sucesso."
+                                    title={ts("eba")}
+                                    message={ts(messageDone)}
                                     icon={Icons.CHECK_CIRCLE}
                                     iconColor={Colors.BLUES_1}/>
                             </WizardView>

@@ -13,7 +13,11 @@ interface StockTrackerSettingUIProps {}
 
 export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({}) => {
 
-    const { stockTracker, showDestroyBtn, handleDestroyStockTracker } = useStockTrackerSettingUIHook()
+    const { 
+        stockTracker,
+        showDestroyBtn,
+        handleDestroyStockTracker 
+    } = useStockTrackerSettingUIHook()
 
     return (
         <FlatLayout

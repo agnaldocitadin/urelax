@@ -4,8 +4,17 @@ import { useCallback, useState } from "react"
 import StockTrackerModule from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
 import { Routes } from "../../Navigation/const"
-import { createStockTracker } from "../api"
+import { createStockTracker, updateStockTracker } from "../api"
+import { StockTrackerWizardViews } from "../const"
 import { useStockTracker } from "../hook"
+
+const viewsSequence = [
+    String(StockTrackerWizardViews.FREQUENCY),
+    String(StockTrackerWizardViews.STRATEGY),
+    String(StockTrackerWizardViews.TRANSACTION),
+    String(StockTrackerWizardViews.REVIEW),
+    String(StockTrackerWizardViews.DONE)
+]
 
 export const useStockTrackerWizardUIHook = () => {
 
@@ -14,10 +23,11 @@ export const useStockTrackerWizardUIHook = () => {
     const transient: StockTracker = StockTrackerModule.select("selectedStockTracker")
     const frequencies: Frequency[] = StockTrackerModule.select("frequencies")
     const strategies: Strategy[] = StockTrackerModule.select("strategies")
+    const edit: boolean = StockTrackerModule.select("edit")
+    const viewToEdit: StockTrackerWizardViews = StockTrackerModule.select("viewToEdit")
     const { setStrategies, setFrequencies, updateSelectedStockTracker } = StockTrackerModule.actions()
     const { convertToStockTrackerInput } = useStockTracker()
     
-
     const selectFrequency = useCallback((frequency: Frequency) => {
         transient["frequency"] = String(frequency._id)
         updateSelectedStockTracker(transient)
@@ -44,7 +54,12 @@ export const useStockTrackerWizardUIHook = () => {
 
     const handleFinish = useCallback(async () => {
         const input = convertToStockTrackerInput(transient)
-        await createStockTracker(input)
+        if (edit) {
+            await updateStockTracker(transient._id || "", input)
+        }
+        else {
+            await createStockTracker(input)
+        }
     }, [transient])
 
     const handleValidation = useCallback((index: number) => {
@@ -52,8 +67,8 @@ export const useStockTrackerWizardUIHook = () => {
     }, [])
 
     const handleFlowEnded = useCallback(() => {
-        navigation.navigate(Routes.ADD_INVESTIMENT)
-    }, [])
+        edit ? navigation.goBack() : navigation.navigate(Routes.ADD_INVESTIMENT)
+    }, [edit])
 
     useEffectWhenReady(async () => {
         const frequencies = await API.StockTracker.fetchAvailableFrequencies(`
@@ -70,9 +85,9 @@ export const useStockTrackerWizardUIHook = () => {
         setLoading(false)
     })
 
-    console.log("------>>>", transient)
-
     return {
+        sequence: edit ? [String(viewToEdit), String(StockTrackerWizardViews.DONE)] : viewsSequence,
+        messageDone: edit ? "stock_tracker_updated" : "stock_tracker_created",
         transient,
         frequencies,
         strategies,

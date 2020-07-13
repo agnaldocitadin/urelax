@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
 import { ActivityDetailUI } from '../../ActivityHistory/ActivityDetailUI'
 import { ActivityListUI } from '../../ActivityHistory/ActivityListUI'
+import { BrokerAccountWizardUI } from '../../BrokerModule/BrokerAccountWizardUI'
 import { DashboardUI } from '../../Dashboard/DashboardUI'
 import { SignUpUI } from '../../Identity/SignUpUI'
 import { AddInvestimentUI } from '../../Investiment/AddInvestimentUI/AddInvestimentUI'
@@ -17,12 +18,9 @@ import { FastAuthUI } from '../../Security/FastAuthUI'
 import { LogInUI } from '../../Security/LogInUI'
 import { StatementDetailUI } from '../../Statement/StatementDetailUI'
 import { StatementUI } from '../../Statement/StatementUI'
-import { StockTrackerFrequencyUI } from '../../StockTrackerModule/StockTrackerFrequencyUI'
 import { StockTrackerPreviewUI } from '../../StockTrackerModule/StockTrackerPreviewUI'
 import { StockTrackerReviewUI } from '../../StockTrackerModule/StockTrackerReviewUI'
 import { StockTrackerSettingUI } from '../../StockTrackerModule/StockTrackerSettingUI'
-import { StockTrackerStrategyUI } from '../../StockTrackerModule/StockTrackerStrategyUI'
-import { StockTrackerTransactionUI } from '../../StockTrackerModule/StockTrackerTransactionUI'
 import { StockTrackerWizardUI } from '../../StockTrackerModule/StockTrackerWizardUI'
 import { Routes, Stacks } from '../const'
 import { select } from '../reducer'
@@ -85,11 +83,9 @@ export const Navigator: FC = () => {
                     <Stack.Screen name={Routes.STATEMENT_DETAIL} component={StatementDetailUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STOCKTRACKER_PREVIEW} component={StockTrackerPreviewUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STOCKTRACKER_REVIEW} component={StockTrackerReviewUI} options={defaultOptions}/>
-                    <Stack.Screen name={Routes.STOCKTRACKER_FREQUENCY} component={StockTrackerFrequencyUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STOCKTRACKER_SETTING} component={StockTrackerSettingUI} options={defaultOptions}/>
-                    <Stack.Screen name={Routes.STOCKTRACKER_STRATEGY} component={StockTrackerStrategyUI} options={defaultOptions}/>
-                    <Stack.Screen name={Routes.STOCKTRACKER_TRANSACTION} component={StockTrackerTransactionUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.STOCKTRACKER_WIZARD} component={StockTrackerWizardUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.BROKER_ACCOUNT_WIZARD} component={BrokerAccountWizardUI} options={defaultOptions}/>
                 </Stack.Navigator>
             )
             break

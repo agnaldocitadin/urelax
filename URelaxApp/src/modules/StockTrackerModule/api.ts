@@ -38,3 +38,7 @@ export const fetchStockTrackerByID = async (id: string) => {
 export const createStockTracker = (input: StockTrackerInput) => {
     return API.StockTracker.createStockTracker(input, stockTrackerFragment)
 }
+
+export const updateStockTracker = (id: string, input: StockTrackerInput) => {
+    return API.StockTracker.updateStockTracker(id, input)
+}

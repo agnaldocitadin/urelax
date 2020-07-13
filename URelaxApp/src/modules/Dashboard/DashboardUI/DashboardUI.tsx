@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import { FinancialSummary } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
@@ -11,12 +12,14 @@ import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, Typography, TypographyMedium } from '../../../theming'
+import { Routes } from '../../Navigation/const'
 import { useDashboardUIHook } from './DashboardUIHook'
 
 interface HomeDashboardProps {}
 
 export const DashboardUI: FC<HomeDashboardProps> = () => {
     
+    const navigation = useNavigation()
     const {
         refreshing,
         currentPatrimony,
@@ -50,6 +53,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                 
             <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
                 <PatrimonyNow>
+                    <Typography onPress={() => navigation.navigate(Routes.BROKER_ACCOUNT_WIZARD)}>Broker</Typography>
                     <TypographyMedium fontSize={20}>{ts("welcome")}, {"Nick"}!</TypographyMedium>
                     <View>
                         <Typography color={Colors.GRAY_1} textAlign="center">{ts("patrimony_amount")}</Typography>
