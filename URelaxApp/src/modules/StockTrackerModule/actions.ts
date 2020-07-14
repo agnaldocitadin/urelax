@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { FinancialHistory, Frequency, StockTracker, Strategy } from "honeybee-api"
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
-import { Routes } from "../Navigation/const"
+import { Routes } from "../NavigationModule/const"
 
 type ActionNames = keyof ActionTypes
 

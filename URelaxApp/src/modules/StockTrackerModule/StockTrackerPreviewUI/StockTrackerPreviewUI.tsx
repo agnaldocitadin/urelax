@@ -9,7 +9,7 @@ import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Icons, SymbolsImg, Typography } from '../../../theming'
-import { StatementTimeline } from '../../Statement/StatementTimeline'
+import { StatementTimeline } from '../../StatementModule/StatementTimeline'
 import { StockTrackerControlButton } from '../StockTrackerControlButton'
 import { useStockTrackerPreviewUIHook } from './StockTrackerPreviewUIHook'
 

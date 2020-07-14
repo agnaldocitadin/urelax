@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios"
-import { baseRoute, OFFLINE, Profile, StockTrackerStatus } from "."
-import { CONFIG } from "./api"
+import { Profile, StockTrackerStatus } from "."
+import { baseRoute, CONFIG, OFFLINE } from "./core"
 
 /**
  *

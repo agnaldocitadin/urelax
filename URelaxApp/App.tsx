@@ -2,36 +2,38 @@ import React from 'react'
 import 'react-native-gesture-handler'
 import { enableScreens } from 'react-native-screens'
 import { Provider } from 'react-redux'
-import ActivityHistory from './src/modules/ActivityHistory'
+import ActivityHistoryModule from './src/modules/ActivityHistoryModule'
 import AppModules from './src/modules/AppModules'
 import BrokerModule from './src/modules/BrokerModule'
 import { BrokerStartup } from './src/modules/BrokerModule/BrokerStartup'
-import Dashboard from './src/modules/Dashboard'
-import Identity from './src/modules/Identity'
-import { IdentityStartup } from './src/modules/Identity/IdentityStartup'
-import Investiment from './src/modules/Investiment'
-import Messaging from './src/modules/Messaging'
-import { DialogMessage } from './src/modules/Messaging/DialogMessage'
-import Navigation from './src/modules/Navigation'
-import { Navigator } from './src/modules/Navigation/Navigator'
-import Security from './src/modules/Security'
-import Statement from './src/modules/Statement'
+import DashboardModule from './src/modules/DashboardModule'
+import IdentityModule from './src/modules/IdentityModule'
+import { IdentityStartup } from './src/modules/IdentityModule/IdentityStartup'
+import InvestimentModule from './src/modules/InvestimentModule'
+import MessagingModule from './src/modules/MessagingModule'
+import { DialogMessage } from './src/modules/MessagingModule/DialogMessage'
+import NavigationModule from './src/modules/NavigationModule'
+import { Navigator } from './src/modules/NavigationModule/Navigator'
+import PresentationModule from './src/modules/PresentationModule'
+import SecurityModule from './src/modules/SecurityModule'
+import StatementModule from './src/modules/StatementModule'
 import StockTrackerModule from './src/modules/StockTrackerModule'
-import Storage from './src/modules/Storage'
+import StorageModule from './src/modules/StorageModule'
 
 enableScreens()
 
 const store = AppModules.register([
-    Security,
-    Identity,
-    Navigation,
-    Storage,
-    Messaging,
-    Dashboard,
-    ActivityHistory,
-    Investiment,
+    PresentationModule,
+    SecurityModule,
+    IdentityModule,
+    NavigationModule,
+    StorageModule,
+    MessagingModule,
+    DashboardModule,
+    ActivityHistoryModule,
+    InvestimentModule,
     StockTrackerModule,
-    Statement,
+    StatementModule,
     BrokerModule
 ])
     

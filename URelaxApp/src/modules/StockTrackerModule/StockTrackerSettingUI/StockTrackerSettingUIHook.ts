@@ -4,7 +4,7 @@ import * as StockTracker2 from ".."
 import { animatedCallback } from "../../../core/Commons.hook"
 import { ts } from "../../../core/I18n"
 import { Icons } from "../../../theming"
-import Messaging from "../../Messaging"
+import Messaging from "../../MessagingModule"
 import { isDisabled } from "../StockTrackerControlButton"
 
 export const useStockTrackerSettingUIHook = () => {

@@ -1,4 +1,4 @@
-import { baseRoute, CONFIG, OFFLINE } from "./api"
+import { baseRoute, CONFIG, OFFLINE } from "./core"
 
 const SEPARATOR = ","
 

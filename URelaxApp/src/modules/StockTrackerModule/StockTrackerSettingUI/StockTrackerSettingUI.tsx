@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
+import { BaseButton } from '../../../components/BaseButton'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { MarginBox } from '../../../components/Layout/Layout.style'
 import { ts } from '../../../core/I18n'
-import { Button, Colors, TypographyMedium } from '../../../theming'
+import { Colors, TypographyMedium } from '../../../theming'
 import { StockTrackerData } from '../StockTrackerData'
 import { useStockTrackerSettingUIHook } from './StockTrackerSettingUIHook'
 
@@ -41,6 +42,6 @@ export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({}) => {
     )
 }
 
-const DestroyButton = styled(Button)`
+const DestroyButton = styled(BaseButton)`
     background-color: ${Colors.RED_ERROR};
 `

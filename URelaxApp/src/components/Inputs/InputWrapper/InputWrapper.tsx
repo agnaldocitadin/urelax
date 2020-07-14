@@ -59,7 +59,6 @@ export const InputWrapper: FC<InputWrapperProps> = ({
 }
 
 const Container = styled.View`
-    background-color: ${Colors.WHITE};
     border-color: ${Colors.GRAY_1};
     border-width: 1px;
     border-radius: 5px;

@@ -1,7 +1,7 @@
 import { Profile } from "honeybee-api"
 import { FC, useEffect } from "react"
 import BrokerModule from ".."
-import Security from "../../Security"
+import Security from "../../SecurityModule"
 import { fetchBrokerAccountsByAccount } from "../api"
 
 

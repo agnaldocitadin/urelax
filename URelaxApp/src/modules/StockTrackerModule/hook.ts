@@ -2,7 +2,7 @@ import { Account, BrokerAccount, BrokerInvestiment, StockTracker, StockTrackerIn
 import { useCallback } from "react"
 import StockTrackerModule from "."
 import BrokerModule from "../BrokerModule"
-import Identity from "../Identity"
+import Identity from "../IdentityModule"
 
 export const useStockTracker = () => {
 

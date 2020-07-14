@@ -1,5 +1,4 @@
 import styled from 'styled-components/native'
-import { BaseButton } from '../components/BaseButton'
 import { BaseTypography } from '../components/BaseTypography'
 
 export const SHIMMER_COLORS = ["#D1D6DA", "#919394", "#D1D6DA"]
@@ -90,9 +89,17 @@ export enum Icons {
     CIRCLE_MEDIUM = "circle-medium",
 }
 
-export const Typography = styled(BaseTypography)`
+export const Typography = styled(BaseTypography)<{ color?: string, fontSize?: number }>`
+    font-size: ${({ fontSize }) => fontSize}px;
     font-family: ${Fonts.FONT_REGULAR};
+    color: ${({ color }) => color};
 `
+
+Typography.defaultProps = {
+    color: Colors.BLACK_1,
+    fontSize: DEFAULT_FONTSIZE,
+    shimmerColor: SHIMMER_COLORS
+}
 
 export const TypographyMedium = styled(Typography)`
     font-family: ${Fonts.FONT_MEDIUM};
@@ -107,8 +114,4 @@ export const InputTextBase = styled.TextInput`
     color: ${Colors.BLACK_1};
     font-size: 15px;
     flex: 1;
-`
-
-export const Button = styled(BaseButton)`
-    border-radius: 5px;
 `
