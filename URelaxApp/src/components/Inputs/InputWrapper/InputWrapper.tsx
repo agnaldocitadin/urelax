@@ -1,13 +1,12 @@
 import React, { FC, ReactElement } from 'react'
-import { GestureResponderEvent, TextStyle, ViewProps } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { GestureResponderEvent, TextStyle, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { Colors, Typography } from '../../../theming'
+import { BaseIcon, Colors, Typography } from '../../../theming'
 
 export interface InputWrapperProps {
     label?: string
-    labelStyle?: TextStyle,
-    wrapperStyle?: ViewProps
+    labelStyle?: TextStyle
+    wrapperStyle?: ViewStyle
     leftIcon?: string
     leftIconSize?: number
     leftIconColor?: string
@@ -70,6 +69,6 @@ const Content = styled.View`
     align-items: center;
 `
 
-const SIcon = styled(Icon)<{ paddingLeft?: number }>`
+const SIcon = styled(BaseIcon)<{ paddingLeft?: number }>`
     padding-left: ${({ paddingLeft }) => `${paddingLeft || 0}px`};
 `

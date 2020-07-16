@@ -6,7 +6,7 @@ import { useEffectWhenReady } from "../../../core/Commons.hook"
 import Identity from "../../IdentityModule"
 import Investiment from "../../InvestimentModule"
 import Messaging from "../../MessagingModule"
-import { Routes } from "../../NavigationModule/const"
+import { Drawers, Routes } from "../../NavigationModule/const"
 import { fetchFinancialSummary } from "../api"
 
 const INITIAL_SUMMARIES = 6
@@ -21,13 +21,13 @@ export const useDashboardUIHook = () => {
     const { setDashboardHistory } = Dashboard.actions()
     const { selectGraphIndex } = Investiment.actions()
 
-    const handleInvestiments = useCallback(() => navigation.navigate(Routes.INVESTIMENT), [])
+    const handleInvestiments = useCallback(() => navigation.navigate(Drawers.INVESTIMENTS), [])
     
     const handleStartInvesting = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
 
     const handleAnalysis = useCallback((index: number) => {
         selectGraphIndex(summaries.length - 2 - index)
-        navigation.navigate(Routes.INVESTIMENT_ANALYSIS)
+        navigation.navigate(Drawers.ANALYSIS)
     }, [summaries])
 
     const handleRefresh = useCallback(async () => {

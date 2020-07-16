@@ -1,8 +1,7 @@
 
 import React, { FC } from 'react'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors, Typography } from '../../theming'
+import { BaseIcon, Colors, Typography } from '../../theming'
 import { BaseButton } from '../BaseButton'
 
 interface MenuButtonProps {
@@ -14,7 +13,7 @@ interface MenuButtonProps {
 export const MenuButton: FC<MenuButtonProps> = ({ icon, label, action }) => {
     return (
         <Button onPress={action}>
-            <Icon color={Colors.WHITE} name={icon}/>
+            <BaseIcon color={Colors.WHITE} name={icon}/>
             <Typography fontSize={13} color={Colors.WHITE}>{label}</Typography>
         </Button>
     )

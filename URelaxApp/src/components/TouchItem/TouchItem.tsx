@@ -1,8 +1,7 @@
 import React, { FC } from "react"
 import { ViewStyle } from "react-native"
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import styled from "styled-components/native"
-import { Colors, Icons } from "../../theming"
+import { BaseIcon, Colors, Icons } from "../../theming"
 import { Touchable, TouchableProps } from "../Touchable"
 
 export interface TouchItemProps extends TouchableProps {
@@ -41,6 +40,6 @@ const Content = styled.View`
     align-items: center;
 `
 
-const TouchIcon = styled(Icon)`
+const TouchIcon = styled(BaseIcon)`
     margin-left: 5px;
 `

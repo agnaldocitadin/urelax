@@ -1,8 +1,7 @@
 import React, { FC } from 'react'
 import { ActivityIndicator } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors, TypographyMedium } from '../../theming'
+import { BaseIcon, Colors, TypographyMedium } from '../../theming'
 import { BaseButton, BaseButtonPros } from '../BaseButton'
 
 export enum InteractiveButtonStates {
@@ -71,7 +70,7 @@ export const InteractiveButton: FC<InteractiveButtonProps> = ({
     )
 }
 
-const StyledIcon = styled(Icon)`
+const StyledIcon = styled(BaseIcon)`
     margin-right: auto;
     margin-left: auto;
     margin: 0;

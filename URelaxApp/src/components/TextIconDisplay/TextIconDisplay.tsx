@@ -1,8 +1,7 @@
 import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors, Typography, TypographyMedium } from '../../theming'
+import { BaseIcon, Colors, Typography, TypographyMedium } from '../../theming'
 
 interface TextIconDisplayProps {
     icon: string
@@ -43,6 +42,6 @@ const STextIconDisplayDesc = styled(Typography)`
     text-align: center;
 `
 
-const STextIconDisplayIcon = styled(Icon)`
+const STextIconDisplayIcon = styled(BaseIcon)`
     margin-bottom: 20px;
 `

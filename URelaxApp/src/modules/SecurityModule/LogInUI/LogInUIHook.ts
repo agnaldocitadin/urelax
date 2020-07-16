@@ -34,7 +34,7 @@ export const useLogInUIHook = () => {
         email,
         password,
         keepSession,
-        disabledLogIn: !email || !password ,//|| !validEmail || !validPassword,
+        disabledLogIn: !!email || !!password ,//|| !validEmail || !validPassword,
         validEmail: !email ,//|| validEmail,
         validPassword: !password ,//|| validPassword,
         signinBtn,

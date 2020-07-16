@@ -1,7 +1,6 @@
 import React, { FC } from "react"
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from "styled-components/native"
-import { Colors } from "../../theming"
+import { BaseIcon, Colors } from "../../theming"
 
 export enum WizardState {
     NOT_SELECTED,
@@ -68,7 +67,7 @@ const Content = styled.View<{ color: string }>`
     padding: 3px;
 `
 
-const ContentIcon = styled(Icon)<{ iconColor: string, bgColor: string }>`
+const ContentIcon = styled(BaseIcon)<{ iconColor: string, bgColor: string }>`
     color: ${({ iconColor }) => iconColor};
     background-color: ${({ bgColor }) => bgColor};
     border-radius: 25px;

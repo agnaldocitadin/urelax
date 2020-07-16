@@ -1,18 +1,19 @@
 import React, { FC } from 'react'
 import { Image } from 'react-native'
 import styled from 'styled-components/native'
+import { InputSecure } from '../../../components/Inputs/InputSecure'
 import { InputSwitch } from '../../../components/Inputs/InputSwitch'
 import { InputText } from '../../../components/Inputs/InputText'
 import { InteractiveButton } from '../../../components/InteractiveButton'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { FORM_PADDING, MarginBox } from '../../../components/Layout/Layout.style'
+import { MarginBox } from '../../../components/Layout/Layout.style'
 import { ScrollViewForm } from '../../../components/Layout/ScrollViewForm'
 import { ts } from '../../../core/I18n'
-import { Colors, Icons, Images } from '../../../theming'
+import { Colors, DEFAULT_VERTICAL_SPACING, Icons, Images } from '../../../theming'
 import { SplashAuth } from '../SplashAuth'
 import { useLogInUIHook } from './LogInUIHook'
 
-const TEXT_SIZE = 16
+const COLOR = Colors.BLUES_1
 
 interface LogInUIProps {}
 
@@ -35,8 +36,8 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
 
     return (
         <FlatLayout 
-            bgStatusBar={Colors.BLUES_1}
-            bgColor={Colors.BLUES_1}>
+            bgStatusBar={COLOR}
+            bgColor={COLOR}>
             <SplashAuth
                 authenticating={authenticate}
                 email={email}
@@ -46,37 +47,39 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
                 onFail={handleAuthFail}
                 noAuthElement={
                     <React.Fragment>
-                        <Image source={Images.LOGO} style={{ transform: [{ scale: .7 }] }}/>
+                        <Logo source={Images.LOGO}/>
                         <ScrollViewForm justifyContent="flex-end">
                             <MarginBox>
-                                <Input
+                                <EmailInput
                                     label={ts("email")}
                                     labelStyle={{ color: Colors.WHITE }}
                                     placeholder={ts("your_email")}
                                     textContentType="emailAddress"
-                                    // inputStyle={{ fontSize: TEXT_SIZE, color: Colors.WHITE }}
                                     autoCapitalize="none"
                                     autoCorrect={false}
                                     leftIcon={Icons.EMAIL}
-                                    // invalid={!validEmail}
-                                    // invalidText={ts("invalid_email")}
                                     value={email}
-                                    onChangeText={setEmail}/>
+                                    onChangeText={setEmail}
+                                    wrapperStyle={{ 
+                                        borderColor: Colors.WHITE,
+                                        marginBottom: DEFAULT_VERTICAL_SPACING
+                                    }}/>
 
-                                <Input
+                                <PasswordInput
                                     label={ts("password")}
                                     labelStyle={{ color: Colors.WHITE }}
                                     placeholder={ts("your_password")}
                                     textContentType="password"
                                     autoCapitalize="none"
-                                    // inputStyle={{ fontSize: TEXT_SIZE, color: Colors.WHITE }}
                                     autoCorrect={false}
                                     secureTextEntry={true}
                                     leftIcon={Icons.PASSWD}
-                                    // invalid={!validPassword}
-                                    // invalidText={ts("invalid_password")}
                                     value={password}
-                                    onChangeText={setPassword}/>
+                                    onChangeText={setPassword}
+                                    wrapperStyle={{ 
+                                        borderColor: Colors.WHITE,
+                                        marginBottom: DEFAULT_VERTICAL_SPACING
+                                    }}/>
 
                                 <Switch
                                     label={ts("keep_session")}
@@ -95,13 +98,18 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
         </FlatLayout>
     )
 }
+const Logo = styled(Image)`
+    transform: scale(.7);
+`
 
-const Input = styled(InputText)`
-    /* margin-bottom: ${FORM_PADDING}; */
-    /* background-color: ${Colors.BLUES_1}; */
-    /* border-color: ${Colors.WHITE}; */
+const EmailInput = styled(InputText)`
+    color: ${Colors.WHITE};
+`
+
+const PasswordInput = styled(InputSecure)`
+    color: ${Colors.WHITE};
 `
 
 const Switch = styled(InputSwitch)`
-    margin-bottom: ${FORM_PADDING};
+    margin-bottom: ${DEFAULT_VERTICAL_SPACING}px;
 `

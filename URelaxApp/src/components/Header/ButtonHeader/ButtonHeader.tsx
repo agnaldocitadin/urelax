@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors } from '../../../theming'
+import { BaseIcon } from '../../../theming'
 import { BaseButton } from '../../BaseButton'
 
 export interface ButtonHeaderProps {
@@ -10,9 +9,13 @@ export interface ButtonHeaderProps {
     onPress?(): void
 }
 
-export const ButtonHeader: FC<ButtonHeaderProps> = ({ icon, color = Colors.BLACK_2, onPress }) => (
+export const ButtonHeader: FC<ButtonHeaderProps> = ({
+    icon,
+    color,
+    onPress
+}) => (
     <Button onPress={onPress}>
-        <Icon name={icon} color={color} size={23}/>
+        <BaseIcon name={icon} color={color} size={23}/>
     </Button>
 )
 

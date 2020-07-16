@@ -18,7 +18,7 @@ export const FilterUI: FC = () => {
             header={<BackHeader title={ts("filter")}/>}>
             
 
-            <InputMask label="sds" onChangeText={() => {}} />
+            <InputMask label="sds" mask={"([00]) [000]-[000]-[000]"} onChangeText={() => {}} />
             <InputSecure label="Password" />
 
             {/* <InputDatetime label="data" /> */}

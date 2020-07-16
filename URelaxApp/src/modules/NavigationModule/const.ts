@@ -2,6 +2,15 @@ export const MODULE_NAME = "Navigation"
 
 export type Stacks = "auth" | "authFailure" | "app" | "welcome"
 
+export enum Drawers {
+    DASHBOARD = "DASHBOARD",
+    INVESTIMENTS = "INVESTIMENTS",
+    ANALYSIS = "ANALYSIS",
+    STATEMENTS = "STATEMENTS",
+    ACTIVITIES = "ACTIVITIES",
+    BROKERS = "BROKERS",
+}
+
 export enum Routes {
     SPLASH = "SPLASH",
     TOUR = "TOUR",

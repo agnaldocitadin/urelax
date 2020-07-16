@@ -1,8 +1,7 @@
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors, Icons, Typography } from '../../theming'
+import { BaseIcon, Colors, Icons, Typography } from '../../theming'
 
 interface VariationMonitorProps {
     value?: number
@@ -41,7 +40,7 @@ const Display = styled.View`
     align-items: center;
 `
 
-const DisplayIcon = styled(Icon)`
+const DisplayIcon = styled(BaseIcon)`
     margin-left: 5px;
 `
 

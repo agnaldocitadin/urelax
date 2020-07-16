@@ -1,8 +1,7 @@
 import React, { FC, useCallback, useState } from 'react'
 import { TextInputProps } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Icons, InputTextBase } from '../../../theming'
+import { BaseIcon, Icons, InputTextBase } from '../../../theming'
 import { InputWrapper, InputWrapperProps } from "../InputWrapper"
 
 const DEFAULT_ICON_SIZE = 20
@@ -31,6 +30,6 @@ export const InputSecure: FC<InputSecureProps> = ({
     )
 }
 
-const SIcon = styled(Icon)<{ paddingLeft?: number }>`
+const SIcon = styled(BaseIcon)<{ paddingLeft?: number }>`
     padding-left: ${({ paddingLeft }) => `${paddingLeft || 0}px`};
 `

@@ -1,8 +1,12 @@
+import TextInputMask from 'react-native-text-input-mask'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
 import { BaseTypography } from '../components/BaseTypography'
 
 export const SHIMMER_COLORS = ["#D1D6DA", "#919394", "#D1D6DA"]
 export const DEFAULT_FONTSIZE = 13
+export const DEFAULT_INPUT_FONTSIZE = 15
+export const DEFAULT_ICON_SIZE = 23
 export const DEFAULT_VERTICAL_SPACING = 20
 export const DEFAULT_HORIZONTAL_SPACING = 20
 
@@ -57,7 +61,7 @@ export enum Colors {
 export enum Icons {
     BACK = "arrow-left",
     MENU = "menu",
-    SETTINGS = "settings",
+    SETTINGS = "settings-outline",
     CLOSE = "window-close",
     EYE_OFF_OUTLINE = "eye-off-outline",
     EYE_OUTLINE = "eye-outline",
@@ -110,8 +114,24 @@ export const TypographySemibold = styled(Typography)`
 `
 
 export const InputTextBase = styled.TextInput`
+    font-size: ${DEFAULT_INPUT_FONTSIZE}px;
     font-family: ${Fonts.FONT_REGULAR};
     color: ${Colors.BLACK_1};
-    font-size: 15px;
     flex: 1;
 `
+
+export const InputMaskBase = styled(TextInputMask)`
+    font-size: ${DEFAULT_INPUT_FONTSIZE}px;
+    font-family: ${Fonts.FONT_REGULAR};
+    color: ${Colors.BLACK_1};
+    flex: 1;
+`
+
+export const BaseIcon = styled(Icon)<{ color?: string }>`
+    color: ${({ color }) => color};
+    font-size: ${DEFAULT_ICON_SIZE}px;
+`
+
+BaseIcon.defaultProps = {
+    color: Colors.GRAY_1
+}

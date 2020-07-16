@@ -38,7 +38,6 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                     title={stockTracker?.stockInfo?.description || ""}
                     right={
                         <ButtonHeader
-                            color={Colors.BLUES_1} 
                             icon={Icons.SETTINGS} 
                             onPress={handleSettings}/>
                     }/>

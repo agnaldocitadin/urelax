@@ -1,8 +1,7 @@
 
 import React, { FC, ReactElement } from 'react'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
-import { Colors } from '../../theming'
+import { BaseIcon, Colors } from '../../theming'
 import { TouchItem, TouchItemProps } from '../TouchItem'
 
 interface TimelineItemProps extends TouchItemProps {
@@ -25,7 +24,7 @@ export const TimelineItem: FC<TimelineItemProps> = ({
         <Touch {...others}>
             <IconContent>
                 <LineBefore noBorder={index === 0}/>
-                <Icon name={icon} size={25} color={color}/>
+                <BaseIcon name={icon} size={25} color={color}/>
                 <LineAfter/>
             </IconContent>
             <Content direction={contentDirection}>

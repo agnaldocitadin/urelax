@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react'
 import { TextStyle } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
+import { BaseIcon } from '../../../theming'
 
 interface InputRadioProps {
     value: any
@@ -31,6 +31,6 @@ export const InputRadio: FC<InputRadioProps> = ({
         size={size}/>
 }
 
-const Check = styled(Icon)<{ size: number }>`
+const Check = styled(BaseIcon)<{ size: number }>`
     width: ${({ size }) => `${size}px`};
 `

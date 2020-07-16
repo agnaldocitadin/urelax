@@ -2,7 +2,6 @@ import { AppliedInvestiment } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { ScrollView } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
 import { Badge } from '../../../components/Badge'
 import { BaseButton } from '../../../components/BaseButton'
@@ -13,7 +12,7 @@ import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import { TouchItem } from '../../../components/TouchItem'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Colors, DEFAULT_HORIZONTAL_SPACING, Icons, Typography, TypographyMedium } from '../../../theming'
+import { BaseIcon, Colors, DEFAULT_HORIZONTAL_SPACING, Typography, TypographyMedium } from '../../../theming'
 import { useInvestimentUIHook } from './InvestimentUIHook'
 
 export const InvestimentUI: FC = () => {
@@ -23,7 +22,6 @@ export const InvestimentUI: FC = () => {
         handleAdd,
         handleFilter,
         handleStockTracker,
-        handleStatements,
     } = useInvestimentUIHook()
 
     const { patrimony, currency, stocks } = investiments
@@ -36,8 +34,7 @@ export const InvestimentUI: FC = () => {
                     title={ts("investiments")}
                     right={
                     <React.Fragment>
-                        <ButtonHeader icon="filter-variant" color={Colors.BLUES_1} onPress={handleFilter}/>
-                        <ButtonHeader icon={Icons.CLOCK} color={Colors.BLUES_1} onPress={handleStatements}/>
+                        <ButtonHeader icon="filter-variant" onPress={handleFilter}/>
                     </React.Fragment>
                 }/>
             }>
@@ -49,7 +46,7 @@ export const InvestimentUI: FC = () => {
                 </Patrimony>
                 <BtnContainer>
                     <AddInvestimentBtn onPress={handleAdd}>
-                        <Icon size={18} color={Colors.WHITE} name={"cart-outline"}/>
+                        <BaseIcon size={18} color={Colors.WHITE} name={"cart-outline"}/>
                         <TypographyMedium color={Colors.WHITE}>{ts("invest")}</TypographyMedium>
                     </AddInvestimentBtn>
                 </BtnContainer>
@@ -69,7 +66,7 @@ const Currency: FC<{ investiments: AppliedInvestiment[] }> = ({ investiments }) 
             <Touch key={key} noChevron disabled>
                 <Item>
                     <Typography>{currency.investiment?.description}</Typography>
-                    <Badge text={currency.investiment.broker.name} bgColor={Colors.BLUES_3}/>
+                    <Badge text={currency.investiment.broker.name || ""} bgColor={Colors.BLUES_3}/>
                     <Badge text={currency.brokerAccountName}/>
                 </Item>
                 <TypographyMedium>{utils.formatCurrency(currency.amount, { prefix: AppConfig.CURRENCY_PREFIX })}</TypographyMedium>

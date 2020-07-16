@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native'
+import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { FinancialSummary } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
@@ -11,8 +11,7 @@ import { SRoundedBox } from '../../../components/Layout/Layout.style'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Colors, Typography, TypographyMedium } from '../../../theming'
-import { Routes } from '../../NavigationModule/const'
+import { BaseIcon, Colors, Typography, TypographyMedium } from '../../../theming'
 import { useDashboardUIHook } from './DashboardUIHook'
 
 interface HomeDashboardProps {}
@@ -50,7 +49,10 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
         <FlatLayout 
             bgColor={Colors.BG_3} 
             bgStatusBar={Colors.BG_3}>
-                
+            <Bar>
+                <Menu2 name="dots-horizontal" size={23} selected onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>
+            </Bar>
+
             <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
                 <PatrimonyNow>
                     {/* <Typography onPress={() => navigation.navigate(Routes.BROKER_ACCOUNT_WIZARD)}>Broker</Typography> */}
@@ -127,4 +129,35 @@ const StartInvesting = styled(BaseButton)`
 
 const CenteredView = styled.View`
     align-items: center;
+`
+
+const Menu = styled(BaseIcon)`
+    border-radius: 50px;
+    bottom: 10px;
+    background-color: ${Colors.BLUES_4};
+    padding: 15px;
+    color: ${Colors.WHITE};
+`
+
+const Menu2 = styled(BaseIcon)<{ selected: boolean }>`
+    padding: 15px;
+    color: ${({ selected }) => selected ? Colors.BLACK_2 : Colors.GRAY_1};
+`
+
+const Bar = styled.View`
+    /* border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    background-color: ${Colors.GRAY_4};
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-color: ${Colors.GRAY_4}; */
+    height: 50px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    /* width: 100%; */
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
 `

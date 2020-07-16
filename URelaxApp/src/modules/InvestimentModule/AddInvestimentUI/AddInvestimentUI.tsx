@@ -32,11 +32,9 @@ export const AddInvestimentUI: FC = () => {
                         finding
                             ? <ButtonHeader
                                 icon={Icons.CLOSE}
-                                color={Colors.BLUES_1}
                                 onPress={() => showFinding(false)}/>
                             : <ButtonHeader 
                                 icon={Icons.MAGNIFY}
-                                color={Colors.BLUES_1}
                                 onPress={() => showFinding(true)}/>
                     }/>
             }>
