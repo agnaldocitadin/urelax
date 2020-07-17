@@ -60,6 +60,5 @@ const Right = styled.View`
 
 const Content = styled.View`
     justify-content: center;
-    align-items: center;
     flex: 2;
 `

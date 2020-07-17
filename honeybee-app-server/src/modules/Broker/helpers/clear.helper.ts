@@ -9,7 +9,7 @@ export const ClearHelper: BrokerHelperInterface = {
     code: Brokers.CLEAR,
 
     validateExtraData: (brokerAccount: BrokerAccount) => {
-        const { cpf, signature, passwd, birthdate } = brokerAccount.extraData || {}
+        const { cpf, signature, password, birthdate } = brokerAccount.extraData || {}
 
         if (!cpf) {
             Logger.throw(ErrorCodes.UNKNOWN, "cpf")
@@ -19,8 +19,8 @@ export const ClearHelper: BrokerHelperInterface = {
             Logger.throw(ErrorCodes.UNKNOWN, "singature")
         }
 
-        if (!passwd) {
-            Logger.throw(ErrorCodes.UNKNOWN, "passwd")
+        if (!password) {
+            Logger.throw(ErrorCodes.UNKNOWN, "password")
         }
 
         if (!birthdate) {
@@ -37,7 +37,7 @@ export const ClearHelper: BrokerHelperInterface = {
         extraData["platformUID"] = "35cb2446-76e3-4082-bc34-1de0ae89c534"
 
         if (process.env.PRODUCTION_MODE) {
-            let { authCookie, sessionId } = await getCredentials(extraData.cpf, extraData.passwd, extraData.birthdate)
+            let { authCookie, sessionId } = await getCredentials(extraData.cpf, extraData.password, extraData.birthdate)
             extraData["token"] = authCookie
             extraData["sessionId"] = sessionId
         }

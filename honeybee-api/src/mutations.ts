@@ -1,8 +1,8 @@
 import { gql, mutation } from "./graphql"
-import { StockTrackerInput } from "./inputs"
+import { BrokerAccountInput, StockTrackerInput } from "./inputs"
 import { Account, BrokerAccount, Profile, StockTracker } from "./types"
 
-export const createBrokerAccount = (input: BrokerAccount, fields: string): Promise<BrokerAccount> => {
+export const createBrokerAccount = (input: BrokerAccountInput, fields: string): Promise<BrokerAccount> => {
     const name = "createBrokerAccount"
     return gql(name, mutation(name, { input }, fields))
 }

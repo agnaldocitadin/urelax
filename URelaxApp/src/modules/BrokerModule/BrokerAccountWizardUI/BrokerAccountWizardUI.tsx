@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { InputDatetime } from '../../../components/Inputs/InputDatetime'
+import { InputMask } from '../../../components/Inputs/InputMask'
 import { InputText } from '../../../components/Inputs/InputText'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { GenericTextIcon, MarginBox, SFormDescription, SFormTitle } from '../../../components/Layout/Layout.style'
@@ -19,6 +20,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
     
     const {
         transient,
+        sequence,
         messageDone,
         loading,
         handleFinish,
@@ -38,18 +40,10 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
         <FlatLayout
             bgColor={Colors.WHITE}
             loading={loading}
-            header={<BackHeader title={ts("stock_tracker_settings")}/>}>
+            header={<BackHeader title={ts("new_broker_account")}/>}>
             
             <WizardForm
-                sequence={[
-                    String(BrokerAccountWizardViews.DESCRIPTION),
-                    String(BrokerAccountWizardViews.CPF),
-                    String(BrokerAccountWizardViews.BIRTHDATE),
-                    String(BrokerAccountWizardViews.SIGNATURE),
-                    String(BrokerAccountWizardViews.PASSWORD),
-                    String(BrokerAccountWizardViews.REVIEW),
-                    String(BrokerAccountWizardViews.DONE)
-                ]}
+                sequence={sequence}
                 finishViewName={String(BrokerAccountWizardViews.DONE)}
                 onFinish={handleFinish}
                 onValidate={handleValidation}
@@ -74,13 +68,12 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                                 <MarginBox>
                                     <SFormTitle>{ts("broker_account_cpf")}</SFormTitle>
                                     <SFormDescription>{ts("broker_account_cpf_tip")}</SFormDescription>
-                                    <InputText
+                                    <InputMask
                                         keyboardType="numeric"
                                         value={cpf}
                                         autoCapitalize="words"
                                         textContentType="name"
-                                        maxLength={14}
-                                        // options={{ mask: "999.999.999-99" }}
+                                        mask="[000].[000].[000]-[00]"
                                         onChangeText={handleChangeCPF}/>
                                 </MarginBox>
                             </WizardView>

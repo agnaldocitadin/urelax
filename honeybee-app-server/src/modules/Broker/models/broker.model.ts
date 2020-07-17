@@ -5,6 +5,7 @@ import mongoose from "mongoose"
 /**
  * - Dados de corretoras que operam ações, índice, dollar, bitcoin, etc.
  * - Necessita de implementação em plugins para cada corretora
+ * - FIXME: Remover essa collection e criar um objeto estático para representar isso, semelhante Frequencia e estrategia.
  *
  * @export
  * @class Broker

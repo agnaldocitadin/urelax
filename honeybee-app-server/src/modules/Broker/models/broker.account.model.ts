@@ -1,5 +1,5 @@
 import { getModelForClass, prop, Ref } from '@typegoose/typegoose'
-import { Brokers } from 'honeybee-api'
+import { BrokerAccountInput, Brokers } from 'honeybee-api'
 import mongoose from 'mongoose'
 import { Account } from '../../Identity/models'
 
@@ -58,6 +58,16 @@ export class BrokerAccount {
 
     @prop({ default: () => new Date() })
     updatedAt?: Date
+
+    public static from(input: BrokerAccountInput): BrokerAccount {
+        return {
+            account: mongoose.Types.ObjectId(input.account as string),
+            accountName: input.accountName,
+            brokerCode: input.brokerCode,
+            extraData: input.extraData,
+            simulation: false
+        }
+    }
 
 }
 

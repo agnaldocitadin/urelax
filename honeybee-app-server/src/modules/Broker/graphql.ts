@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { GraphQLModule } from "../GraphQL"
-import { findAvailableInvestiments, findBrokerAccounts } from "./services"
+import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -70,7 +70,7 @@ const entry: GraphQLModule = {
             platformUID: String
             sessionId: String
             cpf: String
-            passwd: String
+            password: String
             birthdate: Datetime
         }
     `,
@@ -99,7 +99,7 @@ const entry: GraphQLModule = {
         },
 
         createBrokerAccount: ({ input }: any) => {
-            // TOOD'
+            return createBrokerAccount(input)
         },
 
         updateBrokerAccount: ({ id, input }: any) => {

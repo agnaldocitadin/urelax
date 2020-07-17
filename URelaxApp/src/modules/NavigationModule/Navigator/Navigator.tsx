@@ -4,11 +4,14 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
 import { View } from 'react-native'
 import NavigationModule from '..'
-import { BaseIcon, TypographyMedium } from '../../../theming'
+import { ts } from '../../../core/I18n'
+import { BaseIcon, Icons, TypographyMedium } from '../../../theming'
 import { ActivityDetailUI } from '../../ActivityHistoryModule/ActivityDetailUI'
 import { ActivityListUI } from '../../ActivityHistoryModule/ActivityListUI'
+import { AddBrokerAccountUI } from '../../BrokerModule/AddBrokerAccountUI'
 import { BrokerAccountWizardUI } from '../../BrokerModule/BrokerAccountWizardUI'
 import { DashboardUI } from '../../DashboardModule/DashboardUI'
+import { ProfileUI } from '../../IdentityModule/ProfileUI'
 import { AddInvestimentUI } from '../../InvestimentModule/AddInvestimentUI'
 import { FilterUI } from '../../InvestimentModule/FilterUI'
 import { InvestimentAnalysisDetailUI } from '../../InvestimentModule/InvestimentAnalysisDetailUI'
@@ -18,8 +21,11 @@ import { TourUI } from '../../PresentationModule/TourUI'
 import { FastAuthFailureUI } from '../../SecurityModule/FastAuthFailureUI'
 import { FastAuthUI } from '../../SecurityModule/FastAuthUI'
 import { LogInUI } from '../../SecurityModule/LogInUI'
+import { SettingUI } from '../../SettingModule/SettingUI'
 import { StatementDetailUI } from '../../StatementModule/StatementDetailUI'
 import { StatementUI } from '../../StatementModule/StatementUI'
+import { StockTrackerPreviewUI } from '../../StockTrackerModule/StockTrackerPreviewUI'
+import { StockTrackerSettingUI } from '../../StockTrackerModule/StockTrackerSettingUI'
 import { StockTrackerWizardUI } from '../../StockTrackerModule/StockTrackerWizardUI'
 import { Drawers, Routes, Stacks } from '../const'
 
@@ -79,6 +85,11 @@ export const Navigator: FC = () => {
                         options={menuOptions("dashboard", "settings", true)}
                         component={dashboard}/>
 
+                    <Drawer.Screen 
+                        name={Drawers.PROFILE}
+                        options={menuOptions("profile", Icons.ACCOUNT_CIRCLE, true)}
+                        component={profile}/>
+
                     <Drawer.Screen
                         name={Drawers.INVESTIMENTS}
                         options={menuOptions("investiments", "settings")}
@@ -103,6 +114,11 @@ export const Navigator: FC = () => {
                         name={Drawers.BROKERS}
                         options={menuOptions("brokers", "settings")}
                         component={brokers}/>
+
+                    <Drawer.Screen
+                        name={Drawers.SETTINGS}
+                        options={menuOptions("settings", Icons.SETTINGS)}
+                        component={settings}/>
                 </Drawer.Navigator>
             )
             break
@@ -117,8 +133,8 @@ export const Navigator: FC = () => {
 
 const menuOptions = (label: string, icon: string, swipeable: boolean = false): DrawerNavigationOptions => {
     return {
-        drawerLabel: props => <TypographyMedium {...props}>{label}</TypographyMedium>,
-        drawerIcon: props => <BaseIcon {...props} name={icon} />,
+        drawerLabel: props => <TypographyMedium {...props}>{ts(label)}</TypographyMedium>,
+        drawerIcon: props => <BaseIcon {...props} name={icon}/>,
         swipeEnabled: swipeable
     }
 }
@@ -136,15 +152,12 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = (props) => {
 const dashboard = () => (
     <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
         <Stack.Screen name={Routes.DASHBOARD} component={DashboardUI} options={defaultOptions}/>
-        {/* <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
-        <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
-        <Stack.Screen name={Routes.INVESTIMENT_FILTER} component={FilterUI} options={defaultOptions}/>
-        <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>
-        <Stack.Screen name={Routes.INVESTIMENT_ANALYSIS_DETAIL} component={InvestimentAnalysisDetailUI} options={defaultOptions}/>
-        <Stack.Screen name={Routes.STOCKTRACKER_PREVIEW} component={StockTrackerPreviewUI} options={defaultOptions}/>
-        <Stack.Screen name={Routes.STOCKTRACKER_REVIEW} component={StockTrackerReviewUI} options={defaultOptions}/>
-        <Stack.Screen name={Routes.STOCKTRACKER_SETTING} component={StockTrackerSettingUI} options={defaultOptions}/>
-        <Stack.Screen name={Routes.STOCKTRACKER_WIZARD} component={StockTrackerWizardUI} options={defaultOptions}/> */}
+    </Stack.Navigator>
+)
+
+const profile = () => (
+    <Stack.Navigator initialRouteName={Routes.PROFILE}>
+        <Stack.Screen name={Routes.PROFILE} component={ProfileUI} options={defaultOptions}/>
     </Stack.Navigator>
 )
 
@@ -154,6 +167,8 @@ const investiments = () => (
         <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
         <Stack.Screen name={Routes.INVESTIMENT_FILTER} component={FilterUI} options={defaultOptions}/>
         <Stack.Screen name={Routes.STOCKTRACKER_WIZARD} component={StockTrackerWizardUI} options={defaultOptions}/>
+        <Stack.Screen name={Routes.STOCKTRACKER_PREVIEW} component={StockTrackerPreviewUI} options={defaultOptions}/>
+        <Stack.Screen name={Routes.STOCKTRACKER_SETTING} component={StockTrackerSettingUI} options={defaultOptions}/>
     </Stack.Navigator>
 )
 
@@ -179,10 +194,27 @@ const activities = () => (
 )
 
 const brokers = () => (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName={Routes.ADD_BROKER_ACCOUNT}>
+        <Stack.Screen name={Routes.ADD_BROKER_ACCOUNT} component={AddBrokerAccountUI} options={defaultOptions}/>
         <Stack.Screen name={Routes.BROKER_ACCOUNT_WIZARD} component={BrokerAccountWizardUI} options={defaultOptions}/>
     </Stack.Navigator>
 )
+
+const settings = () => (
+    <Stack.Navigator initialRouteName={Routes.SETTING}>
+        <Stack.Screen name={Routes.SETTING} component={SettingUI} options={defaultOptions}/>
+    </Stack.Navigator>
+)
+
+{/* <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
+<Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
+<Stack.Screen name={Routes.INVESTIMENT_FILTER} component={FilterUI} options={defaultOptions}/>
+<Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>
+<Stack.Screen name={Routes.INVESTIMENT_ANALYSIS_DETAIL} component={InvestimentAnalysisDetailUI} options={defaultOptions}/>
+<Stack.Screen name={Routes.STOCKTRACKER_PREVIEW} component={StockTrackerPreviewUI} options={defaultOptions}/>
+<Stack.Screen name={Routes.STOCKTRACKER_REVIEW} component={StockTrackerReviewUI} options={defaultOptions}/>
+
+<Stack.Screen name={Routes.STOCKTRACKER_WIZARD} component={StockTrackerWizardUI} options={defaultOptions}/> */}
 
 // const Conta: FC<DrawerContentComponentProps> = (props) => {
 //     return (

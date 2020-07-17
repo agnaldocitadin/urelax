@@ -1,4 +1,4 @@
-import { InvestimentType, Locales, MessageTypes, StockTrackerStatus, TransactionType } from "./Enums"
+import { Brokers, InvestimentType, Locales, MessageTypes, StockTrackerStatus, TransactionType } from "./Enums"
 
 export type NotificationMessage = {
     messageType: MessageTypes
@@ -118,7 +118,7 @@ export interface BrokerAccount {
     _id: string
     account: Account
     accountName: string
-    brokerCode: string
+    brokerCode: Brokers
     extraData: BrokerAccountExtraData
     createdAt: Date
     updatedAt: Date

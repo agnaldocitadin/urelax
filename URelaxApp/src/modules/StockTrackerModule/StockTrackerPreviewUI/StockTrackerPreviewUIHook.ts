@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { Activity, API, FinancialHistory, StockTracker, StockTrackerStatus, Transaction } from "honeybee-api"
 import { useCallback, useState } from "react"
-import * as StockTracker2 from ".."
+import StockTrackerModule from ".."
 import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import { fetchFinancialHistory } from "../../InvestimentModule/api"
@@ -16,10 +16,10 @@ export const useStockTrackerPreviewUIHook = () => {
     const [ fail, setFail] = useState(false)
     const [ btnState, setBtnState ] = useState(InteractiveButtonStates.NORMAL)
     const { showAPIError } = Messaging.actions()
-    const { selectStockTracker, addStockTrackerStatements, updateSelectedStockTracker } = StockTracker2.default.actions()
-    const stockTrackerID: string = StockTracker2.default.select("selectedStockTrackerID")
-    const stockTracker: StockTracker = StockTracker2.default.select("selectedStockTracker")
-    const history: FinancialHistory[] = StockTracker2.default.select("stockTrackerStatements")
+    const { selectStockTracker, addStockTrackerStatements, updateSelectedStockTracker } = StockTrackerModule.actions()
+    const stockTrackerID: string = StockTrackerModule.select("selectedStockTrackerID")
+    const stockTracker: StockTracker = StockTrackerModule.select("selectedStockTracker")
+    const history: FinancialHistory[] = StockTrackerModule.select("stockTrackerStatements")
 
     const findStockBalance = useCallback(() => {
         // if (balanceSheet) {

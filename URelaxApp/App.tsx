@@ -16,6 +16,7 @@ import NavigationModule from './src/modules/NavigationModule'
 import { Navigator } from './src/modules/NavigationModule/Navigator'
 import PresentationModule from './src/modules/PresentationModule'
 import SecurityModule from './src/modules/SecurityModule'
+import SettingModule from './src/modules/SettingModule'
 import StatementModule from './src/modules/StatementModule'
 import StockTrackerModule from './src/modules/StockTrackerModule'
 import StorageModule from './src/modules/StorageModule'
@@ -34,7 +35,8 @@ const store = AppModules.register([
     InvestimentModule,
     StockTrackerModule,
     StatementModule,
-    BrokerModule
+    BrokerModule,
+    SettingModule
 ])
     
 const App = () => {

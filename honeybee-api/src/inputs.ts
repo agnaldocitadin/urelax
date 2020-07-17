@@ -1,5 +1,5 @@
-import { StockTrackerStatus } from "./enums"
-import { ID } from "./types"
+import { Brokers, StockTrackerStatus } from "./enums"
+import { BrokerAccountExtraData, ID } from "./types"
 
 export interface StockTrackerInput {
     account?: ID
@@ -14,4 +14,11 @@ export interface StockTrackerInput {
 export interface StrategySettingInput {
     stockAmountLimit?: number
     autoAmountLimit?: boolean
+}
+
+export interface BrokerAccountInput {
+    account?: ID
+    accountName?: string
+    brokerCode?: Brokers
+    extraData?: BrokerAccountExtraData
 }

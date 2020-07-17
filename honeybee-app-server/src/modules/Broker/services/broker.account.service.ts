@@ -1,4 +1,4 @@
-import { Brokers } from "honeybee-api"
+import { BrokerAccountInput, Brokers } from "honeybee-api"
 import { ErrorCodes } from "../../../core/error.codes"
 import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
@@ -10,26 +10,6 @@ export interface BrokerHelperInterface {
     validateExtraData(brokerAccount: BrokerAccount): boolean
     loadExtraData(brokerAccount: BrokerAccount): Promise<void>
 }
-
-// /**
-//  *
-//  *
-//  * @param {string} id
-//  * @returns
-//  */
-// export const findBrokerAccount = (id: string) => {
-//     return BrokerAccountModel.findById(id).exec()
-// }
-
-// /**
-//  *
-//  *
-//  * @param {string} accountId
-//  * @returns
-//  */
-// export const findBrokerAccountByUser = (accountId: string) => {
-//     return BrokerAccountModel.find({ account: accountId }).exec()
-// }
 
 export const findBrokerAccounts = (options: {
     id: string,
@@ -45,12 +25,13 @@ export const findBrokerAccounts = (options: {
  * @param {BrokerAccount} brokerAccount
  * @returns
  */
-export const createBrokerAccount = async (brokerAccount: BrokerAccount) => {
-    let helper = BrokerAccountHelper.convert(brokerAccount.brokerCode)
-    validate(brokerAccount)
-    if (helper.validateExtraData(brokerAccount)) {
-        await helper.loadExtraData(brokerAccount)
-        return BrokerAccountModel.create(brokerAccount)
+export const createBrokerAccount = async (brokerAccount: BrokerAccountInput) => {
+    const _brokerAccount = BrokerAccount.from(brokerAccount)
+    const helper = BrokerAccountHelper.convert(_brokerAccount.brokerCode)
+    validate(_brokerAccount)
+    if (helper.validateExtraData(_brokerAccount)) {
+        await helper.loadExtraData(_brokerAccount)
+        return BrokerAccountModel.create(_brokerAccount)
     }
 }
 

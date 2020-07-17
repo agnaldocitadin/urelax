@@ -47,19 +47,32 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
 
     return (
         <FlatLayout 
-            bgColor={Colors.BG_3} 
-            bgStatusBar={Colors.BG_3}>
+            bgColor={Colors.BLUES_1} 
+            bgStatusBar={Colors.BLUES_1}>
             <Bar>
                 <Menu2 name="dots-horizontal" size={23} selected onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>
             </Bar>
 
             <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
                 <PatrimonyNow>
-                    {/* <Typography onPress={() => navigation.navigate(Routes.BROKER_ACCOUNT_WIZARD)}>Broker</Typography> */}
-                    <TypographyMedium fontSize={20}>{ts("welcome")}, {"Nick"}!</TypographyMedium>
+                    <TypographyMedium
+                        color={Colors.WHITE}
+                        fontSize={20}>
+                        {ts("welcome")}, {"Nick"}!
+                    </TypographyMedium>
                     <View>
-                        <Typography color={Colors.GRAY_1} textAlign="center">{ts("patrimony_amount")}</Typography>
-                        <Typography textAlign="center" fontSize={39} onPress={handleInvestiments}>{utils.formatCurrency(currentPatrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                        <Typography
+                            color={Colors.WHITE}
+                            textAlign="center">
+                            {ts("patrimony_amount")}
+                        </Typography>
+                        <Typography
+                            color={Colors.WHITE}
+                            textAlign="center"
+                            fontSize={39}
+                            onPress={handleInvestiments}>
+                            {utils.formatCurrency(currentPatrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}
+                        </Typography>
                     </View>
                 </PatrimonyNow>
                 <PatrimonyHistory>
