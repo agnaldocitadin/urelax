@@ -24,9 +24,8 @@ export const BaseButton: FC<BaseButtonPros> = ({
 )
 
 const Button = styled.View`
-    background-color: white;
+    background-color: transparent;
     justify-content: center;
-    /* border-radius: 5px; */
     height: 50px;
 `
 

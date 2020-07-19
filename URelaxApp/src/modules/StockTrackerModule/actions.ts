@@ -1,8 +1,8 @@
-import { useNavigation } from "@react-navigation/native"
 import { FinancialHistory, Frequency, StockTracker, Strategy } from "honeybee-api"
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 import { Routes } from "../NavigationModule/const"
+import { StockTrackerWizardViews } from "./const"
 
 type ActionNames = keyof ActionTypes
 
@@ -23,13 +23,10 @@ export type ActionTypes = {
     ADD_STOCKTRACKER_STATEMENTS(state: ReducerState, payload: any): ReducerState
     SET_STRATEGIES(state: ReducerState, payload: any): ReducerState
     SET_FREQUENCIES(state: ReducerState, payload: any): ReducerState
-    EDIT_FREQUENCY(state: ReducerState, payload: any): ReducerState
-    EDIT_STRATEGY(state: ReducerState, payload: any): ReducerState
-    EDIT_TRANSACTION(state: ReducerState, payload: any): ReducerState
+    EDIT_STOCKTRACKER_DATA(state: ReducerState, payload: any): ReducerState
 }
 
 const Actions = () => {
-    const navigation = useNavigation()
     const dispatch = useDispatch()
     return {
         selectStockTrackerID: (id: string) => {
@@ -50,16 +47,8 @@ const Actions = () => {
         setFrequencies: (frequencies: Frequency[]) => {
             dispatch({ type: "SET_FREQUENCIES", payload: frequencies } as DispatchType<ActionNames>)
         },
-        editFrequency: () => {
-            dispatch({ type: "EDIT_FREQUENCY" } as DispatchType<ActionNames>)
-            navigation.navigate(Routes.STOCKTRACKER_WIZARD)
-        },
-        editStrategy: () => {
-            dispatch({ type: "EDIT_STRATEGY" } as DispatchType<ActionNames>)
-            navigation.navigate(Routes.STOCKTRACKER_WIZARD)
-        },
-        editTransaction: () => {
-            dispatch({ type: "EDIT_TRANSACTION" } as DispatchType<ActionNames>)
+        editStockTrackerData: (view: StockTrackerWizardViews, navigation: any) => {
+            dispatch({ type: "EDIT_STOCKTRACKER_DATA", payload: view } as DispatchType<ActionNames>)
             navigation.navigate(Routes.STOCKTRACKER_WIZARD)
         }
     }

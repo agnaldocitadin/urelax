@@ -1,5 +1,6 @@
-import { StockTrackerStatus } from "honeybee-api"
+import { StockTrackerInput, StockTrackerStatus } from "honeybee-api"
 import mongoose from 'mongoose'
+import { flatObject } from "../../../core/Utils"
 import { onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
 import { Account } from "../../Identity/models"
 import { notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
@@ -292,13 +293,15 @@ export const registerUpdate = (stockTracker: StockTracker, dateUpdate: Date) => 
  *
  *
  * @param {string} _id
- * @param {StockTracker} stockTracker
+ * @param {StockTracker} input
  * @returns {Promise<StockTracker>}
  */
-export const updateStockTrackerById = async (_id: string, stockTracker: StockTracker): Promise<StockTracker> => {
-    let stockTrackerDB: any = await StockTrackerModel.findById(_id)
-    let updatedStockTracker: any = { ...stockTrackerDB._doc, ...stockTracker }
-    await validate(updatedStockTracker)
-    await StockTrackerModel.updateOne({ _id }, { ...stockTracker })
-    return updatedStockTracker
+export const updateStockTrackerById = async (_id: string, input: StockTrackerInput): Promise<StockTracker> => {
+    // const _input = StockTracker.from(input)
+    // const stockTrackerDB = await StockTrackerModel.findById(_id)
+    // let updatedStockTracker: any = { ...stockTrackerDB._doc, ...input }
+    // await validate(input)
+    const _input = flatObject(input)
+    return StockTrackerModel.findByIdAndUpdate(_id, { "$set": _input }).exec()
+    // return updatedStockTracker
 }

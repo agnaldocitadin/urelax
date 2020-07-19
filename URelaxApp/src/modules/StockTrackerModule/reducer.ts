@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import AppModuleState from "../AppModuleState"
 import { ActionTypes, ReducerState } from "./actions"
-import { MODULE_NAME, StockTrackerWizardViews } from "./const"
+import { MODULE_NAME } from "./const"
 
 const INITIAL_STATE: ReducerState = {
     stockTrackerStatements: []
@@ -47,25 +47,11 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             frequencies: payload
         }
     },
-    EDIT_FREQUENCY: (state: ReducerState, payload: any): ReducerState => {
+    EDIT_STOCKTRACKER_DATA: (state: ReducerState, payload: any): ReducerState => {
         return {
             ...state,
             edit: true,
-            viewToEdit: String(StockTrackerWizardViews.FREQUENCY)
-        }
-    },
-    EDIT_STRATEGY: (state: ReducerState, payload: any): ReducerState => {
-        return {
-            ...state,
-            edit: true,
-            viewToEdit: String(StockTrackerWizardViews.STRATEGY)
-        }
-    },
-    EDIT_TRANSACTION: (state: ReducerState, payload: any): ReducerState => {
-        return {
-            ...state,
-            edit: true,
-            viewToEdit: String(StockTrackerWizardViews.TRANSACTION)
+            viewToEdit: String(payload)
         }
     }
 })

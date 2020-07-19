@@ -4,6 +4,9 @@ import Logger from '../src/core/Logger'
 import { StockTracker, StockTrackerModel } from '../src/modules/Stock/models'
 import { mongoose } from '@typegoose/typegoose'
 import bcrypt from 'bcrypt'
+import { BrokerAccountModel } from '../src/modules/Broker/models'
+import { BrokerAccountInput } from 'honeybee-api'
+import { flatObject } from '../src/core/Utils'
 
 
 const connectDB = async () => {
@@ -236,13 +239,31 @@ it("teste", async () => {
     // let res = await findByEmailPassword("adasdasd", "456456")
     // console.log(res)
 
-    const pwd = await bcrypt.hash('agnaldo', 10)
-    console.log(pwd)
+    // const pwd = await bcrypt.hash('agnaldo', 10)
+    // console.log(pwd)
 
-    const pwd2 = await bcrypt.hash('agnaldo', 10)
+    // const pwd2 = await bcrypt.hash('agnaldo', 10)
 
-    const eq = await bcrypt.compare("agnaldo", pwd)
-    console.log("pass", eq)
+    // const eq = await bcrypt.compare("agnaldo", pwd)
+    // console.log("pass", eq)
 
-    console.log("Done.")
+    // console.log("Done.")
+
+    const account: BrokerAccountInput = {
+        account: "sjdfksjfks",
+        accountName: "nome da conta",
+        extraData: {
+            cpf: "00963868942",
+            birthdate: new Date(),
+            signature: "assinatura",
+            token: null,
+            password: "pass",
+            platformUID: "uiid",
+            sessionId: "sessionid"
+        }
+    }
+
+    const result = flatObject(account)
+    console.log(result)
+
 })

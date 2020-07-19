@@ -7,7 +7,7 @@ export const createBrokerAccount = (input: BrokerAccountInput, fields: string): 
     return gql(name, mutation(name, { input }, fields))
 }
 
-export const updateBrokerAccount = (id: string, input: BrokerAccount): Promise<boolean> => {
+export const updateBrokerAccount = (id: string, input: BrokerAccountInput): Promise<boolean> => {
     const name = "updateBrokerAccount"
     return gql(name, mutation(name, { id, input }))
 }

@@ -25,5 +25,12 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             ...state, 
             selectedBrokerAccount: {...payload}
         }
+    },
+    EDIT_BROKER_ACCOUNT_DATA: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state,
+            edit: true,
+            viewToEdit: String(payload)
+        }
     }
 })

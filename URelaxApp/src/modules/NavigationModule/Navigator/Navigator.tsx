@@ -9,6 +9,8 @@ import { BaseIcon, Icons, TypographyMedium } from '../../../theming'
 import { ActivityDetailUI } from '../../ActivityHistoryModule/ActivityDetailUI'
 import { ActivityListUI } from '../../ActivityHistoryModule/ActivityListUI'
 import { AddBrokerAccountUI } from '../../BrokerModule/AddBrokerAccountUI'
+import { BrokerAccountDetailUI } from '../../BrokerModule/BrokerAccountDetailUI'
+import { BrokerAccountsUI } from '../../BrokerModule/BrokerAccountsUI'
 import { BrokerAccountWizardUI } from '../../BrokerModule/BrokerAccountWizardUI'
 import { DashboardUI } from '../../DashboardModule/DashboardUI'
 import { ProfileUI } from '../../IdentityModule/ProfileUI'
@@ -36,7 +38,7 @@ const defaultOptions = {
     headerShown: false
 }
 
-export const Navigator: FC = () => {
+export const Navigator: FC = ({}) => {
     
     let stackRoutes
     const selectedStack: Stacks = NavigationModule.select("stack")
@@ -197,6 +199,8 @@ const brokers = () => (
     <Stack.Navigator initialRouteName={Routes.ADD_BROKER_ACCOUNT}>
         <Stack.Screen name={Routes.ADD_BROKER_ACCOUNT} component={AddBrokerAccountUI} options={defaultOptions}/>
         <Stack.Screen name={Routes.BROKER_ACCOUNT_WIZARD} component={BrokerAccountWizardUI} options={defaultOptions}/>
+        <Stack.Screen name={Routes.BROKER_ACCOUNTS} component={BrokerAccountsUI} options={defaultOptions}/>
+        <Stack.Screen name={Routes.BROKER_ACCOUNT_DETAIL} component={BrokerAccountDetailUI} options={defaultOptions}/>
     </Stack.Navigator>
 )
 

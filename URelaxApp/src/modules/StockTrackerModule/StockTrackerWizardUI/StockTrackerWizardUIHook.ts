@@ -60,7 +60,7 @@ export const useStockTrackerWizardUIHook = () => {
         else {
             await createStockTracker(input)
         }
-    }, [transient])
+    }, [edit, transient])
 
     const handleValidation = useCallback((index: number) => {
         return true

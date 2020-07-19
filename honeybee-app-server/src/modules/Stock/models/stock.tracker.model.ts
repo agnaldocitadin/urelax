@@ -1,5 +1,5 @@
 import { getModelForClass, mongoose, prop, Ref } from "@typegoose/typegoose"
-import { StockTrackerStatus } from "honeybee-api"
+import { StockTrackerInput, StockTrackerStatus } from "honeybee-api"
 import { BrokerAccount, BrokerInvestiment } from "../../Broker/models"
 import { Account } from "../../Identity/models"
 import { StrategyNames } from "../strategies"
@@ -69,6 +69,12 @@ export class StockTracker {
     
     public getAccountId?() {
         return (<Account>this.account)._id
+    }
+
+    public static from(input: StockTrackerInput) {
+        return {
+
+        }
     }
 
 }

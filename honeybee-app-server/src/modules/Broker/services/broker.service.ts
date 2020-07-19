@@ -22,10 +22,13 @@ export const findByCode = (brokerCode: Brokers): Promise<Broker> => {
     return BrokerModel.findOne({ code: brokerCode }).exec()
 }
 
-export const findAvailableInvestiments = (options: {
-    search?: string
-    brokerIDs?: mongoose.Types.ObjectId[]
-}): Promise<BrokerInvestiment[]> => {
+/**
+ *
+ *
+ * @param {{ search?: string, brokerIDs?: mongoose.Types.ObjectId[] }} options
+ * @returns {Promise<BrokerInvestiment[]>}
+ */
+export const findAvailableInvestiments = (options: { search?: string, brokerIDs?: mongoose.Types.ObjectId[] }): Promise<BrokerInvestiment[]> => {
     return BrokerInvestimentModel
         .find({ type: InvestimentType.STOCK })
         .populate("broker")

@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import { StockTracker } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
@@ -9,6 +10,7 @@ import AppConfig from '../../../core/AppConfig'
 import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
 import { DEFAULT_VERTICAL_SPACING, SymbolsImg, Typography } from '../../../theming'
+import { StockTrackerWizardViews } from '../const'
 
 interface StockTrackerDataProps {
     stockTracker: StockTracker
@@ -20,10 +22,11 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
     const { strategy, strategySetting, frequency, brokerAccount, stockInfo, status } = stockTracker
     const { autoAmountLimit, stockAmountLimit } = strategySetting || {}
     
-    const { editFrequency, editStrategy, editTransaction } = StockTrackerModule.actions()
-    const handleStrategy = animatedCallback(() => editStrategy())
-    const handleFrequency = animatedCallback(() => editFrequency())
-    const handleTransaction = animatedCallback(() => editTransaction())
+    const navigation = useNavigation()
+    const { editStockTrackerData } = StockTrackerModule.actions()
+    const handleStrategy = animatedCallback(() => editStockTrackerData(StockTrackerWizardViews.STRATEGY, navigation))
+    const handleFrequency = animatedCallback(() => editStockTrackerData(StockTrackerWizardViews.FREQUENCY, navigation))
+    const handleTransaction = animatedCallback(() => editStockTrackerData(StockTrackerWizardViews.TRANSACTION, navigation))
 
     return (
         <React.Fragment>

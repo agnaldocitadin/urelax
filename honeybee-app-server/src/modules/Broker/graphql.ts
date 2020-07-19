@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { GraphQLModule } from "../GraphQL"
-import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts } from "./services"
+import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts, updateBrokerAccountById } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -103,7 +103,7 @@ const entry: GraphQLModule = {
         },
 
         updateBrokerAccount: ({ id, input }: any) => {
-            // TOOD'
+            return updateBrokerAccountById(id, input)
         },
 
         fetchAvailableInvestiments: (options: {

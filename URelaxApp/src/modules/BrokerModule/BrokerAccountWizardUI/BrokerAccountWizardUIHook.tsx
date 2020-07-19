@@ -4,7 +4,7 @@ import { useCallback, useState } from "react"
 import BrokerModule from ".."
 import MessagingModule from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
-import { createBrokerAccount } from "../api"
+import { createBrokerAccount, updateBrokerAccount } from "../api"
 import { BrokerAccountWizardViews } from "../const"
 import { useBroker } from "../hook"
 
@@ -31,6 +31,8 @@ export const useBrokerAccountWizardUIHook = () => {
     const { updateSelectedBrokerAccount } = BrokerModule.actions()
     const { showAPIError } = MessagingModule.actions()
     const transient: BrokerAccount = BrokerModule.select("selectedBrokerAccount")
+    const edit: boolean = BrokerModule.select("edit")
+    const viewToEdit: boolean = BrokerModule.select("viewToEdit")
 
     const handleChangeBirthdate = useCallback((date: Date) => {
         transient.extraData["birthdate"] = date
@@ -62,27 +64,34 @@ export const useBrokerAccountWizardUIHook = () => {
     }, [])
 
     const handleFinish = useCallback(async () => {
+        console.log("trans", transient)
         try {
             const input = convertToBrokerAccountInput(transient)
-            const newAccount = await createBrokerAccount(input)
+            console.log("input", input)
+            if (edit) {
+                await updateBrokerAccount(transient._id, input)
+            }
+            else {
+                const newAccount = await createBrokerAccount(input)
+            }
         }
         catch(error) {
             showAPIError(error)
             throw error
         }
-    }, [])
+    }, [edit, transient])
 
     const handleValidation = useCallback(() => {
         return true
     }, [])
 
     const handleFlowEnded = useCallback(() => {
-        navigation.navigate(Routes.ADD_BROKER_ACCOUNT)
-    }, [])
+        edit ? navigation.goBack() : navigation.navigate(Routes.ADD_BROKER_ACCOUNT)
+    }, [edit])
 
     return {
         transient,
-        sequence: [...(sequenceViews as any)[transient.brokerCode], ...standardViews],
+        sequence: edit ? [...String(viewToEdit), String(BrokerAccountWizardViews.DONE)] : [...(sequenceViews as any)[transient.brokerCode], ...standardViews],
         messageDone: "ds",
         loading,
         handleFinish,

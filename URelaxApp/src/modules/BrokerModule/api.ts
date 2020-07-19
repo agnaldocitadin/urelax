@@ -8,6 +8,13 @@ const fragment = `
     accountName
     brokerCode
     simulation
+    createdAt
+    extraData {
+        signature
+        cpf
+        password
+        birthdate
+    }
 `
 
 export const fetchBrokerAccountsByAccount = (account?: string) => {
@@ -16,4 +23,8 @@ export const fetchBrokerAccountsByAccount = (account?: string) => {
 
 export const createBrokerAccount = (input: BrokerAccountInput) => {
     return API.Broker.createBrokerAccount(input, fragment)
+}
+
+export const updateBrokerAccount = (id: string, input: BrokerAccountInput) => {
+    return API.Broker.updateBrokerAccount(id, input)
 }

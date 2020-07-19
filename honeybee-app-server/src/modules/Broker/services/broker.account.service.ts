@@ -2,8 +2,11 @@ import { BrokerAccountInput, Brokers } from "honeybee-api"
 import { ErrorCodes } from "../../../core/error.codes"
 import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
+import { flatObject } from "../../../core/Utils"
 import { ClearHelper } from "../helpers/clear.helper"
 import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
+
+// FIXME O merge do BrokerAccount precisa ser melhorado!
 
 export interface BrokerHelperInterface {
     code: Brokers
@@ -19,12 +22,6 @@ export const findBrokerAccounts = (options: {
     return BrokerAccountModel.find({ account }).exec()
 }
 
-/**
- * FIXME
- *
- * @param {BrokerAccount} brokerAccount
- * @returns
- */
 export const createBrokerAccount = async (brokerAccount: BrokerAccountInput) => {
     const _brokerAccount = BrokerAccount.from(brokerAccount)
     const helper = BrokerAccountHelper.convert(_brokerAccount.brokerCode)
@@ -39,17 +36,25 @@ export const createBrokerAccount = async (brokerAccount: BrokerAccountInput) => 
  *
  *
  * @param {string} _id
- * @param {BrokerAccount} brokerAccount
+ * @param {BrokerAccount} input
  * @returns
  */
-export const updateBrokerAccountById = async (_id: string, brokerAccount: BrokerAccount) => {
-    let accountDB = await BrokerAccountHelper.merge(_id, brokerAccount)
-    let helper = BrokerAccountHelper.convert(accountDB.brokerCode)
+export const updateBrokerAccountById = async (_id: string, input: BrokerAccountInput) => {
     
-    validate(accountDB)
-    if (helper.validateExtraData(accountDB)) {
-        await helper.loadExtraData(accountDB)
-        BrokerAccountModel.updateOne({ _id }, { ...accountDB }).exec()
+    // console.log("---->", input)
+    // const _brokerAccount = BrokerAccount.from(input)
+    // console.log("000----", _brokerAccount)
+    // let accountDB = await BrokerAccountHelper.merge(_id, _brokerAccount)
+    // console.log("------------------", accountDB)
+    
+    const _input = flatObject(input)
+    const account = await BrokerAccountModel.findByIdAndUpdate(_id, { "$set": _input })
+    let helper = BrokerAccountHelper.convert(account.brokerCode)
+    
+    validate(account)
+    if (helper.validateExtraData(account)) {
+        await helper.loadExtraData(account)
+        BrokerAccountModel.updateOne({ _id }, { ...account }).exec()
         return true
     }
     return false

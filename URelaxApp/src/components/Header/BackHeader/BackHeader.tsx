@@ -8,11 +8,13 @@ import { FlatHeader, FlatHeaderProps } from '../FlatHeader'
 export interface BackHeaderProps extends FlatHeaderProps {
     title?: string
     titleColor?: string
+    backColor?: string
 }
 
 export const BackHeader: FC<BackHeaderProps> = ({ 
     title, 
     titleColor,
+    backColor = Colors.BLACK_1,
     center,
     ...others
 }) => {
@@ -25,7 +27,7 @@ export const BackHeader: FC<BackHeaderProps> = ({
             center={ center ? center : <TypographyMedium fontSize={14} color={titleColor}>{ title }</TypographyMedium>}
             left={
                 <ButtonHeader 
-                    color={Colors.BLUES_1} 
+                    color={backColor} 
                     icon={Icons.BACK} 
                     onPress={handleBack}/>
             }

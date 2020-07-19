@@ -84,20 +84,27 @@ export class DelayedAction {
 }
 
 
-export const flatObject = (obj: any, last: string = "", serialization: any = {}) => {
+/**
+ *
+ *
+ * @param {*} obj
+ * @param {string} [lastProperty=""]
+ * @param {*} [serialization={}]
+ * @returns
+ */
+export const flatObject = (obj: any, lastProperty: string = "", serialization: any = {}) => {
     Object.keys(obj).forEach(field => {
         let value = (<any>obj)[field]
-        if (value == undefined || null) return
-        let toSerialize = typeof value === "object"
+        if (value === undefined) return
 
-        if (toSerialize) {
-            let idx = (last !== "") ? `${last}.${field}` : `${field}`
-            flatObject(value, idx, serialization)
+        let property = (lastProperty !== "") ? `${lastProperty}.${field}` : `${field}`
+        if (value === null) {
+            serialization[property] = value
+            return
         }
-        else {
-            let idx = (last !== "") ? `${last}.${field}` : `${field}`
-            serialization[idx] = (<any>obj)[field]
-        }
+
+        let toSerialize = typeof value === "object"
+        toSerialize ? flatObject(value, property, serialization) : serialization[property] = (<any>obj)[field]
     })
 
     return serialization

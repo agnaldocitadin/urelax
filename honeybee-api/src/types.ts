@@ -120,6 +120,7 @@ export interface BrokerAccount {
     accountName: string
     brokerCode: Brokers
     extraData: BrokerAccountExtraData
+    simulation: boolean
     createdAt: Date
     updatedAt: Date
 }
