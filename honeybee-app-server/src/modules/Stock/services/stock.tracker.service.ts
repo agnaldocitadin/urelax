@@ -1,6 +1,6 @@
 import { StockTrackerInput, StockTrackerStatus } from "honeybee-api"
 import mongoose from 'mongoose'
-import { flatObject } from "../../../core/Utils"
+import { mergeObjects } from "../../../core/Utils"
 import { onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
 import { Account } from "../../Identity/models"
 import { notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
@@ -297,11 +297,9 @@ export const registerUpdate = (stockTracker: StockTracker, dateUpdate: Date) => 
  * @returns {Promise<StockTracker>}
  */
 export const updateStockTrackerById = async (_id: string, input: StockTrackerInput): Promise<StockTracker> => {
-    // const _input = StockTracker.from(input)
-    // const stockTrackerDB = await StockTrackerModel.findById(_id)
-    // let updatedStockTracker: any = { ...stockTrackerDB._doc, ...input }
-    // await validate(input)
-    const _input = flatObject(input)
-    return StockTrackerModel.findByIdAndUpdate(_id, { "$set": _input }).exec()
-    // return updatedStockTracker
+    const stockTracker = await StockTrackerModel.findById(_id)
+    const _input = mergeObjects<StockTracker>(stockTracker.toObject(), input)
+    await validate(_input)
+    await StockTrackerModel.updateOne({ _id }, _input)
+    return _input
 }

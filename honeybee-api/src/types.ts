@@ -105,13 +105,13 @@ export interface StockInvestimentInfo {
 }
 
 export interface BrokerAccountExtraData {
-    token: string
-    signature: string
-    platformUID: string
-    sessionId: string
-    cpf: string
-    password: string
-    birthdate: Date
+    token?: string
+    signature?: string
+    platformUID?: string
+    sessionId?: string
+    cpf?: string
+    password?: string
+    birthdate?: Date
 }
 
 export interface BrokerAccount {
