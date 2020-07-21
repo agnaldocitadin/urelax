@@ -13,6 +13,7 @@ import { fetchStockTrackerByID } from "../api"
 export const useStockTrackerPreviewUIHook = () => {
 
     const navigation = useNavigation()
+    const [ loading, setLoading] = useState(true)
     const [ fail, setFail] = useState(false)
     const [ btnState, setBtnState ] = useState(InteractiveButtonStates.NORMAL)
     const { showAPIError } = Messaging.actions()
@@ -103,6 +104,7 @@ export const useStockTrackerPreviewUIHook = () => {
 
             const history = await fetchFinancialHistory("", 0, 10)
             history && addStockTrackerStatements(history, true)
+            setLoading(false)
         }
         catch(error) {
             console.error(error)
@@ -112,8 +114,9 @@ export const useStockTrackerPreviewUIHook = () => {
 
     return {
         stockTracker,
-        amount: stockTracker && (stockTracker.buyPrice * stockTracker.qty) || 0,
+        amount: stockTracker && (stockTracker?.buyPrice * stockTracker?.qty) || 0,
         transactions: adaptStatementTimeline(history),
+        loading,
         fail,
         btnState,
         handleStockTrackerAction,

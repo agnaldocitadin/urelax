@@ -20,7 +20,8 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
     const { 
         stockTracker,
         amount,
-        transactions, 
+        transactions,
+        loading,
         fail,
         btnState,
         handleSettings, 
@@ -33,6 +34,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
     return (
         <FlatLayout
             fail={fail}
+            loading={loading}
             header={
                 <BackHeader 
                     title={stockTracker?.stockInfo?.description || ""}

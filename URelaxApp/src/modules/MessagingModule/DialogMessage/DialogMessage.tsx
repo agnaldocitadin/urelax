@@ -23,7 +23,7 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
     const modal = useMemo(() => (
         <Modal
             presentationStyle="overFullScreen"
-            animationType="slide" 
+            animationType="fade" 
             transparent={true}
             hardwareAccelerated
             visible={visible}

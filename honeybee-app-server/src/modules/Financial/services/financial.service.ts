@@ -1,6 +1,8 @@
-import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisPeriod, FinancialSummary, InvestimentType } from 'honeybee-api'
+import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisPeriod, FinancialSummary, TransactionType } from 'honeybee-api'
 import mongoose from 'mongoose'
-import { FinancialHistory, Transaction } from '../models'
+import { percentVariation } from '../../../core/Utils'
+import { StockTrackerModel } from '../../Stock/models'
+import { FinancialHistory, FinancialHistoryModel, Transaction } from '../models'
 
 export const initFinancialHistory = (account: mongoose.Types.ObjectId, date: Date) => {
     // TODO
@@ -16,187 +18,69 @@ export const findFinancialHistoryBy = (options: {
     page: number
     qty: number
 }): Promise<FinancialHistory[]> => {
-    // TODO
-    return Promise.resolve([
-        {
-            date: new Date(),
-            transactions: [{
-                dateTime: new Date(),
-                value: 230
-            },{
-                dateTime: new Date(),
-                value: 40
-            }]
-        }
-    ] as FinancialHistory[])
-}
-
-export const groupAppiedInvestimentsBy = (account: mongoose.Types.ObjectId): Promise<AppliedInvestiment[]> => {
-    // TODO
-    // return Promise.resolve([])
-    return Promise.resolve([
-        {
-            brokerAccountName: "0001-0",
-            amount: 234.43,
-            qty: 10,
-            investiment: {
-                type: InvestimentType.CURRENCY,
-                description: "Real (R$)",
-                broker:{
-                    name: "Clear"
-                }
-            }
-        },{
-            brokerAccountName: "0001-0",
-            amount: 839.76,
-            qty: 10,
-            investiment: {
-                type: InvestimentType.CURRENCY,
-                description: "Dollar (US$)",
-                broker:{
-                    name: "Easyinvest"
-                }
-            }
-        },{
-            brokerAccountName: "0123456",
-            amount: 203000,
-            qty: 10,
-            refID: "5ebc4d17232404081827fb5f",
-            investiment: {
-                type: InvestimentType.STOCK,
-                description: "Azul Linhas Aéreas (AZUL4)",
-                broker: {
-                    name: "XP Investimentos"
-                }
-            }
-        },{
-            brokerAccountName: "0001-0",
-            amount: 1293,
-            qty: 10,
-            refID: "5ebc4d17232404081827fb5f",
-            investiment: {
-                type: InvestimentType.STOCK,
-                description: "Lojas Renner (RENN3)",
-                broker: {
-                    name: "Modalmais"
-                }
-            }
-        },{
-            brokerAccountName: "Nova conta",
-            amount: 42933,
-            qty: 10,
-            refID: "5ebc4d17232404081827fb5f",
-            investiment: {
-                type: InvestimentType.STOCK,
-                description: "Ambev Bebidas LTDA (ABEV3)",
-                broker: {
-                    name: "Rico"
-                }
-            }
-        },{
-            brokerAccountName: "Nova conta",
-            amount: 2342,
-            qty: 10,
-            refID: "5ebc4d17232404081827fb5f",
-            investiment: {
-                type: InvestimentType.STOCK,
-                description: "WEG Motores Elétricos (WEGE3)",
-                broker: {
-                    name: "Rico"
-                }
-            }
-        },{
-            brokerAccountName: "0123456",
-            amount: 203000,
-            qty: 10,
-            refID: "5ebc4d17232404081827fb5f",
-            investiment: {
-                type: InvestimentType.STOCK,
-                description: "Azul Linhas Aéreas (AZUL4)",
-                broker: {
-                    name: "XP Investimentos"
-                }
-            }
-        },{
-            brokerAccountName: "0001-0",
-            amount: 1293,
-            qty: 10,
-            refID: "5ebc4d17232404081827fb5f",
-            investiment: {
-                type: InvestimentType.STOCK,
-                description: "Lojas Renner (RENN3)",
-                broker: {
-                    name: "Modalmais"
-                }
-            }
-        },{
-            brokerAccountName: "Nova conta",
-            amount: 42933,
-            qty: 10,
-            refID: "5ebc4d17232404081827fb5f",
-            investiment: {
-                type: InvestimentType.STOCK,
-                description: "Ambev Bebidas LTDA (ABEV3)",
-                broker: {
-                    name: "Rico"
-                }
-            }
-        },{
-            brokerAccountName: "Nova conta",
-            amount: 2342,
-            qty: 10,
-            refID: "5ebc4d17232404081827fb5f",
-            investiment: {
-                type: InvestimentType.STOCK,
-                description: "WEG Motores Elétricos (WEGE3)",
-                broker: {
-                    name: "Rico"
-                }
-            }
-        }
-    ] as AppliedInvestiment[])
     
+    const { account, date, page, qty } = options
+    return FinancialHistoryModel.find({ account, ...date ? date : null })
+        .sort({ "date": "desc" })
+        .skip(page * qty)
+        .limit(qty)
+        .exec()
 }
 
-export const groupFinancialSummaryBy = (options: {
-    account: mongoose.Types.ObjectId
-    date: Date
-    page: number
-    qty: number
-}): Promise<FinancialSummary[]> => {
-    // TODO
-    // return Promise.resolve([])
-    return Promise.resolve([{
-        patrimony: 128989,
-        variation: 1,
-        when: "Today"
-    },{
-        patrimony: 200,
-        variation: -1.21,
-        when: "Yesterday"
-    },{
-        patrimony: 187,
-        variation: 1.58,
-        when: "03/Jan"
-    },{
-        patrimony: 18734,
-        variation: 2.58,
-        when: "02/Jan"
-    },{
-        patrimony: 1734,
-        variation: 4.58,
-        when: "01/Jan"
-    }])
+export const groupAppiedInvestimentsBy = async (account: mongoose.Types.ObjectId): Promise<AppliedInvestiment[]> => {
+    const stockTackers = await StockTrackerModel.find({ account })
+        .populate("brokerAccount")
+        .populate({ 
+            path: "stockInfo", 
+            populate: { 
+                path: "broker"
+            }
+        })
+        .exec()
+    
+    // TODO investimento (Dinheiro)
+    
+    const stockInvestiments = stockTackers.map(tracker => tracker.toInvestiment())
+    return [...stockInvestiments]
 }
 
-export const groupFinancialAnalysisBy = (options: {
-    account: mongoose.Types.ObjectId, 
-    brokerAccount: mongoose.Types.ObjectId, 
-    date: Date, 
-    page: number, 
-    qty: number, 
-    period: FinancialAnalysisPeriod
-}): Promise<FinancialAnalysis[]> => {
+/**
+ *
+ *
+ * @param {{ account: mongoose.Types.ObjectId, date: Date, page: number, qty: number }} options
+ * @returns {Promise<FinancialSummary[]>}
+ */
+export const groupFinancialSummaryBy = async (options: { account: mongoose.Types.ObjectId, date: Date, page: number, qty: number }): Promise<FinancialSummary[]> => {
+    
+    const history = await findFinancialHistoryBy(options)
+    return history.map(dailyHistory => {
+
+        let initial = 0
+        let sum = 0
+        dailyHistory.transactions.forEach(transaction => {
+            if (transaction.type === TransactionType.STATEMENT_OPENING) {
+                initial += transaction.value
+                return
+            }
+            sum += transaction.value
+        })
+
+        const patrimony = sum + initial
+        return {
+            patrimony,
+            variation: percentVariation(initial, patrimony),
+            when: dailyHistory.date.toISOString()
+        }
+    })
+}
+
+/**
+ *
+ *
+ * @param {{ account: mongoose.Types.ObjectId, brokerAccount: mongoose.Types.ObjectId, date: Date, page: number, qty: number, period: FinancialAnalysisPeriod }} options
+ * @returns {Promise<FinancialAnalysis[]>}
+ */
+export const groupFinancialAnalysisBy = (options: { account: mongoose.Types.ObjectId, brokerAccount: mongoose.Types.ObjectId, date: Date, page: number, qty: number, period: FinancialAnalysisPeriod }): Promise<FinancialAnalysis[]> => {
     // TODO
     // return Promise.resolve([])
     return Promise.resolve([

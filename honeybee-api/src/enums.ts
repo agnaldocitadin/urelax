@@ -28,7 +28,7 @@ export enum Brokers {
 
 export enum TransactionType {
     START_OF_DAY = "START_OF_DAY", // Utilizado apenas para representar o inicio do dia na listagem de transações
-    STATEMENT_OPENING = "STATEMENT_OPENING", //Incluído sempre que o histórico do dia for iniciao (posição de cada do investimento no dia anterior)
+    STATEMENT_OPENING = "STATEMENT_OPENING", //Incluído sempre que o histórico do dia for iniciado (posição de cada do investimento no dia anterior)
     DESPOSIT = "DESPOSIT", // Depósito em dinheiro na conta da corretora
     TRANSFER = "TRANSFER", // Transferencia de entrada de valor (compra/venda ação, cdb, tesouro, etc)
     YIELD = "YIELD"
