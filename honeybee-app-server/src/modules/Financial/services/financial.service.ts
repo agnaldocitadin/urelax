@@ -1,5 +1,6 @@
-import { endOfDay, getMonth, getWeek, getYear, lastDayOfMonth, lastDayOfWeek, subMonths, subWeeks } from 'date-fns'
-import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisPeriod, FinancialSummary, TransactionType } from 'honeybee-api'
+import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfWeek, subMonths, subWeeks } from 'date-fns'
+import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary, TransactionType } from 'honeybee-api'
+import { arrays } from 'js-commons'
 import mongoose from 'mongoose'
 import { percentVariation } from '../../../core/Utils'
 import { StockTrackerModel } from '../../Stock/models'
@@ -100,12 +101,14 @@ export const groupFinancialAnalysisBy = async (options: {
         qty
     } = options
 
-    let aggregation = []
+    let aggregation = [], extra = []
     let extraFields, match, start, end
     const _date = new Date(date)
 
     switch (period) {
         case FinancialAnalysisPeriod.DAILY:
+            aggregation.push({ "$skip": page * qty })
+            aggregation.push({ "$limit": qty })
             match = { 
                 date: { 
                     "$lte": endOfDay(_date)
@@ -117,13 +120,13 @@ export const groupFinancialAnalysisBy = async (options: {
             start = subWeeks(lastDayOfWeek(_date), page * qty)
             end = lastDayOfWeek(subWeeks(start, qty))
             match = {
-                byWeek: {
+                groupMatch: {
                     "$lte": extractYearWeek(start),
                     "$gt": extractYearWeek(end)
                 }
             }
             extraFields = {
-                byWeek: { 
+                groupMatch: { 
                     "$toInt": { 
                         "$dateToString": { 
                             date: "$date", 
@@ -138,13 +141,13 @@ export const groupFinancialAnalysisBy = async (options: {
             start = subMonths(lastDayOfMonth(_date), page * qty)
             end = lastDayOfMonth(subMonths(start, qty))
             match = {
-                byMonth: {
+                groupMatch: {
                     "$lte": extractYearMonth(start),
                     "$gt": extractYearMonth(end)
                 }
             }
             extraFields = {
-                byMonth: {
+                groupMatch: {
                     "$toInt": {
                         "$dateToString": {
                             date: "$date",
@@ -156,21 +159,23 @@ export const groupFinancialAnalysisBy = async (options: {
             break
 
         case FinancialAnalysisPeriod.YEARLY:
+            start = getYear(_date) - (page * qty)
+            end = start - qty
+            match = {
+                groupMatch: {
+                    "$lte": start,
+                    "$gt": end
+                }
+            }
             extraFields = {
-                byYear: { 
+                groupMatch: { 
                     "$year": "$date"
                 }
             }
             break
     }
 
-    if (extraFields) {
-        aggregation.push({ 
-            "$addFields": extraFields 
-        })
-    }
-
-    aggregation.push({
+    aggregation.unshift({
         "$match": { 
             ...account ? account : null,
             ...brokerAccount ? brokerAccount : null,
@@ -178,92 +183,91 @@ export const groupFinancialAnalysisBy = async (options: {
         }
     })
 
-    const history = await FinancialHistoryModel.aggregate(aggregation)
-    
-    // const history = await FinancialHistoryModel.aggregate([
-    //     { "$addFields": extraFields },
-    //     {
-    //         "$match": { 
-    //             ...account ? account : null,
-    //             ...brokerAccount ? brokerAccount : null,
-    //             // date: { "$lte": reference },
-    //             byWeek: { "$lte": 20209 }
-    //         }
-    //     },
-    // ])
+    if (extraFields) {
+        aggregation.unshift({ 
+            "$addFields": extraFields 
+        })
+    }
 
-    // console.log(">>", getYear(_date))
-    // console.log(">>", getISOWeek(_date))
-    // console.log(">>", getMonth(_date))
-    console.log(match)
-    console.log(aggregation)
-    // console.log(reference)
-    // console.log(skip)
-    console.log(history)
+    const history = await FinancialHistoryModel.aggregate(aggregation).sort({ date: "desc" })
 
-    // TODO
-    return Promise.resolve([])
-    // return Promise.resolve([
-    //     {
-    //         label: "01/Jan",
-    //         amount: 15,
-    //         variation: -2,
-    //         items: [{
-    //             amount: 651,
-    //             refID: "",
-    //             variation: .53,
-    //             investiment: {
-    //                 description: "Azul linhas (AZUL4)"
-    //             }
-    //         }]
-    //     }
-        // ,{
-        //     label: "02/Jan",
-        //     amount: 10,
-        //     variation: 1.23,
-        //     items: [{
-        //         amount: 123,
-        //         refID: "",
-        //         variation: 2.9,
-        //         investiment: {
-        //             description: "Azul linhas (AZUL4)"
-        //         }
-        //     }]
-        // },{
-        //     label: "03/Jan",
-        //     amount: 20,
-        //     variation: 4.65,
-        //     items: [{
-        //         amount: 21,
-        //         refID: "",
-        //         variation: 1.54,
-        //         investiment: {
-        //             description: "Azul linhas (AZUL4)"
-        //         }
-        //     }]
-        // },{
-        //     label: "04/Jan",
-        //     amount: 45,
-        //     variation: -1.4,
-        //     items: [{
-        //         amount: 213,
-        //         refID: "",
-        //         variation: 1.5,
-        //         investiment: {
-        //             description: "Azul linhas (AZUL4)"
-        //         }
-        //     }]
-        // }
-        
-    // ] as FinancialAnalysis[])
+    if (period === FinancialAnalysisPeriod.DAILY) {
+        return history.map(item => toFinancialAnalysis([item], period))
+    }
+
+    const groupedHistory = arrays.groupBy(history, item => item.groupMatch)
+    return Array.from(groupedHistory.keys()).map(group => toFinancialAnalysis(groupedHistory.get(group), period))
 }
 
+const toFinancialAnalysis = (history: any[], period: FinancialAnalysisPeriod): FinancialAnalysis => {
+     // console.log(key)
+    //  console.log(group.get(key))
+
+    //  const values = group.get(key)
+     const first = arrays.firstElements(history, 1)[0]
+     const last = arrays.lastElement(history)
+
+    //  // console.log("f>", first)
+    //  // console.log("l>", last)
+
+     return {
+         label: createFinancialAnalysisLabel(first.date, period),
+         amount: 0,
+         variation: 0,
+         items: [
+             {
+                 amount: 0,
+                 refID: "ref",
+                 variation: 0,
+                 investiment: {}
+             }
+         ] as FinancialAnalysisItem[]
+     } as FinancialAnalysis
+}
+
+/**
+ *
+ *
+ * @param {Date} date
+ * @param {FinancialAnalysisPeriod} period
+ * @returns
+ */
+const createFinancialAnalysisLabel = (date: Date, period: FinancialAnalysisPeriod) => {
+    switch (period) {
+        case FinancialAnalysisPeriod.DAILY:
+            if (isToday(date)) return "Today"
+            if (isYesterday(date)) return "Yesterday"
+            return format(date, "dd/MMM")
+
+        case FinancialAnalysisPeriod.WEEKLY:
+            return format(startOfWeek(date), "dd/MMM")
+
+        case FinancialAnalysisPeriod.MONTHLY:
+            return format(date, "MMM/yyyy")
+
+        case FinancialAnalysisPeriod.YEARLY:
+            return getYear(date)
+    }
+}
+
+/**
+ *
+ *
+ * @param {Date} date
+ * @returns
+ */
 const extractYearWeek = (date: Date) => {
     const week = String(getWeek(date)).padStart(2, "0")
     const year = getYear(date)
     return Number(`${year}${week}`)
 }
 
+/**
+ *
+ *
+ * @param {Date} date
+ * @returns
+ */
 const extractYearMonth = (date: Date) => {
     const month = String(getMonth(date) + 1).padStart(2, "0")
     const year = getYear(date)

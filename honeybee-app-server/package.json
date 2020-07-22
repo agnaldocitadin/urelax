@@ -72,6 +72,7 @@
         "graphql": "^14.6.0",
         "honeybee-api": "../honeybee-api/",
         "i18next": "^19.4.1",
+        "js-commons": "../../js-commons",
         "jsonwebtoken": "^8.5.1",
         "mongodb": "^3.3.2",
         "mongoose": "^5.9.12",
