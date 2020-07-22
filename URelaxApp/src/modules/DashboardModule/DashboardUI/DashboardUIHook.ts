@@ -42,7 +42,6 @@ export const useDashboardUIHook = () => {
             setDashboardHistory(summary || []) 
         }
         catch(error) {
-            console.log(error)
             showAPIError(error)
         }
     }, [account])
