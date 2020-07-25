@@ -1,5 +1,6 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
-import { TransactionType } from 'honeybee-api'
+import { ProfitType, TransactionType } from 'honeybee-api'
+import { arrays } from 'js-commons'
 import mongoose from 'mongoose'
 import { BrokerAccount } from '../../Broker/models'
 import { BrokerInvestiment } from '../../Broker/models/broker.investiment.model'
@@ -19,6 +20,18 @@ export class Transaction {
     // Dados do investimento, e.g: acao, cdb, tesouro, etc
     @prop({ ref: BrokerInvestiment, required: true })
     investiment: Ref<BrokerInvestiment>
+}
+
+export class Profit {
+
+    @prop({ required: true, enum: ProfitType })
+    type!: string
+
+    @prop({ required: true })
+    value!: number
+
+    @prop({ ref: BrokerInvestiment, required: true })
+    investiment!: Ref<BrokerInvestiment>
 }
 
 /**
@@ -46,6 +59,9 @@ export class FinancialHistory {
     @arrayProp({ _id: false, items: Transaction })
     transactions?: Transaction[]
 
+    @arrayProp({ _id: false, items: Profit })
+    profits: Profit[]
+
     @prop({ required: true })
     locked!: boolean
 
@@ -55,6 +71,18 @@ export class FinancialHistory {
     @prop({ default: () => new Date() })
     updatedAt?: Date
 
+    public getOpeningValue() {
+        const opening = this.transactions.filter(transaction => transaction.type === TransactionType.STATEMENT_OPENING)
+        return arrays.sum(opening, item => item.value)
+    }
+
+    public getClosingValue() {
+        return arrays.sum(this.transactions, item => item.value)
+    }
+
+    public getProfit() {
+        return arrays.sum(this.profits, item => item.value)
+    }
 }
 
 export const FinancialHistoryModel = getModelForClass(FinancialHistory, {

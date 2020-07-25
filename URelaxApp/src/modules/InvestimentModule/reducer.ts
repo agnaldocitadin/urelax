@@ -30,12 +30,6 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             analysis: payload.reset ? payload.analysis : [...state.analysis, ...payload.analysis]
         }
     },
-    SELECT_ANALYSIS: (state: ReducerState, payload: any): ReducerState => {
-        return {
-            ...state,
-            selectedFinancialAnalysis: payload
-        }
-    },
     SELECT_GRAPH_INDEX: (state: ReducerState, payload: any): ReducerState => {
         return {
             ...state,

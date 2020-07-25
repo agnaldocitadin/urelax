@@ -17,7 +17,7 @@ export const GraphBar: FC<GraphBarPros> = ({ value, mainLabel, label, color, onP
     return (
         <Container onTouchEnd={() => onPress && onPress(index)}>
             <Bar hei={value}>
-                <BarInter hei={value} cor={color} selected={selected}/>
+                <BarInter hei={50} cor={color} selected={selected}/>
             </Bar>
             <Label>
                 <Typography fontSize={11} textAlign="center">{mainLabel}</Typography>
@@ -31,27 +31,21 @@ const Container = styled.View`
     background-color: ${Colors.WHITE};
     align-items: center;
     width: 50px;
+    /* background-color: red; */
 `
 
 const Bar = styled.View`
     background-color: ${Colors.GRAY_4};
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-radius: 5px;
     justify-content: flex-end;
     align-items: center;
-    width: 12px;
+    width: 70%;
     flex: 1;
 `
 const BarInter = styled.View`
-    background-color: ${({ cor }) => cor};
-    opacity: ${({ selected }) => selected ? 1 : .3};
+    background-color: ${({ cor, selected }) => selected ? cor : Colors.GRAY_3};
     height: ${({ hei }) => hei}%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-radius: 5px;
     width: 100%;
     
 `

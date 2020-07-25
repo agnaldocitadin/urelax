@@ -7,16 +7,26 @@ import { MyButton, Row } from '../InvestimentAnalysisUI'
 import { useInvestimentAnalysisDetailUIHook } from './InvestimentAnalysisDetailUIHook'
 
 export const InvestimentAnalysisDetailUI: FC = () => {
-    const { analysis } = useInvestimentAnalysisDetailUIHook()
+    
+    const { 
+        analysis,
+        selectedItems,
+        positiveProfit,
+        negativeProfit,
+        handlePositiveProfit,
+        handleNegativeProfit
+    } = useInvestimentAnalysisDetailUIHook()
+
     return (
         <FlatLayout
             bgColor={Colors.WHITE}
             header={<BackHeader title={ts("details")}/>}>
             <Row>
-                <MyButton label="Lucro" selected/>
-                <MyButton label="Perda" selected/>
+                <MyButton label="Lucro" selected={positiveProfit} onPress={handlePositiveProfit}/>
+                <MyButton label="Perda" selected={negativeProfit} onPress={handleNegativeProfit}/>
             </Row>
-            { analysis.items?.map((item, key) => <Typography key={key}>{item.amount} - {item.variation}</Typography>) }
+            <Typography>{analysis.label}</Typography>
+            { selectedItems.map((item, key) => <Typography key={key}>{item.investiment?.description} - {item.amount} - {item.variation}</Typography>) }
         </FlatLayout>
     )
 }

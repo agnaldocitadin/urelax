@@ -37,7 +37,7 @@ export const InfiniteFlatList = <T extends {}>(props: InfiniteFlatListProps<T>) 
         refreshing={refreshing}
         onRefresh={handleRefresh}
         onEndReached={handleEndReached}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
         ListFooterComponent={loading ? <Indicator/> : props.ListFooterComponent}/>
 }
 

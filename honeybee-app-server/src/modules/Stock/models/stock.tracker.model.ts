@@ -56,6 +56,9 @@ export class StockTracker {
 
     @prop()
     buyPrice?: number
+    
+    @prop()
+    currentPrice: number
 
     @prop({ default: () => new Date() })
     createdAt?: Date
@@ -72,7 +75,7 @@ export class StockTracker {
     }
 
     public getAmount() {
-        return (this.qty * this.buyPrice) || 0
+        return (this.qty * this.buyPrice) ?? 0
     }
 
     public toInvestiment(): AppliedInvestiment {

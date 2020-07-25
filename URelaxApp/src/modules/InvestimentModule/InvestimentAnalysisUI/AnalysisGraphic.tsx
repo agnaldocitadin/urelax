@@ -41,7 +41,7 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
 
     return (
         <React.Fragment>
-            <Title textAlign="center">{ selectedItem?.label }</Title>
+            {/* <Title textAlign="center">{ selectedItem?.label }</Title> */}
             <Container>
                 { data.length > 0 && <InfiniteFlatList
                     data={data}
@@ -50,17 +50,20 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
                     minLengthToLoadMore={10}
                     renderItem={render}
                     onEndPageReached={onEndPageReached}
-                    initialScrollIndex={data.length - 1}
-                    keyExtractor={(item, index) => `op_${index}`}/>}
+                    // initialScrollIndex={data.length - 1}
+                    inverted
+                    keyExtractor={(item, index) => `op_${index}`}/>
+                }
             </Container>
         </React.Fragment>
     )
 }
 
 const Container = styled.View`
-    justify-content: center;
+    /* justify-content: center; */
     flex-direction: row;
     flex: 1;
+    /* background-color: greenyellow; */
 `
 
 const Title = styled(Typography)`

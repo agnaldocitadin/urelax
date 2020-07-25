@@ -14,7 +14,7 @@ export const useInvestimentAnalysisUIHook = () => {
 
     const navigation = useNavigation()
     const { showAPIError } = Messaging.actions()
-    const { addAnalysis, selectAnalysis, selectGraphIndex } = Investiment.actions()
+    const { addAnalysis, selectGraphIndex } = Investiment.actions()
     const account: Account = Identity.select("activeAccount")
     const analysis: FinancialAnalysis[] = Investiment.select("analysis")
     const selectedGraph: number = Investiment.select("selectedGraphIndex")
@@ -26,7 +26,6 @@ export const useInvestimentAnalysisUIHook = () => {
 
     const handleSelectGraph = useCallback((index: number) => {
         selectGraphIndex(index)
-        index && selectAnalysis(analysis[index])
     }, [analysis])
 
     const handlePeriodSelection = useCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean = true) => {
@@ -36,9 +35,6 @@ export const useInvestimentAnalysisUIHook = () => {
             addAnalysis(analysis, true)
             if (resetIndex) {
                 handleSelectGraph(analysis.length -1)
-            }
-            else {
-                selectAnalysis(analysis[selectedGraph])
             }
         }
         catch(error) {

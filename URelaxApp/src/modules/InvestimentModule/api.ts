@@ -53,6 +53,9 @@ export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysi
             refID
             amount
             variation
+            investiment {
+                description
+            }
         }
     `)
 }
