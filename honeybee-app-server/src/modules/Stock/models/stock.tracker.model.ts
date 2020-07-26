@@ -75,7 +75,7 @@ export class StockTracker {
     }
 
     public getAmount() {
-        return (this.qty * this.buyPrice) ?? 0
+        return (this.qty * this.buyPrice) || 0
     }
 
     public toInvestiment(): AppliedInvestiment {

@@ -25,7 +25,6 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
         fail,
         btnState,
         handleSettings, 
-        handleSelectActivity, 
         handleRefresh, 
         handleLoadMoreData,
         handleStockTrackerAction
@@ -51,7 +50,6 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                     minLengthToLoadMore={30}
                     onRefresh={handleRefresh}
                     onEndPageReached={handleLoadMoreData}
-                    onPress={handleSelectActivity}
                     ListHeaderComponent={
                         <React.Fragment>
                             <InfoHeader>
@@ -70,7 +68,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                                 </LeftColumn>
                                 <RightColumn>
                                     { stockTracker && <Image 
-                                        source={SymbolsImg[stockTracker.stockInfo?.stock?.symbol]}
+                                        source={(SymbolsImg as any)[stockTracker?.stockInfo?.stock?.symbol ?? ""]}
                                         resizeMode="contain"
                                         style={{ maxWidth: 100, maxHeight: 60 }}/>}
                                 </RightColumn>

@@ -26,6 +26,8 @@ export const InvestimentUI: FC = () => {
 
     const { patrimony, currency, stocks } = investiments
 
+    console.log(">>>", stocks)
+
     return (
         <FlatLayout
             bgColor={Colors.WHITE}
@@ -51,8 +53,11 @@ export const InvestimentUI: FC = () => {
                     </AddInvestimentBtn>
                 </BtnContainer>
                 <Content>
-                    <Currency investiments={currency} />
-                    <Stocks investiments={stocks} handle={handleStockTracker}/>
+                    <Currency 
+                        investiments={currency} />
+                    <Stocks
+                        investiments={stocks}
+                        handle={handleStockTracker}/>
                 </Content>
             </ScrollView>
         </FlatLayout>

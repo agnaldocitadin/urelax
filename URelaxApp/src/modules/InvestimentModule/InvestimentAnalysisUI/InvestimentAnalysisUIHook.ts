@@ -34,7 +34,7 @@ export const useInvestimentAnalysisUIHook = () => {
             const analysis = await fetchFinancialAnalysis(account._id, period)
             addAnalysis(analysis, true)
             if (resetIndex) {
-                handleSelectGraph(analysis.length -1)
+                handleSelectGraph(0)
             }
         }
         catch(error) {

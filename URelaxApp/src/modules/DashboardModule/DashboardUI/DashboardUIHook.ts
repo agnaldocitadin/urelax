@@ -26,7 +26,7 @@ export const useDashboardUIHook = () => {
     const handleStartInvesting = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
 
     const handleAnalysis = useCallback((index: number) => {
-        selectGraphIndex(summaries.length - 2 - index)
+        selectGraphIndex(index + 1)
         navigation.navigate(Drawers.ANALYSIS)
     }, [summaries])
 

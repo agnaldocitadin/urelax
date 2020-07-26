@@ -1,10 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
-import { Activity, API, FinancialHistory, StockTracker, StockTrackerStatus, Transaction } from "honeybee-api"
-import { useCallback, useState } from "react"
+import { API, FinancialHistory, StockTracker, StockTrackerStatus, Transaction } from "honeybee-api"
+import { useState } from "react"
 import StockTrackerModule from ".."
 import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
-import { fetchFinancialHistory } from "../../InvestimentModule/api"
 import Messaging from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { adaptStatementTimeline } from "../../StatementModule/StatementTimeline"
@@ -22,37 +21,10 @@ export const useStockTrackerPreviewUIHook = () => {
     const stockTracker: StockTracker = StockTrackerModule.select("selectedStockTracker")
     const history: FinancialHistory[] = StockTrackerModule.select("stockTrackerStatements")
 
-    const findStockBalance = useCallback(() => {
-        // if (balanceSheet) {
-        //     let stock = balanceSheet[0]?.stocks.find(stock => stock.symbol === stockTracker?.stock?.symbol)
-            
-        //     if (stock) {
-        //         return {
-        //             amount: ((stock?.lastAvailablePrice || 0) * stock?.qty),
-        //             averagePrice: stock.averagePrice || 0,
-        //             quantity: stock.qty
-        //         }
-        //     }
-        // }
+    
+    const handleSettings = animatedCallback(() => navigation.navigate(Routes.STOCKTRACKER_SETTING), [])
+    
 
-        return {
-            amount: 0,
-            averagePrice: 0,
-            quantity: 0
-        }
-
-    }, [])
-    
-    const handleSettings = animatedCallback(() => {
-        // dispatch(selectStockTrackerToUpdate(stockTracker))
-        navigation.navigate(Routes.STOCKTRACKER_SETTING)
-    }, [])
-    
-    const handleSelectActivity = animatedCallback((activity: Activity) => {
-        // dispatch(selectActivity(activity))
-        // navigation.navigate(Routes.ActivityDetailUI)
-    })
-    
     const handleStockTrackerAction = animatedCallback(async () => {
         try {
             let result = { status: stockTracker.status }
@@ -76,34 +48,33 @@ export const useStockTrackerPreviewUIHook = () => {
         }
     }, [stockTracker])
 
+
     const handleRefresh = animatedCallback(async () => {
-        try {
-            // let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
-            // dispatch(appendStockTrackerActivities(activities, "end", true))
-        }
-        catch(error) {
-            // dispatch(showAPIError(error))
-        }
-    })
-
-    const handleLoadMoreData = animatedCallback(async (page: number) => {
-        try {
-            // return await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", page, AppConfig.QTY_INITIAL_ACTIVITIES)
-            return Promise.resolve([] as Transaction[])
-        }
-        catch(error) {
-            // dispatch(showAPIError(error))
-            return Promise.reject()
-        }
-    })
-
-    useEffectWhenReady(async () => {
         try {
             const stockTracker = await fetchStockTrackerByID(stockTrackerID)
             stockTracker && selectStockTracker(stockTracker)
+            // TODO load statements
+        }
+        catch(error) {
+            showAPIError(error)
+        }
+    }, [stockTrackerID])
 
-            const history = await fetchFinancialHistory("", 0, 10)
-            history && addStockTrackerStatements(history, true)
+
+    const handleLoadMoreData = animatedCallback(async (page: number) => {
+        try {
+            // TODO load statements
+            return Promise.resolve([] as Transaction[])
+        }
+        catch(error) {
+            showAPIError(error)
+        }
+    }, [stockTrackerID])
+
+
+    useEffectWhenReady(async () => {
+        try {
+            await handleRefresh()
             setLoading(false)
         }
         catch(error) {
@@ -113,15 +84,14 @@ export const useStockTrackerPreviewUIHook = () => {
     })
 
     return {
-        stockTracker,
-        amount: stockTracker && (stockTracker?.buyPrice * stockTracker?.qty) || 0,
-        transactions: adaptStatementTimeline(history),
-        loading,
         fail,
+        loading,
         btnState,
+        stockTracker,
+        amount: stockTracker && ((stockTracker?.buyPrice ?? 0) * (stockTracker?.qty ?? 0)) || 0,
+        transactions: adaptStatementTimeline(history),
         handleStockTrackerAction,
         handleSettings,
-        handleSelectActivity,
         handleRefresh,
         handleLoadMoreData
     }

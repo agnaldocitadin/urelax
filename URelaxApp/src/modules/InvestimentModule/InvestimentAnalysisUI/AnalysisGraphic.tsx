@@ -50,7 +50,7 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
                     minLengthToLoadMore={10}
                     renderItem={render}
                     onEndPageReached={onEndPageReached}
-                    // initialScrollIndex={data.length - 1}
+                    align="center"
                     inverted
                     keyExtractor={(item, index) => `op_${index}`}/>
                 }
