@@ -26,8 +26,6 @@ export const InvestimentUI: FC = () => {
 
     const { patrimony, currency, stocks } = investiments
 
-    console.log(">>>", stocks)
-
     return (
         <FlatLayout
             bgColor={Colors.WHITE}
