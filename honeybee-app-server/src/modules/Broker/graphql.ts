@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { GraphQLModule } from "../GraphQL"
-import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts, updateBrokerAccountById } from "./services"
+import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts, suggestAnInvestiment, updateBrokerAccountById } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -79,6 +79,7 @@ const entry: GraphQLModule = {
         fetchBrokers(id: ID, code: String, active: Boolean): [Broker]
         fetchBrokerAccounts(id: ID, account: ID): [BrokerAccount]
         fetchAvailableInvestiments(brokerIDs: [ID], search: String!): [BrokerInvestiment]
+        fetchInvestimentSuggestion(account: ID): BrokerInvestiment
     `,
 
     mutations: `
@@ -111,6 +112,10 @@ const entry: GraphQLModule = {
             brokerIDs?: mongoose.Types.ObjectId[]
         }) => {
             return findAvailableInvestiments(options)
+        },
+
+        fetchInvestimentSuggestion: ({ account }: any) => {
+            return suggestAnInvestiment(account)
         }
     }
 }

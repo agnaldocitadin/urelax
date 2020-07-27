@@ -92,3 +92,7 @@ export const fetchAvailableFrequencies = (fields: string): Promise<Frequency[]> 
      return gql(name, query(name, {}, fields))
 }
 
+export const fetchInvestimentSuggestion = (options: { account: string }, fields: string): Promise<BrokerInvestiment> => {
+     const name = "fetchInvestimentSuggestion"
+     return gql(name, query(name, options, fields))
+}

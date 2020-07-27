@@ -1,14 +1,15 @@
 import { useNavigation } from "@react-navigation/native"
-import { BrokerInvestiment, InvestimentType } from "honeybee-api"
+import { Account, BrokerInvestiment, InvestimentType } from "honeybee-api"
 import { useCallback, useState } from "react"
 import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
 import { animatedCallback } from "../../../core/Commons.hook"
 import { ts } from "../../../core/I18n"
 import { Colors } from "../../../theming"
+import IdentityModule from "../../IdentityModule"
 import { Routes } from "../../NavigationModule/const"
 import { useStockTracker } from "../../StockTrackerModule/hook"
-import { fetchAvailableInvestiments } from "../api"
+import { fetchAvailableInvestiments, fetchInvestimentSuggestion } from "../api"
 
 export const useAddInvestimentUIHook = () => {
 
@@ -16,6 +17,8 @@ export const useAddInvestimentUIHook = () => {
     const { initStockTrackerByInvestiment } = useStockTracker()
     const [ finding, showFinding ] = useState(false)
     const [ investiments, setInvestiments ] = useState<BrokerInvestiment[]>()
+    const [ suggestion, setSuggestion ] = useState<BrokerInvestiment>()
+    const account: Account = IdentityModule.select("activeAccount")
 
     const [ suggestionBtnData, updateSuggestionBtn ] = useInteractiveButton({
         text: ts("suggest_an_investiment"),
@@ -24,9 +27,16 @@ export const useAddInvestimentUIHook = () => {
         iconColor: Colors.WHITE,
     })
 
+    const handleSearch = useCallback((isFinding: boolean) => {
+        showFinding(isFinding)
+        setSuggestion(undefined)
+        if (!isFinding) setInvestiments([])
+    }, [])
+
     const handleSuggestion = animatedCallback(async () => {
         updateSuggestionBtn({ activityState: InteractiveButtonStates.PROCESSING })
-        await handleFindInvestiments("invest")
+        const suggestion = await fetchInvestimentSuggestion(account._id)
+        setSuggestion(suggestion)
         updateSuggestionBtn({ activityState: InteractiveButtonStates.NORMAL })
     })
 
@@ -50,7 +60,8 @@ export const useAddInvestimentUIHook = () => {
         investiments,
         finding,
         suggestionBtnData,
-        showFinding,
+        suggestion,
+        handleSearch,
         handleFindInvestiments,
         handleSuggestion,
         handleAddInvestiment

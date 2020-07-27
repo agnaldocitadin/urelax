@@ -15,10 +15,11 @@ export const AddInvestimentUI: FC = () => {
         finding,
         investiments,
         suggestionBtnData,
+        suggestion,
         handleSuggestion,
         handleFindInvestiments,
         handleAddInvestiment,
-        showFinding
+        handleSearch
     } = useAddInvestimentUIHook()
 
     return (
@@ -32,15 +33,18 @@ export const AddInvestimentUI: FC = () => {
                         finding
                             ? <ButtonHeader
                                 icon={Icons.CLOSE}
-                                onPress={() => showFinding(false)}/>
+                                onPress={() => handleSearch(false)}/>
                             : <ButtonHeader 
                                 icon={Icons.MAGNIFY}
-                                onPress={() => showFinding(true)}/>
+                                onPress={() => handleSearch(true)}/>
                     }/>
             }>
             <Container>
                 { investiments && investiments.map((inve, key) => <Typography key={key} onPress={() => handleAddInvestiment(inve)}>{inve.description}</Typography>) }
-                { !finding && <React.Fragment>
+                
+                { suggestion && <Typography onPress={() => handleAddInvestiment(suggestion)}>{suggestion.description}</Typography> }
+                
+                { !suggestion && !finding && <React.Fragment>
                     <GenericTextIcon title="Não sabe no que investir?" message="Podemos ajudar você" icon="auto-fix" />
                     <SuggestionBtn data={suggestionBtnData} indicatorColor={Colors.WHITE} onPress={handleSuggestion}/>
                 </React.Fragment>}

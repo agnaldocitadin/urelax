@@ -1,4 +1,18 @@
-import { API, AppliedInvestiment, FinancialAnalysisPeriod, FinancialHistory } from "honeybee-api"
+import { API, AppliedInvestiment, BrokerInvestiment, FinancialAnalysis, FinancialAnalysisPeriod, FinancialHistory } from "honeybee-api"
+
+const fragment = `
+    _id
+    broker {
+        code
+    }
+    active
+    type
+    description
+    stock {
+        symbol
+        stockLot
+    }
+`
 
 export const fetchAppiedInvestiments = (accountID: string): Promise<AppliedInvestiment[]> => {
     return API.FinancialHistory.fetchAppiedInvestiments({ account: accountID }, `
@@ -44,7 +58,7 @@ export const fetchFinancialHistory = (accountID: string, page: number, qty: numb
     `)
 }
 
-export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysisPeriod) => {
+export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysisPeriod): Promise<FinancialAnalysis[]> => {
     return API.FinancialHistory.fetchFinancialAnalysis({ account, period }, `
         label
         amount
@@ -60,18 +74,10 @@ export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysi
     `)
 }
 
-export const fetchAvailableInvestiments = (search: string, brokerIDs?: string[]) => {
-    return API.Broker.fetchAvailableInvestiments({ search, brokerIDs }, `
-        _id
-        broker {
-            code
-        }
-        active
-        type
-        description
-        stock {
-            symbol
-            stockLot
-        }
-    `)
+export const fetchAvailableInvestiments = (search: string, brokerIDs?: string[]): Promise<BrokerInvestiment[]> => {
+    return API.Broker.fetchAvailableInvestiments({ search, brokerIDs }, fragment)
+}
+
+export const fetchInvestimentSuggestion = async (account: string): Promise<BrokerInvestiment> => {
+    return API.Broker.fetchInvestimentSuggestion({ account }, fragment)
 }
