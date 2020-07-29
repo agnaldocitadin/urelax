@@ -20,6 +20,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
     
     const navigation = useNavigation()
     const {
+        nickname,
         refreshing,
         currentPatrimony,
         summaries,
@@ -50,7 +51,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
             bgColor={Colors.BLUES_1} 
             bgStatusBar={Colors.BLUES_1}>
             <Bar>
-                <Menu2 name="dots-horizontal" size={23} selected onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>
+                <Menu2 name="dots-horizontal" size={23}  onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>
             </Bar>
 
             <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
@@ -58,7 +59,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                     <TypographyMedium
                         color={Colors.WHITE}
                         fontSize={20}>
-                        {ts("welcome")}, {"Nick"}!
+                        {ts("welcome")}, {nickname}!
                     </TypographyMedium>
                     <View>
                         <Typography
@@ -152,9 +153,9 @@ const Menu = styled(BaseIcon)`
     color: ${Colors.WHITE};
 `
 
-const Menu2 = styled(BaseIcon)<{ selected: boolean }>`
+const Menu2 = styled(BaseIcon)`
     padding: 15px;
-    color: ${({ selected }) => selected ? Colors.BLACK_2 : Colors.GRAY_1};
+    color: ${Colors.WHITE};
 `
 
 const Bar = styled.View`

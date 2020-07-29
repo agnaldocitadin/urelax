@@ -6,7 +6,6 @@ import styled from 'styled-components/native'
 import { Badge } from '../../../components/Badge'
 import { BaseButton } from '../../../components/BaseButton'
 import { BackHeader } from '../../../components/Header/BackHeader'
-import { ButtonHeader } from '../../../components/Header/ButtonHeader'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import { TouchItem } from '../../../components/TouchItem'
@@ -29,15 +28,7 @@ export const InvestimentUI: FC = () => {
     return (
         <FlatLayout
             bgColor={Colors.WHITE}
-            header={
-                <BackHeader
-                    title={ts("investiments")}
-                    right={
-                    <React.Fragment>
-                        <ButtonHeader icon="filter-variant" onPress={handleFilter}/>
-                    </React.Fragment>
-                }/>
-            }>
+            header={<BackHeader title={ts("investiments")}/>}>
             
             <ScrollView>
                 <Patrimony>

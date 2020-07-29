@@ -1,4 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
+import { updateProfile } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -78,10 +79,13 @@ const entry: GraphQLModule = {
 
         },
 
-        updateProfile: ({ id, input }: any) => {
+        updateProfile: async ({ id, input }: any) => {
+            await updateProfile(id, input)
+            return true
         },
         
         updateAccount: ({ id, input }: any) => {
+
         }
     }
 }

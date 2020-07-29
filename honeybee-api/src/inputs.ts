@@ -22,3 +22,12 @@ export interface BrokerAccountInput {
     brokerCode?: Brokers
     extraData?: BrokerAccountExtraData
 }
+
+export interface ProfileInput {
+    name?: String
+    nickname?: String
+    email?: String
+    password?: String
+    accounts?: ID[]
+    active?: Boolean
+}

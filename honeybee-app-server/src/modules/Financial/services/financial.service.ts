@@ -271,7 +271,7 @@ const toFinancialAnalysis = (history: FinancialHistory, period: FinancialAnalysi
             amount: total,
             variation: (total / opening) * 100,
             investiment: investimentDB,
-            refID: "--"
+            refID: "--" //TODO
         } as FinancialAnalysisItem
     })
 

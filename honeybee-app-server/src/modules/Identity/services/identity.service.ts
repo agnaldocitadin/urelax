@@ -1,4 +1,4 @@
-import { Locales } from "honeybee-api"
+import { Locales, ProfileInput } from "honeybee-api"
 import { ErrorCodes } from "../../../core/error.codes"
 import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
@@ -61,6 +61,18 @@ export const createProfile = async ({ name, nickname, email, password, accounts,
  */
 const validateProfile = (profile: Profile) => {
     // TODO Validate diplicated e-mail.
+}
+
+/**
+ *
+ *
+ * @param {string} _id
+ * @param {ProfileInput} changes
+ * @returns
+ */
+export const updateProfile = (_id: string, changes: ProfileInput) => {
+    const _changes = flatObject(changes)
+    return ProfileModel.updateOne({ _id }, { "$set": _changes }).exec()
 }
 
 /**
