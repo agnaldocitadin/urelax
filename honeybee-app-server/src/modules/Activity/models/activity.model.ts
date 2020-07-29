@@ -31,7 +31,7 @@ class ActivityDetail {
 
 /**
  * OK
- * An activity is a screenshot of a specific time. It can't change after to be created.
+ * An activity is a screenshot of a specific time. It can't be changed after being created.
  *
  * @export
  * @class Activity

@@ -11,7 +11,7 @@ const NOTIFICATION_ICON = "icon_notification"
 const ICON_COLOR = "#1099f5"
 
 /**
- *
+ * TODO Fix it!
  *
  * @param {string} deviceToken
  * @param {Order} order

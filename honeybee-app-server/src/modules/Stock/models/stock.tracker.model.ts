@@ -5,7 +5,6 @@ import { Account } from "../../Identity/models"
 import { StrategyNames } from "../strategies"
 import { STFrequencyDef, StockTrackerFrequency } from "../trackers"
 
-
 class StrategySetting {
     
     @prop({ default: 0.0 })
@@ -33,7 +32,7 @@ export class StockTracker {
     @prop({ ref: BrokerAccount, required: true })
     brokerAccount!: Ref<BrokerAccount>
 
-    @prop({ enum: Object.values(StrategyNames).map(strategy => strategy.id), required: true })
+    @prop({ required: true, enum: Object.values(StrategyNames).map(strategy => strategy._id) })
     strategy: string
 
     @prop({ _id: false, required: true })

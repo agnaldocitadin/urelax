@@ -1,9 +1,12 @@
-import { StockTrackerInput, StockTrackerStatus } from "honeybee-api"
+import { StockTrackerInput, StockTrackerStatus, TransactionType } from "honeybee-api"
 import mongoose from 'mongoose'
 import { mergeObjects } from "../../../core/Utils"
-import { onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
+import { onStockOrderExecution, onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
+import { BrokerInvestiment } from "../../Broker/models"
+import { OrderExecution } from "../../Broker/plugins"
+import { addTransaction } from "../../Financial/services"
 import { Account } from "../../Identity/models"
-import { notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
+import { notifyOrder, notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
 import { Order, OrderStatus } from "../../Order/models"
 import { makeBaseOrder } from "../../Order/services"
 import { StockTracker, StockTrackerModel } from "../models"
@@ -12,7 +15,6 @@ import { Investor, StockTrackerFactory, StockTrackerFrequency } from "../tracker
 
 export const STOCK_TRACKER_STATUS_INACTIVE = [StockTrackerStatus.DESTROYED]
 export const STOCK_TRACKER_STATUS_DONT_UPDATE = [StockTrackerStatus.PAUSED].concat(STOCK_TRACKER_STATUS_INACTIVE)
-
 
 /**
  *
@@ -88,7 +90,7 @@ export const makeStockOrder = async (stockTracker: StockTracker, {
     const order: Order = {
         account: stockTracker.account,
         stock: {
-            symbol: stockTracker.stockInfo.symbol,
+            symbol: (<BrokerInvestiment>stockTracker.stockInfo).stock.symbol,
             type: orderType,
             expiresAt
         },
@@ -117,31 +119,19 @@ export const buildStockTrackersFrom = async (account: Account): Promise<Investor
     return trackers.map(model => StockTrackerFactory.create(model))
 }
 
-// /**
-//  *
-//  *
-//  * @param {string} accountId
-//  * @returns {Promise<StockTracker[]>}
-//  */
-// export const findActivesByAccount = (accountId: string): Promise<StockTracker[]> => {
-//     const filter = { userAccount: accountId, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }}
-//     return findStockTrackerToGraphql(filter)
-// }
-
-// /**
-//  *
-//  *
-//  * @param {*} filter
-//  * @returns {Promise<StockTracker[]>}
-//  */
-// const findStockTrackerToGraphql = async (filter: any): Promise<StockTracker[]> => {
-//     return StockTrackerModel.find(filter)
-//         .populate("account")
-//         .populate("brokerAccount")
-//         .sort({ "createdAt": "desc" })
-//         .exec()
-// }
-
+/**
+ *
+ *
+ * @param {{
+ *     id: mongoose.Types.ObjectId
+ *     account: mongoose.Types.ObjectId
+ *     status: StockTrackerStatus
+ *     frequency: StockTrackerFrequency
+ *     page: number
+ *     qty: number
+ * }} options
+ * @returns
+ */
 export const findStockTrackers = async (options: {
     id: mongoose.Types.ObjectId
     account: mongoose.Types.ObjectId
@@ -249,39 +239,6 @@ export const destroyStockTracker = async (stockTracker: StockTracker, sendNotifi
  *
  *
  * @param {StockTracker} stockTracker
- * @returns {Promise<boolean>}
- */
-export const isBought = async (stockTracker: StockTracker): Promise<boolean> => {
-    // FIXME
-    return false
-}
-
-/**
- *
- *
- * @param {StockTracker} stockTracker
- * @returns {Promise<boolean>}
- */
-export const isSold = async (stockTracker: StockTracker): Promise<boolean> => {
-    // FIXME
-    return false
-}
-
-/**
- *
- *
- * @param {StockTracker} stockTracker
- * @returns
- */
-export const getBoughtQty = async (stockTracker: StockTracker) => {
-    // FIXME
-    return 0
-}
-
-/**
- *
- *
- * @param {StockTracker} stockTracker
  * @param {Date} dateUpdate
  */
 export const registerUpdate = (stockTracker: StockTracker, dateUpdate: Date) => {
@@ -302,4 +259,38 @@ export const updateStockTrackerById = async (_id: string, input: StockTrackerInp
     await validate(_input)
     await StockTrackerModel.updateOne({ _id }, _input)
     return _input
+}
+
+/**
+ *
+ *
+ * @param {OrderExecution} execution
+ * @param {StockTracker} stockTracker
+ */
+export const processOrderExecution = (execution: OrderExecution, stockTracker: StockTracker) => {
+    // TODO isso precisa executar apenas uma vez!
+    
+    // TODO criar entrada no FinancialHistory
+    addTransaction((<Account>stockTracker.account)._id, new Date(), {
+        dateTime: new Date(),
+        type: TransactionType.TRANSFER,
+        value: execution.price * execution.quantity,
+        investiment: (<BrokerInvestiment>stockTracker.stockInfo)._id
+    })
+
+    // TODO Ver como pegar o investimento de Money (Real)
+    // addTransaction((<Account>stockTracker.account)._id, new Date(), {
+    //     dateTime: new Date(),
+    //     type: TransactionType.TRANSFER,
+    //     value: execution.price * execution.quantity,
+    //     investiment: null // Money
+    // })
+
+    // TODO atualizar stocktracker
+    stockTracker.qty += execution.quantity
+    stockTracker.buyPrice = (stockTracker.buyPrice + execution.price) / 2
+
+    onStockOrderExecution(execution, stockTracker)
+    const deviceToken = (<Account>stockTracker.account).getActiveDevice().token
+    notifyOrder(execution, deviceToken)
 }

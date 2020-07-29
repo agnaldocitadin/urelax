@@ -1,18 +1,15 @@
 import { StockTrackerStatus } from "honeybee-api"
 import Logger from "../../../core/Logger"
-import { onStockOrderExecution } from "../../Activity/services"
 import { AdapterCallbacks, BrokerPlugin, OrderExecution } from "../../Broker/plugins"
-import { Account } from "../../Identity/models"
-import { notifyOrder } from "../../Notification/services"
 import { OrderSides } from "../../Order/models"
 import { addOrderExecution, updateOrderCode } from "../../Order/services"
 import { StockTracker } from "../models"
-import { makeStockOrder, registerUpdate, STOCK_TRACKER_STATUS_DONT_UPDATE } from "../services"
+import { makeStockOrder, processOrderExecution, registerUpdate, STOCK_TRACKER_STATUS_DONT_UPDATE } from "../services"
 import { InvestimentStrategy, PredictionResult } from "../strategies"
 import { StockTrackerFrequency } from "./stock.tracker.frequency"
 
 /**
- *
+ * TODO change _doc to toObject()
  *
  * @export
  * @class Investor
@@ -169,9 +166,7 @@ export class Investor {
      */
     async orderExecutionCallback(execution: OrderExecution): Promise<void> {
         await addOrderExecution(execution)
-        onStockOrderExecution(execution, this.stockTrackerModel)
-        const deviceToken = (<Account>this.stockTrackerModel.account).getActiveDevice().token
-        notifyOrder(execution, deviceToken)
+        processOrderExecution(execution, this.stockTrackerModel)
     }
 
 }

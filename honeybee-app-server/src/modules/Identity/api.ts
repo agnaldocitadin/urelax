@@ -8,6 +8,7 @@ export const registerAPI = (app: Express) => {
     Router.addRoute({ route: "/signup", method: "POST", version: RouteVersion.V1 }, (req, res) => {
         invoke(req, res, async () => {
             const profile: Profile = req.body
+            // TODO create profile
             res.sendStatus(200)
         })
     })

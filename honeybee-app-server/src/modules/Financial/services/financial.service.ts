@@ -18,7 +18,6 @@ export const addTransaction = (account: mongoose.Types.ObjectId, date: Date, tra
     // TODO
 }
 
-
 /**
  *
  *
@@ -240,7 +239,7 @@ export const groupFinancialAnalysisBy = async (options: {
         return history.map(item => toFinancialAnalysis(item, period))
     }
 
-    // TODO 
+    // TODO Grouped history is not ready yet
     const groupedHistory = arrays.groupBy(history, item => (<any>item).groupMatch)
     return Array.from(groupedHistory.keys()).map(group => {
         const ult = arrays.lastElement(groupedHistory.get(group))

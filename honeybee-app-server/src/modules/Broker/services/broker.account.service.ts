@@ -6,8 +6,6 @@ import { mergeObjects } from "../../../core/Utils"
 import { ClearHelper } from "../helpers/clear.helper"
 import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
 
-// FIXME O merge do BrokerAccount precisa ser melhorado!
-
 export interface BrokerHelperInterface {
     code: Brokers
     validateExtraData(brokerAccount: BrokerAccount): boolean

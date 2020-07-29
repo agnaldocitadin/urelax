@@ -85,7 +85,7 @@ const entry: GraphQLModule = {
         },
         
         updateAccount: ({ id, input }: any) => {
-
+            // TODO
         }
     }
 }

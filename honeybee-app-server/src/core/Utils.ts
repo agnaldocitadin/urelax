@@ -5,6 +5,7 @@ import { ErrorCodes } from './error.codes'
 import { tsLng } from './i18n'
 import Logger, { MessageError } from './Logger'
 
+// TODO implementar no js-commons
 export const Utils = {
 
     Array: {

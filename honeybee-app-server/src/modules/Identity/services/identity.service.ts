@@ -1,9 +1,6 @@
 import { Locales, ProfileInput } from "honeybee-api"
-import { ErrorCodes } from "../../../core/error.codes"
-import { ts } from "../../../core/i18n"
-import Logger from "../../../core/Logger"
 import { flatObject } from "../../../core/Utils"
-import { onActivateSimulationAccount, onCreateAccount } from "../../Activity/services"
+import { onCreateAccount } from "../../Activity/services"
 import { Account, AccountModel, Preferences, Profile, ProfileModel } from "../models"
 
 const defaultPreferences: Preferences = {
@@ -85,30 +82,6 @@ export const updateProfile = (_id: string, changes: ProfileInput) => {
 export const updateAccount = (_id: string, changes: Account) => {
     let _changes = flatObject(changes)
     return AccountModel.updateOne({ _id }, { "$set": _changes }).exec()
-}
-
-/**
- *
- *
- * @param {string} profileId
- */
-export const activateSimulation = async (profileId: string) => {
-    let profile = await findProfileById(profileId)
-    let hasSimulation = profile.getSimulation()
-    
-    if (hasSimulation) {
-        Logger.throw(ErrorCodes.ACCOUNT_HAS_SIMULATION, ts("account_has_already_simulation", { id: profileId }))
-    }
-
-    profile.accounts.push({
-        active: true,
-        simulation: true,
-        preference: defaultPreferences
-    })
-    
-    await profile.save()
-    onActivateSimulationAccount(profile)
-    // TODO create finantial history
 }
 
 /**

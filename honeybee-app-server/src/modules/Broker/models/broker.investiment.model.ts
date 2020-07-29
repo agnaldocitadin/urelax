@@ -12,7 +12,7 @@ export class StockInvestimentInfo {
     stockLot!: number
 }
 
-// Este componente precisa estar em tudo que refencia algum investimento, como stock tracker, historico de transações, etc.
+// TODO Este componente precisa estar em tudo que refencia algum investimento, como stock tracker, historico de transações, etc.
 export class BrokerInvestiment {
 
     _id?: mongoose.Types.ObjectId

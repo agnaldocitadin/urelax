@@ -8,7 +8,7 @@ import { OrderPlatforms, OrderSides, OrderTypes } from "../../Order/models/order
 import { StockHistory } from "../models/stock.history.model"
 import { StockTracker } from "../models/stock.tracker.model"
 import { getHistory } from "../services/stock.history.service"
-import { destroyStockTracker, getBoughtQty, isBought, isSold, pauseStockTracker, playStockTracker, waitStockTrackerDestroy, waitStockTrackerPause } from "../services/stock.tracker.service"
+import { destroyStockTracker, pauseStockTracker, playStockTracker, waitStockTrackerDestroy, waitStockTrackerPause } from "../services/stock.tracker.service"
 import { InvestimentStrategy, PredictionResult } from "./investiment.strategy"
 import { StochasticAnalizer, Trends } from "./stochastic.analizer"
 
@@ -29,6 +29,7 @@ type BBStochasticRSISummary = {
 }
 
 /**
+ * FIXME
  * TODO Logging buy/sell orders
  *
  * @export
@@ -65,7 +66,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
 
     async predict(referenceDate: Date, stockTracker: StockTracker, brokerPlugin: BrokerPlugin): Promise<PredictionResult> {
         
-        this.bought = await isBought(stockTracker)
+        // this.bought = stockTracker.qty > 0 //await isBought(stockTracker) TODO
         const symbol = stockTracker.stockInfo.symbol
         const frequency = stockTracker.getFrequency()
         const history = await getHistory(symbol, referenceDate, frequency, DATA_LENGTH, true)
@@ -354,7 +355,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      * @memberof BBStochasticRSIStrategy
      */
     private async defineSellStockQuantity(stockTracker: StockTracker): Promise<number> {
-        return getBoughtQty(stockTracker)
+        return Promise.resolve(stockTracker.qty)
     }
 
     /**
@@ -449,13 +450,13 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
     }
 
     async proceedStockTrackerPause(stockTracker: StockTracker): Promise<StockTracker> {
-        let sold = await isSold(stockTracker)
+        let sold = false //await isSold(stockTracker) TODO
         if (sold) return pauseStockTracker(stockTracker, false)
         return waitStockTrackerPause(stockTracker)
     }
 
     async proceedStockTrackerDestroy(stockTracker: StockTracker): Promise<StockTracker> {
-        let sold = await isSold(stockTracker)
+        let sold = false //await isSold(stockTracker) TODO
         if (sold) return destroyStockTracker(stockTracker, false)
         return waitStockTrackerDestroy(stockTracker)
     }

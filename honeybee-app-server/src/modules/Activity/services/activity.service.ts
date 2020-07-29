@@ -1,9 +1,10 @@
 import { ActivityType } from "honeybee-api"
-import { ts } from "../../../core/i18n"
-import { Utils } from "../../../core/Utils"
+import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
 import { Profile } from "../../Identity/models/profile.model"
 import { StockTracker } from "../../Stock/models/stock.tracker.model"
+import { StrategyNames } from "../../Stock/strategies"
+import { StockTrackerFrequency } from "../../Stock/trackers"
 import { Activity, ActivityModel } from "../models/activity.model"
 
 enum Icons {
@@ -57,18 +58,28 @@ const createBaseActivity = (activity: Activity) => {
  * @param {string} title
  */
 const baseStockTrackerStatusTurnning = (stockTracker: StockTracker, icon: string, title: string) => {
-    // const stock = <Stock>stockTracker.stock
-    // const activity: Activity = {
-    //     activityType: ActivityType.STOCK_TRACKER,
-    //     icon,
-    //     title,
-    //     userAccount: stockTracker.userAccount,
-    //     ref: stockTracker._id.toHexString(),
-    //     details: [
-    //         { title: ts("stock"), description: `${stock.description} (${stock.symbol})` }
-    //     ]
-    // }
-    // createBaseActivity(activity)
+    const investiment = (<BrokerInvestiment>stockTracker.stockInfo)
+    const activity: Activity = {
+        activityType: ActivityType.STOCK_TRACKER,
+        account: stockTracker.account,
+        ref: stockTracker._id.toHexString(),
+        icon,
+        title: { 
+            text: title 
+        },
+        details: [
+            {
+                title: { 
+                    text: "stock"
+                },
+                description: {
+                    text: `${investiment.description} (${investiment.stock.symbol})`
+                },
+                hidden: false
+            }
+        ]
+    }
+    createBaseActivity(activity)
 }
 
 /**
@@ -77,21 +88,55 @@ const baseStockTrackerStatusTurnning = (stockTracker: StockTracker, icon: string
  * @param {StockTracker} stockTracker
  */
 export const onStockTrackerCreated = async (stockTracker: StockTracker) => {
-    // const stock = <Stock>stockTracker.stock
-    // const activity: any = {
-    //     activityType: ActivityType.STOCK_TRACKER,
-    //     title: ts("new_stock_tracker_add"),
-    //     icon: Icons.CHART_LINE_VARIANT,
-    //     userAccount: stockTracker.userAccount,
-    //     ref: stockTracker._id.toHexString(),
-    //     details: [
-    //         { title: ts("stock"), description: `${stock.description} (${stock.symbol})` },
-    //         { title: ts("strategy"), description: ts(StrategyNames.convert(stockTracker.strategy)._id), hidden: true },
-    //         { title: ts("frequency"), description: ts(StockTrackerFrequency.convert(stockTracker.frequency).type), hidden: true },
-    //         { title: ts("initial_status"), description: ts(stockTracker.status), hidden: true },
-    //     ]
-    // }
-    // createBaseActivity(activity)
+    const investiment = (<BrokerInvestiment>stockTracker.stockInfo)
+    const activity: Activity = {
+        activityType: ActivityType.STOCK_TRACKER,
+        account: stockTracker.account,
+        ref: stockTracker._id.toHexString(),
+        icon: Icons.CHART_LINE_VARIANT,
+        title: { 
+            text: "new_stock_tracker_add"
+        },
+        details: [
+            {
+                title: { 
+                    text: "stock"
+                },
+                description: {
+                    text: `${investiment.description} (${investiment.stock.symbol})`
+                },
+                hidden: false
+            },
+            {
+                title: { 
+                    text: "strategy"
+                },
+                description: {
+                    text: StrategyNames.convert(stockTracker.strategy)._id
+                },
+                hidden: true
+            },
+            {
+                title: { 
+                    text: "frequency"
+                },
+                description: {
+                    text: StockTrackerFrequency.convert(stockTracker.frequency).type
+                },
+                hidden: true
+            },
+            {
+                title: { 
+                    text: "initial_status"
+                },
+                description: {
+                    text: stockTracker.status
+                },
+                hidden: true
+            }
+        ]
+    }
+    createBaseActivity(activity)
 }
 
 /**
@@ -100,7 +145,7 @@ export const onStockTrackerCreated = async (stockTracker: StockTracker) => {
  * @param {StockTracker} stockTracker
  */
 export const onStockTrackerTurnedToRunning = (stockTracker: StockTracker) => {
-    baseStockTrackerStatusTurnning(stockTracker, Icons.PLAY, ts("stock_tracker_started"))
+    baseStockTrackerStatusTurnning(stockTracker, Icons.PLAY, "stock_tracker_started")
 }
 
 /**
@@ -109,7 +154,7 @@ export const onStockTrackerTurnedToRunning = (stockTracker: StockTracker) => {
  * @param {StockTracker} stockTracker
  */
 export const onStockTrackerTurnedToPaused = (stockTracker: StockTracker) => {
-    baseStockTrackerStatusTurnning(stockTracker, Icons.PAUSE, ts("stock_tracker_paused"))
+    baseStockTrackerStatusTurnning(stockTracker, Icons.PAUSE, "stock_tracker_paused")
 }
 
 /**
@@ -118,7 +163,7 @@ export const onStockTrackerTurnedToPaused = (stockTracker: StockTracker) => {
  * @param {StockTracker} stockTracker
  */
 export const onStockTrackerTurnedToDestroyed = (stockTracker: StockTracker) => {
-    baseStockTrackerStatusTurnning(stockTracker, Icons.DELETE, ts("stock_tracker_destroyed"))
+    baseStockTrackerStatusTurnning(stockTracker, Icons.DELETE, "stock_tracker_destroyed")
 }
 
 /**
@@ -128,7 +173,8 @@ export const onStockTrackerTurnedToDestroyed = (stockTracker: StockTracker) => {
  * @param {StockTracker} stockTracker
  */
 export const onStockOrderExecution = async (orderExecution: OrderExecution, stockTracker: StockTracker) => {
-    
+    // TODO
+
     // let order = await OrderModel.findOne({ orderBrokerId: orderExecution.orderCode }).exec()
     // let stock = <Stock>stockTracker.stock
     // let userAccount = <UserAccount>stockTracker.userAccount
@@ -186,7 +232,9 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
 export const onCreateAccount = (profile: Profile) => {
     const activity: Activity = {
         activityType: ActivityType.USER_ACCOUNT,
-        title: { text: "account_created" },
+        title: { 
+            text: "account_created"
+        },
         icon: Icons.ACCOUNT_CHECK,
         account: profile._id,
         details: [
@@ -197,29 +245,6 @@ export const onCreateAccount = (profile: Profile) => {
             {
                 title: { text: "email" },
                 description: profile.email
-            }
-        ]
-    }
-    createBaseActivity(activity)
-}
-
-/**
- *
- *
- * @param {Profile} profile
- */
-export const onActivateSimulationAccount = (profile: Profile) => {
-    const activity: Activity = {
-        activityType: ActivityType.USER_ACCOUNT,
-        title: { text: "account_credit" },
-        icon: Icons.CASH,
-        account: profile.getSimulation()._id,
-        details: [
-            { 
-                description: { 
-                    text: "account_credit_msg", 
-                    args: [Utils.Currency.format(Number(process.env.INITIAL_SIMULATION_AMOUNT), "R$")]
-                }
             }
         ]
     }
