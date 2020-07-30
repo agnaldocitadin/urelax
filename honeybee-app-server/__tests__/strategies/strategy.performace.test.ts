@@ -13,9 +13,9 @@ import { BeeService } from '../../src/modules/Stock/services/stock.tracker.servi
 import { BBStochasticRSIStrategy } from "../../src/modules/Stock/strategies/bb.stochastic.rsi.strategy"
 import { Utils } from "../../src/Utils"
 
-// TODO Test performance on AZUL4 (2019-12-27 to 2019-12-27)
-// TODO Test performance on AZUL4 (2020-01-28 to 2020-01-29)
-// TODO Test performance on AZUL4 (2020-02-12 to 2020-02-13)
+//  Test performance on AZUL4 (2019-12-27 to 2019-12-27)
+//  Test performance on AZUL4 (2020-01-28 to 2020-01-29)
+//  Test performance on AZUL4 (2020-02-12 to 2020-02-13)
 const ROBOT_ID = "5e27195eec4b394420df714a"
 const STRATEGY_TYPE = BBStochasticRSIStrategy
 const PROGRESS = 100

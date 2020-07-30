@@ -2,7 +2,9 @@ import { useNavigation } from "@react-navigation/native"
 import { Brokers } from "honeybee-api"
 import { useCallback } from "react"
 import BrokerModule from ".."
+import { useEffectWhenReady } from "../../../core/Commons.hook"
 import { Routes } from "../../NavigationModule/const"
+import { fetchBrokers } from "../api"
 import { useBroker } from "../hook"
 
 export const useAddBrokerAccountUIHook = () => {
@@ -18,6 +20,11 @@ export const useAddBrokerAccountUIHook = () => {
     }, [])
 
     const handleBrokerAccounts = useCallback(() => navigation.navigate(Routes.BROKER_ACCOUNTS), [])
+
+    useEffectWhenReady(async () => {
+        const brokers = await fetchBrokers()
+        // TODO
+    })
 
     return {
         handleAddClearAccount,

@@ -1,12 +1,9 @@
 import dotenv from 'dotenv-flow'
+import { Brokers } from 'honeybee-api'
 import Mongoose from 'mongoose'
 import Logger from '../src/core/Logger'
-import { StockTracker, StockTrackerModel } from '../src/modules/Stock/models'
-import { mongoose } from '@typegoose/typegoose'
-import bcrypt from 'bcrypt'
-import { BrokerAccountModel } from '../src/modules/Broker/models'
-import { BrokerAccountInput } from 'honeybee-api'
-import { flatObject } from '../src/core/Utils'
+import { updateBrokerAccountById } from '../src/modules/Broker/services'
+import { updateStockTrackerById } from '../src/modules/Stock/services'
 
 
 const connectDB = async () => {
@@ -249,21 +246,55 @@ it("teste", async () => {
 
     // console.log("Done.")
 
-    const account: BrokerAccountInput = {
-        account: "sjdfksjfks",
-        accountName: "nome da conta",
-        extraData: {
-            cpf: "00963868942",
-            birthdate: new Date(),
-            signature: "assinatura",
-            token: null,
-            password: "pass",
-            platformUID: "uiid",
-            sessionId: "sessionid"
-        }
-    }
+    // const account: BrokerAccountInput = {
+    //     account: "sjdfksjfks",
+    //     accountName: "nome da conta",
+    //     extraData: {
+    //         cpf: "00963868942",
+    //         birthdate: new Date(),
+    //         signature: "assinatura",
+    //         token: null,
+    //         password: "pass",
+    //         platformUID: "uiid",
+    //         sessionId: "sessionid"
+    //     }
+    // }
 
-    const result = flatObject(account)
-    console.log(result)
+    // const result = flatObject(account)
+    // console.log(result)
+
+    // await updateBrokerAccountById("5f10e99d71b2673f6812f184", {
+    //     // brokerCode: Brokers.CLEAR,
+    //     extraData: {
+    //         password: "nova senha",
+    //         // birthdate: null,
+    //         signature: "WSE8974",
+    //         cpf: "00963868942"
+    //     }
+    // })
+
+    await updateStockTrackerById("5f0fa8713d0a8e292c921d33", {
+        strategySetting: {
+            stockAmountLimit: 480.4
+        }
+    })
+
+    // const A = {
+    //     account: "A1",
+    //     accountName: "Account 1",
+    //     extraData: {
+    //         cpf: "cpf",
+    //         password: "passwd"
+    //     }
+    // } as BrokerAccountInput
+
+    // const B = {
+    //     extraData: {
+    //         signature: "59898"
+    //     }
+    // } as BrokerAccountInput
+
+    // const res = mergeObjects(A, B)
+    // console.log(res)
 
 })

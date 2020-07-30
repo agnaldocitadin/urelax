@@ -28,3 +28,11 @@ export const createBrokerAccount = (input: BrokerAccountInput) => {
 export const updateBrokerAccount = (id: string, input: BrokerAccountInput) => {
     return API.Broker.updateBrokerAccount(id, input)
 }
+
+export const fetchBrokers = () => {
+    return API.Broker.fetchBrokers({ active: true }, `
+        code
+        name
+        logo
+    `)
+}

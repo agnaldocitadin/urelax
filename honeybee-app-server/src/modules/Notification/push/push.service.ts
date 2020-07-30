@@ -11,7 +11,7 @@ const NOTIFICATION_ICON = "icon_notification"
 const ICON_COLOR = "#1099f5"
 
 /**
- * TODO Fix it!
+ * 
  *
  * @param {string} deviceToken
  * @param {Order} order
@@ -83,7 +83,7 @@ export const notifyStockTrackerPause = (stockTracker: StockTracker) => {
     admin.messaging().sendToDevice(token, {
         notification: {
             title: ts("stock_tracker_paused"),
-            body: ts("stock_tracker_paused_msg", { symbol: stockTracker.stockInfo.symbol }),
+            body: ts("stock_tracker_paused_msg", { symbol: stockTracker.getSymbol() }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR
         },
@@ -105,7 +105,7 @@ export const notifyStockTrackerDestroy = (stockTracker: StockTracker) => {
     admin.messaging().sendToDevice(token, {
         notification: {
             title: ts("stock_tracker_destroyed"),
-            body: ts("stock_tracker_destroyed_msg", { symbol: stockTracker.stockInfo.symbol }),
+            body: ts("stock_tracker_destroyed_msg", { symbol: stockTracker.getSymbol() }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR
         },

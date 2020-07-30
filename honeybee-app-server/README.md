@@ -12,8 +12,6 @@ APP FEATURES:
 Warning:
 * In order to install the lastest version of technicalindicators, you'll need to run "npm install --production windows-build-tools" in an administrative bash.
 * You'll need to have Python 2.7 installed.
-
-TODO:
 * Improve application logging.
 
 -------

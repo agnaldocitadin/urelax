@@ -3,13 +3,29 @@ import mongoose from 'mongoose'
 import { BrokerInvestiment, BrokerInvestimentModel } from "../models"
 import { Broker, BrokerModel } from "../models/broker.model"
 
+
 /**
  *
  *
- * @returns {Promise<Broker[]>}
+ * @param {{ 
+ *         id?: mongoose.Types.ObjectId, 
+ *         code?: Brokers, 
+ *         active?: boolean 
+ *     }} options
+ * @returns
  */
-export const findAllActives = (): Promise<Broker[]> => {
-    return BrokerModel.find({ active: true }).exec()
+export const findBrokersBy = (options: { 
+        id?: mongoose.Types.ObjectId, 
+        code?: Brokers, 
+        active?: boolean 
+    }) => {
+        
+    const { id, code, active } = options
+    return BrokerModel.find({
+        ...id ? { "_id": mongoose.Types.ObjectId(String(id)) } : null,
+        code, 
+        active
+    }).exec()
 }
 
 /**

@@ -86,6 +86,22 @@ export class StockTracker {
             investiment: <any>this.stockInfo
         }
     }
+
+    public isBought() {
+        return this.qty > 0
+    }
+
+    public isSold() {
+        return this.qty === 0
+    }
+
+    public getSymbol() {
+        return (<BrokerInvestiment>this.stockInfo)?.stock?.symbol
+    }
+
+    public getStockLot() {
+        return (<BrokerInvestiment>this.stockInfo)?.stock?.stockLot
+    }
 }
 
 export const StockTrackerModel = getModelForClass(StockTracker, {

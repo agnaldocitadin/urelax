@@ -35,7 +35,7 @@ export const useAuthenticateHook = ({ email, password, authType, onSuccess, onFa
                 break
 
             case "fingerPrint":
-                // TODO
+                // Not implemented yet
                 break
         }
     }, [])

@@ -1,4 +1,4 @@
-import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItemList, DrawerNavigationOptions } from '@react-navigation/drawer'
+import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerNavigationOptions } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { FC } from 'react'
@@ -147,6 +147,10 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = (props) => {
             <DrawerContentScrollView {...props}>
                 <DrawerItemList {...props}/>
             </DrawerContentScrollView>
+            <DrawerItem 
+                label={props => <TypographyMedium {...props}>{ts("logout")}</TypographyMedium>}
+                icon={props => <BaseIcon {...props} name="wallet"/>}
+                onPress={null}/>
         </View>
     )
 }

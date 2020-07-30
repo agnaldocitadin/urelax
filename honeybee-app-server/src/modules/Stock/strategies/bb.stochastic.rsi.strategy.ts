@@ -66,8 +66,8 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
 
     async predict(referenceDate: Date, stockTracker: StockTracker, brokerPlugin: BrokerPlugin): Promise<PredictionResult> {
         
-        // this.bought = stockTracker.qty > 0 //await isBought(stockTracker) TODO
-        const symbol = stockTracker.stockInfo.symbol
+        this.bought = stockTracker.isBought()
+        const symbol = stockTracker.getSymbol()
         const frequency = stockTracker.getFrequency()
         const history = await getHistory(symbol, referenceDate, frequency, DATA_LENGTH, true)
         
@@ -337,7 +337,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
         let availableAmount = await brokerPlugin.totalAvailableAmount(stockTracker, platform, OrderSides.BUY, symbol)
         let { autoAmountLimit, stockAmountLimit } = stockTracker.strategySetting
         let limit = autoAmountLimit ? availableAmount : Math.min(...[availableAmount, stockAmountLimit])
-        let stockLot = stockTracker.stockInfo.stockLot
+        let stockLot = stockTracker.getStockLot()
         let lotQuantity = Math.floor((limit / price) / stockLot)
         let stockQuantity = lotQuantity * stockLot
         if (stockQuantity === 0) {
@@ -450,13 +450,13 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
     }
 
     async proceedStockTrackerPause(stockTracker: StockTracker): Promise<StockTracker> {
-        let sold = false //await isSold(stockTracker) TODO
+        let sold = stockTracker.isSold()
         if (sold) return pauseStockTracker(stockTracker, false)
         return waitStockTrackerPause(stockTracker)
     }
 
     async proceedStockTrackerDestroy(stockTracker: StockTracker): Promise<StockTracker> {
-        let sold = false //await isSold(stockTracker) TODO
+        let sold = stockTracker.isSold()
         if (sold) return destroyStockTracker(stockTracker, false)
         return waitStockTrackerDestroy(stockTracker)
     }

@@ -1,6 +1,7 @@
+import { Brokers } from 'honeybee-api'
 import mongoose from 'mongoose'
 import { GraphQLModule } from "../GraphQL"
-import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts, suggestAnInvestiment, updateBrokerAccountById } from "./services"
+import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts, findBrokersBy, suggestAnInvestiment, updateBrokerAccountById } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -86,10 +87,14 @@ const entry: GraphQLModule = {
         createBrokerAccount(input: BrokerAccountInput!): BrokerAccount
         updateBrokerAccount(id: ID!, input: BrokerAccountInput!): Boolean
     `,
-    
+
     resolvers: {
-        fetchBrokers: ({ id, code, active }: any) => {
-            // TODO
+        fetchBrokers: (options: { 
+            id: mongoose.Types.ObjectId
+            code: Brokers
+            active: boolean 
+        }) => {
+            return findBrokersBy(options)
         },
 
         fetchBrokerAccounts: (options: {

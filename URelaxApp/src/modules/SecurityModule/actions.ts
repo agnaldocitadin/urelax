@@ -23,6 +23,9 @@ const Actions = () => {
         },
         setProfile: (profile: Profile) => {
             dispatch({ type: "SET_PROFILE",payload: profile } as DispatchType<ActionNames>)
+        },
+        logout: () => {
+            
         }
     }
 }

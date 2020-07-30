@@ -1,7 +1,7 @@
 import { ActivityType, StockTracker } from '.'
 import { FinancialAnalysisPeriod } from './enums'
 import { gql, query } from './graphql'
-import { Activity, AppliedInvestiment, BrokerAccount, BrokerInvestiment, FinancialAnalysis, FinancialHistory, FinancialSummary, Frequency, Strategy } from './types'
+import { Activity, AppliedInvestiment, BrokerAccount, BrokerInvestiment, FinancialAnalysis, FinancialHistory, FinancialSummary, Frequency, Strategy, Broker } from './types'
 
 export const fetchActivities = (options: { 
      id?: string, 
@@ -16,7 +16,7 @@ export const fetchActivities = (options: {
      return gql(name, query(name, options, fields))
 }
 
-export const fetchBrokers = (options: { id: string, code: String, active: boolean }, fields: string) => {
+export const fetchBrokers = (options: { id?: string, code?: String, active?: boolean }, fields: string): Promise<Broker[]> => {
      const name = "fetchBrokers"
      return gql(name, query(name, options, fields))
 }
