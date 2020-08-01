@@ -24,10 +24,10 @@ export interface BrokerAccountInput {
 }
 
 export interface ProfileInput {
-    name?: String
-    nickname?: String
-    email?: String
-    password?: String
+    name?: string
+    nickname?: string
+    email?: string
+    password?: string
     accounts?: ID[]
-    active?: Boolean
+    active?: boolean
 }

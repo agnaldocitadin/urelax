@@ -1,5 +1,5 @@
 import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfWeek, subMonths, subWeeks } from 'date-fns'
-import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary } from 'honeybee-api'
+import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary, ProfitType } from 'honeybee-api'
 import { arrays } from 'js-commons'
 import mongoose from 'mongoose'
 import { percentVariation } from '../../../core/Utils'
@@ -9,13 +9,68 @@ import { FinancialHistory, FinancialHistoryModel, Transaction } from '../models'
 
 const STANDARD_QUERY_RESULT = 100
 
-export const initFinancialHistory = (account: mongoose.Types.ObjectId, date: Date) => {
-    // TODO
+/**
+ *
+ *
+ * @param {mongoose.Types.ObjectId} account
+ * @param {mongoose.Types.ObjectId} brokerAccount
+ * @param {Date} date
+ * @returns
+ */
+export const initFinancialHistory = (account: mongoose.Types.ObjectId, brokerAccount: mongoose.Types.ObjectId, date: Date) => {
+    return FinancialHistoryModel.create({
+        locked: false,
+        brokerAccount,
+        account,
+        date
+    })
 }
 
+/**
+ *
+ *
+ * @param {mongoose.Types.ObjectId} account
+ * @param {mongoose.Types.ObjectId} brokerAccount
+ * @param {Date} date
+ * @param {Transaction} transaction
+ */
+export const addTransaction = async (account: mongoose.Types.ObjectId, brokerAccount: mongoose.Types.ObjectId, date: Date, transaction: Transaction) => {
+    let financialHistory = await FinancialHistoryModel.findOne({ account, brokerAccount, date })
+    if (financialHistory.locked) {
+        throw "Oops!"
+    }
+    
+    if (!financialHistory) {
+        financialHistory = await initFinancialHistory(account, brokerAccount, date)
+    }
 
-export const addTransaction = (account: mongoose.Types.ObjectId, date: Date, transaction: Transaction) => {
-    // TODO
+    financialHistory.transactions.push(transaction)
+    financialHistory.save()
+}
+
+/**
+ *
+ *
+ * @param {mongoose.Types.ObjectId} account
+ * @param {mongoose.Types.ObjectId} brokerAccount
+ * @param {Date} date
+ * @param {mongoose.Types.ObjectId} investiment
+ * @param {ProfitType} type
+ * @param {number} value
+ */
+export const addProfit = (
+    account: mongoose.Types.ObjectId,
+    brokerAccount: mongoose.Types.ObjectId,
+    date: Date, 
+    investiment: mongoose.Types.ObjectId, 
+    type: ProfitType, 
+    value: number
+    ) => {
+
+    FinancialHistoryModel.updateOne(
+        { account, brokerAccount, date },
+        { "$push": { profits: { type, value, investiment }}}
+    ).exec()
 }
 
 /**

@@ -4,8 +4,8 @@ import { ErrorCodes } from "../../../../core/error.codes"
 import Logger from "../../../../core/Logger"
 import { Utils } from "../../../../core/Utils"
 import { Order, OrderPlatforms, OrderSides, OrderTypes } from "../../../Order/models"
-import { Clear, StockTracker } from "../../../Stock/models"
-import { BrokerAccount, BrokerAccountModel } from "../../models"
+import { StockTracker } from "../../../Stock/models"
+import { BrokerAccount, BrokerAccountModel, Clear } from "../../models"
 import { ClearConnection } from "./clear.connection"
 import { ClearConnectionPool } from "./clear.connection.pool"
 import { ClearEnums, ClearMessages } from "./clear.messages"
@@ -15,9 +15,7 @@ import { ClearRequest, PromiseResponse } from "./clear.request"
 const PIT_NOVO_SWINGTRADE = "pit-novo-swingtrade"
 
 /**
- * Real order id: 349f2c50-e407-4868-b6ce-81e5cb22374d (This order exists at Clear)
- * TODO Maybe it's a good idea to load all unfinished orders of every robot
- * 
+ * Maybe it's a good idea to load all unfinished orders of every robot
  *
  * @export
  * @class ClearAdapter
@@ -87,7 +85,7 @@ export class ClearPlugin extends BaseBrokerPlugin {
     }
 
     /**
-     * TODO
+     * 
      *
      * @private
      * @param {Order} order
@@ -99,7 +97,7 @@ export class ClearPlugin extends BaseBrokerPlugin {
     }
 
     /**
-     * TODO
+     * 
      *
      * @private
      * @param {Order} order

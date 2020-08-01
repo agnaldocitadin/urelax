@@ -1,6 +1,6 @@
 import { gql, mutation } from "./graphql"
 import { BrokerAccountInput, ProfileInput, StockTrackerInput } from "./inputs"
-import { Account, BrokerAccount, Profile, StockTracker } from "./types"
+import { Account, BrokerAccount, StockTracker } from "./types"
 
 export const createBrokerAccount = (input: BrokerAccountInput, fields: string): Promise<BrokerAccount> => {
     const name = "createBrokerAccount"
@@ -10,11 +10,6 @@ export const createBrokerAccount = (input: BrokerAccountInput, fields: string): 
 export const updateBrokerAccount = (id: string, input: BrokerAccountInput): Promise<boolean> => {
     const name = "updateBrokerAccount"
     return gql(name, mutation(name, { id, input }))
-}
-
-export const createProfile = (input: Profile): Promise<Profile> => {
-    const name = "createProfile"
-    return gql(name, mutation(name, { input }))
 }
 
 export const updateProfile = (id: string, input: ProfileInput): Promise<boolean> => {

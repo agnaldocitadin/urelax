@@ -69,6 +69,10 @@ export const percentVariation = (startValue: number, finalValue: number): number
     return startValue && finalValue && ((finalValue - startValue) / startValue) * 100 || 0
 }
 
+export const nonNull = (field: string, value?: any) => {
+    return { ...value && { [field]: value } }
+}
+
 export class DelayedAction {
 
     id: NodeJS.Timeout

@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios"
-import { Profile, StockTrackerStatus } from "."
+import { Profile, ProfileInput, StockTrackerStatus } from "."
 import { baseRoute, CONFIG, OFFLINE } from "./core"
 
 /**
@@ -18,10 +18,10 @@ export const authenticate = async (email?: string, password?: string): Promise<{
 /**
  *
  *
- * @param {Profile} profile
+ * @param {ProfileInput} profile
  * @returns {Promise<{profile: Profile, token: string}>}
  */
-export const signup = async (profile: Profile): Promise<{profile: Profile, token: string}> => {
+export const signup = async (profile: ProfileInput): Promise<{profile: Profile, token: string}> => {
     return invoke(() => (
         CONFIG.axiosInstante.post(baseRoute("/signup"), JSON.stringify(profile))
     ))

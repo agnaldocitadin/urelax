@@ -101,7 +101,11 @@ export const getLastClosingPrice = async (symbol: string, date: Date): Promise<n
     endDate.setUTCSeconds(59)
     endDate.setUTCMilliseconds(999)
     
-    const lastPrice = await StockHistoryModel.findOne({ symbol, date: { "$lte": endDate }}).sort({ "date": "desc" }).limit(1)
+    const lastPrice = await StockHistoryModel
+        .findOne({ symbol, date: { "$lte": endDate }})
+        .sort({ "date": "desc" })
+        .limit(1)
+        
     if (lastPrice) {
         return lastPrice.closingPrice
     }

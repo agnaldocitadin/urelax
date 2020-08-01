@@ -213,7 +213,6 @@
 // }
 
 // /**
-//  * FIXME There's a workaround here!
 //  *
 //  * @param {*} groups
 //  * @param {GroupBy} groupBy
@@ -453,7 +452,6 @@
 
 // /**
 //  * ------------------------------------------------------------------------------------------------------------
-//  * FIXME It works but it's too ugly!
 //  *
 //  * @param {string} userAccountId
 //  */

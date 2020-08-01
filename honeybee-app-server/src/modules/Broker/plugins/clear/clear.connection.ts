@@ -2,8 +2,8 @@ import ip from 'public-ip'
 import WebSocket from 'ws'
 import Logger from '../../../../core/Logger'
 import { DelayedAction, Utils } from '../../../../core/Utils'
+import { Clear } from '../../models'
 import { BrokerAccount } from '../../models/broker.account.model'
-import { Clear } from '../../../Stock/models/types'
 import { ClearMessages } from './clear.messages'
 
 const IDLE = 28000
@@ -11,7 +11,6 @@ const ARRAY_BUFFER = "arraybuffer"
 const RECONNECTION_TIMEOUT = 5000
 
 /**
- * TODO Fix property types of ClearMessages
  *
  * @export
  * @class ClearConnection

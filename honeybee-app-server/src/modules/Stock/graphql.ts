@@ -55,7 +55,7 @@ const entry: GraphQLModule = {
     `,
 
     queries: `
-        fetchStockTrackers(id: ID, account: ID, status: String, frequency: String, page: Int!, qty: Int!): [StockTracker]
+        fetchStockTrackers(id: ID, account: ID, status: String, frequency: String, page: Int, qty: Int): [StockTracker]
         fetchAvailableStrategies: [Strategy]
         fetchAvailableFrequencies: [Frequency]
     `,

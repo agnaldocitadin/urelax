@@ -1,13 +1,12 @@
-import { StockTrackerInput, StockTrackerStatus, TransactionType } from "honeybee-api"
-import mongoose from 'mongoose'
-import { mergeObjects } from "../../../core/Utils"
+import { ProfitType, StockTrackerInput, StockTrackerStatus, TransactionType } from "honeybee-api"
+import { mergeObjects, nonNull } from "../../../core/Utils"
 import { onStockOrderExecution, onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins"
-import { addTransaction } from "../../Financial/services"
+import { addProfit, addTransaction } from "../../Financial/services"
 import { Account } from "../../Identity/models"
 import { notifyOrder, notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
-import { Order, OrderStatus } from "../../Order/models"
+import { Order, OrderModel, OrderSides, OrderStatus } from "../../Order/models"
 import { makeBaseOrder } from "../../Order/services"
 import { StockTracker, StockTrackerModel } from "../models"
 import { PredictionResult } from "../strategies"
@@ -78,14 +77,14 @@ const validate = async (stockTracker: StockTracker): Promise<void> => {
  * }
  * @returns {Promise<Order>}
  */
-export const makeStockOrder = async (stockTracker: StockTracker, { 
+export const makeStockOrder = (stockTracker: StockTracker, { 
     platform, 
     orderType, 
     orderSide, 
     quantity, 
     price, 
     expiresAt 
-}: PredictionResult): Promise<Order> => {
+}: PredictionResult) => {
     
     const order: Order = {
         account: stockTracker.account,
@@ -119,34 +118,37 @@ export const buildStockTrackersFrom = async (account: Account): Promise<Investor
     return trackers.map(model => StockTrackerFactory.create(model))
 }
 
-/**
- *
- *
- * @param {{
- *     id: mongoose.Types.ObjectId
- *     account: mongoose.Types.ObjectId
- *     status: StockTrackerStatus
- *     frequency: StockTrackerFrequency
- *     page: number
- *     qty: number
- * }} options
- * @returns
- */
 export const findStockTrackers = async (options: {
-    id: mongoose.Types.ObjectId
-    account: mongoose.Types.ObjectId
-    status: StockTrackerStatus
-    frequency: StockTrackerFrequency
-    page: number
-    qty: number
+    id?: string
+    account?: string
+    status?: StockTrackerStatus
+    frequency?: StockTrackerFrequency
+    page?: number
+    qty?: number
 }) => {
-    // TODO
-    return StockTrackerModel.find({ _id: options.id })
+    const {
+        id,
+        account,
+        status,
+        frequency,
+        page = 0,
+        qty = Number(process.env.STANDARD_QUERY_RESULT)
+    } = options
+
+    return StockTrackerModel.find({ 
+            ...nonNull("_id", id),
+            ...nonNull("account", account),
+            ...nonNull("status", status),
+            ...nonNull("frequency", frequency)
+        })
         .populate("account")
         .populate("stockInfo")
         .populate("brokerAccount")
+        .skip(page * qty)
+        .limit(qty)
         .exec()
 }
+
 
 /**
  *
@@ -267,30 +269,116 @@ export const updateStockTrackerById = async (_id: string, input: StockTrackerInp
  * @param {OrderExecution} execution
  * @param {StockTracker} stockTracker
  */
-export const processOrderExecution = (execution: OrderExecution, stockTracker: StockTracker) => {
+export const processOrderExecution = async (execution: OrderExecution, stockTracker: StockTracker) => {
     // TODO isso precisa executar apenas uma vez!
     
-    // TODO criar entrada no FinancialHistory
-    addTransaction((<Account>stockTracker.account)._id, new Date(), {
-        dateTime: new Date(),
-        type: TransactionType.TRANSFER,
-        value: execution.price * execution.quantity,
-        investiment: (<BrokerInvestiment>stockTracker.stockInfo)._id
-    })
-
-    // TODO Ver como pegar o investimento de Money (Real)
-    // addTransaction((<Account>stockTracker.account)._id, new Date(), {
-    //     dateTime: new Date(),
-    //     type: TransactionType.TRANSFER,
-    //     value: execution.price * execution.quantity,
-    //     investiment: null // Money
-    // })
-
-    // TODO atualizar stocktracker
-    stockTracker.qty += execution.quantity
-    stockTracker.buyPrice = (stockTracker.buyPrice + execution.price) / 2
+    const order = await OrderModel.findById(execution.orderCode)
+    
+    if (order.side === OrderSides.BUY) {
+        processBuyOrder(execution, stockTracker)
+        updateStockTrackerOnBuy(execution, stockTracker)
+    }
+    
+    if (order.side === OrderSides.SELL) {
+        processSellOrder(execution, stockTracker)
+        updateStockTrackerOnSell(execution, stockTracker)
+    }
 
     onStockOrderExecution(execution, stockTracker)
     const deviceToken = (<Account>stockTracker.account).getActiveDevice().token
     notifyOrder(execution, deviceToken)
+}
+
+/**
+ *
+ *
+ * @param {OrderExecution} execution
+ * @param {StockTracker} stockTracker
+ */
+const updateStockTrackerOnBuy = (execution: OrderExecution, stockTracker: StockTracker) => {
+    stockTracker.qty += execution.quantity
+    if (stockTracker.qty > 0) {
+        stockTracker.buyPrice = (stockTracker.buyPrice + execution.price) / 2
+        return
+    }
+    stockTracker.buyPrice = execution.price
+}
+
+/**
+ *
+ *
+ * @param {OrderExecution} execution
+ * @param {StockTracker} stockTracker
+ */
+const updateStockTrackerOnSell = (execution: OrderExecution, stockTracker: StockTracker) => {
+    stockTracker.qty -= execution.quantity
+    if (stockTracker.qty === 0) {
+        stockTracker.buyPrice = 0
+        stockTracker.currentPrice = 0
+    }
+}
+
+/**
+ *
+ *
+ * @param {OrderExecution} execution
+ * @param {StockTracker} stockTracker
+ */
+const processBuyOrder = (execution: OrderExecution, stockTracker: StockTracker) => {
+    
+    const now = new Date()
+    const orderValue = execution.price * execution.quantity
+
+    addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+        investiment: null, // TODO Money
+        type: TransactionType.TRANSFER,
+        value: -orderValue,
+        dateTime: now
+    })
+    
+    addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+        investiment: stockTracker.getInvestimentId(),
+        type: TransactionType.TRANSFER,
+        value: orderValue,
+        dateTime: now
+    })
+    
+}
+
+/**
+ *
+ *
+ * @param {OrderExecution} execution
+ * @param {StockTracker} stockTracker
+ */
+const processSellOrder = (execution: OrderExecution, stockTracker: StockTracker) => {
+
+    const now = new Date()
+    const stockValue = stockTracker.currentPrice * execution.quantity
+    const moneyValue = execution.price * execution.quantity
+    const profitValue = moneyValue - stockValue
+
+    addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+        investiment: stockTracker.getInvestimentId(),
+        type: TransactionType.TRANSFER,
+        value: -stockValue,
+        dateTime: now
+    })
+
+    addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+        investiment: null, // TODO Money
+        type: TransactionType.TRANSFER,
+        value: moneyValue,
+        dateTime: now,
+    })
+
+    addProfit(
+        stockTracker.getAccountId(), 
+        stockTracker.getBrokerAccountId(), 
+        now,
+        stockTracker.getInvestimentId(),
+        ProfitType.EXCHANGE, 
+        profitValue
+    )
+    
 }

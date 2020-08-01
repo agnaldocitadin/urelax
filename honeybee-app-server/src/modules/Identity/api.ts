@@ -1,15 +1,18 @@
 import { Express } from 'express'
+import { ProfileInput } from 'honeybee-api'
 import { invoke } from '../../core/Utils'
 import Router, { RouteVersion } from '../Router'
-import { Profile } from './models'
+import { generateToken } from '../Security/api'
+import { createProfile } from './services'
 
 export const registerAPI = (app: Express) => {
 
     Router.addRoute({ route: "/signup", method: "POST", version: RouteVersion.V1 }, (req, res) => {
         invoke(req, res, async () => {
-            const profile: Profile = req.body
-            // TODO create profile
-            res.sendStatus(200)
+            const input: ProfileInput = req.body
+            const profile = await createProfile(input)
+            const token = generateToken(profile)
+            res.json({ profile, token })
         })
     })
 

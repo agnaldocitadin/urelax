@@ -1,5 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
-import { updateProfile } from "./services"
+import { updateAccount, updateProfile } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -69,23 +69,19 @@ const entry: GraphQLModule = {
     `,
 
     mutations: `
-        createProfile(profile: ProfileInput!): Profile
         updateProfile(id: ID!, input: ProfileInput!): Boolean
         updateAccount(id: ID!, input: AccountInput!): Boolean
     `,
 
     resolvers: {
-        createProfile: ({ profile }: any) => {
-
-        },
-
         updateProfile: async ({ id, input }: any) => {
             await updateProfile(id, input)
             return true
         },
         
-        updateAccount: ({ id, input }: any) => {
-            // TODO
+        updateAccount: async ({ id, input }: any) => {
+            await updateAccount(id, input)
+            return true
         }
     }
 }

@@ -73,11 +73,19 @@ export class StockTracker {
         return (<Account>this.account)._id
     }
 
-    public getAmount() {
+    public getBrokerAccountId?() {
+        return (<BrokerAccount>this.brokerAccount)._id
+    }
+
+    public getInvestimentId?() {
+        return (<BrokerInvestiment>this.stockInfo)._id
+    }
+
+    public getAmount?() {
         return (this.qty * this.buyPrice) || 0
     }
 
-    public toInvestiment(): AppliedInvestiment {
+    public toInvestiment?(): AppliedInvestiment {
         return {
             refID: this._id.toHexString(),
             brokerAccountName: (<BrokerAccount>this.brokerAccount).accountName,
@@ -87,21 +95,22 @@ export class StockTracker {
         }
     }
 
-    public isBought() {
+    public isBought?() {
         return this.qty > 0
     }
 
-    public isSold() {
+    public isSold?() {
         return this.qty === 0
     }
 
-    public getSymbol() {
+    public getSymbol?() {
         return (<BrokerInvestiment>this.stockInfo)?.stock?.symbol
     }
 
-    public getStockLot() {
+    public getStockLot?() {
         return (<BrokerInvestiment>this.stockInfo)?.stock?.stockLot
     }
+    
 }
 
 export const StockTrackerModel = getModelForClass(StockTracker, {

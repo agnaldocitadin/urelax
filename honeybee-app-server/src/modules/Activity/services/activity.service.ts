@@ -1,11 +1,14 @@
 import { ActivityType } from "honeybee-api"
+import { ts } from "../../../core/i18n"
+import { Utils } from "../../../core/Utils"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
 import { Profile } from "../../Identity/models/profile.model"
+import { OrderModel, OrderSides, OrderStatus } from "../../Order/models"
 import { StockTracker } from "../../Stock/models/stock.tracker.model"
 import { StrategyNames } from "../../Stock/strategies"
 import { StockTrackerFrequency } from "../../Stock/trackers"
-import { Activity, ActivityModel } from "../models/activity.model"
+import { Activity, ActivityDetail, ActivityModel } from "../models/activity.model"
 
 enum Icons {
     ACCOUNT_CHECK = "account-check",
@@ -173,55 +176,53 @@ export const onStockTrackerTurnedToDestroyed = (stockTracker: StockTracker) => {
  * @param {StockTracker} stockTracker
  */
 export const onStockOrderExecution = async (orderExecution: OrderExecution, stockTracker: StockTracker) => {
-    // TODO
+    
+    let order = await OrderModel.findOne({ orderBrokerId: orderExecution.orderCode })
+    let investiment = <BrokerInvestiment>stockTracker.stockInfo
 
-    // let order = await OrderModel.findOne({ orderBrokerId: orderExecution.orderCode }).exec()
-    // let stock = <Stock>stockTracker.stock
-    // let userAccount = <UserAccount>stockTracker.userAccount
+    let details = [
+        { title: ts("stock"), description: `${investiment.description} (${investiment.stock.symbol})` },
+        { title: ts("amount"), description: Utils.Currency.format(order.getTotalOrder(), "R$") },
+        { title: ts("quantity"), description: order.quantity, hidden: true },
+        { title: ts("average_price"), description: Utils.Currency.format(order.getExecutedPriceAverage(), "R$"), hidden: true }
+    ] as ActivityDetail[]
 
-    // let details = [
-    //     { title: ts("stock"), description: `${stock.description} (${stock.symbol})` },
-    //     { title: ts("amount"), description: Utils.Currency.format(order.getTotalOrder(), "R$") },
-    //     { title: ts("quantity"), description: order.quantity, hidden: true },
-    //     { title: ts("average_price"), description: Utils.Currency.format(order.getExecutedPriceAverage(), "R$"), hidden: true }
-    // ]
+    const base = {
+        activityType: ActivityType.STOCK_TRACKER,
+        account: stockTracker.account,
+        ref: stockTracker._id.toHexString()
+    } as Activity
 
-    // const base: any = {
-    //     activityType: ActivityType.STOCK_TRACKER,
-    //     userAccount: userAccount._id,
-    //     ref: stockTracker._id,
-    // }
+    if (orderExecution.status === OrderStatus.FILLED) {
+        if (order.side === OrderSides.BUY) {
+            base.title = { text: "buy_order_created" }
+            base.icon = Icons.ARROW_TOP_RIGHT_THICK
+        }
+        else {
+            base.title = { text: "sell_order_created" }
+            base.icon = Icons.ARROW_BOTTOM_LEFT_THICK
+        }
 
-    // if (orderExecution.status === OrderStatus.FILLED) {
-    //     if (order.side === OrderSides.BUY) {
-    //         base.title = ts("buy_order_created")
-    //         base.icon = Icons.ARROW_TOP_RIGHT_THICK
-    //     }
-    //     else {
-    //         base.title = ts("sell_order_created")
-    //         base.icon = Icons.ARROW_BOTTOM_LEFT_THICK
-    //     }
+        details.push({ title: ts("id"), description: order.orderBrokerId, hidden: true })
+        base.details = details
+        createBaseActivity(base)
+    }
 
-    //     details.push({ title: ts("id"), description: order.orderBrokerId, hidden: true })
-    //     base.details = details
-    //     createBaseActivity(base)
-    // }
+    if (orderExecution.status === OrderStatus.REJECTED) {
+        if (order.side === OrderSides.BUY) {
+            base.title = { text: "buy_order_rejected" }
+            base.icon = Icons.CANCEL
+        }
+        else {
+            base.title = { text: "sell_order_rejected" }
+            base.icon = Icons.CANCEL
+        }
 
-    // if (orderExecution.status === OrderStatus.REJECTED) {
-    //     if (order.side === OrderSides.BUY) {
-    //         base.title = ts("buy_order_rejected")
-    //         base.icon = Icons.CANCEL
-    //     }
-    //     else {
-    //         base.title = ts("sell_order_rejected")
-    //         base.icon = Icons.CANCEL
-    //     }
-
-    //     details.push({ title: ts("message"), description: order.message, hidden: true })
-    //     details.push({ title: ts("id"), description: order.orderBrokerId, hidden: true })
-    //     base.details = details
-    //     createBaseActivity(base)
-    // }
+        details.push({ title: ts("message"), description: order.message, hidden: true })
+        details.push({ title: ts("id"), description: order.orderBrokerId, hidden: true })
+        base.details = details
+        createBaseActivity(base)
+    }
 }
 
 /**
@@ -233,7 +234,7 @@ export const onCreateAccount = (profile: Profile) => {
     const activity: Activity = {
         activityType: ActivityType.USER_ACCOUNT,
         title: { 
-            text: "account_created"
+            text: "profile_created"
         },
         icon: Icons.ACCOUNT_CHECK,
         account: profile._id,

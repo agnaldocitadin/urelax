@@ -9,7 +9,7 @@ import { InvestimentStrategy, PredictionResult } from "../strategies"
 import { StockTrackerFrequency } from "./stock.tracker.frequency"
 
 /**
- * TODO change _doc to toObject()
+ * 
  *
  * @export
  * @class Investor
@@ -30,7 +30,6 @@ export class Investor {
      *
      *
      * @private
-     * @param {Date} date
      * @returns {boolean}
      * @memberof Investor
      */
@@ -139,7 +138,7 @@ export class Investor {
         const orderCode = await this.brokerPlugin.buy(buyOrderModel)
         await updateOrderCode(buyOrderModel, orderCode)
         this.strategy.onBuy(this.stockTrackerModel)
-        Logger.debug((<any>buyOrderModel)._doc, "Investor [=> BUY ORDER]")
+        Logger.debug(buyOrderModel.toObject(), "Investor [=> BUY ORDER]")
     }
 
     /**
@@ -154,7 +153,7 @@ export class Investor {
         const orderCode = await this.brokerPlugin.sell(sellOrderModel)
         await updateOrderCode(sellOrderModel, orderCode)
         this.strategy.onSell(this.stockTrackerModel)
-        Logger.debug((<any>sellOrderModel)._doc, "Investor [<= SELL ORDER]")
+        Logger.debug(sellOrderModel.toObject(), "Investor [<= SELL ORDER]")
     }
 
     /**

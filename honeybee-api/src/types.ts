@@ -47,16 +47,16 @@ export interface StrategySetting {
 }
 
 export interface Profile {
-    _id: string
-    name: string
-    nickname: string
-    email: string
-    password: string
-    accounts: Account[]
-    activeAccount: string
-    active: boolean
-    createdAt: Date
-    updatedAt: Date
+    _id?: string
+    name?: string
+    nickname?: string
+    email?: string
+    password?: string
+    accounts?: Account[]
+    activeAccount?: string
+    active?: boolean
+    createdAt?: Date
+    updatedAt?: Date
 }
 
 export interface Preferences {

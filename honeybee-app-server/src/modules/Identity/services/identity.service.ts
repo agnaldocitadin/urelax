@@ -1,4 +1,6 @@
 import { Locales, ProfileInput } from "honeybee-api"
+import { ErrorCodes } from "../../../core/error.codes"
+import Logger from "../../../core/Logger"
 import { flatObject } from "../../../core/Utils"
 import { onCreateAccount } from "../../Activity/services"
 import { Account, AccountModel, Preferences, Profile, ProfileModel } from "../models"
@@ -35,17 +37,32 @@ export const findAllowedAccounts = async (): Promise<Account[]> => {
  * @param {*} { name, nickname, email, password }
  * @returns {Promise<Profile>}
  */
-export const createProfile = async ({ name, nickname, email, password, accounts, active }: any): Promise<Profile> => {
+export const createProfile = async ({ name, nickname, email, password }: ProfileInput): Promise<Profile> => {
+    // Real account
+    const account = await AccountModel.create({
+        preference: defaultPreferences,
+        simulation: false,
+        active: true
+    })
+
+    // Simulation account
+    const simulation = await AccountModel.create({
+        preference: defaultPreferences,
+        simulation: true,
+        active: true
+    })
+
     const profile: Profile = {
         name,
         nickname,
         email,
         password,
-        accounts,
-        activeAccount: null,
-        active
+        accounts: [ account, simulation ],
+        activeAccount: account.id,
+        active: true
     }
-    validateProfile(profile)
+    
+    await validateProfile(profile)
     let _profile = await ProfileModel.create(profile)
     onCreateAccount(_profile)
     return _profile
@@ -56,8 +73,10 @@ export const createProfile = async ({ name, nickname, email, password, accounts,
  *
  * @param {Profile} profile
  */
-const validateProfile = (profile: Profile) => {
-    // TODO Validate diplicated e-mail.
+const validateProfile = async (profile: Profile) => {
+    if (await ProfileModel.exists({ email: profile.email })) {
+        Logger.throw(ErrorCodes.PROFILE_EMAIL_DUPLICATED)
+    }
 }
 
 /**

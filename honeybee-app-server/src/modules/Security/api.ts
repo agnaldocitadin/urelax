@@ -5,6 +5,7 @@ import path from 'path'
 import { ErrorCodes } from '../../core/error.codes'
 import Logger from '../../core/Logger'
 import { invoke } from '../../core/Utils'
+import { Profile } from '../Identity/models'
 import { findByEmailPassword } from '../Identity/services'
 import Router, { RouteVersion } from '../Router'
 import './auth/private.key'
@@ -24,16 +25,25 @@ export const registerAPI = (app: Express) => {
             const profile = await findByEmailPassword(email, password)
 
             if (profile) {
-                if (!privateKey) privateKey = fs.readFileSync(path.resolve(__dirname, "./security/private.key"))
-                const token = jwt.sign({ profile: profile._id }, privateKey, {
-                    algorithm: "RS256",
-                    expiresIn: 3000
-                })
+                const token = generateToken(profile)
                 return res.json({ profile, token })
             }
             
             Logger.throw(ErrorCodes.USER_NOT_AUTHORIZED, "User not authorized")
         }, 401)
     })
+}
 
+/**
+ *
+ *
+ * @param {Profile} profile
+ * @returns
+ */
+export const generateToken = (profile: Profile) => {
+    if (!privateKey) privateKey = fs.readFileSync(path.resolve(__dirname, "./security/private.key"))
+    return jwt.sign({ profile: profile._id }, privateKey, {
+        algorithm: "RS256",
+        expiresIn: 3000
+    })
 }

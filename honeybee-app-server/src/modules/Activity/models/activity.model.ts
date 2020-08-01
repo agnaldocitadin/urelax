@@ -17,7 +17,7 @@ export class Translation {
     }
 }
 
-class ActivityDetail {
+export class ActivityDetail {
 
     @prop({ _id: false })
     title?: Translation | string

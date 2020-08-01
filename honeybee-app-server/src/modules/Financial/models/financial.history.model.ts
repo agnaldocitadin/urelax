@@ -60,7 +60,7 @@ export class FinancialHistory {
     transactions?: Transaction[]
 
     @arrayProp({ _id: false, items: Profit })
-    profits: Profit[]
+    profits?: Profit[]
 
     @prop({ required: true })
     locked!: boolean
@@ -71,16 +71,16 @@ export class FinancialHistory {
     @prop({ default: () => new Date() })
     updatedAt?: Date
 
-    public getOpeningValue() {
+    public getOpeningValue?() {
         const opening = this.transactions.filter(transaction => transaction.type === TransactionType.STATEMENT_OPENING)
         return arrays.sum(opening, item => item.value)
     }
 
-    public getClosingValue() {
+    public getClosingValue?() {
         return arrays.sum(this.transactions, item => item.value)
     }
 
-    public getProfit() {
+    public getProfit?() {
         return arrays.sum(this.profits, item => item.value)
     }
 }

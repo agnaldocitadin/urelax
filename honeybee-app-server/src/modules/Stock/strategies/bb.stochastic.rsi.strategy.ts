@@ -29,8 +29,6 @@ type BBStochasticRSISummary = {
 }
 
 /**
- * FIXME
- * TODO Logging buy/sell orders
  *
  * @export
  * @class Strategy3
