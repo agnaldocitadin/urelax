@@ -19,7 +19,7 @@ beforeAll(async () => {
     await connectDB()
 })
 
-it("BBStochasticRSIStrategy Performance Test", async () => {
+it.skip("BBStochasticRSIStrategy Performance Test", async () => {
     jest.setTimeout(50000)
 
     const impl: any = new STRATEGY_TYPE()

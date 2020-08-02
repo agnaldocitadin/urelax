@@ -174,17 +174,18 @@ export const onStockTrackerTurnedToDestroyed = (stockTracker: StockTracker) => {
  *
  * @param {OrderExecution} orderExecution
  * @param {StockTracker} stockTracker
+ * @param {number} profit
  */
-export const onStockOrderExecution = async (orderExecution: OrderExecution, stockTracker: StockTracker) => {
+export const onStockOrderExecution = async (orderExecution: OrderExecution, stockTracker: StockTracker, profit: number) => {
     
     let order = await OrderModel.findOne({ orderBrokerId: orderExecution.orderCode })
     let investiment = <BrokerInvestiment>stockTracker.stockInfo
 
     let details = [
-        { title: ts("stock"), description: `${investiment.description} (${investiment.stock.symbol})` },
-        { title: ts("amount"), description: Utils.Currency.format(order.getTotalOrder(), "R$") },
-        { title: ts("quantity"), description: order.quantity, hidden: true },
-        { title: ts("average_price"), description: Utils.Currency.format(order.getExecutedPriceAverage(), "R$"), hidden: true }
+        { title: { text: "stock" }, description: `${investiment.description} (${investiment.stock.symbol})` },
+        { title: { text: "amount" }, description: Utils.Currency.format(order.getTotalOrder(), "R$") },
+        { title: { text: "quantity" }, description: order.quantity, hidden: true },
+        { title: { text: "average_price" }, description: Utils.Currency.format(order.getExecutedPriceAverage(), "R$"), hidden: true }
     ] as ActivityDetail[]
 
     const base = {
@@ -201,6 +202,10 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
         else {
             base.title = { text: "sell_order_created" }
             base.icon = Icons.ARROW_BOTTOM_LEFT_THICK
+            details.push({ 
+                title: { text: profit >= 0 ? "gain" : "loss" }, 
+                description: Utils.Currency.format(profit, "R$") 
+            })
         }
 
         details.push({ title: ts("id"), description: order.orderBrokerId, hidden: true })

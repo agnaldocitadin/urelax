@@ -1,4 +1,5 @@
 import cronstrue from 'cronstrue'
+import { startOfDay } from 'date-fns'
 import { ProfitType } from 'honeybee-api'
 import schedule from 'node-schedule'
 import Logger from "../../../core/Logger"
@@ -18,26 +19,28 @@ class StockPriceClosing {
     }
 
     async run() {
-        const today = new Date()
+        const today = startOfDay(new Date())
         const trackers = await StockTrackerModel
             .find({ status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }})
             .populate("stockInfo")
 
         trackers.forEach(async tracker => {
-            const lastPrice = await getLastClosingPrice(tracker.getSymbol(), today)
-
-            const firstPrice = tracker.qty * tracker.buyPrice
-            const currentPrice = tracker.qty * lastPrice
-            tracker.currentPrice = lastPrice
+            
+            const todaysClosingPrice = await getLastClosingPrice(tracker.getSymbol(), today)
+            const baseAmount = tracker.getQty() * tracker.getNegotiationPrice()
+            const currentAmount = tracker.getQty() * todaysClosingPrice
+            const profit = currentAmount - baseAmount
+            
+            tracker.currentPrice = todaysClosingPrice
             tracker.save()
 
             addProfit(
                 tracker.getAccountId(),
                 tracker.getBrokerAccountId(), 
-                today, 
                 tracker.getInvestimentId(), 
+                today, 
                 ProfitType.YIELD, 
-                currentPrice - firstPrice
+                profit
             )
         })
     }

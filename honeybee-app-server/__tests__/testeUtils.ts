@@ -1,9 +1,10 @@
+import { mongoose } from '@typegoose/typegoose'
 import dotenv from 'dotenv-flow'
-import { Brokers } from 'honeybee-api'
+import { TransactionType } from 'honeybee-api'
 import Mongoose from 'mongoose'
 import Logger from '../src/core/Logger'
-import { updateBrokerAccountById } from '../src/modules/Broker/services'
-import { updateStockTrackerById } from '../src/modules/Stock/services'
+import { addTransaction } from '../src/modules/Financial/services'
+import { stockPriceClosing } from '../src/modules/Stock/trackers/stock.price.closing'
 
 
 const connectDB = async () => {
@@ -26,6 +27,21 @@ beforeAll(async () => {
 
 it("teste", async () => {
     jest.setTimeout(50000)
+
+    try {
+        stockPriceClosing.run()
+        // addTransaction(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), mongoose.Types.ObjectId("5f06203b5b0180844e5aa64e"), new Date(), {
+        //     dateTime: new Date(),
+        //     type: TransactionType.YIELD,
+        //     investiment: mongoose.Types.ObjectId("5f15af4242754a0949358ec0"),
+        //     value: -20
+        // })
+    }
+    catch(e) {
+        console.error(e)
+    }
+
+    // console.log("sss")
 
 
     // BalanceService.createNewBalanceSheet(ObjectId.createFromHexString("5e2a417deababd0d50cfd797"))
@@ -273,11 +289,11 @@ it("teste", async () => {
     //     }
     // })
 
-    await updateStockTrackerById("5f0fa8713d0a8e292c921d33", {
-        strategySetting: {
-            stockAmountLimit: 480.4
-        }
-    })
+    // await updateStockTrackerById("5f0fa8713d0a8e292c921d33", {
+    //     strategySetting: {
+    //         stockAmountLimit: 480.4
+    //     }
+    // })
 
     // const A = {
     //     account: "A1",

@@ -36,7 +36,7 @@ export const ClearHelper: BrokerHelperInterface = {
         extraData["cpf"] = String(extraData.cpf).replace(/\D/g, "")
         extraData["platformUID"] = "35cb2446-76e3-4082-bc34-1de0ae89c534"
 
-        if (process.env.PRODUCTION_MODE) {
+        if (process.env.PRODUCTION_MODE === "true") {
             let { authCookie, sessionId } = await getCredentials(extraData.cpf, extraData.password, extraData.birthdate)
             extraData["token"] = authCookie
             extraData["sessionId"] = sessionId

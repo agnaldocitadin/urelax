@@ -5,7 +5,7 @@ beforeAll(async () => {
     // await connectDB()
 })
 
-it("cler signin", async () => {
+it.skip("cler signin", async () => {
     jest.setTimeout(50000)
 
     // let res = await API.authenticate("", "")

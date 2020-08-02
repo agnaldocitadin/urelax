@@ -91,7 +91,7 @@ beforeAll(async () => {
     await connectDB()
 })
   
-it("opa", async () => {
+it.skip("opa", async () => {
     jest.setTimeout(50000)
 
     const adapter: BrokerPlugin = new MockBrokerPlugin(null)

@@ -1,8 +1,10 @@
-import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfWeek, subMonths, subWeeks } from 'date-fns'
+import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfDay, startOfWeek, subMonths, subWeeks } from 'date-fns'
 import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary, ProfitType } from 'honeybee-api'
 import { arrays } from 'js-commons'
 import mongoose from 'mongoose'
-import { percentVariation } from '../../../core/Utils'
+import { ErrorCodes } from '../../../core/error.codes'
+import Logger from '../../../core/Logger'
+import { nonNull, percentVariation } from '../../../core/Utils'
 import { BrokerInvestimentModel } from '../../Broker/models'
 import { StockTrackerModel } from '../../Stock/models'
 import { FinancialHistory, FinancialHistoryModel, Transaction } from '../models'
@@ -19,10 +21,10 @@ const STANDARD_QUERY_RESULT = 100
  */
 export const initFinancialHistory = (account: mongoose.Types.ObjectId, brokerAccount: mongoose.Types.ObjectId, date: Date) => {
     return FinancialHistoryModel.create({
-        locked: false,
+        date: startOfDay(date),
         brokerAccount,
+        locked: false,
         account,
-        date
     })
 }
 
@@ -35,17 +37,22 @@ export const initFinancialHistory = (account: mongoose.Types.ObjectId, brokerAcc
  * @param {Transaction} transaction
  */
 export const addTransaction = async (account: mongoose.Types.ObjectId, brokerAccount: mongoose.Types.ObjectId, date: Date, transaction: Transaction) => {
-    let financialHistory = await FinancialHistoryModel.findOne({ account, brokerAccount, date })
-    if (financialHistory.locked) {
-        throw "Oops!"
-    }
+    let financialHistory = await FinancialHistoryModel.findOne({ 
+        account, 
+        brokerAccount, 
+        date: startOfDay(date)
+    })
     
     if (!financialHistory) {
         financialHistory = await initFinancialHistory(account, brokerAccount, date)
     }
 
+    if (financialHistory?.locked) {
+        Logger.throw(ErrorCodes.UNKNOWN, "oops")
+    }
+
     financialHistory.transactions.push(transaction)
-    financialHistory.save()
+    return financialHistory.save()
 }
 
 /**
@@ -53,24 +60,26 @@ export const addTransaction = async (account: mongoose.Types.ObjectId, brokerAcc
  *
  * @param {mongoose.Types.ObjectId} account
  * @param {mongoose.Types.ObjectId} brokerAccount
- * @param {Date} date
  * @param {mongoose.Types.ObjectId} investiment
+ * @param {Date} date
  * @param {ProfitType} type
  * @param {number} value
  */
 export const addProfit = (
     account: mongoose.Types.ObjectId,
     brokerAccount: mongoose.Types.ObjectId,
-    date: Date, 
     investiment: mongoose.Types.ObjectId, 
+    date: Date, 
     type: ProfitType, 
     value: number
     ) => {
 
-    FinancialHistoryModel.updateOne(
-        { account, brokerAccount, date },
-        { "$push": { profits: { type, value, investiment }}}
-    ).exec()
+    if (value !== 0) {
+        FinancialHistoryModel.updateOne(
+            { account, brokerAccount, date: startOfDay(date) },
+            { "$push": { profits: { type, value, investiment }}}
+        ).exec()
+    }
 }
 
 /**
@@ -101,10 +110,10 @@ export const findFinancialHistoryBy = (options: {
         qty = STANDARD_QUERY_RESULT 
     } = options
 
-    return FinancialHistoryModel.find({ 
-            ...account ? { "account": mongoose.Types.ObjectId(String(account)) } : null,
-            ...brokerAccount ? { "brokerAccount": mongoose.Types.ObjectId(String(brokerAccount)) } : null,
-            ...date ? date : null
+    return FinancialHistoryModel.find({
+            ...nonNull("account", account),
+            ...nonNull("brokerAccount", brokerAccount),
+            ...nonNull("date", date)
         })
         .sort({ "date": "desc" })
         .skip(page * qty)

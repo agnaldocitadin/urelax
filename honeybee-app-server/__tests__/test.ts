@@ -13,7 +13,7 @@ beforeAll(async () => {
     // Logger.info(app)
 })
 
-it("teste", async () => {
+it.skip("teste", async () => {
     jest.setTimeout(50000)
 
     // let token = "fPllQznjycw:APA91bFcsXgsc4_rzPqYmjK7Oqn94fN00oIgC2GPesRYYd09MQRxC9NeLUtda0gz8DrmkbNpEH-W9_DhVQfGAq-xvBZyVv3-LRHarY16WMJ8d_aR41J9x5pDG-wyNNXWNvpH1A3xxa2d"

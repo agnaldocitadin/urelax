@@ -16,7 +16,7 @@ export const PluginFactory = {
      *
      */
     init: async () => {
-        if (process.env.USE_REAL_BROKER_ADAPTER) {
+        if (process.env.USE_REAL_BROKER_ADAPTER === "true") {
             Object.values(BrokerPluginNames).map(adapter => {
                 adapters.set(adapter.id, adapter.impl)
                 Logger.info("BrokerAdapter loaded -> %s", JSON.stringify(adapter))
@@ -32,7 +32,7 @@ export const PluginFactory = {
      * @returns {BrokerPlugin}
      */
     create: (brokerAccount: BrokerAccount, simulation: boolean): BrokerPlugin => {
-        if (simulation || !process.env.USE_REAL_BROKER_ADAPTER) {
+        if (simulation || process.env.USE_REAL_BROKER_ADAPTER !== "true") {
             let id = ObjectID.createFromTime(Date.now())
             return new MockBrokerPlugin(id)
         }

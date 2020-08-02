@@ -34,7 +34,7 @@ const initModules = async (app: Express) => {
     prepare(app)
     Logger.info("Discovering modules...")
     const moduleNames = Object.keys(modulePath.modules)
-    moduleNames.forEach(module => Logger.info("- %s module loaded successfully.", module.toUpperCase()))
+    moduleNames.forEach(module => Logger.info("-> %s module loaded successfully.", module.toUpperCase()))
     Logger.info("Modules discovering done.")
 
     return Promise.all(moduleNames.map( async (name) => {

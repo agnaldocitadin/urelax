@@ -17,10 +17,11 @@ const ICON_COLOR = "#1099f5"
  * @param {Order} order
  */
 const notifyBuy = (deviceToken: string, order: Order) => {
+    const buyMessage = order.quantity > 0 ? "order_stock_plural" : "order_stock"
     admin.messaging().sendToDevice(deviceToken, {
         notification: {
             title: ts("buy_stock"),
-            body: ts("order_stock", { 
+            body: ts(buyMessage, { 
                 count: order.quantity, 
                 symbol: order.stock.symbol, 
                 amount: Utils.Currency.format(order.getTotalOrder(), "R$")
@@ -42,13 +43,16 @@ const notifyBuy = (deviceToken: string, order: Order) => {
  * @param {number} [profit=0]
  */
 const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
+    const sellMessage = order.quantity > 0 ? "order_stock_sell_plural" : "order_stock_sell"
     admin.messaging().sendToDevice(deviceToken, {
         notification: {
             title: ts("sell_stock"),
-            body: ts("order_stock", { 
+            body: ts(sellMessage, { 
                 count: order.quantity, 
                 symbol: order.stock.symbol,
-                amount: Utils.Currency.format(order.getTotalOrder(), "R$")
+                amount: Utils.Currency.format(order.getTotalOrder(), "R$"),
+                profit: profit >= 0 ? "gain" : "loss",
+                profit_value: Utils.Currency.format(profit, "R$")
             }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR
@@ -65,11 +69,11 @@ const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
  * @param {OrderExecution} execution
  * @param {string} deviceToken
  */
-export const notifyOrder = async (execution: OrderExecution, deviceToken: string) => {
-    if (execution.status === OrderStatus.FILLED) {
-        let order = await OrderModel.findOne({ orderBrokerId: execution.orderCode }).populate("stock").exec()
+export const notifyOrder = async (execution: OrderExecution, profit: number, deviceToken: string) => {
+    if (execution.status === OrderStatus.FILLED && !!deviceToken) {
+        const order = await OrderModel.findOne({ orderBrokerId: execution.orderCode })
         if (order.side === OrderSides.BUY) notifyBuy(deviceToken, order)
-        if (order.side === OrderSides.SELL) notifySell(deviceToken, order)
+        if (order.side === OrderSides.SELL) notifySell(deviceToken, order, profit)
     }
 }
 

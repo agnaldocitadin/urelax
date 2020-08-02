@@ -50,13 +50,13 @@ export class StockTracker {
     @prop({ ref: BrokerInvestiment, required: true })
     stockInfo!: Ref<BrokerInvestiment>
 
-    @prop()
+    @prop({ default: 0 })
     qty?: number
 
-    @prop()
+    @prop({ default: 0 })
     buyPrice?: number
     
-    @prop()
+    @prop({ default: 0 })
     currentPrice: number
 
     @prop({ default: () => new Date() })
@@ -109,6 +109,18 @@ export class StockTracker {
 
     public getStockLot?() {
         return (<BrokerInvestiment>this.stockInfo)?.stock?.stockLot
+    }
+
+    public getQty?() {
+        return this.qty || 0
+    }
+
+    public getBuyPrice?() {
+        return this.buyPrice || 0
+    }
+
+    public getNegotiationPrice?() {
+        return (this.currentPrice || this.buyPrice) || 0
     }
     
 }

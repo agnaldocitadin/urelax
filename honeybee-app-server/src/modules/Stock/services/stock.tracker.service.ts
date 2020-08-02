@@ -1,3 +1,4 @@
+import { DocumentType, mongoose } from "@typegoose/typegoose"
 import { ProfitType, StockTrackerInput, StockTrackerStatus, TransactionType } from "honeybee-api"
 import { mergeObjects, nonNull } from "../../../core/Utils"
 import { onStockOrderExecution, onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
@@ -113,8 +114,9 @@ export const makeStockOrder = (stockTracker: StockTracker, {
  */
 export const buildStockTrackersFrom = async (account: Account): Promise<Investor[]> => {
     let trackers = await StockTrackerModel.find({ account, status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }})
-        .populate("brokerAccount")
         .populate("account")
+        .populate("brokerAccount")
+        .populate("stockInfo")
     return trackers.map(model => StockTrackerFactory.create(model))
 }
 
@@ -272,21 +274,22 @@ export const updateStockTrackerById = async (_id: string, input: StockTrackerInp
 export const processOrderExecution = async (execution: OrderExecution, stockTracker: StockTracker) => {
     // TODO isso precisa executar apenas uma vez!
     
-    const order = await OrderModel.findById(execution.orderCode)
+    const order = await OrderModel.findOne({ orderBrokerId: execution.orderCode })
+    let profit = 0
     
     if (order.side === OrderSides.BUY) {
-        processBuyOrder(execution, stockTracker)
+        await processBuyOrder(execution, stockTracker)
         updateStockTrackerOnBuy(execution, stockTracker)
     }
     
     if (order.side === OrderSides.SELL) {
-        processSellOrder(execution, stockTracker)
+        profit = await processSellOrder(execution, stockTracker)
         updateStockTrackerOnSell(execution, stockTracker)
     }
 
-    onStockOrderExecution(execution, stockTracker)
+    onStockOrderExecution(execution, stockTracker, profit)
     const deviceToken = (<Account>stockTracker.account).getActiveDevice().token
-    notifyOrder(execution, deviceToken)
+    notifyOrder(execution, profit, deviceToken)
 }
 
 /**
@@ -296,12 +299,9 @@ export const processOrderExecution = async (execution: OrderExecution, stockTrac
  * @param {StockTracker} stockTracker
  */
 const updateStockTrackerOnBuy = (execution: OrderExecution, stockTracker: StockTracker) => {
-    stockTracker.qty += execution.quantity
-    if (stockTracker.qty > 0) {
-        stockTracker.buyPrice = (stockTracker.buyPrice + execution.price) / 2
-        return
-    }
-    stockTracker.buyPrice = execution.price
+    stockTracker.buyPrice = stockTracker.qty > 0 ? ((stockTracker.buyPrice + execution.price) / 2) : execution.price
+    stockTracker.qty += execution.quantity;
+    (<DocumentType<StockTracker>>stockTracker).save()
 }
 
 /**
@@ -316,6 +316,7 @@ const updateStockTrackerOnSell = (execution: OrderExecution, stockTracker: Stock
         stockTracker.buyPrice = 0
         stockTracker.currentPrice = 0
     }
+    (<DocumentType<StockTracker>>stockTracker).save()
 }
 
 /**
@@ -324,19 +325,19 @@ const updateStockTrackerOnSell = (execution: OrderExecution, stockTracker: Stock
  * @param {OrderExecution} execution
  * @param {StockTracker} stockTracker
  */
-const processBuyOrder = (execution: OrderExecution, stockTracker: StockTracker) => {
+const processBuyOrder = async (execution: OrderExecution, stockTracker: StockTracker) => {
     
     const now = new Date()
     const orderValue = execution.price * execution.quantity
 
-    addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
-        investiment: null, // TODO Money
+    await addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+        investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"), // TODO get the Money investiment
         type: TransactionType.TRANSFER,
         value: -orderValue,
         dateTime: now
     })
     
-    addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+    await addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
         investiment: stockTracker.getInvestimentId(),
         type: TransactionType.TRANSFER,
         value: orderValue,
@@ -351,22 +352,22 @@ const processBuyOrder = (execution: OrderExecution, stockTracker: StockTracker) 
  * @param {OrderExecution} execution
  * @param {StockTracker} stockTracker
  */
-const processSellOrder = (execution: OrderExecution, stockTracker: StockTracker) => {
+const processSellOrder = async (execution: OrderExecution, stockTracker: StockTracker) => {
 
     const now = new Date()
-    const stockValue = stockTracker.currentPrice * execution.quantity
+    const stockValue = stockTracker.getNegotiationPrice() * execution.quantity
     const moneyValue = execution.price * execution.quantity
     const profitValue = moneyValue - stockValue
 
-    addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+    await addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
         investiment: stockTracker.getInvestimentId(),
         type: TransactionType.TRANSFER,
         value: -stockValue,
         dateTime: now
     })
 
-    addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
-        investiment: null, // TODO Money
+    await addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+        investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"), // // TODO get the Money investiment
         type: TransactionType.TRANSFER,
         value: moneyValue,
         dateTime: now,
@@ -375,10 +376,11 @@ const processSellOrder = (execution: OrderExecution, stockTracker: StockTracker)
     addProfit(
         stockTracker.getAccountId(), 
         stockTracker.getBrokerAccountId(), 
-        now,
         stockTracker.getInvestimentId(),
+        now,
         ProfitType.EXCHANGE, 
         profitValue
     )
     
+    return profitValue
 }

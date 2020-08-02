@@ -16,6 +16,9 @@
     "WAITING_DESTROY" : "Aguardando ser destruído",
     "DESTROYED" : "Destruído",
 
+    "gain": "Ganho",
+    "loss": "Perda",
+
     "STRATEGY_ONE": "Bollinger Bands + Stochastic RSI", 
     "account_is_simulation" : "A simulation account can't be created from another simulation account.",
     "account_has_already_simulation" : "UserAccount {{id}} has already an active simulation account.",
@@ -47,8 +50,10 @@
     "average_price" : "Preço médio",
     "buy_stock" : "Compra de ações",
     "sell_stock" : "Venda de ações",
-    "order_stock" : "{{count}} ação em {{symbol}} no valor total de {{amount}}",
-    "order_stock_plural" : "{{count}} ações em {{symbol}} no valor total de {{amount}}",
+    "order_stock" : "{{count}} ação em {{symbol}} no valor total de {{amount}}.",
+    "order_stock_plural" : "{{count}} ações em {{symbol}} no valor total de {{amount}}.",
+    "order_stock_sell" : "{{count}} ação em {{symbol}} no valor total de {{amount}}. {{profit}} de {{profit_value}}.",
+    "order_stock_sell_plural" : "{{count}} ações em {{symbol}} no valor total de {{amount}}. {{profit}} de {{profit_value}}.",
     "buy_order_created" : "Compra realizada em",
     "sell_order_created" : "Venda realizada de",
     "buy_order_rejected" : "Compra rejeitada",
