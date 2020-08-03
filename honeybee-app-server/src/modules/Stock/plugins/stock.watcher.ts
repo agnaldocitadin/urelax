@@ -1,6 +1,7 @@
 import cronstrue from 'cronstrue'
 import schedule from 'node-schedule'
 import Logger from '../../../core/Logger'
+import { findAvailableInvestiments } from '../../Broker/services'
 import { ClearStockUpdater } from './clear.stock.updater'
 import { StockUpdaterPlugin } from './stock.updater.plugin'
 
@@ -39,8 +40,8 @@ class StockWatcher {
      */
     schedule(): void {
         if (process.env.STOCKWATCHER_ACTIVE === "true") {
-            Logger.info("StockWatcher # STARTS: %s", cronstrue.toString(process.env.STOCKWATCHER_START))
-            Logger.info("StockWatcher # STOPs: %s", cronstrue.toString(process.env.STOCKWATCHER_STOP))
+            Logger.info("(+-) StockWatcher # STARTS: %s", cronstrue.toString(process.env.STOCKWATCHER_START))
+            Logger.info("(+-) StockWatcher # STOPs: %s", cronstrue.toString(process.env.STOCKWATCHER_STOP))
             schedule.scheduleJob(process.env.STOCKWATCHER_START, () => this.start())
             schedule.scheduleJob(process.env.STOCKWATCHER_STOP, () => this.stop())
         }
@@ -83,7 +84,8 @@ class StockWatcher {
      * @memberof StockWatcher
      */
     private async fetchSymbols(): Promise<string[]> {
-        return Promise.resolve(["ABEV3"]) // FIXME
+        const invs = await findAvailableInvestiments({})
+        return Promise.resolve(invs.map(investiment => investiment.stock?.symbol)) // FIXME
     }
 
 }

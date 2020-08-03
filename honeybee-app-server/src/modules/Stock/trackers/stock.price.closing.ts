@@ -14,14 +14,14 @@ class StockPriceClosing {
     }
 
     schedule(): void {
-        Logger.info("Stock price closing will run at %s", cronstrue.toString(process.env.STOCK_PRICE_CLOSING_JOB))
+        Logger.info("(+-) Stock price closing will run at %s", cronstrue.toString(process.env.STOCK_PRICE_CLOSING_JOB))
         schedule.scheduleJob(process.env.STOCK_PRICE_CLOSING_JOB, () => this.run())
     }
 
     async run() {
         const today = startOfDay(new Date())
         const trackers = await StockTrackerModel
-            .find({ status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }})
+            .find({ status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }, qty: { "$gt": 0 }})
             .populate("stockInfo")
 
         trackers.forEach(async tracker => {

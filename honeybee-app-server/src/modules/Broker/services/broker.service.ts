@@ -41,12 +41,21 @@ export const findByCode = (brokerCode: Brokers): Promise<Broker> => {
 /**
  *
  *
- * @param {{ search?: string, brokerIDs?: mongoose.Types.ObjectId[] }} options
+ * @param {{ 
+ *         search?: string
+ *         brokerIDs?: mongoose.Types.ObjectId[],
+ *         types?: InvestimentType[]
+ *     }} options
  * @returns {Promise<BrokerInvestiment[]>}
  */
-export const findAvailableInvestiments = (options: { search?: string, brokerIDs?: mongoose.Types.ObjectId[] }): Promise<BrokerInvestiment[]> => {
+export const findAvailableInvestiments = (options: { 
+        search?: string
+        brokerIDs?: mongoose.Types.ObjectId[],
+        types?: InvestimentType[]
+    }): Promise<BrokerInvestiment[]> => {
+
     return BrokerInvestimentModel
-        .find({ type: InvestimentType.STOCK })
+        .find({ type: { "$in": [InvestimentType.STOCK] }, active: true })
         .populate("broker")
         .exec()
 }

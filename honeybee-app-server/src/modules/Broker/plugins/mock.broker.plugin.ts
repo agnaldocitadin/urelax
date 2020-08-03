@@ -42,7 +42,7 @@ export class MockBrokerPlugin extends BaseBrokerPlugin {
     }
     
     async totalAvailableAmount(stockTracker: StockTracker, plaftorm: OrderPlatforms, orderSide: OrderSides, symbol: string): Promise<number> {
-        // TODO perguntar para o tracker de money quanto tem disponível
+        // TODO Ask to the money tracker how much is available
         return Promise.resolve(25000)
     }
 
