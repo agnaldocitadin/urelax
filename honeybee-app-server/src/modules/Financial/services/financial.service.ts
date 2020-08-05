@@ -1,10 +1,10 @@
 import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfDay, startOfWeek, subMonths, subWeeks } from 'date-fns'
 import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary, ProfitType } from 'honeybee-api'
-import { arrays } from 'js-commons'
+import { arrays, utils } from 'js-commons'
 import mongoose from 'mongoose'
 import { ErrorCodes } from '../../../core/error.codes'
 import Logger from '../../../core/Logger'
-import { nonNull, percentVariation, toObjectId } from '../../../core/Utils'
+import { toObjectId } from '../../../core/server-utils'
 import { BrokerInvestimentModel } from '../../Broker/models'
 import { StockTrackerModel } from '../../Stock/models'
 import { FinancialHistory, FinancialHistoryModel, Profit, Transaction } from '../models'
@@ -111,9 +111,9 @@ export const findFinancialHistoryBy = (options: {
     } = options
 
     return FinancialHistoryModel.find({
-            ...nonNull("account", account),
-            ...nonNull("brokerAccount", brokerAccount),
-            ...nonNull("date", date)
+            ...utils.nonNull("account", account),
+            ...utils.nonNull("brokerAccount", brokerAccount),
+            ...utils.nonNull("date", date)
         })
         .sort({ "date": "desc" })
         .skip(page * qty)
@@ -171,7 +171,7 @@ export const groupFinancialSummaryBy = async (options: {
 
         return {
             patrimony: closing,
-            variation: percentVariation(opening, closing),
+            variation: utils.percentVariation(opening, closing),
             when: createFinancialAnalysisLabel(dailyHistory.date, FinancialAnalysisPeriod.DAILY)
         }
     })
@@ -346,7 +346,7 @@ const toFinancialAnalysis = (label: string, opening: number, closing: number, pr
 
     return {
         label,
-        variation: percentVariation(opening, closing),
+        variation: utils.percentVariation(opening, closing),
         amount: closing,
         items
     }

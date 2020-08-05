@@ -1,8 +1,8 @@
 import { BrokerAccountInput, Brokers } from "honeybee-api"
+import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
-import { mergeObjects } from "../../../core/Utils"
 import { ClearHelper } from "../helpers/clear.helper"
 import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
 
@@ -47,7 +47,7 @@ export const createBrokerAccount = async (input: BrokerAccount) => {
  */
 export const updateBrokerAccountById = async (_id: string, input: BrokerAccountInput) => {
     const account = await BrokerAccountModel.findById(_id)
-    const _input = mergeObjects<BrokerAccount>(account.toObject(), input)
+    const _input = utils.mergeObjects<BrokerAccount>(account.toObject(), input)
     validate(_input)
     
     const helper = BrokerAccountHelper.convert(_input.brokerCode)

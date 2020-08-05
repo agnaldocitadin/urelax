@@ -1,8 +1,9 @@
+import { startOfDay } from "date-fns"
 import { StockTrackerStatus } from "honeybee-api"
+import { arrays } from "js-commons"
 import { ATR, BollingerBands, StochasticRSI } from "technicalindicators"
 import { BollingerBandsOutput } from "technicalindicators/declarations/volatility/BollingerBands"
 import Logger from "../../../core/Logger"
-import { Utils } from "../../../core/Utils"
 import { BrokerPlugin } from "../../Broker/plugins/broker.plugin"
 import { OrderPlatforms, OrderSides, OrderTypes } from "../../Order/models/order.model"
 import { StockHistory } from "../models/stock.history.model"
@@ -26,6 +27,10 @@ const RSI_PERIOD = 14
 type BBStochasticRSISummary = {
     trend: "hight" | "low" | "neutral"
     price: number
+}
+
+const randomIntFromInterval = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 /**
@@ -64,7 +69,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
         const history = await getHistory(symbol, referenceDate, frequency, DATA_LENGTH, true)
         
         if (this.hasEnoughData(history)) {
-            const currentPrice = Utils.Array.lastElement(history).closingPrice
+            const currentPrice = arrays.lastElement(history).closingPrice
             this.updateRSIStochastic(history)
     
             if (this.isTimeToBuy(history, stockTracker)) {
@@ -88,7 +93,8 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      * @memberof BBStochasticRSIStrategy
      */
     private hasEnoughData(history: StockHistory[]) {
-        return history.length === DATA_LENGTH
+        return true
+        // return history.length === DATA_LENGTH
     }
 
     /**
@@ -119,9 +125,9 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
         })
 
         this.analizer.addValue({ 
-            close: Utils.Array.lastElement(history).closingPrice, 
-            d: Utils.Array.lastElement(rsiResult).d, 
-            k: Utils.Array.lastElement(rsiResult).k 
+            close: arrays.lastElement(history).closingPrice, 
+            d: arrays.lastElement(rsiResult).d, 
+            k: arrays.lastElement(rsiResult).k 
         })
     }
 
@@ -135,11 +141,12 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      */
     private isTimeToBuy(history: StockHistory[], stockTracker: StockTracker): boolean {
         if (this.bought) return false
+        return randomIntFromInterval(0, 500) < 20
         
         const closes = history.map(event => event.closingPrice)
         const BBResult = BollingerBands.calculate({ values: closes, period: BB_PERIOD, stdDev: BB_STDDEV })
-        const currentBB = Utils.Array.lastElement(BBResult)
-        const lastHistory = Utils.Array.lastElement(history)
+        const currentBB = arrays.lastElement(BBResult)
+        const lastHistory = arrays.lastElement(history)
         const currentPrice = lastHistory.closingPrice
         
         const touchedBottomBand = lastHistory.lowestPrice < currentBB.lower
@@ -171,9 +178,10 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      */
     private isTimeToSell(history: StockHistory[], stockTracker: StockTracker): boolean {
         if (!this.bought) return false
+        return randomIntFromInterval(0, 500) > 480
 
         const closes = history.map(event => event.closingPrice)
-        const currentPrice = Utils.Array.lastElement(closes)
+        const currentPrice = arrays.lastElement(closes)
 
         if (currentPrice > this.lastBestPriceTrendUp) {
             this.updateStopLoss(currentPrice)
@@ -263,9 +271,9 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      * @memberof BBStochasticRSIStrategy
      */
     private isSecondCandleBelowAverage(bollingerBands: BollingerBandsOutput): boolean {
-        let candles = Utils.Array.lastElements(this.lastCandles, ANALIZE_CANDLES)
-        let firstTwoCandlesBelowAverage = Utils.Array.firstElements(candles, 2).every(candle => candle.closingPrice <= bollingerBands.middle)
-        let lastOneCandleBelowAverage = Utils.Array.lastElement(candles).closingPrice <= bollingerBands.middle
+        let candles = arrays.lastElements(this.lastCandles, ANALIZE_CANDLES)
+        let firstTwoCandlesBelowAverage = arrays.firstElements(candles, 2).every(candle => candle.closingPrice <= bollingerBands.middle)
+        let lastOneCandleBelowAverage = arrays.lastElement(candles).closingPrice <= bollingerBands.middle
         this.reset()
         return firstTwoCandlesBelowAverage && lastOneCandleBelowAverage
     }
@@ -294,7 +302,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      */
     private find3BullishCandle(currentBB: BollingerBandsOutput): boolean {
         if (this.lastCandles.length < ANALIZE_CANDLES) return false
-        const threeLastCandles = Utils.Array.lastElements(this.lastCandles, ANALIZE_CANDLES)
+        const threeLastCandles = arrays.lastElements(this.lastCandles, ANALIZE_CANDLES)
         const candles = threeLastCandles.filter(candle => candle.lowestPrice > currentBB.lower)
         return candles.length === ANALIZE_CANDLES && candles.every(candle => this.isBullish(candle))
     }
@@ -365,7 +373,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
             period: ATR_PERIOD
         })
 
-        let ATRValue = Utils.Array.lastElement(ATRResult)
+        let ATRValue = arrays.lastElement(ATRResult)
         return price - (ATRValue * STOPLOSS_FACTOR)
     }
 
@@ -387,7 +395,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
                 platform: OrderPlatforms.SWINGTRADE,
                 orderSide: OrderSides.BUY,
                 orderType: OrderTypes.LIMIT,
-                expiresAt: Utils.Date.today(),
+                expiresAt: startOfDay(new Date()),
                 quantity,
                 price,
             }
@@ -412,7 +420,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
             platform: OrderPlatforms.SWINGTRADE,
             orderSide: OrderSides.SELL,
             orderType: OrderTypes.LIMIT,
-            expiresAt: Utils.Date.today(),
+            expiresAt: startOfDay(new Date()),
             quantity,
             price
         }

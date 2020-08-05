@@ -1,7 +1,7 @@
 import admin from 'firebase-admin'
 import { MessageTypes, NotificationMessage, StockTrackerStatus } from 'honeybee-api'
+import { utils } from 'js-commons'
 import { ts } from '../../../core/i18n'
-import { Utils } from '../../../core/Utils'
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
 import { Account } from '../../Identity/models'
 import { Order, OrderModel, OrderSides, OrderStatus } from "../../Order/models/order.model"
@@ -24,7 +24,7 @@ const notifyBuy = (deviceToken: string, order: Order) => {
             body: ts(buyMessage, { 
                 count: order.quantity, 
                 symbol: order.stock.symbol, 
-                amount: Utils.Currency.format(order.getTotalOrder(), "R$")
+                amount: utils.formatCurrency(order.getTotalOrder(), { prefix: "R$" })
             }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR
@@ -50,9 +50,9 @@ const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
             body: ts(sellMessage, { 
                 count: order.quantity, 
                 symbol: order.stock.symbol,
-                amount: Utils.Currency.format(order.getTotalOrder(), "R$"),
+                amount: utils.formatCurrency(order.getTotalOrder(), { prefix: "R$" }),
                 profit: profit >= 0 ? "gain" : "loss",
-                profit_value: Utils.Currency.format(profit, "R$")
+                profit_value: utils.formatCurrency(profit, { prefix: "R$"})
             }),
             icon: NOTIFICATION_ICON,
             color: ICON_COLOR

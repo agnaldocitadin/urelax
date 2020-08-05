@@ -1,6 +1,6 @@
 import { ActivityType } from "honeybee-api"
+import { utils } from 'js-commons'
 import { ts } from "../../../core/i18n"
-import { Utils } from "../../../core/Utils"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
 import { Profile } from "../../Identity/models/profile.model"
@@ -183,9 +183,9 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
 
     let details = [
         { title: { text: "stock" }, description: `${investiment.description} (${investiment.stock.symbol})` },
-        { title: { text: "amount" }, description: Utils.Currency.format(order.getTotalOrder(), "R$") },
+        { title: { text: "amount" }, description: utils.formatCurrency(order.getTotalOrder(), { prefix: "R$"})},
         { title: { text: "quantity" }, description: order.quantity, hidden: true },
-        { title: { text: "average_price" }, description: Utils.Currency.format(order.getExecutedPriceAverage(), "R$"), hidden: true }
+        { title: { text: "average_price" }, description: utils.formatCurrency(order.getExecutedPriceAverage(), { prefix: "R$"}), hidden: true }
     ] as ActivityDetail[]
 
     const base = {
@@ -204,7 +204,7 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
             base.icon = Icons.ARROW_BOTTOM_LEFT_THICK
             details.push({ 
                 title: { text: profit >= 0 ? "gain" : "loss" }, 
-                description: Utils.Currency.format(profit, "R$") 
+                description: utils.formatCurrency(profit, { prefix: "R$" }) 
             })
         }
 

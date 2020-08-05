@@ -1,5 +1,5 @@
 import { AdapterCallbacks, BaseBrokerPlugin, OrderExecution } from "."
-import { Utils } from "../../../core/Utils"
+import { DelayedAction } from "../../../core/server-utils"
 import { Order, OrderPlatforms, OrderSides, OrderStatus } from "../../Order/models"
 import { StockTracker } from "../../Stock/models"
 
@@ -21,7 +21,7 @@ export class MockBrokerPlugin extends BaseBrokerPlugin {
             status: OrderStatus.FILLED,
         }
 
-        Utils.delayedAction().run(() => this.callbacks.get(AdapterCallbacks.ORDER_EXECUTION)(orderExecution), EXECUTION_DELAY)
+        new DelayedAction().run(() => this.callbacks.get(AdapterCallbacks.ORDER_EXECUTION)(orderExecution), EXECUTION_DELAY)
         return code
     }
     
@@ -37,7 +37,7 @@ export class MockBrokerPlugin extends BaseBrokerPlugin {
             status: OrderStatus.FILLED
         }
 
-        Utils.delayedAction().run(() => this.callbacks.get(AdapterCallbacks.ORDER_EXECUTION)(orderExecution), EXECUTION_DELAY)
+        new DelayedAction().run(() => this.callbacks.get(AdapterCallbacks.ORDER_EXECUTION)(orderExecution), EXECUTION_DELAY)
         return code
     }
     

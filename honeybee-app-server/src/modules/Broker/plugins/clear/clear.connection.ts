@@ -1,7 +1,7 @@
 import ip from 'public-ip'
 import WebSocket from 'ws'
 import Logger from '../../../../core/Logger'
-import { DelayedAction, Utils } from '../../../../core/Utils'
+import { DelayedAction } from '../../../../core/server-utils'
 import { Clear } from '../../models'
 import { BrokerAccount } from '../../models/broker.account.model'
 import { ClearMessages } from './clear.messages'
@@ -38,8 +38,8 @@ export class ClearConnection {
         this.account = account
         this.authenticated = false
         this.keepAlive = keepAlive
-        this.keepAliveTimer = Utils.delayedAction()
-        this.autoConnectTimer = Utils.delayedAction()
+        this.keepAliveTimer = new DelayedAction()
+        this.autoConnectTimer = new DelayedAction()
     }
 
     /**

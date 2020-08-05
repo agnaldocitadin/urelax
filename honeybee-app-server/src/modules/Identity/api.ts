@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import { ProfileInput } from 'honeybee-api'
-import { invoke } from '../../core/Utils'
+import { invoke } from '../../core/server-utils'
 import Router, { RouteVersion } from '../Router'
 import { generateToken } from '../Security/api'
 import { createProfile } from './services'

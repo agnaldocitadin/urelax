@@ -1,6 +1,6 @@
 import { DocumentType, mongoose } from "@typegoose/typegoose"
 import { ProfitType, StockTrackerInput, StockTrackerStatus, TransactionType } from "honeybee-api"
-import { mergeObjects, nonNull } from "../../../core/Utils"
+import { utils } from "js-commons"
 import { onStockOrderExecution, onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins"
@@ -41,7 +41,7 @@ export const createNewStockTracker = async (model: StockTracker): Promise<StockT
  * @returns {Promise<void>}
  */
 const validate = async (stockTracker: StockTracker): Promise<void> => {
-    // FIXME
+    // TODO
     // const stockModel = {} //await StockModel.findById(stockTracker.stock).exec()
 
     // if (!stockModel) {
@@ -138,10 +138,10 @@ export const findStockTrackers = async (options: {
     } = options
 
     return StockTrackerModel.find({ 
-            ...nonNull("_id", id),
-            ...nonNull("account", account),
-            ...nonNull("status", status),
-            ...nonNull("frequency", frequency)
+            ...utils.nonNull("_id", id),
+            ...utils.nonNull("account", account),
+            ...utils.nonNull("status", status),
+            ...utils.nonNull("frequency", frequency)
         })
         .populate("account")
         .populate("stockInfo")
@@ -259,7 +259,7 @@ export const registerUpdate = (stockTracker: StockTracker, dateUpdate: Date) => 
  */
 export const updateStockTrackerById = async (_id: string, input: StockTrackerInput): Promise<StockTracker> => {
     const stockTracker = await StockTrackerModel.findById(_id)
-    const _input = mergeObjects<StockTracker>(stockTracker.toObject(), input)
+    const _input = utils.mergeObjects<StockTracker>(stockTracker.toObject(), input)
     await validate(_input)
     await StockTrackerModel.updateOne({ _id }, _input)
     return _input

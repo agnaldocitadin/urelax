@@ -1,5 +1,6 @@
+import { utils } from "js-commons"
 import Logger from "../../../core/Logger"
-import { Utils } from "../../../core/Utils"
+import { DelayedAction } from "../../../core/server-utils"
 import { BrokerAccountModel } from "../../Broker/models/broker.account.model"
 import { ClearConnection } from "../../Broker/plugins/clear/clear.connection"
 import { ClearMessages } from "../../Broker/plugins/clear/clear.messages"
@@ -59,7 +60,7 @@ export class ClearStockUpdater implements StockUpdaterPlugin {
      */
     private async signSymbols() {
         for (let symbol of this.symbols) {
-            await Utils.sleep(50)
+            await utils.sleep(50)
             this.signMessage(symbol)
         }
     }
@@ -74,7 +75,7 @@ export class ClearStockUpdater implements StockUpdaterPlugin {
     private signMessage(symbol: string): void {
         this.request.send(ClearMessages.SignQuoteRequest, { Symbol: symbol, Sign: true }).then(response => {
             if (response.message.Result === -100) {
-                Utils.delayedAction().run(() => this.signMessage(symbol), SYMBOL_SIGNATURE_DELAY)
+                new DelayedAction().run(() => this.signMessage(symbol), SYMBOL_SIGNATURE_DELAY)
                 Logger.error(`${symbol} Symbol signature error, retrying in ${SYMBOL_SIGNATURE_DELAY} miliseconds`, response.message)
                 return
             }

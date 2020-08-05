@@ -1,7 +1,7 @@
 import { Locales, ProfileInput } from "honeybee-api"
+import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
-import { flatObject } from "../../../core/Utils"
 import { onCreateAccount } from "../../Activity/services"
 import { Account, AccountModel, Preferences, Profile, ProfileModel } from "../models"
 
@@ -87,7 +87,7 @@ const validateProfile = async (profile: Profile) => {
  * @returns
  */
 export const updateProfile = (_id: string, changes: ProfileInput) => {
-    const _changes = flatObject(changes)
+    const _changes = utils.flatObject(changes)
     return ProfileModel.updateOne({ _id }, { "$set": _changes }).exec()
 }
 
@@ -99,7 +99,7 @@ export const updateProfile = (_id: string, changes: ProfileInput) => {
  * @returns
  */
 export const updateAccount = (_id: string, changes: Account) => {
-    let _changes = flatObject(changes)
+    let _changes = utils.flatObject(changes)
     return AccountModel.updateOne({ _id }, { "$set": _changes }).exec()
 }
 

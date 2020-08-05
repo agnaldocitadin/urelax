@@ -1,8 +1,8 @@
+import { utils } from "js-commons"
 import { Types } from "mongoose"
 import { AdapterCallbacks, BaseBrokerPlugin, OrderExecution } from ".."
 import { ErrorCodes } from "../../../../core/error.codes"
 import Logger from "../../../../core/Logger"
-import { Utils } from "../../../../core/Utils"
 import { Order, OrderPlatforms, OrderSides, OrderTypes } from "../../../Order/models"
 import { StockTracker } from "../../../Stock/models"
 import { BrokerAccount, BrokerAccountModel, Clear } from "../../models"
@@ -74,8 +74,8 @@ export class ClearPlugin extends BaseBrokerPlugin {
 
         const response = await this.request.send(ClearMessages.WarrantiesReportRequest, payload)
         try {
-            if (plaftorm === OrderPlatforms.SWINGTRADE) return Utils.Number.toFixed(response.message.Report.SwingTradeWarrantiesReportInfo.TotalAmount, 2)
-            if (plaftorm === OrderPlatforms.DAYTRADE) return Utils.Number.toFixed(response.message.Report.DayTradeWarrantiesReportInfo.Available, 2)
+            if (plaftorm === OrderPlatforms.SWINGTRADE) return utils.toFixed(response.message.Report.SwingTradeWarrantiesReportInfo.TotalAmount, 2)
+            if (plaftorm === OrderPlatforms.DAYTRADE) return utils.toFixed(response.message.Report.DayTradeWarrantiesReportInfo.Available, 2)
             return 0
         }
         catch(e) {
@@ -171,7 +171,7 @@ export class ClearPlugin extends BaseBrokerPlugin {
     private buildSwingTradeOrderInfo(order: Order) {
         return { 
             ExpiresAt: order.stock.expiresAt.getTime(), 
-            ... order.stock.type === OrderTypes.STOP ? { StopPx: Utils.Number.toFixed(order.price, 2) } : {}
+            ... order.stock.type === OrderTypes.STOP ? { StopPx: utils.toFixed(order.price, 2) } : {}
         }
     }
 
