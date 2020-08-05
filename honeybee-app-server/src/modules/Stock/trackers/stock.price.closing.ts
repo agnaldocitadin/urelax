@@ -7,6 +7,11 @@ import { addProfit } from '../../Financial/services'
 import { StockTrackerModel } from '../models'
 import { getLastClosingPrice, STOCK_TRACKER_STATUS_INACTIVE } from '../services'
 
+/**
+ *
+ *
+ * @class StockPriceClosing
+ */
 class StockPriceClosing {
 
     static build() {

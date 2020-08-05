@@ -84,8 +84,9 @@ class StockWatcher {
      * @memberof StockWatcher
      */
     private async fetchSymbols(): Promise<string[]> {
+        // FIXME
         const invs = await findAvailableInvestiments({})
-        return Promise.resolve(invs.map(investiment => investiment.stock?.symbol)) // FIXME
+        return Promise.resolve(invs.map(investiment => investiment.stock?.symbol))
     }
 
 }

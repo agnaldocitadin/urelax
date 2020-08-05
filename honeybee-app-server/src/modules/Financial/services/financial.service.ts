@@ -4,10 +4,10 @@ import { arrays } from 'js-commons'
 import mongoose from 'mongoose'
 import { ErrorCodes } from '../../../core/error.codes'
 import Logger from '../../../core/Logger'
-import { nonNull, percentVariation } from '../../../core/Utils'
+import { nonNull, percentVariation, toObjectId } from '../../../core/Utils'
 import { BrokerInvestimentModel } from '../../Broker/models'
 import { StockTrackerModel } from '../../Stock/models'
-import { FinancialHistory, FinancialHistoryModel, Transaction } from '../models'
+import { FinancialHistory, FinancialHistoryModel, Profit, Transaction } from '../models'
 
 const STANDARD_QUERY_RESULT = 100
 
@@ -139,6 +139,7 @@ export const groupAppiedInvestimentsBy = async (account: mongoose.Types.ObjectId
         .exec()
     
     // TODO investimento (Dinheiro)
+
     const stockInvestiments = stockTackers.map(tracker => tracker.toInvestiment())
     return [...stockInvestiments]
 }
@@ -176,13 +177,12 @@ export const groupFinancialSummaryBy = async (options: {
     })
 }
 
-
 /**
  *
  *
  * @param {{ 
- *     account: mongoose.Types.ObjectId
- *     brokerAccount?: mongoose.Types.ObjectId
+ *     account: string
+ *     brokerAccount?: string
  *     period?: FinancialAnalysisPeriod
  *     date?: Date
  *     page?: number
@@ -191,8 +191,8 @@ export const groupFinancialSummaryBy = async (options: {
  * @returns {Promise<FinancialAnalysis[]>}
  */
 export const groupFinancialAnalysisBy = async (options: { 
-    account: mongoose.Types.ObjectId
-    brokerAccount?: mongoose.Types.ObjectId
+    account: string
+    brokerAccount?: string
     period?: FinancialAnalysisPeriod
     date?: Date
     page?: number
@@ -284,9 +284,9 @@ export const groupFinancialAnalysisBy = async (options: {
 
     aggregation.unshift({ "$sort": { date: -1 }})
     aggregation.unshift({
-        "$match": { 
-            ...account ? { "account": mongoose.Types.ObjectId(String(account)) } : null,
-            ...brokerAccount ? { "brokerAccount": mongoose.Types.ObjectId(String(brokerAccount)) } : null,
+        "$match": {
+            ...toObjectId("account", account),
+            ...toObjectId("brokerAccount", brokerAccount),
             ...match ? match : null
         }
     })
@@ -300,50 +300,56 @@ export const groupFinancialAnalysisBy = async (options: {
     const history: FinancialHistory[] = await FinancialHistoryModel.aggregate(aggregation)
 
     if (period === FinancialAnalysisPeriod.DAILY) {
-        return history.map(item => toFinancialAnalysis(item, period))
+        return history.map(item => {
+            const label = createFinancialAnalysisLabel(item.date, period)
+            const _history = FinancialHistoryModel.hydrate(item)
+            return toFinancialAnalysis(label, _history.getOpeningValue(), _history.getClosingValue(), item.profits)
+        })
     }
 
-    // TODO Grouped history is not ready yet
     const groupedHistory = arrays.groupBy(history, item => (<any>item).groupMatch)
     return Array.from(groupedHistory.keys()).map(group => {
-        const ult = arrays.lastElement(groupedHistory.get(group))
-        return toFinancialAnalysis(ult, period)
+        const arrayHistory = groupedHistory.get(group)
+        const allProfits = Array.from(arrayHistory).flatMap(item => item.profits)
+        const firstHistory = arrays.firstElement(arrayHistory)
+        const lastHistory = arrays.lastElement(arrayHistory)
+        const label = createFinancialAnalysisLabel(firstHistory.date, period)
+        const _first = FinancialHistoryModel.hydrate(firstHistory) 
+        const _last = FinancialHistoryModel.hydrate(lastHistory)
+        return toFinancialAnalysis(label, _first.getOpeningValue(), _last.getOpeningValue(), allProfits)
     })
 }
 
 /**
  *
  *
- * @param {FinancialHistory} history
- * @param {FinancialAnalysisPeriod} period
+ * @param {string} label
+ * @param {number} opening
+ * @param {number} closing
+ * @param {Profit[]} profits
  * @returns {FinancialAnalysis}
  */
-const toFinancialAnalysis = (history: FinancialHistory, period: FinancialAnalysisPeriod): FinancialAnalysis => {
-
-    const _history = FinancialHistoryModel.hydrate(history)
-    const opening = _history.getOpeningValue()
-    const closing = _history.getClosingValue()
-    const investimentGroup = arrays.groupBy(history.profits ?? [], item => String(item.investiment))
+const toFinancialAnalysis = (label: string, opening: number, closing: number, profits: Profit[]): FinancialAnalysis => {
+    const investimentGroup = arrays.groupBy(profits ?? [], item => String(item.investiment))
     
     const items = Array.from(investimentGroup.keys()).map(investiment => {
         const investimentProfits = investimentGroup.get(investiment)
         const total = arrays.sum(investimentProfits, item => item.value)
-        const investimentDB = <any>BrokerInvestimentModel.findById(investiment).exec() // FIXME
+        const investimentDB: any = BrokerInvestimentModel.findById(investiment).exec()
         
         return {
             amount: total,
-            variation: (total / opening) * 100,
-            investiment: investimentDB,
-            refID: "--" //TODO
+            variation: opening && (total / opening) * 100,
+            investiment: investimentDB
         } as FinancialAnalysisItem
     })
 
     return {
-        label: createFinancialAnalysisLabel(history.date, period),
+        label,
         variation: percentVariation(opening, closing),
         amount: closing,
         items
-    } as FinancialAnalysis
+    }
 }
 
 /**

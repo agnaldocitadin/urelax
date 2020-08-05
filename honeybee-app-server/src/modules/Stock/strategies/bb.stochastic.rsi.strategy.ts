@@ -44,17 +44,11 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
     lastCandles: StockHistory[]
     bought: boolean
 
-    // summary
-    // fundosTopos: Array<number>
-    // altaBaixa: Array<number>
-
     constructor() {
         this.analizer = new StochasticAnalizer()
         this.lastCandles = []
         this.lastBestPriceTrendUp = 0
         this.stopLoss = 0
-        // this.fundosTopos = []
-        // this.altaBaixa = []
     }
 
     async prepare(referenceDate: Date, stockTracker: StockTracker, brokerPlugin: BrokerPlugin): Promise<void> {
@@ -72,7 +66,6 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
         if (this.hasEnoughData(history)) {
             const currentPrice = Utils.Array.lastElement(history).closingPrice
             this.updateRSIStochastic(history)
-            // this.trend()
     
             if (this.isTimeToBuy(history, stockTracker)) {
                 return this.buy(currentPrice, stockTracker, brokerPlugin, symbol)
@@ -179,7 +172,6 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
     private isTimeToSell(history: StockHistory[], stockTracker: StockTracker): boolean {
         if (!this.bought) return false
 
-        const data = Utils.Array.lastElement(history).date
         const closes = history.map(event => event.closingPrice)
         const currentPrice = Utils.Array.lastElement(closes)
 
@@ -425,23 +417,6 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
             price
         }
     }
-
-    // DEPRECATED
-    // private trend() {
-    //     if (this.analizer.isAtBottom()) {
-    //         this.fundosTopos.push(0)
-    //     }
-    //     else if (this.analizer.isAtTop()) {
-    //         this.fundosTopos.push(2)
-    //     }
-
-    //     if (this.analizer.getTrend() === Trends.DOWN) {
-    //         this.altaBaixa.push(-1)
-    //     }
-    //     else {
-    //         this.altaBaixa.push(1)
-    //     }
-    // }
 
     proceedStockTrackerPlay(stockTracker: StockTracker): Promise<StockTracker> {
         return playStockTracker(stockTracker)
