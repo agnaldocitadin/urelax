@@ -8,7 +8,6 @@ export const useDialogMessageHook = () => {
     const { close } = Actions()
     const payload = select("payload")
     const visible = select("visible")
-    // const [] = useInteractiveButton({ text: })
 
     const handleCloseDialog = useCallback(() => close(), [])
 

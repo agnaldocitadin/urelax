@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
+import { Colors } from '../../theming'
 import { Touchable, TouchableProps } from '../Touchable'
 
 export interface BaseButtonPros extends TouchableProps {
@@ -24,7 +25,7 @@ export const BaseButton: FC<BaseButtonPros> = ({
 )
 
 const Button = styled.View`
-    background-color: transparent;
+    background-color: ${Colors.TRANSPARENT};
     justify-content: center;
     height: 50px;
 `

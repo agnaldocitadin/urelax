@@ -20,7 +20,7 @@ export const SplashAuth: FC<SplashAuthProps> = (props) => {
     return (
         <React.Fragment>
             { authenticating ? <React.Fragment>
-                <Typography>..splash..</Typography>
+                <Typography>SplashAuth</Typography>
                 <Authenticate
                     authType="password"
                     email={email}

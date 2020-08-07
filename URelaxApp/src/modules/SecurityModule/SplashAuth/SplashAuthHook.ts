@@ -11,8 +11,7 @@ export const useSplashAuthHook = ({ keepSession, onSuccess, onFail }: SplashAuth
             await updateDataApp({
                 email: profile.email,
                 password: profile.password,
-                keepSession: keepSession ? "yes" : "no",
-                tour: true
+                keepSession: keepSession ? "yes" : "no"
             })
             onSuccess && onSuccess(profile)
         }

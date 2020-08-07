@@ -1,17 +1,16 @@
 import React, { FC } from 'react'
+import { Image } from 'react-native'
 import styled from 'styled-components/native'
-import { BackHeader } from '../../../components/Header/BackHeader'
 import { InputText } from '../../../components/Inputs/InputText'
 import { InteractiveButton } from '../../../components/InteractiveButton'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { FORM_PADDING } from '../../../components/Layout/Layout.style'
+import { MarginBox } from '../../../components/Layout/Layout.style'
 import { ScrollViewForm } from '../../../components/Layout/ScrollViewForm'
 import { ts } from '../../../core/I18n'
-import { Colors, Icons } from '../../../theming'
+import { Colors, DEFAULT_VERTICAL_SPACING, Icons, Images } from '../../../theming'
 import { SplashAuth } from '../../SecurityModule/SplashAuth'
 import { useSignUpUIHook } from './SignUpUIHook'
-
-const TEXT_SIZE = 14
+import { InputSecure } from '../../../components/Inputs/InputSecure'
 
 interface SignUpUIProps {}
 
@@ -24,7 +23,8 @@ export const SignUpUI: FC<SignUpUIProps> = ({}) => {
         handlePasswdChanges,
         handleConfirmPasswdChanges,
         handleSignUp,
-        handleSignInFailure,
+        handleSignUpFailure,
+        handleSignUpSuccess,
         validFullname,
         validNickname,
         validPassword,
@@ -32,94 +32,141 @@ export const SignUpUI: FC<SignUpUIProps> = ({}) => {
         validPwdConfirm,
         formFilled,
         authenticate,
-        account,
+        profile,
         passwordMatch
     } = useSignUpUIHook()
 
     return (
-        <FlatLayout header={<BackHeader title={ts("sign_up")}/>}>
+        <FlatLayout
+            bgColor={Colors.BLUES_2}
+            bgStatusBar={Colors.BLUES_2}>
 
             <SplashAuth
                 authenticating={authenticate}
-                email={account.email}
-                password={account.passwd}
-                onFail={handleSignInFailure}
+                email={profile?.email}
+                password={profile?.password}
+                onFail={handleSignUpFailure}
+                onSuccess={handleSignUpSuccess}
                 noAuthElement={
                     <ScrollViewForm justifyContent="flex-end">
-                        <Input
-                            value={account.name}
-                            label={ts("full_name")}
-                            textContentType="username"
-                            // textSize={TEXT_SIZE}
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            leftIcon={Icons.USER}
-                            // invalid={!validFullname}
-                            // invalidText={ts("invalid_full_name")}
-                            onChangeText={handleFullnameChanges}/>
+                        <Content>
+                            <Logo source={Images.LOGO}/>
+                        </Content>
+                        <MarginBox>
+                            <Input
+                                invalid={!validFullname}
+                                value={profile?.name}
+                                label={ts("full_name")}
+                                labelStyle={{ color: Colors.WHITE, fontSize: 14 }}
+                                textContentType="username"
+                                autoCapitalize="words"
+                                autoCorrect={false}
+                                leftIcon={Icons.USER}
+                                leftIconColor={Colors.WHITE}
+                                onChangeText={handleFullnameChanges}
+                                wrapperStyle={{
+                                    borderColor: Colors.WHITE,
+                                    marginBottom: DEFAULT_VERTICAL_SPACING
+                                }}/>
 
-                        <Input
-                            value={account.nickname}
-                            label={ts("nickname")}
-                            // textSize={TEXT_SIZE}
-                            textContentType="nickname"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            leftIcon={Icons.USER}
-                            // invalid={!validNickname}
-                            // invalidText={ts("invalid_nickname")}
-                            onChangeText={handleNicknameChanges}/>
+                            <Input
+                                invalid={!validNickname}
+                                value={profile?.nickname}
+                                label={ts("nickname")}
+                                labelStyle={{ color: Colors.WHITE, fontSize: 14 }}
+                                textContentType="nickname"
+                                autoCapitalize="words"
+                                autoCorrect={false}
+                                leftIcon={Icons.USER}
+                                leftIconColor={Colors.WHITE}
+                                onChangeText={handleNicknameChanges}
+                                wrapperStyle={{
+                                    borderColor: Colors.WHITE,
+                                    marginBottom: DEFAULT_VERTICAL_SPACING
+                                }}/>
 
-                        <Input
-                            value={account.email}
-                            label={ts("email")}
-                            textContentType="emailAddress"
-                            // textSize={TEXT_SIZE}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            leftIcon={Icons.EMAIL}
-                            // invalid={!validEmail}
-                            // invalidText={ts("invalid_email")}
-                            onChangeText={handleEmailChanges}/>
+                            <Input
+                                invalid={!validEmail}
+                                value={profile?.email}
+                                label={ts("email")}
+                                labelStyle={{ color: Colors.WHITE, fontSize: 14 }}
+                                textContentType="emailAddress"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                leftIcon={Icons.EMAIL}
+                                leftIconColor={Colors.WHITE}
+                                onChangeText={handleEmailChanges}
+                                wrapperStyle={{
+                                    borderColor: Colors.WHITE,
+                                    marginBottom: DEFAULT_VERTICAL_SPACING
+                                }}/>
 
-                        <Input
-                            value={account.passwd}
-                            label={ts("password")}
-                            textContentType="password"
-                            // textSize={TEXT_SIZE}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            secureTextEntry={true}
-                            leftIcon={Icons.PASSWD}
-                            // invalid={!validPassword}
-                            // invalidText={ts("invalid_password")}
-                            onChangeText={handlePasswdChanges}/>
+                            <Password
+                                invalid={!validPassword}
+                                value={profile?.password}
+                                label={ts("password")}
+                                labelStyle={{ color: Colors.WHITE, fontSize: 14 }}
+                                textContentType="password"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                leftIcon={Icons.PASSWD}
+                                leftIconColor={Colors.WHITE}
+                                rightIconColor={Colors.WHITE}
+                                onChangeText={handlePasswdChanges}
+                                wrapperStyle={{
+                                    borderColor: Colors.WHITE,
+                                    marginBottom: DEFAULT_VERTICAL_SPACING
+                                }}/>
 
-                        <Input
-                            value={passwordMatch}
-                            label={ts("password_confirmation")}
-                            textContentType="password"
-                            // textSize={TEXT_SIZE}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            secureTextEntry={true}
-                            leftIcon={Icons.PASSWD}
-                            // invalid={!validPwdConfirm}
-                            // invalidText={ts("invalid_password_confirmation")}
-                            onChangeText={handleConfirmPasswdChanges}/>
+                            <Password
+                                invalid={!validPwdConfirm}
+                                value={passwordMatch}
+                                label={ts("password_confirmation")}
+                                labelStyle={{ color: Colors.WHITE, fontSize: 14 }}
+                                textContentType="password"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                leftIcon={Icons.PASSWD}
+                                leftIconColor={Colors.WHITE}
+                                rightIconColor={Colors.WHITE}
+                                onChangeText={handleConfirmPasswdChanges}
+                                wrapperStyle={{
+                                    borderColor: Colors.WHITE,
+                                    marginBottom: DEFAULT_VERTICAL_SPACING
+                                }}/>
 
-                        <InteractiveButton
-                            data={{}}
-                            indicatorColor={Colors.WHITE}
-                            disabled={!formFilled || !(validFullname && validNickname && validEmail && validPassword && validPwdConfirm)}
-                            onPress={handleSignUp}/>
-
+                            <Button
+                                data={{ 
+                                    text: "Sign Up",
+                                }}
+                                disabled={!formFilled}
+                                onPress={handleSignUp}/>
+                                
+                        </MarginBox>
                     </ScrollViewForm>
                 }/> 
         </FlatLayout>
     )
 }
 
+const Logo = styled(Image)`
+    transform: scale(.4);
+`
+
 const Input = styled(InputText)`
-    margin-bottom: ${FORM_PADDING};
+    color: ${Colors.WHITE};
+`
+
+const Password = styled(InputSecure)`
+    color: ${Colors.WHITE};
+`
+
+const Content = styled.View`
+    align-items: center;
+`
+
+const Button = styled(InteractiveButton)`
+    background-color: ${Colors.WHITE};
+    border-radius: 25px;
+    margin-top: 30px;
 `

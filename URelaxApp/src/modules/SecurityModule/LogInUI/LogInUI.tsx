@@ -46,70 +46,86 @@ export const LogInUI: FC<LogInUIProps> = ({}) => {
                 onSuccess={handleAuthSuccess}
                 onFail={handleAuthFail}
                 noAuthElement={
-                    <React.Fragment>
-                        <Logo source={Images.LOGO}/>
-                        <ScrollViewForm justifyContent="flex-end">
-                            <MarginBox>
-                                <EmailInput
-                                    label={ts("email")}
-                                    labelStyle={{ color: Colors.WHITE }}
-                                    placeholder={ts("your_email")}
-                                    textContentType="emailAddress"
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    leftIcon={Icons.EMAIL}
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    wrapperStyle={{ 
-                                        borderColor: Colors.WHITE,
-                                        marginBottom: DEFAULT_VERTICAL_SPACING
-                                    }}/>
+                    <ScrollViewForm style={{ flex: 1 }} justifyContent="flex-end">
+                        <Content>
+                            <Logo source={Images.LOGO}/>
+                        </Content>
+                        <MarginBox>
+                            <EmailInput
+                                placeholder={ts("your_email")}
+                                placeholderTextColor={Colors.BG_3}
+                                textContentType="emailAddress"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                leftIcon={Icons.EMAIL}
+                                leftIconColor={Colors.WHITE}
+                                value={email}
+                                onChangeText={setEmail}
+                                wrapperStyle={{ 
+                                    borderColor: Colors.WHITE,
+                                    marginBottom: DEFAULT_VERTICAL_SPACING
+                                }}/>
 
-                                <PasswordInput
-                                    label={ts("password")}
-                                    labelStyle={{ color: Colors.WHITE }}
-                                    placeholder={ts("your_password")}
-                                    textContentType="password"
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    secureTextEntry={true}
-                                    leftIcon={Icons.PASSWD}
-                                    value={password}
-                                    onChangeText={setPassword}
-                                    wrapperStyle={{ 
-                                        borderColor: Colors.WHITE,
-                                        marginBottom: DEFAULT_VERTICAL_SPACING
-                                    }}/>
+                            <PasswordInput
+                                placeholder={ts("your_password")}
+                                placeholderTextColor={Colors.BG_3}
+                                textContentType="password"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                secureTextEntry={true}
+                                leftIcon={Icons.PASSWD}
+                                leftIconColor={Colors.WHITE}
+                                rightIconColor={Colors.WHITE}
+                                value={password}
+                                onChangeText={setPassword}
+                                wrapperStyle={{ 
+                                    borderColor: Colors.WHITE,
+                                    marginBottom: DEFAULT_VERTICAL_SPACING
+                                }}/>
 
-                                <Switch
-                                    label={ts("keep_session")}
-                                    labelColor={Colors.WHITE}
-                                    value={keepSession}
-                                    onChange={setKeepSession}/>
+                            <Switch
+                                label={ts("keep_session")}
+                                labelColor={Colors.WHITE}
+                                value={keepSession}
+                                onChange={setKeepSession}/>
 
-                                <InteractiveButton 
-                                    data={signinBtn}
-                                    disabled={disabledLogIn}
-                                    onPress={handleAuthentication}/>
-                            </MarginBox>
-                        </ScrollViewForm>
-                    </React.Fragment>
+                            <Button 
+                                data={signinBtn}
+                                disabled={disabledLogIn}
+                                onPress={handleAuthentication}/>
+                        </MarginBox>
+                    </ScrollViewForm>
                 }/>
         </FlatLayout>
     )
 }
+
 const Logo = styled(Image)`
-    transform: scale(.7);
+    transform: scale(.5);
+`
+
+const Content = styled.View`
+    justify-content: center;
+    align-items: center;
+    flex: 1;
 `
 
 const EmailInput = styled(InputText)`
     color: ${Colors.WHITE};
+    font-size: 17px;
 `
 
 const PasswordInput = styled(InputSecure)`
     color: ${Colors.WHITE};
+    font-size: 17px;
 `
 
 const Switch = styled(InputSwitch)`
     margin-bottom: ${DEFAULT_VERTICAL_SPACING}px;
+`
+
+const Button = styled(InteractiveButton)`
+    background-color: ${Colors.WHITE};
+    border-radius: 25px;
+    margin-top: 30px;
 `

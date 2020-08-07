@@ -11,7 +11,7 @@ export const FastAuthUI: FC<FastAuthUIProps> = () => {
     return (
         <React.Fragment>
             <StatusBar backgroundColor={Colors.BLUES_1}/>
-            <Typography>splash</Typography>
+            <Typography>FastAuthUI</Typography>
             <SplashAuth
                 authenticating={authenticate}
                 email={storage?.email}

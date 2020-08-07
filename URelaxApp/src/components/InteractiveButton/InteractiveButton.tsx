@@ -15,7 +15,6 @@ export interface InteractiveButtonData {
     activityState?: InteractiveButtonStates
     textColor?: string
     disabledTextColor?: string
-    disabled?: boolean
     icon?: string
     iconColor?: string
     iconSize?: number
@@ -29,6 +28,7 @@ export interface InteractiveButtonProps extends BaseButtonPros {
 export const InteractiveButton: FC<InteractiveButtonProps> = ({ 
     data,
     indicatorColor = Colors.BLACK_2,
+    disabled,
     ...others
 }) => {
 
@@ -36,8 +36,7 @@ export const InteractiveButton: FC<InteractiveButtonProps> = ({
         text,
         activityState = InteractiveButtonStates.NORMAL,
         textColor = Colors.BLACK_2,
-        disabledTextColor = Colors.WHITE,
-        disabled,
+        disabledTextColor = Colors.BG_2,
         icon,
         iconColor = Colors.BLACK_2,
         iconSize = 30,
@@ -78,7 +77,6 @@ const StyledIcon = styled(BaseIcon)`
 
 const StyledText = styled(TypographyMedium)<{ hasIcon: boolean }>`
     margin-left: ${({ hasIcon }) => hasIcon ? 10 : 0}px;
-    text-transform: uppercase;
     text-align: center;
 `
 

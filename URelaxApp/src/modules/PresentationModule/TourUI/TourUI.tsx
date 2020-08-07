@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
 import React, { FC } from "react"
+import { Image } from "react-native"
 import styled from "styled-components/native"
 import { BaseButton } from "../../../components/BaseButton"
 import { FlatLayout } from "../../../components/Layout/FlatLayout"
 import { animatedCallback } from "../../../core/Commons.hook"
-import { Colors, TypographyMedium } from "../../../theming"
+import { Colors, Images, TypographyMedium } from "../../../theming"
 import { Routes } from "../../NavigationModule/const"
 
 interface TourUIProps {}
@@ -22,38 +23,52 @@ export const TourUI: FC<TourUIProps> = () => {
     const handleSignin = animatedCallback(() => navigation.navigate(Routes.SIGN_IN))
 
     return (
-        <FlatLayout bgStatusBar={Colors.BG_1}>
-            <SContent></SContent>
-            <SFooter>
-                <SButton onPress={handleCreateAccount}>
-                    <TypographyMedium>Create account</TypographyMedium>
-                </SButton>
-                <SButtonSignin onPress={handleSignin}>
+        <FlatLayout
+            bgStatusBar={Colors.BLUES_1}
+            bgColor={Colors.BLUES_1}>
+            <Content>
+                <Logo source={Images.LOGO}/>
+                <TypographyMedium color={Colors.WHITE} fontSize={18}>Invista, relaxe!</TypographyMedium>
+            </Content>
+            <Footer>
+                <SigninBtn onPress={handleSignin}>
                     <TypographyMedium>Sign in</TypographyMedium>
-                </SButtonSignin>
-            </SFooter>
+                </SigninBtn>
+                <SignupBtn onPress={handleCreateAccount}>
+                    <TypographyMedium color={Colors.WHITE}>Create account</TypographyMedium>
+                </SignupBtn>
+            </Footer>
         </FlatLayout>
     )
 }
 
-const SContent = styled.View`
+const Logo = styled(Image)`
+    transform: scale(.75);
+    margin-bottom: 30px;
+`
+
+const Content = styled.View`
+    justify-content: center;
+    align-items: center;
     flex: 1;
 `
 
-const SFooter = styled.View`
-    flex-direction: row;
-    justify-content: space-around;
+const Footer = styled.View`
+    justify-content: center;
     align-items: center;
-    height: 120px;
+    margin: 0 30px;
+    flex: 1;
 `
 
-const SButton = styled(BaseButton)`
-    width: 150px;
-    background-color: ${Colors.BLUES_1};
-`
-
-const SButtonSignin = styled(SButton)`
+const SigninBtn = styled(BaseButton)`
     background-color: ${Colors.WHITE};
-    border-color: ${Colors.BLUES_1};
+    border-radius: 25px;
+    width: 100%;
+`
+
+const SignupBtn = styled(SigninBtn)`
+    background-color: ${Colors.TRANSPARENT};
+    border-color: ${Colors.WHITE};
     border-width: 1px;
+    margin-top: 30px;
 `

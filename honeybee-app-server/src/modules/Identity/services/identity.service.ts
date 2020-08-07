@@ -37,7 +37,11 @@ export const findAllowedAccounts = async (): Promise<Account[]> => {
  * @param {*} { name, nickname, email, password }
  * @returns {Promise<Profile>}
  */
-export const createProfile = async ({ name, nickname, email, password }: ProfileInput): Promise<Profile> => {
+export const createProfile = async (input: ProfileInput): Promise<Profile> => {
+
+    await validateProfile(input)
+    const { name, nickname, email, password } = input
+
     // Real account
     const account = await AccountModel.create({
         preference: defaultPreferences,
@@ -62,7 +66,6 @@ export const createProfile = async ({ name, nickname, email, password }: Profile
         active: true
     }
     
-    await validateProfile(profile)
     let _profile = await ProfileModel.create(profile)
     onCreateAccount(_profile)
     return _profile
@@ -71,9 +74,9 @@ export const createProfile = async ({ name, nickname, email, password }: Profile
 /**
  *
  *
- * @param {Profile} profile
+ * @param {ProfileInput} profile
  */
-const validateProfile = async (profile: Profile) => {
+const validateProfile = async (profile: ProfileInput) => {
     if (await ProfileModel.exists({ email: profile.email })) {
         Logger.throw(ErrorCodes.PROFILE_EMAIL_DUPLICATED)
     }

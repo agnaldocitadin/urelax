@@ -28,15 +28,13 @@ export const useLogInUIHook = () => {
         setAuthenticate(false)
         showAPIError(error)
     }, [authenticate])
-
+    
     return {
         authenticate,
         email,
         password,
         keepSession,
-        disabledLogIn: !!email || !!password ,//|| !validEmail || !validPassword,
-        validEmail: !email ,//|| validEmail,
-        validPassword: !password ,//|| validPassword,
+        disabledLogIn: !email || !password,
         signinBtn,
         setEmail,
         setPassword,

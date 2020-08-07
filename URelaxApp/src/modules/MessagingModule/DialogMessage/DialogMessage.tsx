@@ -1,10 +1,9 @@
 import React, { FC, useMemo } from 'react'
-import { Modal } from 'react-native'
+import Modal from 'react-native-modal'
 import styled from 'styled-components/native'
 import { ButtonHeader } from '../../../components/Header/ButtonHeader'
 import { FlatHeader } from '../../../components/Header/FlatHeader'
 import { InteractiveButton } from '../../../components/InteractiveButton'
-import { SRoundedBox } from '../../../components/Layout/Layout.style'
 import { TextIconDisplay } from '../../../components/TextIconDisplay'
 import { Colors, Icons } from '../../../theming'
 import { useDialogMessageHook } from './DialogMessageHook'
@@ -22,20 +21,22 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
     
     const modal = useMemo(() => (
         <Modal
-            presentationStyle="overFullScreen"
-            animationType="fade" 
-            transparent={true}
-            hardwareAccelerated
-            visible={visible}
-            onRequestClose={handleCloseDialog}>
-            <Overlay/>
-            <Rounded>
+            isVisible={visible}
+            animationIn="zoomIn"
+            animationOut="zoomOut"
+            onBackdropPress={handleCloseDialog}
+            hideModalContentWhileAnimating={true}
+            useNativeDriver={true}>
+            <Container>
                 <FlatHeader
                     borderBottomWidth={0}
                     bgHeaderColor={Colors.TRANSPARENT}
-                    right={<ButtonHeader color={Colors.BLUES_2} icon={Icons.CLOSE} onPress={handleCloseDialog}/>}/>
-                    
-                <Body>
+                    right={
+                        <ButtonHeader
+                            icon={Icons.CLOSE}
+                            onPress={handleCloseDialog}/>
+                    }/>
+                <Content>
                     <Display
                         icon={payload.icon || Icons.ALERT_CIRCLE}
                         iconColor={payload.iconColor}
@@ -45,8 +46,8 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
                     <Button
                         data={{ text: payload.buttonLabel }}
                         onPress={handleButtonAction}/>
-                </Body>
-            </Rounded>
+                </Content>
+            </Container>
         </Modal>
     ), [visible, payload])
 
@@ -59,23 +60,17 @@ const Button = styled(InteractiveButton)`
     width: 250px;
 `
 
-const Rounded = styled(SRoundedBox)`
-    position: absolute;
-    bottom: 0;
+const Container = styled.View`
+    background-color: ${Colors.WHITE};
+    border-radius: 10px;
 `
 
-const Body = styled.View`
+const Content = styled.View`
     align-items: center;
     justify-content: space-evenly;
     margin-left: 50px;
     margin-right: 50px;
     margin-bottom: 50px;
-`
-
-const Overlay = styled.View`
-    background-color: ${Colors.BLACK_2};
-    opacity: .8;
-    flex: 1;
 `
 
 const Display = styled(TextIconDisplay)`

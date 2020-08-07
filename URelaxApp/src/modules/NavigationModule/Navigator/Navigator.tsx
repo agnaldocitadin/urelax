@@ -14,6 +14,7 @@ import { BrokerAccountsUI } from '../../BrokerModule/BrokerAccountsUI'
 import { BrokerAccountWizardUI } from '../../BrokerModule/BrokerAccountWizardUI'
 import { DashboardUI } from '../../DashboardModule/DashboardUI'
 import { ProfileUI } from '../../IdentityModule/ProfileUI'
+import { SignUpUI } from '../../IdentityModule/SignUpUI'
 import { AddInvestimentUI } from '../../InvestimentModule/AddInvestimentUI'
 import { FilterUI } from '../../InvestimentModule/FilterUI'
 import { InvestimentAnalysisDetailUI } from '../../InvestimentModule/InvestimentAnalysisDetailUI'
@@ -70,6 +71,7 @@ export const Navigator: FC = ({}) => {
                 <Stack.Navigator initialRouteName={Routes.TOUR}>
                     <Stack.Screen name={Routes.TOUR} component={TourUI} options={defaultOptions}/>
                     <Stack.Screen name={Routes.SIGN_IN} component={LogInUI} options={defaultOptions}/>
+                    <Stack.Screen name={Routes.SIGN_UP} component={SignUpUI} options={defaultOptions}/>
                 </Stack.Navigator>
             )
             break

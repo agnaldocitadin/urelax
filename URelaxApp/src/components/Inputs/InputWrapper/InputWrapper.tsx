@@ -17,6 +17,7 @@ export interface InputWrapperProps {
     rightIconAction?(): void
     onTouchStart?(event: GestureResponderEvent): void
     wrapped?: ReactElement
+    invalid?: boolean
 }
 
 const DEFAULT_ICON_SIZE = 20
@@ -34,12 +35,15 @@ export const InputWrapper: FC<InputWrapperProps> = ({
     rightIconAction,
     onTouchStart,
     wrapped,
+    // disabled,
+    invalid,
     ...others
 }) => {
     return (
         <Container 
             onTouchStart={onTouchStart}
-            style={wrapperStyle}>
+            style={wrapperStyle}
+            invalid={invalid}>
             { label && <Typography style={labelStyle}>{label}</Typography> }
             <Content>
                 { leftIcon && <SIcon name={leftIcon} size={leftIconSize} color={leftIconColor}/> }
@@ -57,7 +61,8 @@ export const InputWrapper: FC<InputWrapperProps> = ({
     )
 }
 
-const Container = styled.View`
+const Container = styled.View<{ invalid?: boolean }>`
+    background-color: ${({ invalid }) => invalid ? Colors.RED_ERROR : Colors.TRANSPARENT};
     border-color: ${Colors.GRAY_1};
     border-width: 1px;
     border-radius: 5px;

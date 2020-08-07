@@ -4,7 +4,6 @@ export interface StorageApp {
     email: string
     password: string
     keepSession: "yes" | "no"
-    tour: boolean
     accountID: string
 }
 
@@ -12,7 +11,6 @@ interface StorageAppUpdate {
     email?: string
     password?: string
     keepSession?: "yes" | "no"
-    tour?: boolean,
     accountID?: string
 }
 
@@ -33,7 +31,6 @@ const Actions = () => {
             email: "none", 
             password: "none", 
             keepSession: "no", 
-            tour: false,
             accountID: "none"
         })
         return data

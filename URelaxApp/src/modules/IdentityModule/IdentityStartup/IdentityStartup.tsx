@@ -8,7 +8,7 @@ export const IdentityStartup: FC = () => {
     const { setActiveAccount } = Identity.actions()
     useEffect(() => {
         if (profile) {
-            const account = profile.accounts.find(account => account._id === profile.activeAccount)
+            const account = profile?.accounts?.find(account => account._id === profile.activeAccount)
             account && setActiveAccount(account)
         }
     }, [profile])

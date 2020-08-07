@@ -19,7 +19,7 @@ class StockPriceClosing {
     }
 
     schedule(): void {
-        Logger.info("(+-) Stock price closing will run at %s", cronstrue.toString(process.env.STOCK_PRICE_CLOSING_JOB))
+        Logger.info("(+-) Closing stock price process will run at %s", cronstrue.toString(process.env.STOCK_PRICE_CLOSING_JOB))
         schedule.scheduleJob(process.env.STOCK_PRICE_CLOSING_JOB, () => this.run())
     }
 
