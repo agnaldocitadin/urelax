@@ -52,7 +52,6 @@ export const StockTrackerControlButton: FC<StockTrackerControlButtonProps> = ({ 
                 textColor: Colors.WHITE,
                 iconColor: disabled ? Colors.BG_2 : Colors.WHITE,
                 disabledTextColor: Colors.BG_2,
-                disabled
             }}/>
     )
 }

@@ -12,6 +12,7 @@ export const useSignUpUIHook = () => {
     const { showAPIError } = MessagingModule.actions()
     const [ profile, setProfile ] = useState<ProfileInput>()
     const [ authenticate, setAuthenticate ] = useState(false)
+    const [ sending, setSending ] = useState(false)
     const [ passwordMatch, setPasswordMatch ] = useState<string>()
 
     const handleFullnameChanges = (chars: string) => setProfile(old => ({...old, name: chars }))
@@ -32,11 +33,13 @@ export const useSignUpUIHook = () => {
         try {
             Keyboard.dismiss()
             if (profile) {
+                setSending(true)
                 await API.Profile.signup(profile)
                 setAuthenticate(true)
             }
         }
         catch(error) {
+            setSending(false)
             showAPIError(error)
         }
     })
@@ -46,10 +49,13 @@ export const useSignUpUIHook = () => {
     const validEmail = validations.validateEmail(profile?.email)
     const validPassword = validations.validatePassword(profile?.password)
     const validPwdConfirm = !passwordMatch || profile?.password === passwordMatch
-    const formFilled = validFullname && validNickname && validEmail && validPassword && validPwdConfirm
+    const formValid = validFullname && validNickname && validEmail && validPassword && validPwdConfirm
+    const formFilled = formValid && (profile?.name && profile?.nickname && profile?.email && profile?.password && passwordMatch)
+
 
     return {
         profile,
+        sending,
         authenticate,
         passwordMatch,
         formFilled,

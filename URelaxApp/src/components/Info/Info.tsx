@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 import { View, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
-import { DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING } from '../../theming'
+import { DEFAULT_VERTICAL_SPACING } from '../../theming'
 import { TouchableProps } from '../Touchable'
 import { TouchItem } from '../TouchItem'
 

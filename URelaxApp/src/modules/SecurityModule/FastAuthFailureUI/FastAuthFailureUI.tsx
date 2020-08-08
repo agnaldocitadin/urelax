@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import { InteractiveButton } from '../../../components/InteractiveButton'
 import { GenericTextIcon } from '../../../components/Layout/Layout.style'
@@ -29,7 +28,6 @@ export const FastAuthFailureUI: FC<FastAuthFailureUIProps> = () => {
 
     return (
         <React.Fragment>
-            <StatusBar barStyle="dark-content" backgroundColor={Colors.BG_1}/>
             { authenticate && <Authenticate
                 authType="password"
                 email={storage?.email}

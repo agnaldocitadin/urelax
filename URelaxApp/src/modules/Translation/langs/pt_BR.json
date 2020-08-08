@@ -143,5 +143,16 @@
     "password_confirmation": "Confirmação de senha",
     "invalid_password_confirmation": "Confirmação de senha inválida",
     "sign_up_auth_error": "Tivemos problemas ao tentar realizar seu login no sistema. Tente novamente mais tarde.",
-    "or_you_can": "Ou você pode:"
+    "or_you_can": "Ou você pode:",
+
+    "your_patrimony_was": "Seu patromônio era",
+    "patrimony_amount": "Patrimônio atual",
+    "dashboard": "Início",
+    "profile": "Perfil do usuário",
+    "investiments": "Meus investimentos",
+    "analysis": "Análise",
+    "statement": "Extrato",
+    "available_to_invest": "Disponível para investir",
+    "stocks": "Ações",
+    "loading": "Carregando...",
 }

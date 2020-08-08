@@ -2,10 +2,9 @@ import React, { FC } from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
 import { BaseButton } from '../../../components/BaseButton'
-import { BackHeader } from '../../../components/Header/BackHeader'
 import { InputText } from '../../../components/Inputs/InputText'
 import { InteractiveButton } from '../../../components/InteractiveButton'
-import { FlatLayout } from '../../../components/Layout/FlatLayout'
+import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
 import { ScrollViewForm } from '../../../components/Layout/ScrollViewForm'
 import { ts } from '../../../core/I18n'
 import { Colors, Icons, Typography } from '../../../theming'
@@ -23,8 +22,7 @@ export const ProfileUI: FC = ({ children }) => {
     } = useProfileUIHook()
 
     return (
-        <FlatLayout
-            header={<BackHeader title={ts("profile")} />}>
+        <PrimaryLayout title={ts("profile")}>
             <ScrollViewForm>
                 <ProfilePhoto>
                     {/* <Thumbnail large source={PROFILE} style={{ width: 120, height: 120, borderRadius: 60 }}/> */}
@@ -87,7 +85,7 @@ export const ProfileUI: FC = ({ children }) => {
                     />
                 
             </ScrollViewForm>
-        </FlatLayout>
+        </PrimaryLayout>
     )
 }
 

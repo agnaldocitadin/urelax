@@ -129,7 +129,6 @@ export const InputMaskBase = styled(TextInputMask)`
 
 export const BaseIcon = styled(Icon)<{ color?: string }>`
     color: ${({ color }) => color};
-    font-size: ${DEFAULT_ICON_SIZE}px;
 `
 
 BaseIcon.defaultProps = {

@@ -14,6 +14,7 @@ import { SplashAuth } from '../SplashAuth'
 import { useLogInUIHook } from './LogInUIHook'
 
 const COLOR = Colors.BLUES_1
+const INPUTEXT_FONT_SIZE = 15
 
 interface LogInUIProps {}
 
@@ -112,12 +113,12 @@ const Content = styled.View`
 
 const EmailInput = styled(InputText)`
     color: ${Colors.WHITE};
-    font-size: 17px;
+    font-size: ${INPUTEXT_FONT_SIZE}px;
 `
 
 const PasswordInput = styled(InputSecure)`
     color: ${Colors.WHITE};
-    font-size: 17px;
+    font-size: ${INPUTEXT_FONT_SIZE}px;
 `
 
 const Switch = styled(InputSwitch)`

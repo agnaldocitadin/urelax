@@ -93,8 +93,7 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      * @memberof BBStochasticRSIStrategy
      */
     private hasEnoughData(history: StockHistory[]) {
-        return true
-        // return history.length === DATA_LENGTH
+        return history.length === DATA_LENGTH
     }
 
     /**
@@ -141,7 +140,6 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      */
     private isTimeToBuy(history: StockHistory[], stockTracker: StockTracker): boolean {
         if (this.bought) return false
-        return randomIntFromInterval(0, 500) < 20
         
         const closes = history.map(event => event.closingPrice)
         const BBResult = BollingerBands.calculate({ values: closes, period: BB_PERIOD, stdDev: BB_STDDEV })
@@ -178,7 +176,6 @@ export class BBStochasticRSIStrategy implements InvestimentStrategy<BBStochastic
      */
     private isTimeToSell(history: StockHistory[], stockTracker: StockTracker): boolean {
         if (!this.bought) return false
-        return randomIntFromInterval(0, 500) > 480
 
         const closes = history.map(event => event.closingPrice)
         const currentPrice = arrays.lastElement(closes)

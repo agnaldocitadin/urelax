@@ -70,9 +70,9 @@ const StyledItem: any = styled(View)`
 `
 
 const StyledName: any = styled(Text)`
+    font-size: ${(props: any) => `${props.fontSize}px`};
     font-family: ${(props: any) => props.font};
     color: ${Colors.GRAY_3};
-    font-size: ${(props: any) => `${props.fontSize}px`};
     width: 100%;
 `
 

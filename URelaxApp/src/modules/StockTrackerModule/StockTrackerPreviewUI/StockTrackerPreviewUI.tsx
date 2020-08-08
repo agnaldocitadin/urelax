@@ -36,7 +36,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
             loading={loading}
             header={
                 <BackHeader 
-                    title={stockTracker?.stockInfo?.description || ""}
+                    title={loading ? ts("loading") : stockTracker?.stockInfo?.description}
                     right={
                         <ButtonHeader
                             icon={Icons.SETTINGS} 
@@ -55,16 +55,16 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                             <InfoHeader>
                                 <LeftColumn>
                                     <InfoItem 
-                                        title={<Typography>{ts("stock_amount")}</Typography>} 
-                                        description={<Typography>{utils.formatCurrency(amount, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}/>
+                                        title={<Name>{ts("stock_amount")}</Name>} 
+                                        description={<Value>{utils.formatCurrency(amount, { prefix: AppConfig.CURRENCY_PREFIX })}</Value>}/>
 
                                     <InfoItem 
-                                        title={<Typography>{ts("buy_average_price")}</Typography>} 
-                                        description={<Typography>{utils.formatCurrency(stockTracker.buyPrice || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}/>
+                                        title={<Name>{ts("buy_average_price")}</Name>} 
+                                        description={<Value>{utils.formatCurrency(stockTracker.buyPrice || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Value>}/>
 
                                     <InfoItem 
-                                        title={<Typography>{ts("quantity")}</Typography>} 
-                                        description={<Typography>{stockTracker.qty || 0}</Typography>}/>
+                                        title={<Name>{ts("quantity")}</Name>} 
+                                        description={<Value>{stockTracker.qty || 0}</Value>}/>
                                 </LeftColumn>
                                 <RightColumn>
                                     { stockTracker && <Image 
@@ -105,4 +105,12 @@ const RightColumn = styled.View`
 const InfoItem = styled(Info)`
     padding-bottom: ${DEFAULT_VERTICAL_SPACING / 2}px;
     padding-left: 0;
+`
+
+const Name = styled(Typography)`
+    color: ${Colors.GRAY_1};
+`
+
+const Value = styled(Typography)`
+    font-size: 20px;
 `

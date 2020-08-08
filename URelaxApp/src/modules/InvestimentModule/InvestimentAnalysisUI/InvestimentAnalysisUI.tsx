@@ -4,8 +4,7 @@ import React, { FC } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 import { BaseButton } from '../../../components/BaseButton'
-import { BackHeader } from '../../../components/Header/BackHeader'
-import { FlatLayout } from '../../../components/Layout/FlatLayout'
+import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
 import { TouchItem } from '../../../components/TouchItem'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
@@ -28,10 +27,9 @@ export const InvestimentAnalysisUI: FC = () => {
     } = useInvestimentAnalysisUIHook()
 
     return (
-        <FlatLayout
+        <PrimaryLayout
             bgColor={Colors.WHITE}
-            header={<BackHeader title={ts("analysis")}/>}>
-            
+            title={ts("analysis")}>
             <Soet>
                 <Typography>{utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                 <VariationMonitor value={patrimonyVariation}/>
@@ -72,7 +70,7 @@ export const InvestimentAnalysisUI: FC = () => {
                     <TypographyMedium textAlign="center">{ts("period_investiment")}</TypographyMedium>
                 </View>
             </Inves>
-        </FlatLayout>
+        </PrimaryLayout>
     )
 }
 

@@ -21,27 +21,27 @@ export const TextIconDisplay: FC<TextIconDisplayProps> = ({
     style
 }) => {
     return (
-        <STextIconDisplayView style={style}>
-            <STextIconDisplayIcon size={60} name={icon} color={iconColor}/>
-            {title && <STextIconDisplayTitle fontSize={19} color={textColor}>{title}</STextIconDisplayTitle>}
-            {message && <STextIconDisplayDesc fontSize={15} color={textColor}>{message}</STextIconDisplayDesc>}
-        </STextIconDisplayView>
+        <Content style={style}>
+            <Icon size={50} name={icon} color={iconColor}/>
+            {title && <Title fontSize={17} color={textColor}>{title}</Title>}
+            {message && <Message fontSize={14} color={textColor}>{message}</Message>}
+        </Content>
     )
 }
 
-const STextIconDisplayView = styled.View`
+const Content = styled.View`
     align-items: center;
 `
 
-const STextIconDisplayTitle = styled(TypographyMedium)`
+const Title = styled(TypographyMedium)`
     margin-bottom: 20px;
     text-align: center;
 `
 
-const STextIconDisplayDesc = styled(Typography)`
+const Message = styled(Typography)`
     text-align: center;
 `
 
-const STextIconDisplayIcon = styled(BaseIcon)`
+const Icon = styled(BaseIcon)`
     margin-bottom: 20px;
 `

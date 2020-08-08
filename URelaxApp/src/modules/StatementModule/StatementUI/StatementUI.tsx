@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
-import { BackHeader } from '../../../components/Header/BackHeader'
-import { FlatLayout } from '../../../components/Layout/FlatLayout'
+import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
 import { ts } from '../../../core/I18n'
 import { StatementTimeline } from '../StatementTimeline'
 import { useStatementUIHook } from './StatementUIHook'
@@ -14,12 +13,12 @@ export const StatementUI: FC = () => {
     } = useStatementUIHook()
 
     return (
-        <FlatLayout header={<BackHeader title={ts("statement")}/>}>
+        <PrimaryLayout title={ts("statement")}>
             <StatementTimeline
                 data={statements}
                 onRefresh={handleRefresh}
                 minLengthToLoadMore={20}
                 onEndPageReached={handleLoadMoreData}/>
-        </FlatLayout>
+        </PrimaryLayout>
     )
 }

@@ -96,32 +96,32 @@ export const Navigator: FC = ({}) => {
 
                     <Drawer.Screen
                         name={Drawers.INVESTIMENTS}
-                        options={menuOptions("investiments", "settings")}
+                        options={menuOptions("investiments", "settings", true)}
                         component={investiments}/>
 
                     <Drawer.Screen
                         name={Drawers.ANALYSIS}
-                        options={menuOptions("analysis", "settings")}
+                        options={menuOptions("analysis", "settings", true)}
                         component={investimentAnalysis}/>
 
                     <Drawer.Screen
                         name={Drawers.STATEMENTS}
-                        options={menuOptions("statement", "settings")}
+                        options={menuOptions("statement", "settings", true)}
                         component={statements}/>
 
                     <Drawer.Screen
                         name={Drawers.ACTIVITIES}
-                        options={menuOptions("activities", "settings")}
+                        options={menuOptions("activities", "settings", true)}
                         component={activities}/>
 
                     <Drawer.Screen
                         name={Drawers.BROKERS}
-                        options={menuOptions("brokers", "settings")}
+                        options={menuOptions("brokers", "settings", true)}
                         component={brokers}/>
 
                     <Drawer.Screen
                         name={Drawers.SETTINGS}
-                        options={menuOptions("settings", Icons.SETTINGS)}
+                        options={menuOptions("settings", Icons.SETTINGS, true)}
                         component={settings}/>
                 </Drawer.Navigator>
             )

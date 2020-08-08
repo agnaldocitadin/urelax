@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
 import { Image } from 'react-native'
 import styled from 'styled-components/native'
+import { InputSecure } from '../../../components/Inputs/InputSecure'
 import { InputText } from '../../../components/Inputs/InputText'
-import { InteractiveButton } from '../../../components/InteractiveButton'
+import { InteractiveButton, InteractiveButtonStates } from '../../../components/InteractiveButton'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { MarginBox } from '../../../components/Layout/Layout.style'
 import { ScrollViewForm } from '../../../components/Layout/ScrollViewForm'
@@ -10,7 +11,6 @@ import { ts } from '../../../core/I18n'
 import { Colors, DEFAULT_VERTICAL_SPACING, Icons, Images } from '../../../theming'
 import { SplashAuth } from '../../SecurityModule/SplashAuth'
 import { useSignUpUIHook } from './SignUpUIHook'
-import { InputSecure } from '../../../components/Inputs/InputSecure'
 
 interface SignUpUIProps {}
 
@@ -33,8 +33,11 @@ export const SignUpUI: FC<SignUpUIProps> = ({}) => {
         formFilled,
         authenticate,
         profile,
-        passwordMatch
+        passwordMatch,
+        sending
     } = useSignUpUIHook()
+
+    console.log("--", formFilled)
 
     return (
         <FlatLayout
@@ -138,6 +141,7 @@ export const SignUpUI: FC<SignUpUIProps> = ({}) => {
                             <Button
                                 data={{ 
                                     text: "Sign Up",
+                                    activityState: sending ? InteractiveButtonStates.PROCESSING : InteractiveButtonStates.NORMAL
                                 }}
                                 disabled={!formFilled}
                                 onPress={handleSignUp}/>
@@ -168,5 +172,4 @@ const Content = styled.View`
 const Button = styled(InteractiveButton)`
     background-color: ${Colors.WHITE};
     border-radius: 25px;
-    margin-top: 30px;
 `

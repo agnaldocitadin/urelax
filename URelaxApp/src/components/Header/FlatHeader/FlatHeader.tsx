@@ -42,8 +42,8 @@ const Container = styled.View<{ bgColor: string, borderBottomWidth: number, bord
     border-bottom-color: ${({ borderBottomColor }) => borderBottomColor};
     background-color: ${({ bgColor }) => bgColor};
     flex-direction: row;
-    min-height: 60px;
-    padding: 0 5px;
+    min-height: 85px;
+    padding: 25px 5px 0 5px;
     width: 100%;
 `
 

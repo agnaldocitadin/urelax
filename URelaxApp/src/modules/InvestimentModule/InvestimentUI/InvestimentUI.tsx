@@ -5,9 +5,8 @@ import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 import { Badge } from '../../../components/Badge'
 import { BaseButton } from '../../../components/BaseButton'
-import { BackHeader } from '../../../components/Header/BackHeader'
-import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { HeaderDivider } from '../../../components/Layout/Layout.style'
+import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
 import { TouchItem } from '../../../components/TouchItem'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
@@ -26,19 +25,22 @@ export const InvestimentUI: FC = () => {
     const { patrimony, currency, stocks } = investiments
 
     return (
-        <FlatLayout
-            bgColor={Colors.WHITE}
-            header={<BackHeader title={ts("investiments")}/>}>
-            
+        <PrimaryLayout title={ts("investiments")}>
             <ScrollView>
                 <Patrimony>
-                    <Typography textAlign="center">{ts("available_to_invest")}</Typography>
+                    <Typography
+                        color={Colors.GRAY_1}
+                        textAlign="center">
+                        {ts("available_to_invest")}
+                    </Typography>
                     <Typography textAlign="center" fontSize={28}>{utils.formatCurrency(patrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                 </Patrimony>
                 <BtnContainer>
                     <AddInvestimentBtn onPress={handleAdd}>
-                        <BaseIcon size={18} color={Colors.WHITE} name={"cart-outline"}/>
-                        <TypographyMedium color={Colors.WHITE}>{ts("invest")}</TypographyMedium>
+                        <BaseIcon
+                            size={25}
+                            color={Colors.WHITE}
+                            name={"cart-outline"}/>
                     </AddInvestimentBtn>
                 </BtnContainer>
                 <Content>
@@ -49,7 +51,7 @@ export const InvestimentUI: FC = () => {
                         handle={handleStockTracker}/>
                 </Content>
             </ScrollView>
-        </FlatLayout>
+        </PrimaryLayout>
     )
 }
 
@@ -105,16 +107,16 @@ const Item = styled.View`
 
 const AddInvestimentBtn = styled(BaseButton)`
     background-color: ${Colors.BLUES_2};
-    border-radius: 7px;
-    height: 40px;
-    width: 50%;
+    border-radius: 30px;
+    height: 60px;
+    width: 60px;
 `
 
 const BtnContainer = styled.View`
     align-items: center;
     position: absolute;
     width: 100%;
-    top: 140px;
+    top: 130px;
 `
 
 const Touch = styled(TouchItem)`

@@ -6,6 +6,8 @@ import { ListRenderItem, RefreshControl, View, ViewStyle } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import styled from 'styled-components/native'
 import { BaseButton } from '../../../components/BaseButton'
+import { ButtonHeader } from '../../../components/Header/ButtonHeader'
+import { FlatHeader } from '../../../components/Header/FlatHeader'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { SRoundedBox } from '../../../components/Layout/Layout.style'
 import { VariationMonitor } from '../../../components/VariationMonitor'
@@ -13,7 +15,6 @@ import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { BaseIcon, Colors, Typography, TypographyMedium } from '../../../theming'
 import { useDashboardUIHook } from './DashboardUIHook'
-
 interface HomeDashboardProps {}
 
 export const DashboardUI: FC<HomeDashboardProps> = () => {
@@ -31,30 +32,61 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
     } = useDashboardUIHook()
 
     const renderSummary: ListRenderItem<FinancialSummary> = ({ item, index }) => {
+        const vari = item.variation === 0 ? ts("no_variation") : (item.variation > 0 ? ts("gain") : ts("loss"))
         return (
             <History>
-                <Typography color={Colors.GRAY_1}>{item.when}</Typography>
+                <TypographyMedium 
+                    fontSize={15}
+                    color={Colors.GRAY_2}>
+                    {item.when}
+                </TypographyMedium>
                 <CenteredView>
-                    <Typography textAlign="center">{item.variation > 0 ? ts("gain") : ts("loss")}</Typography>
-                    <VariationMonitor onPress={() => handleAnalysis(index)} value={item.variation}/>
+                    <Typography
+                        fontSize={15}
+                        textAlign="center">
+                        {vari}
+                    </Typography>
+                    <VariationMonitor
+                        fontSize={20}
+                        onPress={() => handleAnalysis(index)}
+                        value={item.variation}/>
                 </CenteredView>
                 <View>
-                    <Typography color={Colors.GRAY_1}>{ts("your_patrimony_was")}</Typography>
-                    <Typography textAlign="center">{utils.formatCurrency(item.patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                    <Typography
+                        fontSize={14}
+                        color={Colors.GRAY_1}>
+                        {ts("your_patrimony_was")}
+                    </Typography>
+                    <Typography
+                        fontSize={18}
+                        textAlign="center">
+                        {utils.formatCurrency(item.patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
+                    </Typography>
                 </View>
             </History>
         )
     }
 
     return (
-        <FlatLayout 
-            bgColor={Colors.BLUES_1} 
-            bgStatusBar={Colors.BLUES_1}>
-            <Bar>
-                <Menu2 name="dots-horizontal" size={23}  onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}/>
-            </Bar>
-
-            <Refresher enabled={true} refreshing={refreshing} onRefresh={handleRefresh}>
+        <FlatLayout
+            bgColor={Colors.BLUES_1}
+            barStyle="light-content"
+            header={
+                <FlatHeader
+                    bgHeaderColor={Colors.BLUES_1}
+                    borderBottomWidth={0}
+                    right={
+                        <ButtonHeader
+                            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                            icon={"dots-horizontal"}
+                            color={Colors.WHITE}/>
+                    }/>
+            }>
+            <Refresher
+                enabled={true}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}>
+                    
                 <PatrimonyNow>
                     <TypographyMedium
                         color={Colors.WHITE}
@@ -64,6 +96,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                     <View>
                         <Typography
                             color={Colors.WHITE}
+                            fontSize={13}
                             textAlign="center">
                             {ts("patrimony_amount")}
                         </Typography>
@@ -117,9 +150,9 @@ const Refresher = styled(RefreshControl)`
 `
 
 const PatrimonyNow = styled.View`
-    text-align: center;
     justify-content: space-evenly;
     align-items: center;
+    text-align: center;
     flex: 1;
 `
 
@@ -167,7 +200,7 @@ const Bar = styled.View`
     border-color: ${Colors.GRAY_4}; */
     height: 50px;
     position: absolute;
-    top: 0;
+    top: 25px;
     right: 0;
     z-index: 2;
     /* width: 100%; */
