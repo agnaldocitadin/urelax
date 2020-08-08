@@ -28,6 +28,7 @@ export const useInvestimentUIHook = () => {
     const { selectStockTrackerID } = StockTrackerModule.actions()
     const account: Account = Identity.select("activeAccount")
     const [ investiments, setInvestiments ] = useState<InvestimentHook>(empty)
+    const [ loading, setLoading ] = useState(true)
 
     const handleAdd = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
 
@@ -53,6 +54,8 @@ export const useInvestimentUIHook = () => {
                     stocks
                 })
             }
+
+            setLoading(false)
         }
         catch(error) {
             showAPIError(error)
@@ -60,6 +63,7 @@ export const useInvestimentUIHook = () => {
     })
 
     return {
+        loading,
         investiments,
         handleAdd,
         handleFilter,

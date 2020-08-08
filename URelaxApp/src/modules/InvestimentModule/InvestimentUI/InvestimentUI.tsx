@@ -16,16 +16,16 @@ import { useInvestimentUIHook } from './InvestimentUIHook'
 export const InvestimentUI: FC = () => {
     
     const {
+        loading,
         investiments,
         handleAdd,
-        handleFilter,
         handleStockTracker,
     } = useInvestimentUIHook()
 
     const { patrimony, currency, stocks } = investiments
 
     return (
-        <PrimaryLayout title={ts("investiments")}>
+        <PrimaryLayout title={ts("investiments")} loading={loading}>
             <ScrollView>
                 <Patrimony>
                     <Typography

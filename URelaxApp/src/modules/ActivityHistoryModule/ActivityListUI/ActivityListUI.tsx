@@ -8,12 +8,22 @@ import { useActivityListUIHook } from './ActivityListUIHook'
 interface ActivityListUIProps {}
 
 export const ActivityListUI: FC<ActivityListUIProps> = () => {
-    const { activities, fail, handleRefresh, handleLoadMoreData, handleActivityPress } = useActivityListUIHook()
+    
+    const { 
+        activities,
+        fail,
+        loading,
+        handleRefresh,
+        handleLoadMoreData,
+        handleActivityPress
+    } = useActivityListUIHook()
+
     return (
         <PrimaryLayout
             fail={fail}
             bgColor={Colors.WHITE}
-            title={ts("activities")}>
+            title={ts("activities")}
+            loading={loading}>
             { !fail && <ActivityTimeline
                 activities={activities}
                 minLengthToLoadMore={10}

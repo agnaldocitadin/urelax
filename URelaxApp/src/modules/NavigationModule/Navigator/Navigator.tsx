@@ -86,7 +86,7 @@ export const Navigator: FC = ({}) => {
                         
                     <Drawer.Screen 
                         name={Drawers.DASHBOARD}
-                        options={menuOptions("dashboard", "settings", true)}
+                        options={menuOptions("dashboard", Icons.HOME_VARIANT, true)}
                         component={dashboard}/>
 
                     <Drawer.Screen 
@@ -96,27 +96,27 @@ export const Navigator: FC = ({}) => {
 
                     <Drawer.Screen
                         name={Drawers.INVESTIMENTS}
-                        options={menuOptions("investiments", "settings", true)}
+                        options={menuOptions("investiments", Icons.CASH, true)}
                         component={investiments}/>
 
                     <Drawer.Screen
                         name={Drawers.ANALYSIS}
-                        options={menuOptions("analysis", "settings", true)}
+                        options={menuOptions("analysis", Icons.CHART_LINE, true)}
                         component={investimentAnalysis}/>
 
                     <Drawer.Screen
                         name={Drawers.STATEMENTS}
-                        options={menuOptions("statement", "settings", true)}
+                        options={menuOptions("statement", Icons.STATEMENTS, true)}
                         component={statements}/>
 
                     <Drawer.Screen
                         name={Drawers.ACTIVITIES}
-                        options={menuOptions("activities", "settings", true)}
+                        options={menuOptions("activities", Icons.ACTIVITY, true)}
                         component={activities}/>
 
                     <Drawer.Screen
                         name={Drawers.BROKERS}
-                        options={menuOptions("brokers", "settings", true)}
+                        options={menuOptions("brokers", Icons.BROKER, true)}
                         component={brokers}/>
 
                     <Drawer.Screen
@@ -150,8 +150,8 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = (props) => {
                 <DrawerItemList {...props}/>
             </DrawerContentScrollView>
             <DrawerItem 
-                label={props => <TypographyMedium {...props}>{ts("logout")}</TypographyMedium>}
-                icon={props => <BaseIcon {...props} name="wallet"/>}
+                label={props => <TypographyMedium {...props}>{ts("exit_app")}</TypographyMedium>}
+                icon={props => <BaseIcon {...props} name={Icons.LOGOUT}/>}
                 onPress={null}/>
         </View>
     )

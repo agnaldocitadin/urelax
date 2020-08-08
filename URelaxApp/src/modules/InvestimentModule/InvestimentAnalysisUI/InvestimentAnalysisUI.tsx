@@ -21,6 +21,7 @@ export const InvestimentAnalysisUI: FC = () => {
         patrimonyVariation,
         period,
         selectedGraph,
+        loading,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph
@@ -29,7 +30,8 @@ export const InvestimentAnalysisUI: FC = () => {
     return (
         <PrimaryLayout
             bgColor={Colors.WHITE}
-            title={ts("analysis")}>
+            title={ts("analysis")}
+            loading={loading}>
             <Soet>
                 <Typography>{utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                 <VariationMonitor value={patrimonyVariation}/>

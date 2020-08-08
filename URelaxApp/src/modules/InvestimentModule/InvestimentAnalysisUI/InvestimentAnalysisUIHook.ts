@@ -19,6 +19,7 @@ export const useInvestimentAnalysisUIHook = () => {
     const analysis: FinancialAnalysis[] = Investiment.select("analysis")
     const selectedGraph: number = Investiment.select("selectedGraphIndex")
     const [ period, setPeriod ] = useState<FinancialAnalysisPeriod>(FinancialAnalysisPeriod.DAILY)
+    const [ loading, setLoading ] = useState(true)
 
     const handleAnalysisDetail = useCallback(() => {
         navigation.navigate(Routes.INVESTIMENT_ANALYSIS_DETAIL)
@@ -42,7 +43,10 @@ export const useInvestimentAnalysisUIHook = () => {
         }
     }, [selectedGraph])
 
-    useEffectWhenReady(() => handlePeriodSelection(period, false))
+    useEffectWhenReady(async () => {
+        await handlePeriodSelection(period, false)
+        setLoading(false)
+    })
 
     const dataGraph = analysis.map(item => {
         return {
@@ -60,6 +64,7 @@ export const useInvestimentAnalysisUIHook = () => {
         patrimonyVariation: graphBar?.variation || 0,
         period,
         selectedGraph,
+        loading,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph

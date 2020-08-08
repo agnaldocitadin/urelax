@@ -11,7 +11,8 @@ export const DEFAULT_VERTICAL_SPACING = 20
 export const DEFAULT_HORIZONTAL_SPACING = 20
 
 export const Images = {
-    LOGO: require("../assets/imgs/logo.png")
+    LOGO: require("../assets/imgs/logo.png"),
+    PROFILE: require("../assets/imgs/profile.jpg")
 }
 
 export const SymbolsImg = {
@@ -86,11 +87,16 @@ export enum Icons {
     PLAY = "play",
     PAUSE = "pause",
     CLOCK = "clock-outline",
-    HOME_VARIANT = "home-variant",
-    ACCOUNT_CIRCLE = "account-circle",
+    HOME_VARIANT = "home-outline",
+    ACCOUNT_CIRCLE = "account-circle-outline",
     WALLET = "wallet",
-    CHART_LINE_VARIANT = "chart-line-variant",
+    CHART_LINE = "chart-line",
     CIRCLE_MEDIUM = "circle-medium",
+    CASH = "cash",
+    BROKER = "cash-refund",
+    ACTIVITY = "timeline-outline",
+    STATEMENTS = "timeline-text-outline",
+    LOGOUT = "logout"
 }
 
 export const Typography = styled(BaseTypography)<{ color?: string, fontSize?: number }>`

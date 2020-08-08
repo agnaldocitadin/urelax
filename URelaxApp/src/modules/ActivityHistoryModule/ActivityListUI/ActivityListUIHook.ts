@@ -18,6 +18,7 @@ import { fetchActivities } from "../api"
 export const useActivityListUIHook = () => {
 
     const [ fail, setFail ] = useState(false)
+    const [ loading, setLoading ] = useState(true)
     const { showAPIError } = Messaging.actions()
     const { addActivities, selectActivity } = ActivityHistory.actions()
     const activities: Activity[] = ActivityHistory.select("activities")
@@ -49,11 +50,15 @@ export const useActivityListUIHook = () => {
         }
     }, [])
 
-    useEffectWhenReady(() => handleRefresh(true))
+    useEffectWhenReady(async () => {
+        await handleRefresh(true)
+        setLoading(false)
+    })
 
     return {
         activities,
         fail,
+        loading,
         handleRefresh,
         handleLoadMoreData,
         handleActivityPress

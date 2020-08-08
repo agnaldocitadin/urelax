@@ -7,13 +7,14 @@ import { useStatementUIHook } from './StatementUIHook'
 export const StatementUI: FC = () => {
     
     const {
+        loading,
         statements,
         handleRefresh,
         handleLoadMoreData
     } = useStatementUIHook()
 
     return (
-        <PrimaryLayout title={ts("statement")}>
+        <PrimaryLayout title={ts("statement")} loading={loading}>
             <StatementTimeline
                 data={statements}
                 onRefresh={handleRefresh}
