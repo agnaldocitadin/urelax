@@ -16,8 +16,8 @@ export const ActivityItem: FC<ActivityItemProps> = ({ activity, color = Colors.B
             {renderDetails(activity, color)}
         </LeftContent>
         <RightContent>
-            { activity.createdAt && <TypoDate color={color}>{format(new Date(activity.createdAt), "dd/MMM")}</TypoDate>}
-            { activity.createdAt && <TypoDate color={color}>{format(new Date(activity.createdAt), "HH:mm")}</TypoDate>}
+            { activity.createdAt && <TypoDate color={Colors.GRAY_1}>{format(new Date(activity.createdAt), "dd/MMM")}</TypoDate>}
+            { activity.createdAt && <TypoDate color={Colors.GRAY_1}>{format(new Date(activity.createdAt), "HH:mm")}</TypoDate>}
         </RightContent>
     </React.Fragment>
 )
@@ -25,7 +25,7 @@ export const ActivityItem: FC<ActivityItemProps> = ({ activity, color = Colors.B
 const renderDetails = (activity: Activity, color: string) => {
     return activity.details && activity.details.map((detail, key) => !detail.hidden ? 
         <Typography
-            color={color}
+            color={Colors.GRAY_3}
             fontSize={15}
             key={key}>
             {detail.description}

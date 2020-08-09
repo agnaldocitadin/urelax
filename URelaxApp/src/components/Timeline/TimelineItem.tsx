@@ -16,7 +16,7 @@ export const TimelineItem: FC<TimelineItemProps> = ({
     index, 
     icon, 
     content, 
-    color = Colors.BLACK_1, 
+    color = Colors.GRAY_3, 
     contentDirection = "column",
     ...others
 }) => {

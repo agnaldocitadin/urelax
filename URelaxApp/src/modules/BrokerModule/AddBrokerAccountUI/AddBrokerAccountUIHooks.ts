@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
-import { Brokers } from "honeybee-api"
-import { useCallback } from "react"
+import { Broker, Brokers } from "honeybee-api"
+import { useCallback, useState } from "react"
 import BrokerModule from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
+import MessagingModule from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { fetchBrokers } from "../api"
 import { useBroker } from "../hook"
@@ -12,7 +13,10 @@ export const useAddBrokerAccountUIHook = () => {
     const navigation = useNavigation()
     const { initBrokerAccount } = useBroker()
     const { selectBrokerAccount } = BrokerModule.actions()
-
+    const { showAPIError } = MessagingModule.actions()
+    const [ brokers, setBrokers ] = useState<Broker[]>([])
+    const [ loading, setLoading ] = useState(true)
+    
     const handleAddClearAccount = useCallback(() => {
         const account = initBrokerAccount(Brokers.CLEAR)
         selectBrokerAccount(account)
@@ -22,11 +26,19 @@ export const useAddBrokerAccountUIHook = () => {
     const handleBrokerAccounts = useCallback(() => navigation.navigate(Routes.BROKER_ACCOUNTS), [])
 
     useEffectWhenReady(async () => {
-        const brokers = await fetchBrokers()
-        // TODO
+        try {
+            const brokers = await fetchBrokers()
+            setBrokers(brokers)
+            setLoading(false)
+        }
+        catch(error) {
+            showAPIError(error)
+        }
     })
 
     return {
+        brokers,
+        loading,
         handleAddClearAccount,
         handleBrokerAccounts
     }

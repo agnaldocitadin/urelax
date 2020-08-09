@@ -155,4 +155,9 @@
     "available_to_invest": "Disponível para investir",
     "stocks": "Ações",
     "loading": "Carregando...",
+    "daily": "Diário",
+    "weekly": "Semanal",
+    "monthly": "Mensal",
+    "yearly": "Anual",
+    "period_investiment": "Investimentos no período"
 }

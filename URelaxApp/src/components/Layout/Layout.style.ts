@@ -12,6 +12,10 @@ export const MarginBox = styled.View<{ noMarginLeft?: boolean, noMarginRight?: b
     margin-bottom: ${({ noMarginBottom }) => noMarginBottom ? 0 : DEFAULT_VERTICAL_SPACING}px;
 `
 
+export const MarginBoxFlex = styled(MarginBox)`
+    flex: 1;
+`
+
 // --------------- Shit -----------------------
 
 export const SRoundedBox: any = styled.View`

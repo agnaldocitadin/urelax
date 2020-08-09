@@ -6,6 +6,7 @@ import ActivityHistory from '..'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
+import { MarginBox } from '../../../components/Layout/Layout.style'
 import { Colors, Typography } from '../../../theming'
 
 interface ActivityDetailUIProps {}
@@ -16,17 +17,18 @@ export const ActivityDetailUI: FC<ActivityDetailUIProps> = () => {
         <FlatLayout
             bgColor={Colors.WHITE}
             header={<BackHeader title={activity.title}/>}>
-                
             <ScrollView>
-                { activity && activity.details.map((detail, key) => 
-                    <ActivityInfo
-                        key={key}
-                        title={detail.title}
-                        description={detail.description}/>    
-                )}
-                <ActivityInfo 
-                    title="Data/Hora" 
-                    description={format(new Date(activity.createdAt), "dd/MM/yyyy 'at' HH:mm'h'")}/>
+                <MarginBox noMarginTop>
+                    { activity && activity.details.map((detail, key) => 
+                        <ActivityInfo
+                            key={key}
+                            title={detail.title}
+                            description={detail.description}/>    
+                    )}
+                    <ActivityInfo 
+                        title="Data/Hora" 
+                        description={format(new Date(activity.createdAt), "dd/MM/yyyy 'at' HH:mm'h'")}/>
+                </MarginBox>
             </ScrollView>
         </FlatLayout>
     )
@@ -34,7 +36,7 @@ export const ActivityDetailUI: FC<ActivityDetailUIProps> = () => {
 
 const ActivityInfo: FC<{ title: string, description: string, onPress?(): void }> = ({ title, description, onPress }) => {
     return <Info 
-        title={<Typography>{title}</Typography>}
-        description={<Typography>{description}</Typography>}
+        title={<Typography color={Colors.GRAY_1}>{title}</Typography>}
+        description={<Typography fontSize={14}>{description}</Typography>}
         onPress={onPress}/>
 }

@@ -1,16 +1,17 @@
 import { FinancialAnalysisPeriod } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
-import { View } from 'react-native'
 import styled from 'styled-components/native'
+import { AnalysisGraphic } from '.'
 import { BaseButton } from '../../../components/BaseButton'
+import { Info } from '../../../components/Info'
+import { MarginBoxFlex } from '../../../components/Layout/Layout.style'
 import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
 import { TouchItem } from '../../../components/TouchItem'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Typography, TypographyMedium } from '../../../theming'
-import { AnalysisGraphic } from './AnalysisGraphic'
 import { useInvestimentAnalysisUIHook } from './InvestimentAnalysisUIHook'
 
 export const InvestimentAnalysisUI: FC = () => {
@@ -24,7 +25,8 @@ export const InvestimentAnalysisUI: FC = () => {
         loading,
         handlePeriodSelection,
         handleAnalysisDetail,
-        handleSelectGraph
+        handleSelectGraph,
+        handleLoadMore
     } = useInvestimentAnalysisUIHook()
 
     return (
@@ -32,62 +34,79 @@ export const InvestimentAnalysisUI: FC = () => {
             bgColor={Colors.WHITE}
             title={ts("analysis")}
             loading={loading}>
-            <Soet>
-                <Typography>{utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
-                <VariationMonitor value={patrimonyVariation}/>
-            </Soet>
+            <MarginBoxFlex>
+                <Head>
+                    <Patrimony
+                        title={<Typography color={Colors.GRAY_1}>Patrimonio total</Typography>}
+                        description={
+                            <Typography fontSize={20} color={Colors.BLACK_2}>
+                                {utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
+                            </Typography>
+                        }/>
+                    <VariationMonitor
+                        fontSize={16}
+                        value={patrimonyVariation}/>
+                </Head>
 
-            <Graph>
-                <AnalysisGraphic
-                    data={dataGraph}
-                    minLengthToLoadMore={20}
-                    selectedIndex={selectedGraph}
-                    onSelect={handleSelectGraph}/>
-            </Graph>
-            
-            <Row>
-                <MyButton 
-                    label={ts("daily")}
-                    selected={period === FinancialAnalysisPeriod.DAILY}
-                    onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.DAILY)}/>
+                <Row>
+                    <PeriodBtn 
+                        label={ts("daily")}
+                        selected={period === FinancialAnalysisPeriod.DAILY}
+                        onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.DAILY)}/>
 
-                <MyButton
-                    label={ts("weekly")}
-                    selected={period === FinancialAnalysisPeriod.WEEKLY}
-                    onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.WEEKLY)}/>
+                    <PeriodBtn
+                        label={ts("weekly")}
+                        selected={period === FinancialAnalysisPeriod.WEEKLY}
+                        onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.WEEKLY)}/>
 
-                <MyButton
-                    label={ts("monthly")}
-                    selected={period === FinancialAnalysisPeriod.MONTHLY}
-                    onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.MONTHLY)}/>
+                    <PeriodBtn
+                        label={ts("monthly")}
+                        selected={period === FinancialAnalysisPeriod.MONTHLY}
+                        onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.MONTHLY)}/>
 
-                <MyButton
-                    label={ts("yearly")}
-                    selected={period === FinancialAnalysisPeriod.YEARLY}
-                    onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.YEARLY)}/>
-            </Row>
+                    <PeriodBtn
+                        label={ts("yearly")}
+                        selected={period === FinancialAnalysisPeriod.YEARLY}
+                        onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.YEARLY)}/>
+                </Row>
 
-            <Inves onPress={handleAnalysisDetail}>
-                <View style={{ flex: 1 }}>
-                    <TypographyMedium textAlign="center">{ts("period_investiment")}</TypographyMedium>
-                </View>
-            </Inves>
+                <Graph>
+                    <AnalysisGraphic
+                        data={dataGraph}
+                        minLengthToLoadMore={20}
+                        selectedIndex={selectedGraph}
+                        onSelect={handleSelectGraph}
+                        onEndPageReached={handleLoadMore}/>
+                </Graph>
+
+            </MarginBoxFlex>
+            <ShowInvestimentDetail onPress={handleAnalysisDetail}>
+                <TypographyMedium
+                    color={Colors.GRAY_1}
+                    textAlign="center">
+                    {ts("period_investiment")}
+                </TypographyMedium>
+            </ShowInvestimentDetail>
         </PrimaryLayout>
     )
 }
 
-export const MyButton: FC<{ label: string, selected?: boolean, onPress?(): void }> = ({ label, selected = false, onPress }) => {
+export const PeriodBtn: FC<{ label: string, selected?: boolean, onPress?(): void }> = ({ label, selected = false, onPress }) => {
     return (
-        <But selected={selected} onPress={onPress}>
-            <Typography color={selected ? Colors.BLUES_4 : Colors.BLACK_1}>{label}</Typography>
-        </But>
+        <Button selected={selected} onPress={onPress}>
+            <Typography color={selected ? Colors.BLUES_4 : Colors.GRAY_2}>{label}</Typography>
+        </Button>
     ) 
 }
 
-const Soet = styled.View`
-    margin: ${DEFAULT_VERTICAL_SPACING}px ${DEFAULT_HORIZONTAL_SPACING}px;
+const Head = styled.View`
     justify-content: space-between;
+    align-items: flex-end;
     flex-direction: row;
+`
+
+const Patrimony = styled(Info)`
+    padding: 0;
 `
 
 const Graph = styled.View`
@@ -96,19 +115,19 @@ const Graph = styled.View`
 
 export const Row = styled.View`
     flex-direction: row;
-    margin: ${DEFAULT_VERTICAL_SPACING}px 15px;
+    margin: ${DEFAULT_VERTICAL_SPACING}px 0;
 `
 
-const But = styled(BaseButton)<{ selected: boolean }>`
+const Button = styled(BaseButton)<{ selected: boolean }>`
     border-width: 1px;
-    border-color: ${({ selected }) => selected ? Colors.BLUES_4 : Colors.WHITE};
+    border-color: ${({ selected }) => selected ? Colors.BLUES_4 : Colors.GRAY_4};
     border-radius: 25px;
     margin: 0 2px;
     height: 40px;
     flex: 1;
 `
 
-const Inves = styled(TouchItem)`
+const ShowInvestimentDetail = styled(TouchItem)`
     padding: ${DEFAULT_VERTICAL_SPACING + 5}px ${DEFAULT_HORIZONTAL_SPACING}px;
     border-top-width: 1px;
     border-color: ${Colors.BG_1};

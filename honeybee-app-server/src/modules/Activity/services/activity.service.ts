@@ -1,6 +1,7 @@
 import { ActivityType } from "honeybee-api"
 import { utils } from 'js-commons'
 import { ts } from "../../../core/i18n"
+import { toObjectId } from "../../../core/server-utils"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
 import { Profile } from "../../Identity/models/profile.model"
@@ -35,8 +36,18 @@ export const findActivitiesBy = (options: {
     translate?: boolean
 }): Promise<Activity[]> => {
         
-    const { id, accountID, page = 0, qty = 1, translate } = options
-    return ActivityModel.find({ account: accountID })
+    const { 
+        id,
+        accountID, 
+        page = 0, 
+        qty = Number(process.env.STANDARD_QUERY_RESULT), 
+        translate 
+    } = options
+
+    return ActivityModel.find({
+            ...toObjectId("_id", id),
+            ...toObjectId("account", accountID)
+        })
         .sort({ createdAt: "desc" })
         .skip(page * qty)
         .limit(qty)

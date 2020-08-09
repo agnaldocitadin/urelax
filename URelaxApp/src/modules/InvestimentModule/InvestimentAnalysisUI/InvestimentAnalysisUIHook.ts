@@ -43,6 +43,11 @@ export const useInvestimentAnalysisUIHook = () => {
         }
     }, [selectedGraph])
 
+    const handleLoadMore = useCallback((page: number) => {
+        // TODO
+        return Promise.resolve([] as DataGraph[])
+    }, [])
+
     useEffectWhenReady(async () => {
         await handlePeriodSelection(period, false)
         setLoading(false)
@@ -52,7 +57,7 @@ export const useInvestimentAnalysisUIHook = () => {
         return {
             label: item.label,
             value: item.amount,
-            color: Colors.BLUES_3        
+            color: Colors.BLUES_3      
         } as DataGraph
     })
 
@@ -67,6 +72,7 @@ export const useInvestimentAnalysisUIHook = () => {
         loading,
         handlePeriodSelection,
         handleAnalysisDetail,
-        handleSelectGraph
+        handleSelectGraph,
+        handleLoadMore
     }
 }

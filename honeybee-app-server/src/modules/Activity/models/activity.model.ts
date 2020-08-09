@@ -13,7 +13,7 @@ export class Translation {
     args?: string[]
 
     public static translate(input: Translation): string {
-        return ts(input.text, input.args)
+        return input.text ? ts(input.text, input.args) : String(input)
     }
 }
 

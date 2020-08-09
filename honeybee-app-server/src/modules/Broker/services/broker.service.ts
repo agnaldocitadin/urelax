@@ -1,5 +1,7 @@
 import { Brokers, InvestimentType } from "honeybee-api"
+import { utils } from "js-commons"
 import mongoose from 'mongoose'
+import { toObjectId } from "../../../core/server-utils"
 import { BrokerInvestiment, BrokerInvestimentModel } from "../models"
 import { Broker, BrokerModel } from "../models/broker.model"
 
@@ -22,9 +24,9 @@ export const findBrokersBy = (options: {
         
     const { id, code, active } = options
     return BrokerModel.find({
-        ...id ? { "_id": mongoose.Types.ObjectId(String(id)) } : null,
-        code, 
-        active
+        ...toObjectId("_id", id),
+        ...utils.nonNull("code", code),
+        ...utils.nonNull("active", active)
     }).exec()
 }
 

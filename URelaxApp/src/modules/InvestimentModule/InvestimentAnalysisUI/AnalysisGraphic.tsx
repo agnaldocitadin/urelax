@@ -3,7 +3,6 @@ import React, { FC } from 'react'
 import { ListRenderItem } from 'react-native'
 import styled from 'styled-components/native'
 import { InfiniteFlatList, InfiniteFlatListProps } from '../../../components/InfiniteFlatList'
-import { DEFAULT_VERTICAL_SPACING, Typography } from '../../../theming'
 import { GraphBar } from './GraphBar'
 
 export interface DataGraph {
@@ -27,21 +26,21 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
     onSelect
 }) => {
     
+    const maxItemValue = Math.max(...data.map(i => i.value)) * 1.15
+
     const render: ListRenderItem<DataGraph> = ({ item, index }) => {
+        const percent = item.value === 0 ? 0 : (item.value / maxItemValue) * 100
         return <GraphBar
             index={index}
-            value={item.value}
+            value={percent}
             mainLabel={item.label}
             color={item.color}
             selected={index === selectedIndex}
             onPress={onSelect}/>
     }
 
-    const selectedItem = (selectedIndex !== undefined && data[selectedIndex]) || undefined
-
     return (
         <React.Fragment>
-            {/* <Title textAlign="center">{ selectedItem?.label }</Title> */}
             <Container>
                 { data.length > 0 && <InfiniteFlatList
                     data={data}
@@ -60,12 +59,6 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
 }
 
 const Container = styled.View`
-    /* justify-content: center; */
     flex-direction: row;
     flex: 1;
-    /* background-color: greenyellow; */
-`
-
-const Title = styled(Typography)`
-    margin: ${DEFAULT_VERTICAL_SPACING}px 0;
 `

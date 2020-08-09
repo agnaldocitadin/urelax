@@ -26,7 +26,7 @@ export const ActivityTimeline: FC<ActivityTimelineProps> = ({
         return <TimelineItem
             index={index}
             icon={item.icon}
-            content={<ActivityItem activity={item} />}
+            content={<ActivityItem activity={item}/>}
             onPress={() => onPress(item)}
             contentDirection="row"/>
     }, [])

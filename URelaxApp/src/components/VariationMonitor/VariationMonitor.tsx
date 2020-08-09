@@ -27,6 +27,7 @@ export const VariationMonitor: FC<VariationMonitorProps> = ({
             color={iconColor}/> }
 
         <DisplayValue
+            noMargin={!showIcon}
             fontSize={fontSize}
             color={textColor}
             bgColor={value === 0 ? Colors.BG_2 : ( value > 0 ? Colors.BLUES_3 : Colors.RED_ERROR )}>
@@ -44,9 +45,9 @@ const DisplayIcon = styled(BaseIcon)`
     margin-left: 5px;
 `
 
-const DisplayValue = styled(Typography)<{ bgColor: string }>`
+const DisplayValue = styled(Typography)<{ bgColor: string, noMargin: boolean }>`
     background-color: ${({ bgColor }) => bgColor};
-    margin-left: 5px;
+    margin-left: ${({ noMargin }) => noMargin ? 0 : 5}px;
     border-radius: 3px;
     padding: 0 5px;
 `

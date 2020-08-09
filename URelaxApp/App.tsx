@@ -22,6 +22,7 @@ import StockTrackerModule from './src/modules/StockTrackerModule'
 import StorageModule from './src/modules/StorageModule'
 
 enableScreens()
+// console.disableYellowBox = true
 
 const store = AppModules.register([
     PresentationModule,

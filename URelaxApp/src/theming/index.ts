@@ -12,7 +12,8 @@ export const DEFAULT_HORIZONTAL_SPACING = 20
 
 export const Images = {
     LOGO: require("../assets/imgs/logo.png"),
-    PROFILE: require("../assets/imgs/profile.jpg")
+    PROFILE: require("../assets/imgs/profile.jpg"),
+    CLEAR: require("../assets/imgs/CLEAR.png")
 }
 
 export const SymbolsImg = {
