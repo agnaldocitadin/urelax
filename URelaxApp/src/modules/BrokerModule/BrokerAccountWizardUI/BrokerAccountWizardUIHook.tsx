@@ -33,6 +33,7 @@ export const useBrokerAccountWizardUIHook = () => {
     const transient: BrokerAccount = BrokerModule.select("selectedBrokerAccount")
     const edit: boolean = BrokerModule.select("edit")
     const viewToEdit: boolean = BrokerModule.select("viewToEdit")
+    const [ passwordConfirm, setPasswordConfirm ] = useState("")
 
     const handleChangeBirthdate = useCallback((date: Date) => {
         transient.extraData["birthdate"] = date
@@ -55,8 +56,8 @@ export const useBrokerAccountWizardUIHook = () => {
     }, [])
     
     const handleChangeConfirmPassword = useCallback((password: string) => {
-        
-    }, [])
+        setPasswordConfirm(password)
+    }, [passwordConfirm])
     
     const handleChangeSignature = useCallback((signature: string) => {
         transient.extraData["signature"] = signature
@@ -94,6 +95,7 @@ export const useBrokerAccountWizardUIHook = () => {
         sequence: edit ? [...String(viewToEdit), String(BrokerAccountWizardViews.DONE)] : [...(sequenceViews as any)[transient.brokerCode], ...standardViews],
         messageDone: "ds",
         loading,
+        passwordConfirm,
         handleFinish,
         handleValidation,
         handleFlowEnded,

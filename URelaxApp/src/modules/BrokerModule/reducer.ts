@@ -16,7 +16,8 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
     },
     SELECT_BROKER_ACCOUNT: (state: ReducerState, payload: any): ReducerState => {
         return {
-            ...state, 
+            ...state,
+            edit: false,
             selectedBrokerAccount: payload
         }
     },

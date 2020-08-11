@@ -82,7 +82,7 @@ export enum Icons {
     ARROW_RIGHT = "arrow-right",
     CHEVRON_RIGHT = "chevron-right",
     ALERT_CIRCLE = "alert-circle",
-    CHECK_CIRCLE = "check-circle",
+    CHECK_CIRCLE = "check",
     COMMENT_QUESTION = "comment-question",
     HEART_BROKEN = "heart-broken",
     PLAY = "play",
@@ -97,7 +97,12 @@ export enum Icons {
     BROKER = "cash-refund",
     ACTIVITY = "timeline-outline",
     STATEMENTS = "timeline-text-outline",
-    LOGOUT = "logout"
+    LOGOUT = "logout",
+    ADD_BROKER_ACCOUNT = "account-multiple-plus-outline",
+    SIGNATURE = "signature",
+    REVIEW = "check-all",
+    CPF = "checkbook",
+    DESCRIPTION = "pencil-outline",
 }
 
 export const Typography = styled(BaseTypography)<{ color?: string, fontSize?: number }>`

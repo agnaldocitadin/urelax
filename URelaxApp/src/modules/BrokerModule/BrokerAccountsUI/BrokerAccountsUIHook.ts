@@ -15,8 +15,13 @@ export const useBrokerAccountsUIHook = () => {
         navigation.navigate(Routes.BROKER_ACCOUNT_DETAIL)
     }, [])
 
+    const handleAddBrokerAccount = useCallback(() => {
+        navigation.navigate(Routes.ADD_BROKER_ACCOUNT)
+    }, [])
+
     return {
         accounts,
-        handleSelectBrokerAccount
+        handleSelectBrokerAccount,
+        handleAddBrokerAccount,
     }
 }

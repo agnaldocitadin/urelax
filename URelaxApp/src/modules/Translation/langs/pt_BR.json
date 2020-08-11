@@ -18,6 +18,7 @@
     "active_simulation": "Esta é sua conta de simulação!",
     "activated": "Ativada",
     "deactivated": "Desativada",
+    "created_at": "Criado em",
 
     "account_update": "Alteração de perfil.",
     "account_update_msg": "Deseja salvar as alterações do seu perfil?",
@@ -159,5 +160,6 @@
     "weekly": "Semanal",
     "monthly": "Mensal",
     "yearly": "Anual",
-    "period_investiment": "Investimentos no período"
+    "period_investiment": "Investimentos no período",
+    "broker_account_detail": "Informações da conta"
 }

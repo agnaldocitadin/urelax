@@ -23,8 +23,6 @@ export const useAddBrokerAccountUIHook = () => {
         navigation.navigate(Routes.BROKER_ACCOUNT_WIZARD)
     }, [])
 
-    const handleBrokerAccounts = useCallback(() => navigation.navigate(Routes.BROKER_ACCOUNTS), [])
-
     useEffectWhenReady(async () => {
         try {
             const brokers = await fetchBrokers()
@@ -39,7 +37,6 @@ export const useAddBrokerAccountUIHook = () => {
     return {
         brokers,
         loading,
-        handleAddClearAccount,
-        handleBrokerAccounts
+        handleAddClearAccount
     }
 }

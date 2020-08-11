@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { InputDatetime } from '../../../components/Inputs/InputDatetime'
 import { InputMask } from '../../../components/Inputs/InputMask'
+import { InputSecure } from '../../../components/Inputs/InputSecure'
 import { InputText } from '../../../components/Inputs/InputText'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { GenericTextIcon, MarginBox, SFormDescription, SFormTitle } from '../../../components/Layout/Layout.style'
@@ -23,6 +24,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
         sequence,
         messageDone,
         loading,
+        passwordConfirm,
         handleFinish,
         handleValidation,
         handleFlowEnded,
@@ -40,7 +42,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
         <FlatLayout
             bgColor={Colors.WHITE}
             loading={loading}
-            header={<BackHeader title={ts("new_broker_account")}/>}>
+            header={<BackHeader title={ts("broker_account_detail")}/>}>
             
             <WizardForm
                 sequence={sequence}
@@ -52,7 +54,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                     {
                         id: String(BrokerAccountWizardViews.BIRTHDATE),
                         view: (
-                            <WizardView icon="wallet">
+                            <WizardView icon={Icons.CALENDAR}>
                                 <MarginBox>
                                     <SFormTitle>{ts("broker_account_birthdate")}</SFormTitle>
                                     <SFormDescription>{ts("broker_account_birthdate_tip")}</SFormDescription>
@@ -64,7 +66,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                     {
                         id: String(BrokerAccountWizardViews.CPF),
                         view: (
-                            <WizardView icon="wallet">
+                            <WizardView icon={Icons.CPF}>
                                 <MarginBox>
                                     <SFormTitle>{ts("broker_account_cpf")}</SFormTitle>
                                     <SFormDescription>{ts("broker_account_cpf_tip")}</SFormDescription>
@@ -82,13 +84,12 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                     {
                         id: String(BrokerAccountWizardViews.DESCRIPTION),
                         view: (
-                            <WizardView icon="wallet">
+                            <WizardView icon={Icons.DESCRIPTION}>
                                 <MarginBox>
                                     <SFormTitle>{ts("broker_account_name")}</SFormTitle>
                                     <SFormDescription>{ts("broker_account_name_tip")}</SFormDescription>
                                     <InputText
                                         value={transient.accountName}
-                                        // tip={ts("broker_account_name_msg")}
                                         autoCapitalize="words"
                                         autoCorrect={false}
                                         onChangeText={handleChangeDescription}/>
@@ -99,20 +100,23 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                     {
                         id: String(BrokerAccountWizardViews.PASSWORD),
                         view: (
-                            <WizardView icon="wallet">
+                            <WizardView icon={Icons.PASSWD}>
                                 <MarginBox>
                                     <SFormTitle>{ts("broker_account_password")}</SFormTitle>
                                     <SFormDescription>{ts("broker_account_password_tip")}</SFormDescription>
-                                    <InputText
+                                    <InputSecure
+                                        label={ts("password")}
                                         value={password}
                                         textContentType="password"
                                         autoCapitalize="none"
                                         autoCorrect={false}
                                         secureTextEntry={true}
-                                        onChangeText={handleChangePassword}/>
+                                        onChangeText={handleChangePassword}
+                                        wrapperStyle={{ marginBottom: 15 }}/>
 
-                                    <InputText
-                                        value={password}
+                                    <InputSecure
+                                        label={ts("password_confirmation")}
+                                        value={passwordConfirm}
                                         textContentType="password"
                                         autoCapitalize="none"
                                         autoCorrect={false}
@@ -125,7 +129,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                     {
                         id: String(BrokerAccountWizardViews.SIGNATURE),
                         view: (
-                            <WizardView icon="wallet">
+                            <WizardView icon={Icons.SIGNATURE}>
                                 <MarginBox>
                                     <SFormTitle>{ts("broker_account_signature")}</SFormTitle>
                                     <SFormDescription>{ts("broker_account_signature_tip")}</SFormDescription>
@@ -141,7 +145,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                     {
                         id: String(BrokerAccountWizardViews.REVIEW),
                         view: (
-                            <WizardView icon="wallet">
+                            <WizardView icon={Icons.REVIEW}>
                                 <ScrollViewForm>
                                     <MarginBox noMarginTop>
                                         <SFormDescription>Confira os dados da sua conta na corretora Clear. Caso tenha alguma informação que deseja alterar, você poderá voltar nas telas.</SFormDescription>
@@ -154,7 +158,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                     {
                         id: String(BrokerAccountWizardViews.DONE),
                         view: (
-                            <WizardView icon="wallet">
+                            <WizardView icon={Icons.CHECK_CIRCLE}>
                                 <GenericTextIcon
                                     title={ts("eba")}
                                     message={ts(messageDone)}

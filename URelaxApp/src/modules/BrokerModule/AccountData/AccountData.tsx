@@ -2,11 +2,12 @@ import { useNavigation } from '@react-navigation/native'
 import { format } from 'date-fns'
 import { BrokerAccount } from 'honeybee-api'
 import React, { FC } from 'react'
+import styled from 'styled-components/native'
 import BrokerModule from '..'
 import { Info } from '../../../components/Info'
 import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
-import { Typography } from '../../../theming'
+import { Colors, DEFAULT_HORIZONTAL_SPACING, Typography } from '../../../theming'
 import { BrokerAccountWizardViews } from '../const'
 
 interface AccountDataProps {
@@ -33,35 +34,48 @@ export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview }) =
 
     return (
         <React.Fragment>
-            <Info
-                title={<Typography>{ts("account_name")}</Typography>}
-                description={<Typography>{brokerAccount.accountName}</Typography>}
+            <Inf
+                title={<Title>{ts("broker_account_name")}</Title>}
+                description={<Description>{brokerAccount.accountName}</Description>}
                 onPress={handleDescription}/>
 
-            { cpf && <Info
-                title={<Typography>{ts("cpf")}</Typography>}
-                description={<Typography>{cpf}</Typography>}
+            { cpf && <Inf
+                title={<Title>{ts("broker_account_cpf")}</Title>}
+                description={<Description>{cpf}</Description>}
                 onPress={handleCpf}/>}
 
-            { signature && <Info
-                title={<Typography>{ts("signature")}</Typography>}
-                description={<Typography>{signature}</Typography>}
+            { signature && <Inf
+                title={<Title>{ts("broker_account_signature")}</Title>}
+                description={<Description>{signature}</Description>}
                 onPress={handleSignature}/>}
 
-            { password && <Info
-                title={<Typography>{ts("password")}</Typography>}
-                description={<Typography>{password}</Typography>}
+            { password && <Inf
+                title={<Title>{ts("broker_account_password")}</Title>}
+                description={<Description>{password}</Description>}
                 onPress={handlePassword}/>}
 
-            { birthdate && <Info
-                title={<Typography>{ts("birthdate")}</Typography>}
-                description={<Typography>{format(new Date(birthdate), "dd/MM/yyyy")}</Typography>}
+            { birthdate && <Inf
+                title={<Title>{ts("broker_account_birthdate")}</Title>}
+                description={<Description>{format(new Date(birthdate), "dd/MM/yyyy")}</Description>}
                 onPress={handleBirthdate}/>}
             
-            <Info
-                title={<Typography>{ts("created_at")}</Typography>}
-                description={<Typography>{format(new Date(brokerAccount.createdAt), "dd/MM/yyyy 'at' HH:mm")}</Typography>}/>
+            { brokerAccount.createdAt && <Inf
+                title={<Title>{ts("created_at")}</Title>}
+                description={<Description>{format(new Date(brokerAccount.createdAt), "dd/MM/yyyy 'at' HH:mm")}</Description>}/>}
             
         </React.Fragment>
     )
 }
+
+const Title = styled(Typography)`
+    color: ${Colors.GRAY_1};
+`
+
+const Description = styled(Typography)`
+    font-size: 14px;
+`
+
+const Inf = styled(Info)`
+    padding-left: ${DEFAULT_HORIZONTAL_SPACING}px;
+    padding-right: ${DEFAULT_HORIZONTAL_SPACING}px;
+`

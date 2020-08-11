@@ -202,7 +202,7 @@ const activities = () => (
 )
 
 const brokers = () => (
-    <Stack.Navigator initialRouteName={Routes.ADD_BROKER_ACCOUNT}>
+    <Stack.Navigator initialRouteName={Routes.BROKER_ACCOUNTS}>
         <Stack.Screen name={Routes.ADD_BROKER_ACCOUNT} component={AddBrokerAccountUI} options={defaultOptions}/>
         <Stack.Screen name={Routes.BROKER_ACCOUNT_WIZARD} component={BrokerAccountWizardUI} options={defaultOptions}/>
         <Stack.Screen name={Routes.BROKER_ACCOUNTS} component={BrokerAccountsUI} options={defaultOptions}/>

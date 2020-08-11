@@ -3,9 +3,9 @@ import { Image } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styled from 'styled-components/native'
 import { Card } from '../../../components/Card'
-import { ButtonHeader } from '../../../components/Header/ButtonHeader'
+import { BackHeader } from '../../../components/Header/BackHeader'
+import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import { MarginBox } from '../../../components/Layout/Layout.style'
-import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
 import { Touchable } from '../../../components/Touchable'
 import { ts } from '../../../core/I18n'
 import { Colors, Icons, Images } from '../../../theming'
@@ -16,19 +16,14 @@ export const AddBrokerAccountUI: FC = ({}) => {
     const {
         brokers,
         loading,
-        handleAddClearAccount,
-        handleBrokerAccounts
+        handleAddClearAccount
     } = useAddBrokerAccountUIHook()
 
     return (
-        <PrimaryLayout
+        <FlatLayout
             loading={loading}
-            title={ts("brokers")}
-            right={
-                <ButtonHeader
-                    color={Colors.WHITE}
-                    icon={Icons.PLUS_CIRCLE}
-                    onPress={handleBrokerAccounts}/>
+            header={
+                <BackHeader title={ts("brokers")}/>
             }>
             <MarginBox>
                 { brokers.map(broker => (
@@ -46,7 +41,7 @@ export const AddBrokerAccountUI: FC = ({}) => {
                     </Card>
                 )) }
             </MarginBox>
-        </PrimaryLayout>
+        </FlatLayout>
     )
 }
 
