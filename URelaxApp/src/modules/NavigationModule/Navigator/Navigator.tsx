@@ -104,10 +104,10 @@ export const Navigator: FC = ({}) => {
                         options={menuOptions("analysis", Icons.CHART_LINE, true)}
                         component={investimentAnalysis}/>
 
-                    <Drawer.Screen
+                    {/* <Drawer.Screen
                         name={Drawers.STATEMENTS}
                         options={menuOptions("statement", Icons.STATEMENTS, true)}
-                        component={statements}/>
+                        component={statements}/> */}
 
                     <Drawer.Screen
                         name={Drawers.ACTIVITIES}

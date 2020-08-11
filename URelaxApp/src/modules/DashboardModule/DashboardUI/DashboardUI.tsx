@@ -32,36 +32,38 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
     } = useDashboardUIHook()
 
     const renderSummary: ListRenderItem<FinancialSummary> = ({ item, index }) => {
-        const vari = item.variation === 0 ? ts("no_variation") : (item.variation > 0 ? ts("gain") : ts("loss"))
+        const variation = item.variation === 0 ? ts("no_variation") : (item.variation > 0 ? ts("gain") : ts("loss"))
         return (
             <History>
                 <TypographyMedium 
-                    fontSize={15}
+                    fontSize={16}
                     color={Colors.GRAY_2}>
                     {item.when}
                 </TypographyMedium>
                 <CenteredView>
                     <Typography
-                        fontSize={15}
+                        fontSize={14}
+                        color={Colors.GRAY_3}
                         textAlign="center">
-                        {vari}
+                        {variation}
                     </Typography>
                     <VariationMonitor
-                        fontSize={20}
+                        fontSize={18}
                         onPress={() => handleAnalysis(index)}
                         value={item.variation}/>
                 </CenteredView>
                 <View>
                     <Typography
                         fontSize={14}
-                        color={Colors.GRAY_1}>
+                        color={Colors.GRAY_3}>
                         {ts("your_patrimony_was")}
                     </Typography>
-                    <Typography
-                        fontSize={18}
+                    <TypographyMedium
+                        fontSize={19}
+                        color={Colors.GRAY_1}
                         textAlign="center">
                         {utils.formatCurrency(item.patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
-                    </Typography>
+                    </TypographyMedium>
                 </View>
             </History>
         )

@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import { Brokers } from "honeybee-api"
+import { Brokers, BrokerAccountInput } from "honeybee-api"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { BrokerAccount } from "../models"
@@ -8,7 +8,7 @@ import { BrokerHelperInterface } from "../services/broker.account.service"
 export const ClearHelper: BrokerHelperInterface = {
     code: Brokers.CLEAR,
 
-    validateExtraData: (brokerAccount: BrokerAccount) => {
+    validateExtraData: (brokerAccount: BrokerAccountInput) => {
         const { cpf, signature, password, birthdate } = brokerAccount.extraData || {}
 
         if (!cpf) {
@@ -30,7 +30,7 @@ export const ClearHelper: BrokerHelperInterface = {
         return true
     },
     
-    loadExtraData: async (brokerAccount: BrokerAccount) => {
+    loadExtraData: async (brokerAccount: BrokerAccountInput) => {
         let extraData = brokerAccount.extraData
         extraData["birthdate"] = new Date(extraData.birthdate)
         extraData["cpf"] = String(extraData.cpf).replace(/\D/g, "")

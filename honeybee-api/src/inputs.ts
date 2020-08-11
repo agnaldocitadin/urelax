@@ -21,6 +21,7 @@ export interface BrokerAccountInput {
     accountName?: string
     brokerCode?: Brokers
     extraData?: BrokerAccountExtraData
+    simulation?: boolean
 }
 
 export interface ProfileInput {

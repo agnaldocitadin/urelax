@@ -26,6 +26,7 @@ export const useBroker = () => {
             account: account._id,
             accountName: accountName,
             brokerCode: brokerCode,
+            simulation: false,
             extraData: {...extraData}
         }
     }, [])

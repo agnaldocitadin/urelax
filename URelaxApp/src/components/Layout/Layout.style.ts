@@ -53,7 +53,7 @@ export const SFormTitle = styled(TypographyMedium)`
 export const SFormDescription = styled(Typography)`
     margin-bottom: ${DEFAULT_VERTICAL_SPACING}px;
     color: ${Colors.GRAY_1};
-    font-size: 15px;
+    font-size: 14px;
 `
 
 export const HeaderDivider = styled(TypographyMedium)`

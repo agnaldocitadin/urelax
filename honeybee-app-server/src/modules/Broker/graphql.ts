@@ -62,6 +62,7 @@ const entry: GraphQLModule = {
             account: String
             accountName: String
             brokerCode: String
+            simulation: Boolean
             extraData: BrokerAccountExtraDataInput
         }
 

@@ -57,6 +57,7 @@
     "broker_account_name_tip": "Como você quer chamar essa conta?",
     "broker_account_name_msg": "O nome da conta deve ter no mínimo 6 caracteres alfanuméricos.",
     "broker_account_update_success": "Conta alterada",
+    "broker_account_update_success_msg": "Sua conta foi alterada com sucesso",
     "broker_account_update_name": "O nome da sua conta foi alterado com sucesso!",
     "broker_account_cpf": "Seu CPF",
     "broker_account_cpf_tip": "Qual é seu CPF?",

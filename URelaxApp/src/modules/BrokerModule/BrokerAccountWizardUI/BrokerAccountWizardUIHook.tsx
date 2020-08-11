@@ -1,7 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
 import { BrokerAccount, Brokers } from "honeybee-api"
+import { validations } from "js-commons"
 import { useCallback, useState } from "react"
 import BrokerModule from ".."
+import { InteractiveButtonData, InteractiveButtonStates } from "../../../components/InteractiveButton"
 import MessagingModule from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { createBrokerAccount, updateBrokerAccount } from "../api"
@@ -26,14 +28,13 @@ const standardViews = [
 export const useBrokerAccountWizardUIHook = () => {
 
     const navigation = useNavigation()
-    const [ loading, setLoading ] = useState(false)
     const { convertToBrokerAccountInput } = useBroker()
-    const { updateSelectedBrokerAccount } = BrokerModule.actions()
+    const { updateSelectedBrokerAccount, addUserBrokerAccounts } = BrokerModule.actions()
     const { showAPIError } = MessagingModule.actions()
     const transient: BrokerAccount = BrokerModule.select("selectedBrokerAccount")
     const edit: boolean = BrokerModule.select("edit")
     const viewToEdit: boolean = BrokerModule.select("viewToEdit")
-    const [ passwordConfirm, setPasswordConfirm ] = useState("")
+    const [ btnFormData, setBtnFormData ] = useState<InteractiveButtonData>({ text: "Próximo" })
 
     const handleChangeBirthdate = useCallback((date: Date) => {
         transient.extraData["birthdate"] = date
@@ -55,29 +56,68 @@ export const useBrokerAccountWizardUIHook = () => {
         updateSelectedBrokerAccount(transient)
     }, [])
     
-    const handleChangeConfirmPassword = useCallback((password: string) => {
-        setPasswordConfirm(password)
-    }, [passwordConfirm])
-    
     const handleChangeSignature = useCallback((signature: string) => {
         transient.extraData["signature"] = signature
         updateSelectedBrokerAccount(transient)
     }, [])
 
+    const handleDisableButton = useCallback((view: string) => {
+        if (String(BrokerAccountWizardViews.DESCRIPTION) === view) {
+            return !transient.accountName || transient.accountName.length < 4
+        }
+
+        const {
+            cpf,
+            birthdate,
+            signature,
+            password
+        } = transient.extraData
+        
+        switch (view) {
+            case String(BrokerAccountWizardViews.CPF):
+                return !cpf || cpf?.replace(/[^\d]/g, "").length < 11
+
+            case String(BrokerAccountWizardViews.BIRTHDATE):
+                return !birthdate
+
+            case String(BrokerAccountWizardViews.PASSWORD):
+                return !password || !validations.validatePassword(password)
+
+            case String(BrokerAccountWizardViews.SIGNATURE):
+                return !signature || signature.length < 3
+                
+            default:
+                return false
+        }
+    }, [transient])
+
     const handleFinish = useCallback(async () => {
-        console.log("trans", transient)
         try {
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.PROCESSING 
+            }))
+            
             const input = convertToBrokerAccountInput(transient)
-            console.log("input", input)
             if (edit) {
                 await updateBrokerAccount(transient._id, input)
             }
             else {
                 const newAccount = await createBrokerAccount(input)
+                addUserBrokerAccounts(newAccount)
             }
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.NORMAL,
+                text: "Feito!"
+            }))
         }
         catch(error) {
             showAPIError(error)
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.NORMAL
+            }))
             throw error
         }
     }, [edit, transient])
@@ -87,15 +127,15 @@ export const useBrokerAccountWizardUIHook = () => {
     }, [])
 
     const handleFlowEnded = useCallback(() => {
-        edit ? navigation.goBack() : navigation.navigate(Routes.ADD_BROKER_ACCOUNT)
+        edit ? navigation.goBack() : navigation.navigate(Routes.BROKER_ACCOUNTS)
     }, [edit])
 
     return {
         transient,
         sequence: edit ? [...String(viewToEdit), String(BrokerAccountWizardViews.DONE)] : [...(sequenceViews as any)[transient.brokerCode], ...standardViews],
-        messageDone: "ds",
-        loading,
-        passwordConfirm,
+        expressionDone: edit ? "broker_account_update_success" : "broker_account_add_success",
+        messageDone: edit ? "broker_account_update_success_msg" : "broker_account_add_success_msg",
+        btnFormData,
         handleFinish,
         handleValidation,
         handleFlowEnded,
@@ -104,6 +144,6 @@ export const useBrokerAccountWizardUIHook = () => {
         handleChangeDescription,
         handleChangePassword,
         handleChangeSignature,
-        handleChangeConfirmPassword
+        handleDisableButton
     }
 }

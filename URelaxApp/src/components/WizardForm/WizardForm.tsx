@@ -15,21 +15,24 @@ interface WizardFormProps {
     onValidate(index: number): boolean
     onFinish(): Promise<void>
     onFlowEnded?(): void
+    isButtonDisabled(view: string): boolean
 }
 
 export const WizardForm: FC<WizardFormProps> = ({ 
     buttonData = {
         text: "Next",
-        textColor: Colors.BLUES_2
+        textColor: Colors.BLUES_3,
     },
     finishViewName,
     onFinish,
     onValidate,
     onFlowEnded,
+    isButtonDisabled,
     ...others
 }) => {
 
     const [ index, setIndex ] = useState(0)
+    const disabled = isButtonDisabled(others.sequence[index]) ?? true
 
     const handleNext = useCallback(async () => {
         if (others.sequence[index] === finishViewName) {
@@ -58,7 +61,7 @@ export const WizardForm: FC<WizardFormProps> = ({
     return (
         <React.Fragment>
             <WizardFlow {...others} index={index}/>
-            <Button data={buttonData} onPress={handleNext}/>
+            <Button disabled={disabled} data={buttonData} onPress={handleNext}/>
         </React.Fragment>
     )
 }

@@ -22,9 +22,9 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
     const {
         transient,
         sequence,
+        expressionDone,
         messageDone,
-        loading,
-        passwordConfirm,
+        btnFormData,
         handleFinish,
         handleValidation,
         handleFlowEnded,
@@ -32,8 +32,8 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
         handleChangeCPF,
         handleChangeDescription,
         handleChangePassword,
-        handleChangeConfirmPassword,
-        handleChangeSignature
+        handleChangeSignature,
+        handleDisableButton
     } = useBrokerAccountWizardUIHook()
 
     const { cpf, birthdate, password, signature } = transient?.extraData || {}
@@ -41,7 +41,6 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
     return (
         <FlatLayout
             bgColor={Colors.WHITE}
-            loading={loading}
             header={<BackHeader title={ts("broker_account_detail")}/>}>
             
             <WizardForm
@@ -50,6 +49,8 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                 onFinish={handleFinish}
                 onValidate={handleValidation}
                 onFlowEnded={handleFlowEnded}
+                isButtonDisabled={handleDisableButton}
+                buttonData={btnFormData}
                 views={[
                     {
                         id: String(BrokerAccountWizardViews.BIRTHDATE),
@@ -105,7 +106,6 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                                     <SFormTitle>{ts("broker_account_password")}</SFormTitle>
                                     <SFormDescription>{ts("broker_account_password_tip")}</SFormDescription>
                                     <InputSecure
-                                        label={ts("password")}
                                         value={password}
                                         textContentType="password"
                                         autoCapitalize="none"
@@ -113,15 +113,6 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                                         secureTextEntry={true}
                                         onChangeText={handleChangePassword}
                                         wrapperStyle={{ marginBottom: 15 }}/>
-
-                                    <InputSecure
-                                        label={ts("password_confirmation")}
-                                        value={passwordConfirm}
-                                        textContentType="password"
-                                        autoCapitalize="none"
-                                        autoCorrect={false}
-                                        secureTextEntry={true}
-                                        onChangeText={handleChangeConfirmPassword}/>
                                 </MarginBox>
                             </WizardView>
                         )
@@ -160,7 +151,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                         view: (
                             <WizardView icon={Icons.CHECK_CIRCLE}>
                                 <GenericTextIcon
-                                    title={ts("eba")}
+                                    title={ts(expressionDone)}
                                     message={ts(messageDone)}
                                     icon={Icons.CHECK_CIRCLE}
                                     iconColor={Colors.BLUES_1}/>

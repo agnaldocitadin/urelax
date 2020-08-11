@@ -193,10 +193,10 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
     let investiment = <BrokerInvestiment>stockTracker.stockInfo
 
     let details = [
-        { title: { text: "stock" }, description: `${investiment.description} (${investiment.stock.symbol})` },
-        { title: { text: "amount" }, description: utils.formatCurrency(order.getTotalOrder(), { prefix: "R$"})},
-        { title: { text: "quantity" }, description: order.quantity, hidden: true },
-        { title: { text: "average_price" }, description: utils.formatCurrency(order.getExecutedPriceAverage(), { prefix: "R$"}), hidden: true }
+        { title: { text: "stock" }, description: `${investiment.description} (${investiment.stock.symbol})`, hidden: false },
+        { title: { text: "amount" }, description: utils.formatCurrency(order.getTotalOrder(), { prefix: "R$"}), hidden: false },
+        { title: { text: "quantity" }, description: order.quantity },
+        { title: { text: "average_price" }, description: utils.formatCurrency(order.getExecutedPriceAverage(), { prefix: "R$"}) }
     ] as ActivityDetail[]
 
     const base = {
@@ -219,7 +219,7 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
             })
         }
 
-        details.push({ title: ts("id"), description: order.orderBrokerId, hidden: true })
+        details.push({ title: ts("id"), description: order.orderBrokerId })
         base.details = details
         createBaseActivity(base)
     }
@@ -234,8 +234,8 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
             base.icon = Icons.CANCEL
         }
 
-        details.push({ title: ts("message"), description: order.message, hidden: true })
-        details.push({ title: ts("id"), description: order.orderBrokerId, hidden: true })
+        details.push({ title: ts("message"), description: order.message })
+        details.push({ title: ts("id"), description: order.orderBrokerId })
         base.details = details
         createBaseActivity(base)
     }

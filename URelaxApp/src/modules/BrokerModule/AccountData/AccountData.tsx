@@ -15,7 +15,7 @@ interface AccountDataProps {
     isReview?: boolean
 }
 
-export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview }) => {
+export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview = false }) => {
 
     const {
         cpf,
@@ -35,29 +35,34 @@ export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview }) =
     return (
         <React.Fragment>
             <Inf
+                isReview={isReview}
                 title={<Title>{ts("broker_account_name")}</Title>}
                 description={<Description>{brokerAccount.accountName}</Description>}
-                onPress={handleDescription}/>
+                onPress={!isReview ? handleDescription : undefined}/>
 
             { cpf && <Inf
+                isReview={isReview}
                 title={<Title>{ts("broker_account_cpf")}</Title>}
                 description={<Description>{cpf}</Description>}
-                onPress={handleCpf}/>}
+                onPress={!isReview ? handleCpf : undefined}/>}
 
             { signature && <Inf
+                isReview={isReview}
                 title={<Title>{ts("broker_account_signature")}</Title>}
                 description={<Description>{signature}</Description>}
-                onPress={handleSignature}/>}
+                onPress={!isReview ? handleSignature : undefined}/>}
 
             { password && <Inf
+                isReview={isReview}
                 title={<Title>{ts("broker_account_password")}</Title>}
                 description={<Description>{password}</Description>}
-                onPress={handlePassword}/>}
+                onPress={!isReview ? handlePassword : undefined}/>}
 
             { birthdate && <Inf
+                isReview={isReview}
                 title={<Title>{ts("broker_account_birthdate")}</Title>}
                 description={<Description>{format(new Date(birthdate), "dd/MM/yyyy")}</Description>}
-                onPress={handleBirthdate}/>}
+                onPress={!isReview ? handleBirthdate : undefined}/>}
             
             { brokerAccount.createdAt && <Inf
                 title={<Title>{ts("created_at")}</Title>}
@@ -75,7 +80,7 @@ const Description = styled(Typography)`
     font-size: 14px;
 `
 
-const Inf = styled(Info)`
-    padding-left: ${DEFAULT_HORIZONTAL_SPACING}px;
-    padding-right: ${DEFAULT_HORIZONTAL_SPACING}px;
+const Inf = styled(Info)<{ isReview?: boolean }>`
+    padding-left: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+    padding-right: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
 `

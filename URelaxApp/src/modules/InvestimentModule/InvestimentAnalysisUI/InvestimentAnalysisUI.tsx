@@ -101,7 +101,7 @@ export const PeriodBtn: FC<{ label: string, selected?: boolean, onPress?(): void
 
 const Head = styled.View`
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     flex-direction: row;
 `
 

@@ -1,3 +1,4 @@
+import { utils } from "js-commons"
 import { useSelector } from "react-redux"
 import AppModuleState from "../AppModuleState"
 import { ActionTypes, ReducerState } from "./actions"
@@ -12,6 +13,12 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
         return {
             ...state, 
             userBrokerAccounts: payload
+        }
+    },
+    ADD_USER_BROKERACCOUNTS: (state: ReducerState, payload: any): ReducerState => {
+        return {
+            ...state, 
+            userBrokerAccounts: utils.joinArrays(state.userBrokerAccounts || [], [payload], "end")
         }
     },
     SELECT_BROKER_ACCOUNT: (state: ReducerState, payload: any): ReducerState => {

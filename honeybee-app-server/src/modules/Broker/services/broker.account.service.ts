@@ -3,13 +3,14 @@ import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
+import { toObjectId } from "../../../core/server-utils"
 import { ClearHelper } from "../helpers/clear.helper"
-import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
+import { BrokerAccountModel } from "../models/broker.account.model"
 
 export interface BrokerHelperInterface {
     code: Brokers
-    validateExtraData(brokerAccount: BrokerAccount): boolean
-    loadExtraData(brokerAccount: BrokerAccount): Promise<void>
+    validateExtraData(brokerAccount: BrokerAccountInput): boolean
+    loadExtraData(brokerAccount: BrokerAccountInput): Promise<void>
 }
 
 /**
@@ -20,7 +21,10 @@ export interface BrokerHelperInterface {
  */
 export const findBrokerAccounts = (options: { id: string, account: string }) => {
     const { id, account } = options
-    return BrokerAccountModel.find({ account }).exec()
+    return BrokerAccountModel.find({
+        ...toObjectId("_id", id),
+        ...toObjectId("account", account),
+    }).exec()
 }
 
 /**
@@ -29,7 +33,7 @@ export const findBrokerAccounts = (options: { id: string, account: string }) => 
  * @param {BrokerAccountInput} input
  * @returns
  */
-export const createBrokerAccount = async (input: BrokerAccount) => {
+export const createBrokerAccount = async (input: BrokerAccountInput) => {
     const helper = BrokerAccountHelper.convert(input.brokerCode)
     validate(input)
     if (helper.validateExtraData(input)) {
@@ -47,13 +51,13 @@ export const createBrokerAccount = async (input: BrokerAccount) => {
  */
 export const updateBrokerAccountById = async (_id: string, input: BrokerAccountInput) => {
     const account = await BrokerAccountModel.findById(_id)
-    const _input = utils.mergeObjects<BrokerAccount>(account.toObject(), input)
+    const _input = utils.mergeObjects<BrokerAccountInput>(account.toObject(), input)
     validate(_input)
     
     const helper = BrokerAccountHelper.convert(_input.brokerCode)
     if (helper.validateExtraData(_input)) {
         await helper.loadExtraData(_input)
-        await BrokerAccountModel.updateOne({ _id }, _input)
+        await BrokerAccountModel.updateOne({ _id }, _input as any)
         return true
     }
     return false
@@ -65,7 +69,7 @@ export const updateBrokerAccountById = async (_id: string, input: BrokerAccountI
  *
  * @param {BrokerAccount} brokerAccount
  */
-const validate = (brokerAccount: BrokerAccount) => {
+const validate = (brokerAccount: BrokerAccountInput) => {
     if (!brokerAccount.account) {
         Logger.throw(ErrorCodes.BROKER_ACCOUNT_USERACCOUNT_REQUIRED)
     }

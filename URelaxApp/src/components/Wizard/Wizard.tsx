@@ -77,7 +77,7 @@ export const Wizard: FC<WizardProps> = ({
 }
 
 const Line = styled.View<{ hidden: boolean }>`
-    background-color: ${({ hidden }) => hidden ? Colors.TRANSPARENT : Colors.BLUES_3};
+    background-color: ${({ hidden }) => hidden ? Colors.TRANSPARENT : Colors.BLUES_1};
     height: 3px;
     flex: 1;
 `
