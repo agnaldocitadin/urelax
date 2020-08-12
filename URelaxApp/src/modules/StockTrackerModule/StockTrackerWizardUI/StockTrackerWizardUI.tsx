@@ -49,6 +49,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                 onFinish={handleFinish}
                 onValidate={handleValidation}
                 onFlowEnded={handleFlowEnded}
+                isButtonDisabled={() => false}
                 views={[
                     {
                         id: String(StockTrackerWizardViews.FREQUENCY),

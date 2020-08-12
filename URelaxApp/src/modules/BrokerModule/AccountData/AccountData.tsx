@@ -34,37 +34,37 @@ export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview = fa
 
     return (
         <React.Fragment>
-            <Inf
+            <AccountInfo
                 isReview={isReview}
                 title={<Title>{ts("broker_account_name")}</Title>}
                 description={<Description>{brokerAccount.accountName}</Description>}
                 onPress={!isReview ? handleDescription : undefined}/>
 
-            { cpf && <Inf
+            { cpf && <AccountInfo
                 isReview={isReview}
                 title={<Title>{ts("broker_account_cpf")}</Title>}
                 description={<Description>{cpf}</Description>}
                 onPress={!isReview ? handleCpf : undefined}/>}
 
-            { signature && <Inf
+            { signature && <AccountInfo
                 isReview={isReview}
                 title={<Title>{ts("broker_account_signature")}</Title>}
                 description={<Description>{signature}</Description>}
                 onPress={!isReview ? handleSignature : undefined}/>}
 
-            { password && <Inf
+            { password && <AccountInfo
                 isReview={isReview}
                 title={<Title>{ts("broker_account_password")}</Title>}
                 description={<Description>{password}</Description>}
                 onPress={!isReview ? handlePassword : undefined}/>}
 
-            { birthdate && <Inf
+            { birthdate && <AccountInfo
                 isReview={isReview}
                 title={<Title>{ts("broker_account_birthdate")}</Title>}
                 description={<Description>{format(new Date(birthdate), "dd/MM/yyyy")}</Description>}
                 onPress={!isReview ? handleBirthdate : undefined}/>}
             
-            { brokerAccount.createdAt && <Inf
+            { brokerAccount.createdAt && <AccountInfo
                 title={<Title>{ts("created_at")}</Title>}
                 description={<Description>{format(new Date(brokerAccount.createdAt), "dd/MM/yyyy 'at' HH:mm")}</Description>}/>}
             
@@ -72,15 +72,15 @@ export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview = fa
     )
 }
 
+const AccountInfo = styled(Info)<{ isReview?: boolean }>`
+    padding-left: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+    padding-right: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+`
+
 const Title = styled(Typography)`
     color: ${Colors.GRAY_1};
 `
 
 const Description = styled(Typography)`
     font-size: 14px;
-`
-
-const Inf = styled(Info)<{ isReview?: boolean }>`
-    padding-left: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
-    padding-right: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
 `

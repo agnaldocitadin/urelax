@@ -8,7 +8,8 @@ interface TextIconDisplayProps {
     iconColor?: string
     title?: string
     message?: string
-    textColor?: string
+    titleColor?: string
+    messageColor?: string
     style?: ViewStyle
 }
 
@@ -17,14 +18,15 @@ export const TextIconDisplay: FC<TextIconDisplayProps> = ({
     iconColor = Colors.BLACK_2,
     title,
     message,
-    textColor = Colors.BLACK_2,
+    titleColor = Colors.BLACK_2,
+    messageColor = Colors.GRAY_1,
     style
 }) => {
     return (
         <Content style={style}>
             <Icon size={50} name={icon} color={iconColor}/>
-            {title && <Title fontSize={17} color={textColor}>{title}</Title>}
-            {message && <Message fontSize={14} color={textColor}>{message}</Message>}
+            {title && <Title fontSize={17} color={titleColor}>{title}</Title>}
+            {message && <Message fontSize={14} color={messageColor}>{message}</Message>}
         </Content>
     )
 }

@@ -9,6 +9,7 @@ export interface FlatHeaderProps {
     right?: ReactElement
     borderBottomWidth?: number
     borderBottomColor?: string
+    withFloatingStatusbar?: boolean
 }
 
 export const FlatHeader: FC<FlatHeaderProps> = ({ 
@@ -17,13 +18,15 @@ export const FlatHeader: FC<FlatHeaderProps> = ({
     right, 
     bgHeaderColor = Colors.WHITE,
     borderBottomWidth = 1,
-    borderBottomColor = Colors.GRAY_4
+    borderBottomColor = Colors.GRAY_4,
+    withFloatingStatusbar = true
 }) => {
     return (
         <Container 
             bgColor={bgHeaderColor} 
             borderBottomWidth={borderBottomWidth} 
-            borderBottomColor={borderBottomColor}>
+            borderBottomColor={borderBottomColor}
+            floating={withFloatingStatusbar}>
             <Left>
                 { left }
             </Left>
@@ -37,13 +40,13 @@ export const FlatHeader: FC<FlatHeaderProps> = ({
     )
 }
 
-const Container = styled.View<{ bgColor: string, borderBottomWidth: number, borderBottomColor: string }>`
+const Container = styled.View<{ bgColor: string, borderBottomWidth: number, borderBottomColor: string, floating: boolean }>`
     border-bottom-width: ${({ borderBottomWidth }) => borderBottomWidth}px;
     border-bottom-color: ${({ borderBottomColor }) => borderBottomColor};
+    padding: ${({ floating }) => floating ? 23 : 0}px 5px 0 5px;
+    min-height: ${({ floating }) => floating ? 83 : 60}px;
     background-color: ${({ bgColor }) => bgColor};
     flex-direction: row;
-    min-height: 83px;
-    padding: 23px 5px 0 5px;
     width: 100%;
 `
 

@@ -1,7 +1,7 @@
 import { AppliedInvestiment } from 'honeybee-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
-import { ScrollView } from 'react-native'
+import { RefreshControl, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 import { Badge } from '../../../components/Badge'
 import { BaseButton } from '../../../components/BaseButton'
@@ -16,41 +16,52 @@ import { useInvestimentUIHook } from './InvestimentUIHook'
 export const InvestimentUI: FC = () => {
     
     const {
+        fail,
         loading,
         investiments,
+        refreshing,
         handleAdd,
         handleStockTracker,
+        handleRefresh
     } = useInvestimentUIHook()
 
     const { patrimony, currency, stocks } = investiments
 
     return (
-        <PrimaryLayout title={ts("investiments")} loading={loading}>
-            <ScrollView>
-                <Patrimony>
-                    <Typography
-                        color={Colors.GRAY_1}
-                        textAlign="center">
-                        {ts("available_to_invest")}
-                    </Typography>
-                    <Typography textAlign="center" fontSize={28}>{utils.formatCurrency(patrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
-                </Patrimony>
-                <BtnContainer>
-                    <AddInvestimentBtn onPress={handleAdd}>
-                        <BaseIcon
-                            size={25}
-                            color={Colors.WHITE}
-                            name={"cart-outline"}/>
-                    </AddInvestimentBtn>
-                </BtnContainer>
-                <Content>
-                    <Currency 
-                        investiments={currency} />
-                    <Stocks
-                        investiments={stocks}
-                        handle={handleStockTracker}/>
-                </Content>
-            </ScrollView>
+        <PrimaryLayout
+            title={ts("investiments")}
+            loading={loading}
+            fail={fail}>
+            <RefreshControl
+                enabled
+                refreshing={refreshing}
+                onRefresh={handleRefresh}>
+                <ScrollView>
+                    <Patrimony>
+                        <Typography
+                            color={Colors.GRAY_1}
+                            textAlign="center">
+                            {ts("available_to_invest")}
+                        </Typography>
+                        <Typography textAlign="center" fontSize={28}>{utils.formatCurrency(patrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                    </Patrimony>
+                    <BtnContainer>
+                        <AddInvestimentBtn onPress={handleAdd}>
+                            <BaseIcon
+                                size={25}
+                                color={Colors.WHITE}
+                                name={"cart-outline"}/>
+                        </AddInvestimentBtn>
+                    </BtnContainer>
+                    <Content>
+                        <Currency 
+                            investiments={currency} />
+                        <Stocks
+                            investiments={stocks}
+                            handle={handleStockTracker}/>
+                    </Content>
+                </ScrollView>
+            </RefreshControl>
         </PrimaryLayout>
     )
 }

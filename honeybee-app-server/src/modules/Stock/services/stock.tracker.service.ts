@@ -28,6 +28,12 @@ export const createNewStockTracker = async (model: StockTracker): Promise<StockT
     const populatedTracker = await savedTracker
         .populate("account")
         .populate("brokerAccount")
+        .populate({ 
+            path: "stockInfo", 
+            populate: { 
+                path: "broker"
+            }
+        })
         .execPopulate()
         
     onStockTrackerCreated(populatedTracker)

@@ -45,6 +45,7 @@ export const StockTrackerControlButton: FC<StockTrackerControlButtonProps> = ({ 
             disabled={disabled}
             onPress={onPress}
             indicatorColor={Colors.WHITE}
+            contentStyle={{ paddingLeft: 20, paddingRight: 20 }}
             data={{
                 activityState,
                 text: ts(status || ""),
@@ -58,4 +59,5 @@ export const StockTrackerControlButton: FC<StockTrackerControlButtonProps> = ({ 
 
 const Button = styled(InteractiveButton)`
     background-color: ${({ disabled }) => disabled ? Colors.GRAY_3 : Colors.BLUES_2};
+    border-radius: 25px;
 `

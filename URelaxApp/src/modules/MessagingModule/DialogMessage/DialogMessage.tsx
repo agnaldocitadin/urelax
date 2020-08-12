@@ -20,7 +20,7 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
     } = useDialogMessageHook()
     
     const modal = useMemo(() => (
-        <Modal
+        <ModalContainer
             isVisible={visible}
             animationIn="zoomIn"
             animationOut="zoomOut"
@@ -31,12 +31,13 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
                 <FlatHeader
                     borderBottomWidth={0}
                     bgHeaderColor={Colors.TRANSPARENT}
+                    withFloatingStatusbar={false}
                     right={
                         <ButtonHeader
                             icon={Icons.CLOSE}
                             onPress={handleCloseDialog}/>
                     }/>
-                <Content>
+                    
                     <Display
                         icon={payload.icon || Icons.ALERT_CIRCLE}
                         iconColor={payload.iconColor}
@@ -46,33 +47,28 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
                     <Button
                         data={{ text: payload.buttonLabel }}
                         onPress={handleButtonAction}/>
-                </Content>
             </Container>
-        </Modal>
+        </ModalContainer>
     ), [visible, payload])
 
     return modal
 }
 
+const ModalContainer = styled(Modal)`
+    width: 70%;
+    margin: 0 auto;
+`
+
 const Button = styled(InteractiveButton)`
-    border-radius: 50px;
-    border-width: 1px;
-    width: 250px;
+    border-color: ${Colors.GRAY_4};
+    border-top-width: 1px;
 `
 
 const Container = styled.View`
     background-color: ${Colors.WHITE};
-    border-radius: 10px;
-`
-
-const Content = styled.View`
-    align-items: center;
-    justify-content: space-evenly;
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-bottom: 50px;
+    border-radius: 5px;
 `
 
 const Display = styled(TextIconDisplay)`
-    margin-bottom: 30px;
+    margin: 0 15px 30px 15px;
 `

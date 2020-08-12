@@ -21,6 +21,9 @@ const stockTrackerFragment = `
         stock {
             symbol
         }
+        broker {
+            name
+        }
     }
 `
 

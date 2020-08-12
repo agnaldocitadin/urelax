@@ -2,33 +2,23 @@ import { useNavigation } from "@react-navigation/native"
 import { Account, AppliedInvestiment, InvestimentType } from "honeybee-api"
 import { arrays } from "js-commons"
 import { useCallback, useState } from "react"
+import InvestimentModule from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
 import Identity from "../../IdentityModule"
-import Messaging from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import StockTrackerModule from "../../StockTrackerModule"
 import { fetchAppiedInvestiments } from "../api"
 
-type InvestimentHook = {
-    patrimony: number,
-    currency: AppliedInvestiment[]
-    stocks: AppliedInvestiment[]
-}
-
-const empty: InvestimentHook = {
-    patrimony: 0,
-    currency: [],
-    stocks: []
-}
-
 export const useInvestimentUIHook = () => {
     
     const navigation = useNavigation()
-    const { showAPIError } = Messaging.actions()
-    const { selectStockTrackerID } = StockTrackerModule.actions()
     const account: Account = Identity.select("activeAccount")
-    const [ investiments, setInvestiments ] = useState<InvestimentHook>(empty)
+    const investiments = InvestimentModule.select("appliedInvestiments")
+    const { selectStockTrackerID } = StockTrackerModule.actions()
+    const { addAppliedInvestiment } = InvestimentModule.actions()
     const [ loading, setLoading ] = useState(true)
+    const [ fail, setFail ] = useState(false)
+    const [ refreshing, setRefreshing ] = useState(false)
 
     const handleAdd = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
 
@@ -38,8 +28,14 @@ export const useInvestimentUIHook = () => {
         selectStockTrackerID(item.refID)
         navigation.navigate(Routes.STOCKTRACKER_PREVIEW)
     }, [])
-    
-    useEffectWhenReady(async () => {
+
+    const handleRefresh = useCallback(async () => {
+        setRefreshing(true)
+        await refresh()
+        setRefreshing(false)
+    }, [])
+
+    const refresh = useCallback(async () => {
         try {
             const appliedInvestiments = await fetchAppiedInvestiments(account._id)
             
@@ -48,23 +44,27 @@ export const useInvestimentUIHook = () => {
                 const stocks = appliedInvestiments.filter(inv => inv.investiment.type === InvestimentType.STOCK)
                 const patrimony = arrays.sum(currency, item => item.amount)
                 
-                setInvestiments({
+                addAppliedInvestiment({
                     patrimony,
                     currency,
                     stocks
-                })
+                }, true)
             }
-
             setLoading(false)
         }
         catch(error) {
-            showAPIError(error)
+            setFail(true)
         }
-    })
+    }, [account._id])
+    
+    useEffectWhenReady(() => refresh())
 
     return {
+        fail,
         loading,
         investiments,
+        refreshing,
+        handleRefresh,
         handleAdd,
         handleFilter,
         handleStockTracker

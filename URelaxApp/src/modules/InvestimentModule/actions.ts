@@ -1,8 +1,14 @@
-import { FinancialAnalysis, FinancialHistory } from "honeybee-api"
+import { AppliedInvestiment, FinancialAnalysis, FinancialHistory } from "honeybee-api"
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 
 type ActionNames = keyof ActionTypes
+
+type Investiments = {
+    patrimony?: number,
+    currency?: AppliedInvestiment[]
+    stocks?: AppliedInvestiment[]
+}
 
 export interface ReducerState {
 
@@ -13,9 +19,11 @@ export interface ReducerState {
     // useInvestimentAnalysisUIHook
     analysis: FinancialAnalysis[]
     selectedGraphIndex: number
+    appliedInvestiments: Investiments
 }
 
 export type ActionTypes = {
+    ADD_APPLIED_INVESTIMENTS(state: ReducerState, payload: any): ReducerState
     ADD_HISTORY(state: ReducerState, payload: any): ReducerState
     SELECT_EVENT(state: ReducerState, payload: any): ReducerState
     ADD_ANALYSIS(state: ReducerState, payload: any): ReducerState
@@ -25,6 +33,9 @@ export type ActionTypes = {
 const Actions = () => {
     const dispatch = useDispatch()
     return {
+        addAppliedInvestiment: (investiments: Investiments, reset?: boolean) => {
+            dispatch({ type: "ADD_APPLIED_INVESTIMENTS", payload: { investiments, reset }} as DispatchType<ActionNames>)
+        },
         addHistory: (history: FinancialHistory[], reset?: boolean) => {
             dispatch({ type: "ADD_HISTORY", payload: { history, reset }} as DispatchType<ActionNames>)
         },

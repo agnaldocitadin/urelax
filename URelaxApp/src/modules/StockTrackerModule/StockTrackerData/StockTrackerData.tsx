@@ -9,7 +9,7 @@ import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import AppConfig from '../../../core/AppConfig'
 import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
-import { DEFAULT_VERTICAL_SPACING, SymbolsImg, Typography } from '../../../theming'
+import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, SymbolsImg, Typography } from '../../../theming'
 import { StockTrackerWizardViews } from '../const'
 
 interface StockTrackerDataProps {
@@ -34,42 +34,49 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
                 source={(SymbolsImg as any)[String(stockTracker?.stockInfo?.stock?.symbol)]}
                 resizeMode="contain"/>
 
-            <Info 
-                title={<Typography>{ts("stock")}</Typography>}
-                description={<Typography>{`${stockInfo?.description} (${stockInfo?.stock.symbol})`}</Typography>}
+            <StockInfo
+                isReview={isReview}
+                title={<Title>{ts("stock")}</Title>}
+                description={<Description>{`${stockInfo?.description} (${stockInfo?.stock.symbol})`}</Description>}
                 disabled={isReview}/>
 
-            <Info
-                title={<Typography>{ts("broker")}</Typography>}
-                description={<Typography>{brokerAccount?.brokerCode}</Typography>}
+            <StockInfo
+                isReview={isReview}
+                title={<Title>{ts("broker")}</Title>}
+                description={<Description>{brokerAccount?.brokerCode}</Description>}
                 disabled={isReview}/>
 
-            <Info
-                title={<Typography>{ts("account")}</Typography>}
-                description={<Typography>{brokerAccount?.accountName}</Typography>}
+            <StockInfo
+                isReview={isReview}
+                title={<Title>{ts("account")}</Title>}
+                description={<Description>{brokerAccount?.accountName}</Description>}
                 disabled={isReview}/>
 
-            <Info
-                title={<Typography>{ts("strategy")}</Typography>}
-                description={<Typography>{strategy}</Typography>}
+            <StockInfo
+                isReview={isReview}
+                title={<Title>{ts("strategy")}</Title>}
+                description={<Description>{strategy}</Description>}
                 onPress={handleStrategy}
                 disabled={isReview}/>
 
-            <Info
-                title={<Typography>{ts("frequency")}</Typography>}
-                description={<Typography>{frequency}</Typography>}
+            <StockInfo
+                isReview={isReview}
+                title={<Title>{ts("frequency")}</Title>}
+                description={<Description>{frequency}</Description>}
                 onPress={handleFrequency}
                 disabled={isReview}/>
 
-            <Info
-                title={<Typography>{ts("status")}</Typography>}
-                description={<Typography>{ts(String(status))}</Typography>}
+            <StockInfo
+                isReview={isReview}
+                title={<Title>{ts("status")}</Title>}
+                description={<Description>{ts(String(status))}</Description>}
                 disabled={isReview}/>
 
-            <HeaderDivider>Negociação</HeaderDivider>
-            <Info
-                title={<Typography>{ts("max_trade_amount")}</Typography>}
-                description={<Typography>{utils.formatCurrency(stockAmountLimit || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>}
+            <Divider>Negociação</Divider>
+            <StockInfo
+                isReview={isReview}
+                title={<Title>{ts("max_trade_amount")}</Title>}
+                description={<Description>{utils.formatCurrency(stockAmountLimit || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Description>}
                 onPress={handleTransaction}
                 disabled={isReview}/>
 
@@ -81,4 +88,21 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
 const StockLogo = styled.Image`
     margin: 0 auto;
     margin-top: ${DEFAULT_VERTICAL_SPACING}px;
+`
+
+const StockInfo = styled(Info)<{ isReview?: boolean }>`
+    padding-left: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+    padding-right: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+`
+
+const Title = styled(Typography)`
+    color: ${Colors.GRAY_1};
+`
+
+const Description = styled(Typography)`
+    font-size: 14px;
+`
+
+const Divider = styled(HeaderDivider)<{ isReview?: boolean }>`
+    padding-left: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
 `

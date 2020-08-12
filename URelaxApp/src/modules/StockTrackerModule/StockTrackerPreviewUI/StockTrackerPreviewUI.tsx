@@ -1,6 +1,6 @@
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
-import { Image } from 'react-native'
+import { Image, View } from 'react-native'
 import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { ButtonHeader } from '../../../components/Header/ButtonHeader'
@@ -12,7 +12,6 @@ import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Icons, Sy
 import { StatementTimeline } from '../../StatementModule/StatementTimeline'
 import { StockTrackerControlButton } from '../StockTrackerControlButton'
 import { useStockTrackerPreviewUIHook } from './StockTrackerPreviewUIHook'
-
 interface StockTrackerPreviewUIProps {}
 
 export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
@@ -73,10 +72,14 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                                         style={{ maxWidth: 100, maxHeight: 60 }}/>}
                                 </RightColumn>
                             </InfoHeader>
-                            <StockTrackerControlButton 
-                                status={stockTracker?.status} 
-                                onPress={handleStockTrackerAction}
-                                activityState={btnState}/>
+
+                            <BtnContent>
+                                <StockTrackerControlButton 
+                                    status={stockTracker?.status} 
+                                    onPress={handleStockTrackerAction}
+                                    activityState={btnState}/>
+                            </BtnContent>
+
                         </React.Fragment>
                     }
                 />}
@@ -113,4 +116,11 @@ const Name = styled(Typography)`
 
 const Value = styled(Typography)`
     font-size: 20px;
+`
+
+const BtnContent = styled.View`
+    align-items: flex-end;
+    position: absolute;
+    right: ${DEFAULT_HORIZONTAL_SPACING}px;
+    top: 237px;
 `

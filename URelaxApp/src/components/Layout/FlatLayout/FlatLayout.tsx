@@ -30,7 +30,7 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
             <StatusBar barStyle={barStyle} backgroundColor={bgStatusBar} />
             <SafeAreaView style={{ flex: 1 }}>
                 { header }
-                { !loading && children }
+                { !loading && !fail && children }
                 { fail && <ErrorMessage>
                     <Display
                         icon={Icons.HEART_BROKEN}

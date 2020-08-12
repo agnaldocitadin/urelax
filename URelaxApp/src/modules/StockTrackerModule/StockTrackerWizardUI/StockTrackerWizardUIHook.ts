@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
-import { API, Frequency, StockTracker, Strategy } from "honeybee-api"
+import { API, AppliedInvestiment, Frequency, StockTracker, Strategy } from "honeybee-api"
 import { useCallback, useState } from "react"
 import StockTrackerModule from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
+import InvestimentModule from "../../InvestimentModule"
 import { Routes } from "../../NavigationModule/const"
 import { createStockTracker, updateStockTracker } from "../api"
 import { StockTrackerWizardViews } from "../const"
@@ -26,6 +27,7 @@ export const useStockTrackerWizardUIHook = () => {
     const edit: boolean = StockTrackerModule.select("edit")
     const viewToEdit: StockTrackerWizardViews = StockTrackerModule.select("viewToEdit")
     const { setStrategies, setFrequencies, updateSelectedStockTracker } = StockTrackerModule.actions()
+    const { addAppliedInvestiment } = InvestimentModule.actions()
     const { convertToStockTrackerInput } = useStockTracker()
     
     const selectFrequency = useCallback((frequency: Frequency) => {
@@ -58,7 +60,16 @@ export const useStockTrackerWizardUIHook = () => {
             await updateStockTracker(transient._id || "", input)
         }
         else {
-            await createStockTracker(input)
+            const stockTracker = await createStockTracker(input)
+            const newInvestiment: AppliedInvestiment = {
+                brokerAccountName: stockTracker.brokerAccount?.accountName ?? "",
+                investiment: stockTracker.stockInfo as any,
+                refID: String(stockTracker._id),
+                amount: 0,
+                qty: 0
+            }
+
+            addAppliedInvestiment({ stocks: [newInvestiment] })
         }
     }, [edit, transient])
 

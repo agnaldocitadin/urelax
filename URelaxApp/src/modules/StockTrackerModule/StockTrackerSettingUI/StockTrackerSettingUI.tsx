@@ -4,7 +4,6 @@ import styled from 'styled-components/native'
 import { BaseButton } from '../../../components/BaseButton'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { MarginBox } from '../../../components/Layout/Layout.style'
 import { ts } from '../../../core/I18n'
 import { Colors, TypographyMedium } from '../../../theming'
 import { StockTrackerData } from '../StockTrackerData'
@@ -26,17 +25,15 @@ export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({}) => {
             header={<BackHeader title={ts("stock_tracker_settings")}/>}>
             
             <ScrollView>
-                <MarginBox>
-                    <StockTrackerData
-                        isReview={!showDestroyBtn}
-                        stockTracker={stockTracker}/>
-                        
-                    { showDestroyBtn && (
-                        <DestroyButton onPress={handleDestroyStockTracker}>
-                            <TypographyMedium color={Colors.WHITE}>{ts("destroy_tracker")}</TypographyMedium>
-                        </DestroyButton>
-                    )}
-                </MarginBox>
+                <StockTrackerData
+                    isReview={!showDestroyBtn}
+                    stockTracker={stockTracker}/>
+                    
+                { showDestroyBtn && (
+                    <DestroyButton onPress={handleDestroyStockTracker}>
+                        <TypographyMedium color={Colors.WHITE}>{ts("destroy_tracker")}</TypographyMedium>
+                    </DestroyButton>
+                )}
             </ScrollView>
         </FlatLayout>
     )
