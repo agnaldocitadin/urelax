@@ -7,6 +7,7 @@ import Logger from '../../../core/Logger'
 import { toObjectId } from '../../../core/server-utils'
 import { BrokerInvestimentModel } from '../../Broker/models'
 import { StockTrackerModel } from '../../Stock/models'
+import { STOCK_TRACKER_STATUS_INACTIVE } from '../../Stock/services'
 import { FinancialHistory, FinancialHistoryModel, Profit, Transaction } from '../models'
 
 const STANDARD_QUERY_RESULT = 100
@@ -128,7 +129,10 @@ export const findFinancialHistoryBy = (options: {
  * @returns {Promise<AppliedInvestiment[]>}
  */
 export const groupAppiedInvestimentsBy = async (account: mongoose.Types.ObjectId): Promise<AppliedInvestiment[]> => {
-    const stockTackers = await StockTrackerModel.find({ account })
+    const stockTackers = await StockTrackerModel.find({ 
+            account,
+            status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }
+        })
         .populate("brokerAccount")
         .populate({ 
             path: "stockInfo", 

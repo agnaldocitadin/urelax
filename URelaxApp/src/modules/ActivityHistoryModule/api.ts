@@ -1,7 +1,15 @@
-import { Activity, API } from "honeybee-api"
+import { Activity, ActivityType, API } from "honeybee-api"
 
-export const fetchActivities = async (accountID: string, page: number, qty: number, date: Date = new Date()): Promise<Activity[]> => {
-    return API.Activity.fetchActivities({ accountID, date: date.toISOString(), page, qty }, `
+export const fetchActivities = async (options: {
+        id?: string
+        accountID?: string
+        ref?: string 
+        activityType?: ActivityType
+        date?: string
+        page?: number
+        qty?: number
+    }): Promise<Activity[]> => {
+    return API.Activity.fetchActivities(options, `
         icon
         title
         createdAt

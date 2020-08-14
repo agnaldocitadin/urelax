@@ -41,17 +41,17 @@ export const useInvestimentAnalysisUIHook = () => {
         catch(error) {
             showAPIError(error)
         }
-    }, [selectedGraph])
+    }, [selectedGraph, account._id])
 
     const handleLoadMore = useCallback((page: number) => {
         // TODO
         return Promise.resolve([] as DataGraph[])
-    }, [])
+    }, [account._id])
 
     useEffectWhenReady(async () => {
         await handlePeriodSelection(period, false)
         setLoading(false)
-    })
+    }, ()=>{}, [account._id])
 
     const dataGraph = analysis.map(item => {
         return {

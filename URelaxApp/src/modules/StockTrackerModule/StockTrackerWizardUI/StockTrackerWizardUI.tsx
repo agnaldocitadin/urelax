@@ -23,6 +23,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
 
     const {
         sequence,
+        titleDone,
         messageDone,
         transient,
         frequencies,
@@ -34,7 +35,8 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
         handleChangeStockAmountLimit,
         handleFinish,
         handleValidation,
-        handleFlowEnded
+        handleFlowEnded,
+        handleDisableButton
     } = useStockTrackerWizardUIHook()
 
     return (
@@ -49,12 +51,12 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                 onFinish={handleFinish}
                 onValidate={handleValidation}
                 onFlowEnded={handleFlowEnded}
-                isButtonDisabled={() => false}
+                isButtonDisabled={handleDisableButton}
                 views={[
                     {
                         id: String(StockTrackerWizardViews.FREQUENCY),
                         view: (
-                            <WizardView icon="settings">
+                            <WizardView icon={Icons.FREQUENCY}>
                                 <Options
                                     options={frequencies}
                                     renderOption={(item: Frequency) => InputTextOption({ value: item._id, text: item.description })}
@@ -72,7 +74,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                     {
                         id: String(StockTrackerWizardViews.STRATEGY),
                         view: (
-                            <WizardView icon="settings">
+                            <WizardView icon={Icons.STRATEGY}>
                                 <Options
                                     options={strategies}
                                     renderOption={(item: Strategy) => InputTextOption({ value: item._id, text: item.description }) }
@@ -90,7 +92,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                     {
                         id: String(StockTrackerWizardViews.TRANSACTION),
                         view: (
-                            <WizardView icon="settings">
+                            <WizardView icon={Icons.CASH}>
                                 <MarginBox noMarginTop>
                                     <SFormTitle>{ts("stock_tracker_transaction_amount")}</SFormTitle>
                                     <SFormDescription>{ts("stock_tracker_transaction_amount_tip")}</SFormDescription>
@@ -111,7 +113,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                     {
                         id: String(StockTrackerWizardViews.REVIEW),
                         view: (
-                            <WizardView icon="settings">
+                            <WizardView icon={Icons.REVIEW}>
                                 <ScrollViewForm>
                                     <MarginBox noMarginTop>
                                         <SFormDescription>{ts("stock_tracker_data_review")}</SFormDescription>
@@ -126,7 +128,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                         view: (
                             <WizardView icon={Icons.CHECK_CIRCLE}>
                                 <GenericTextIcon
-                                    title={ts("eba")}
+                                    title={ts(titleDone)}
                                     message={ts(messageDone)}
                                     icon={Icons.CHECK_CIRCLE}
                                     iconColor={Colors.BLUES_1}/>

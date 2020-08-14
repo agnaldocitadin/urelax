@@ -126,6 +126,19 @@ export const buildStockTrackersFrom = async (account: Account): Promise<Investor
     return trackers.map(model => StockTrackerFactory.create(model))
 }
 
+/**
+ *
+ *
+ * @param {{
+ *     id?: string
+ *     account?: string
+ *     status?: StockTrackerStatus
+ *     frequency?: StockTrackerFrequency
+ *     page?: number
+ *     qty?: number
+ * }} options
+ * @returns
+ */
 export const findStockTrackers = async (options: {
     id?: string
     account?: string
@@ -156,7 +169,6 @@ export const findStockTrackers = async (options: {
         .limit(qty)
         .exec()
 }
-
 
 /**
  *

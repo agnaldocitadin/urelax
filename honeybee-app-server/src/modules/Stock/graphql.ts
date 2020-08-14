@@ -1,3 +1,4 @@
+import { ts } from "../../core/i18n"
 import { GraphQLModule } from "../GraphQL"
 import { createNewStockTracker, findStockTrackers, runOnCreate, updateStockTrackerById } from "./services"
 import { StrategyNames } from "./strategies"
@@ -88,14 +89,14 @@ const entry: GraphQLModule = {
         fetchAvailableStrategies: () => {
             return Object.values(StrategyNames).map(strategy => ({
                 _id: strategy._id,
-                description: `Stra ${strategy._id}`
+                description: ts(strategy._id)
             }))
         },
 
         fetchAvailableFrequencies: () => {
             return Object.values(StockTrackerFrequency).map(frequency => ({
                 _id: frequency.type,
-                description: `Fr ${frequency.type}`
+                description: ts(frequency.type)
             }))
         }
     }

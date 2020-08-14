@@ -33,6 +33,7 @@ export const InvestimentUI: FC = () => {
             loading={loading}
             fail={fail}>
             <RefreshControl
+                style={{ flex: 1 }}
                 enabled
                 refreshing={refreshing}
                 onRefresh={handleRefresh}>

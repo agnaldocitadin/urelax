@@ -103,6 +103,8 @@ export enum Icons {
     REVIEW = "check-all",
     CPF = "checkbook",
     DESCRIPTION = "pencil-outline",
+    STRATEGY = "brain",
+    FREQUENCY = "clock-fast",
 }
 
 export const Typography = styled(BaseTypography)<{ color?: string, fontSize?: number }>`

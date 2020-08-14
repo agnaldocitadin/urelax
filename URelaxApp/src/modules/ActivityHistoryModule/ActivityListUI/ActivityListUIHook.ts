@@ -30,30 +30,38 @@ export const useActivityListUIHook = () => {
         navigation.navigate(Routes.ACTIVITY_DETAIL)
     })
 
-    const handleRefresh = useCallback(async (reset?: boolean) => {
+    const handleRefresh = useCallback(async () => {
         try {
-            let activities = await fetchActivities(account._id, 0, AppConfig.QTY_INITIAL_ACTIVITIES)
-            addActivities(activities, reset)
+            let activities = await fetchActivities({
+                qty: AppConfig.QTY_INITIAL_ACTIVITIES,
+                accountID: account._id,
+                page: 0
+            })
+            addActivities(activities, true)
         }
         catch(error) {
             setFail(true)
         }
-    }, [])
+    }, [account])
 
     const handleLoadMoreData = useCallback(async (page: number): Promise<Activity[]> => {
         try {
-            return await fetchActivities(account._id, page, AppConfig.QTY_INITIAL_ACTIVITIES)
+            return fetchActivities({
+                qty: AppConfig.QTY_INITIAL_ACTIVITIES,
+                accountID: account._id,
+                page
+            })
         }
         catch(error) {
             showAPIError(error)
             return Promise.reject()
         }
-    }, [])
+    }, [account])
 
     useEffectWhenReady(async () => {
-        await handleRefresh(true)
+        await handleRefresh()
         setLoading(false)
-    })
+    }, ()=>{}, [account._id])
 
     return {
         activities,

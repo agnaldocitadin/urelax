@@ -81,6 +81,30 @@ export const useStockTrackerWizardUIHook = () => {
         edit ? navigation.goBack() : navigation.navigate(Routes.ADD_INVESTIMENT)
     }, [edit])
 
+    const handleDisableButton = useCallback((view: string) => {
+
+        const {
+            frequency,
+            strategy,
+            strategySetting
+        } = transient
+
+        switch (view) {
+            case String(StockTrackerWizardViews.FREQUENCY):
+                return !frequency
+
+            case String(StockTrackerWizardViews.STRATEGY):
+                return !strategy
+
+            case String(StockTrackerWizardViews.TRANSACTION):
+                return !strategySetting?.autoAmountLimit && strategySetting?.stockAmountLimit === 0
+        
+            default:
+                return false
+        }
+        
+    }, [transient])
+
     useEffectWhenReady(async () => {
         const frequencies = await API.StockTracker.fetchAvailableFrequencies(`
             _id
@@ -98,7 +122,8 @@ export const useStockTrackerWizardUIHook = () => {
 
     return {
         sequence: edit ? [String(viewToEdit), String(StockTrackerWizardViews.DONE)] : viewsSequence,
-        messageDone: edit ? "stock_tracker_updated" : "stock_tracker_created",
+        titleDone: edit ? "stock_tracker_updated" : "stock_tracker_created",
+        messageDone: edit ? "stock_tracker_updated_msg" : "stock_tracker_created_msg",
         transient,
         frequencies,
         strategies,
@@ -109,6 +134,7 @@ export const useStockTrackerWizardUIHook = () => {
         handleChangeAutoAmountLimit,
         handleFinish,
         handleValidation,
-        handleFlowEnded
+        handleFlowEnded,
+        handleDisableButton
     }
 }

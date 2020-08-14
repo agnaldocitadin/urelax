@@ -16,8 +16,8 @@ interface InputRadioProps {
 export const InputRadio: FC<InputRadioProps> = ({ 
     value, 
     checked, 
-    color = "black",
-    checkedColor = "black",
+    color = "gray",
+    checkedColor = "gray",
     size = 23,
     style,
     onPress 

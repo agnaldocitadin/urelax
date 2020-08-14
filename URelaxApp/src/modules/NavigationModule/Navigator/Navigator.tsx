@@ -1,11 +1,15 @@
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerNavigationOptions } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { FC } from 'react'
+import { Account, Profile } from 'honeybee-api'
+import React, { FC, useCallback } from 'react'
 import { View } from 'react-native'
+import styled from 'styled-components/native'
 import NavigationModule from '..'
+import { Option } from '../../../components/Inputs/InputOptions'
+import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import { ts } from '../../../core/I18n'
-import { BaseIcon, Icons, TypographyMedium } from '../../../theming'
+import { BaseIcon, Colors, DEFAULT_HORIZONTAL_SPACING, Icons, TypographyMedium } from '../../../theming'
 import { ActivityDetailUI } from '../../ActivityHistoryModule/ActivityDetailUI'
 import { ActivityListUI } from '../../ActivityHistoryModule/ActivityListUI'
 import { AddBrokerAccountUI } from '../../BrokerModule/AddBrokerAccountUI'
@@ -13,6 +17,7 @@ import { BrokerAccountDetailUI } from '../../BrokerModule/BrokerAccountDetailUI'
 import { BrokerAccountsUI } from '../../BrokerModule/BrokerAccountsUI'
 import { BrokerAccountWizardUI } from '../../BrokerModule/BrokerAccountWizardUI'
 import { DashboardUI } from '../../DashboardModule/DashboardUI'
+import IdentityModule from '../../IdentityModule'
 import { ProfileUI } from '../../IdentityModule/ProfileUI'
 import { SignUpUI } from '../../IdentityModule/SignUpUI'
 import { AddInvestimentUI } from '../../InvestimentModule/AddInvestimentUI'
@@ -20,7 +25,9 @@ import { FilterUI } from '../../InvestimentModule/FilterUI'
 import { InvestimentAnalysisDetailUI } from '../../InvestimentModule/InvestimentAnalysisDetailUI'
 import { InvestimentAnalysisUI } from '../../InvestimentModule/InvestimentAnalysisUI'
 import { InvestimentUI } from '../../InvestimentModule/InvestimentUI'
+import MessagingModule from '../../MessagingModule'
 import { TourUI } from '../../PresentationModule/TourUI'
+import SecurityModule from '../../SecurityModule'
 import { FastAuthFailureUI } from '../../SecurityModule/FastAuthFailureUI'
 import { FastAuthUI } from '../../SecurityModule/FastAuthUI'
 import { LogInUI } from '../../SecurityModule/LogInUI'
@@ -30,6 +37,7 @@ import { StatementUI } from '../../StatementModule/StatementUI'
 import { StockTrackerPreviewUI } from '../../StockTrackerModule/StockTrackerPreviewUI'
 import { StockTrackerSettingUI } from '../../StockTrackerModule/StockTrackerSettingUI'
 import { StockTrackerWizardUI } from '../../StockTrackerModule/StockTrackerWizardUI'
+import StorageModule from '../../StorageModule'
 import { Drawers, Routes, Stacks } from '../const'
 
 const Stack = createStackNavigator()
@@ -79,7 +87,7 @@ export const Navigator: FC = ({}) => {
         case "app":
             stackRoutes = (
                 <Drawer.Navigator 
-                    drawerContent={CustomDrawerContent}
+                    drawerContent={props => <CustomDrawerContent {...props}/>}
                     drawerType="slide"
                     drawerPosition="right"
                     backBehavior="initialRoute">
@@ -143,19 +151,15 @@ const menuOptions = (label: string, icon: string, swipeable: boolean = false): D
     }
 }
 
-const CustomDrawerContent: FC<DrawerContentComponentProps> = (props) => {
-    return (
-        <View style={{ flex: 1 }}>
-            <DrawerContentScrollView {...props}>
-                <DrawerItemList {...props}/>
-            </DrawerContentScrollView>
-            <DrawerItem 
-                label={props => <TypographyMedium {...props}>{ts("exit_app")}</TypographyMedium>}
-                icon={props => <BaseIcon {...props} name={Icons.LOGOUT}/>}
-                onPress={null}/>
-        </View>
-    )
-}
+const CustomDrawerContent: FC<DrawerContentComponentProps> = (props) => (
+    <View style={{ flex: 1 }}>
+        <DrawerContent {...props}>
+            <DrawerItemList {...props}/>
+            <AccountSwitcher {...props}/>
+        </DrawerContent>
+        <Logout {...props}/>
+    </View>
+)
 
 const dashboard = () => (
     <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
@@ -177,6 +181,7 @@ const investiments = () => (
         <Stack.Screen name={Routes.STOCKTRACKER_WIZARD} component={StockTrackerWizardUI} options={defaultOptions}/>
         <Stack.Screen name={Routes.STOCKTRACKER_PREVIEW} component={StockTrackerPreviewUI} options={defaultOptions}/>
         <Stack.Screen name={Routes.STOCKTRACKER_SETTING} component={StockTrackerSettingUI} options={defaultOptions}/>
+        <Stack.Screen name={Routes.ACTIVITY_DETAIL} component={ActivityDetailUI} options={defaultOptions}/>
     </Stack.Navigator>
 )
 
@@ -215,6 +220,66 @@ const settings = () => (
         <Stack.Screen name={Routes.SETTING} component={SettingUI} options={defaultOptions}/>
     </Stack.Navigator>
 )
+
+const AccountSwitcher: FC<any> = ({ navigation }) => {
+    const { setActiveAccount } = IdentityModule.actions()
+    const active: Account = IdentityModule.select("activeAccount")
+    const profile: Profile = SecurityModule.select("profile")
+    const real = profile.accounts?.find(account => !account.simulation)
+    const simulation = profile.accounts?.find(account => account.simulation)
+
+    const handleSwitchAccount = useCallback((account?: Account) => {
+        account && setActiveAccount(account)
+        navigation.closeDrawer()
+    }, [profile])
+
+    return (
+        <React.Fragment>
+            <HeaderDivider style={{ marginLeft: 20 }}>Conta</HeaderDivider>
+            <AccountOption
+                checked={real?._id === active._id}
+                onPress={() => handleSwitchAccount(real)}
+                option={{
+                    body: <TypographyMedium color={Colors.GRAY_2}>{ts("real")}</TypographyMedium>,
+                    value: 0
+                }} />
+
+            <AccountOption
+                checked={simulation?._id === active._id}
+                onPress={() => handleSwitchAccount(simulation)}
+                option={{
+                    body: <TypographyMedium color={Colors.GRAY_2}>{ts("simulation")}</TypographyMedium>,
+                    value: 0
+                }} />
+        </React.Fragment>
+    )
+}
+
+const Logout: FC = (props) => {
+    const { resetStorage } = StorageModule.actions()
+    const { switchStack } = NavigationModule.actions()
+    const { showConfirm } = MessagingModule.actions()
+    return (
+        <DrawerItem 
+            label={props => <TypographyMedium {...props}>{ts("exit_app")}</TypographyMedium>}
+            icon={props => <BaseIcon {...props} name={Icons.LOGOUT}/>}
+            onPress={() => {
+                showConfirm(ts("exit_app"), ts("exit_app_msg"), () => {
+                    resetStorage()
+                    switchStack("welcome")
+                })
+            }}/>
+    )
+}
+
+const DrawerContent = styled(DrawerContentScrollView)`
+    border-color: ${Colors.GRAY_4};
+    border-bottom-width: 1px;
+`
+
+const AccountOption = styled(Option)`
+    padding: 10px ${DEFAULT_HORIZONTAL_SPACING}px;
+`
 
 {/* <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
 <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>

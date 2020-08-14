@@ -41,12 +41,16 @@ export const findActivitiesBy = (options: {
         accountID, 
         page = 0, 
         qty = Number(process.env.STANDARD_QUERY_RESULT), 
-        translate 
+        translate,
+        activityType,
+        date,
+        ref
     } = options
 
     return ActivityModel.find({
             ...toObjectId("_id", id),
-            ...toObjectId("account", accountID)
+            ...toObjectId("account", accountID),
+            ...utils.nonNull("ref", ref)
         })
         .sort({ createdAt: "desc" })
         .skip(page * qty)
@@ -116,9 +120,7 @@ export const onStockTrackerCreated = async (stockTracker: StockTracker) => {
                 title: { 
                     text: "stock"
                 },
-                description: {
-                    text: `${investiment.description} (${investiment.stock.symbol})`
-                },
+                description: `${investiment.description} (${investiment.stock.symbol})`,
                 hidden: false
             },
             {

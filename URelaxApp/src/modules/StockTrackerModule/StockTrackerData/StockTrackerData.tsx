@@ -43,7 +43,7 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
             <StockInfo
                 isReview={isReview}
                 title={<Title>{ts("broker")}</Title>}
-                description={<Description>{brokerAccount?.brokerCode}</Description>}
+                description={<Description>{ts(brokerAccount?.brokerCode)}</Description>}
                 disabled={isReview}/>
 
             <StockInfo
@@ -55,32 +55,32 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
             <StockInfo
                 isReview={isReview}
                 title={<Title>{ts("strategy")}</Title>}
-                description={<Description>{strategy}</Description>}
+                description={<Description>{ts(strategy)}</Description>}
                 onPress={handleStrategy}
                 disabled={isReview}/>
 
             <StockInfo
                 isReview={isReview}
                 title={<Title>{ts("frequency")}</Title>}
-                description={<Description>{frequency}</Description>}
+                description={<Description>{ts(frequency)}</Description>}
                 onPress={handleFrequency}
                 disabled={isReview}/>
 
             <StockInfo
                 isReview={isReview}
-                title={<Title>{ts("status")}</Title>}
+                title={<Title>{ts("stock_tracker_status")}</Title>}
                 description={<Description>{ts(String(status))}</Description>}
                 disabled={isReview}/>
 
-            <Divider>Negociação</Divider>
+            <Divider isReview={isReview}>Negociação</Divider>
             <StockInfo
                 isReview={isReview}
-                title={<Title>{ts("max_trade_amount")}</Title>}
+                title={<Title>{ts("stock_tracker_transaction_amount")}</Title>}
                 description={<Description>{utils.formatCurrency(stockAmountLimit || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Description>}
                 onPress={handleTransaction}
                 disabled={isReview}/>
 
-            { autoAmountLimit && <Typography>{ts("stock_tracker_auto_transaction_active")}</Typography>}
+            { autoAmountLimit && <AutoLimit isReview={isReview}>{ts("stock_tracker_auto_transaction_active")}</AutoLimit>}
         </React.Fragment>
     )
 }
@@ -105,4 +105,16 @@ const Description = styled(Typography)`
 
 const Divider = styled(HeaderDivider)<{ isReview?: boolean }>`
     padding-left: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+`
+
+const AutoLimit = styled(Typography)<{ isReview?: boolean }>`
+    color: ${Colors.BLUES_3};
+    border-color: ${Colors.BLUES_3};
+    text-align: center;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+    margin-right: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
+    margin-bottom: ${({ isReview }) => isReview ? 0 : DEFAULT_HORIZONTAL_SPACING}px;
 `

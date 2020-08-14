@@ -1,5 +1,5 @@
-import React, { ReactElement, useCallback } from 'react'
-import { ListRenderItem, ViewStyle } from 'react-native'
+import React, { FC, ReactElement, useCallback } from 'react'
+import { ListRenderItem, ViewProps, ViewStyle } from 'react-native'
 import styled from 'styled-components/native'
 import { Colors, DEFAULT_HORIZONTAL_SPACING } from '../../../theming'
 import { InfiniteFlatList } from '../../InfiniteFlatList'
@@ -33,18 +33,11 @@ export const InputOptions = <T extends {}>({
         const option = renderOption(item, false)
         const checked = JSON.stringify(option.value) === JSON.stringify(selectedOption)
         return (
-            <Touchable
-                onPress={() => onSelect && onSelect(item)}
-                borderless={false}>
-                    
-                <Content style={style}>
-                    <Radio 
-                        value={option.value}
-                        checkedColor={Colors.BLACK_2}
-                        checked={checked}/>
-                        {option.body}
-                </Content>
-            </Touchable>
+            <Option
+                style={style}
+                checked={checked}
+                option={option}
+                onPress={() => onSelect && onSelect(item)}/>
         )
     }, [selectedOption])
 
@@ -57,6 +50,27 @@ export const InputOptions = <T extends {}>({
             keyExtractor={(item, key) => `opt${key}`}/>
     )
 }
+
+
+interface OptionProps extends ViewProps {
+    checked: boolean
+    option: FormOptionType<any>
+    onPress?(): void
+}
+
+export const Option: FC<OptionProps> = ({ style, checked, option, onPress }) => (
+    <Touchable
+        onPress={onPress}
+        borderless={false}>
+        <Content style={style}>
+            <Radio 
+                value={option.value}
+                checkedColor={Colors.BLUES_3}
+                checked={checked}/>
+                {option.body}
+        </Content>
+    </Touchable>
+)
 
 const Content = styled.View`
     flex-direction: row;

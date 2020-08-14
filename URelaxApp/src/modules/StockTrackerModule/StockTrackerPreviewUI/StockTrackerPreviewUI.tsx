@@ -1,6 +1,6 @@
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
-import { Image, View } from 'react-native'
+import { Image } from 'react-native'
 import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { ButtonHeader } from '../../../components/Header/ButtonHeader'
@@ -9,7 +9,7 @@ import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Icons, SymbolsImg, Typography } from '../../../theming'
-import { StatementTimeline } from '../../StatementModule/StatementTimeline'
+import { ActivityTimeline } from '../../ActivityHistoryModule/ActivityTimeline'
 import { StockTrackerControlButton } from '../StockTrackerControlButton'
 import { useStockTrackerPreviewUIHook } from './StockTrackerPreviewUIHook'
 interface StockTrackerPreviewUIProps {}
@@ -19,14 +19,15 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
     const { 
         stockTracker,
         amount,
-        transactions,
+        activities,
         loading,
         fail,
         btnState,
         handleSettings, 
         handleRefresh, 
         handleLoadMoreData,
-        handleStockTrackerAction
+        handleStockTrackerAction,
+        handleActivityPress
     } = useStockTrackerPreviewUIHook()
 
     return (
@@ -44,12 +45,13 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
             }>
 
             { stockTracker && !fail && 
-                <StatementTimeline
-                    data={transactions}
+                <ActivityTimeline
+                    activities={activities}
                     minLengthToLoadMore={30}
                     onRefresh={handleRefresh}
-                    onEndPageReached={handleLoadMoreData}
-                    ListHeaderComponent={
+                    onLoadMoreData={handleLoadMoreData}
+                    onPress={handleActivityPress}
+                    header={
                         <React.Fragment>
                             <InfoHeader>
                                 <LeftColumn>
@@ -72,14 +74,12 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                                         style={{ maxWidth: 100, maxHeight: 60 }}/>}
                                 </RightColumn>
                             </InfoHeader>
-
                             <BtnContent>
-                                <StockTrackerControlButton 
+                                <StockTrackerControlButton
                                     status={stockTracker?.status} 
                                     onPress={handleStockTrackerAction}
                                     activityState={btnState}/>
                             </BtnContent>
-
                         </React.Fragment>
                     }
                 />}
@@ -119,8 +119,7 @@ const Value = styled(Typography)`
 `
 
 const BtnContent = styled.View`
-    align-items: flex-end;
-    position: absolute;
     right: ${DEFAULT_HORIZONTAL_SPACING}px;
-    top: 237px;
+    transform: translateY(-25px);
+    align-items: flex-end;
 `

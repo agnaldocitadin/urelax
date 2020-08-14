@@ -37,14 +37,16 @@ export const animatedCallback = <T extends (...args: any[]) => any>(callback: T,
  *
  *
  * @param {() => void} fn
+ * @param {() => void} [unmount]
+ * @param {DependencyList} [inputs=[]]
  * @returns
  */
-export const useEffectWhenReady = (fn: () => void, unmount?: () => void) => {
+export const useEffectWhenReady = (fn: () => void, unmount?: () => void, inputs: DependencyList = []) => {
     return useEffect(() => {
         const task = InteractionManager.runAfterInteractions(() => fn())
         return () => {
             task.cancel()
             unmount && unmount()
         }
-    }, [])
+    }, inputs)
 }

@@ -36,7 +36,7 @@ export const useDashboardUIHook = () => {
         setRefreshing(true)
         await refresh()
         setRefreshing(false)
-    }, [])
+    }, [account._id])
 
     const refresh = useCallback(async () => {
         try {
@@ -46,9 +46,9 @@ export const useDashboardUIHook = () => {
         catch(error) {
             showAPIError(error)
         }
-    }, [account])
+    }, [account._id])
 
-    useEffectWhenReady(() => refresh())
+    useEffectWhenReady(() => refresh(), ()=>{}, [account._id])
 
     return {
         refreshing,

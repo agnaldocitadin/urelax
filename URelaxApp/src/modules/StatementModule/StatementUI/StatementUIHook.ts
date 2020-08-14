@@ -1,4 +1,4 @@
-import { FinancialHistory } from "honeybee-api"
+import { Account, FinancialHistory } from "honeybee-api"
 import { useCallback, useState } from "react"
 import AppConfig from "../../../core/AppConfig"
 import { useEffectWhenReady } from "../../../core/Commons.hook"
@@ -12,7 +12,7 @@ export const useStatementUIHook = () => {
 
     const { showAPIError } = Messaging.actions()
     const { addHistory, selectEvent } = Investiment.actions()
-    const account = Identity.select("activeAccount")
+    const account: Account = Identity.select("activeAccount")
     const statements: FinancialHistory[] = Investiment.select("statements")
     const [ loading, setLoading ] = useState(true)
 
@@ -41,7 +41,7 @@ export const useStatementUIHook = () => {
     useEffectWhenReady(async () => {
         await handleRefresh(true)
         setLoading(false)
-    })
+    }, ()=>{}, [account._id])
 
     return {
         loading,

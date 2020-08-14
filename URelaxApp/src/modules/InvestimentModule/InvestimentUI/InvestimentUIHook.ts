@@ -33,7 +33,7 @@ export const useInvestimentUIHook = () => {
         setRefreshing(true)
         await refresh()
         setRefreshing(false)
-    }, [])
+    }, [account._id])
 
     const refresh = useCallback(async () => {
         try {
@@ -57,7 +57,7 @@ export const useInvestimentUIHook = () => {
         }
     }, [account._id])
     
-    useEffectWhenReady(() => refresh())
+    useEffectWhenReady(() => refresh(), ()=>{}, [account._id])
 
     return {
         fail,

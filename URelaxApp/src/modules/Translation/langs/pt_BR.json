@@ -5,6 +5,17 @@
     "WAITING_DESTROY": "Aguardando ser destruída",
     "DESTROYED": "Destruída",
 
+    "1M" : "1 minuto",
+    "3M" : "3 minutos",
+    "5M" : "5 minutos",
+    "15M" : "15 minutos",
+    "30M" : "30 minutos",
+    "45M" : "45 minutos",
+    "1H" : "1 hora",
+    "2H" : "2 horas",
+    "3H" : "3 horas",
+    "4H" : "4 horas",
+
     "ok": "Ok",
     "next": "Próximo",
     "save_changes": "Salvar alterações",
@@ -19,6 +30,11 @@
     "activated": "Ativada",
     "deactivated": "Desativada",
     "created_at": "Criado em",
+    "account": "Conta",
+    "strategy": "Estratégia",
+    "frequency": "Frequência de operação",
+    "real": "Real",
+    "simulation": "Simulação",
 
     "account_update": "Alteração de perfil.",
     "account_update_msg": "Deseja salvar as alterações do seu perfil?",
@@ -45,6 +61,7 @@
     "settings_notification_msg": "Notificação de {{notification}} foi {{state}}",
     "add_tracker_paused": "Adicionar rastreador pausado",
 
+    "broker": "Corretora",
     "create_broker_account": "Configurar conta de corretoras",
     "broker_accounts": "Conta de corretoras",
     "update_broker_account": "Atualizar conta de corretora",
@@ -76,6 +93,7 @@
     "broker_account_add_success": "Conta cadastrada",
     "broker_account_add_success_msg": "Sua nova conta foi cadastrada com sucesso",
 
+    "stock": "Ação",
     "create_stock_tracker": "Criar rastreador de ações",
     "stock_trackers": "Rastreadores",
     "update_stock_tracker": "Atualizar rastreador de ação",
@@ -112,6 +130,10 @@
     "stock_tracker_destroyed_msg": "Seu rastreador removido foi removido com sucesso e não está mais operando.",
     "stock_tracker_wait_destroyed": "Rastreador aguardando ser destruído!",
     "stock_tracker_wait_destroyed_msg": "Identificamos que este rastreador ainda possui ativos comprados. Ele será removido assim que identificar uma boa oportunidade de venda e realizar a operação.",
+    "stock_tracker_updated": "Rastreador atualizado!",
+    "stock_tracker_created": "Rastreador adicionado!",
+    "stock_tracker_updated_msg": "Seu rastreador foi atualizado com sucesso.",
+    "stock_tracker_created_msg": "Seu novo rastreador foi criado com sucesso.",
 
     "total_amount": "Total acumulado",
     "account_amount": "Crédito em conta",
@@ -162,5 +184,8 @@
     "monthly": "Mensal",
     "yearly": "Anual",
     "period_investiment": "Investimentos no período",
-    "broker_account_detail": "Informações da conta"
+    "broker_account_detail": "Informações da conta",
+
+    "STRATEGY_ONE": "Bollinger Bands + Stochastic RSI", 
+    "CLEAR": "Clear"
 }
