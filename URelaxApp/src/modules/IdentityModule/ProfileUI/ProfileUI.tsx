@@ -17,6 +17,7 @@ export const ProfileUI: FC = ({ children }) => {
     
     const {
         input,
+        loading,
         passwordMatch,
         validFullname,
         validNickname,
@@ -33,8 +34,11 @@ export const ProfileUI: FC = ({ children }) => {
     } = useProfileUIHook()
 
     return (
-        <PrimaryLayout title={ts("profile")} bgColor={Colors.WHITE}>
-            <ScrollViewForm>
+        <PrimaryLayout
+            loading={loading}
+            title={ts("profile")}
+            bgColor={Colors.WHITE}>
+            { !loading && <ScrollViewForm>
                 <ProfilePhoto>
                     <Image 
                         source={Images.PROFILE}
@@ -134,7 +138,7 @@ export const ProfileUI: FC = ({ children }) => {
                     />
 
                 </MarginBox>
-            </ScrollViewForm>
+            </ScrollViewForm>}
         </PrimaryLayout>
     )
 }

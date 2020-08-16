@@ -6,6 +6,24 @@ import { Account } from './account.model'
  *
  *
  * @export
+ * @class Device
+ */
+export class Device {
+    
+    @prop({ required: true })
+    deviceId: string
+
+    @prop({ required: true })
+    token: string
+
+    @prop({ required: true, default: false })
+    active: boolean
+}
+
+/**
+ *
+ *
+ * @export
  * @class Account
  * @extends {TimeStamps}
  */
@@ -34,6 +52,9 @@ export class Profile {
     @prop({ required: true })
     active!: boolean
 
+    @arrayProp({ _id: false, items: Device })
+    devices?: Device[]
+
     @prop({ default: () => new Date() })
     createdAt?: Date
 
@@ -44,6 +65,9 @@ export class Profile {
         return <Account>this.accounts.find(account => (<Account>account).simulation)
     }
 
+    public getActiveDevice?(): Device {
+        return this.devices.find(device => device.active)
+    }
 }
 
 export const ProfileModel = getModelForClass(Profile, {

@@ -3,7 +3,7 @@ import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { onCreateAccount } from "../../Activity/services"
-import { Account, AccountModel, Preferences, Profile, ProfileModel } from "../models"
+import { Account, AccountModel, Device, Preferences, Profile, ProfileModel } from "../models"
 
 const defaultPreferences: Preferences = {
     language: Locales.PT_BR,
@@ -117,4 +117,27 @@ export const findByEmailPassword = (email: string, password: string) => {
     return ProfileModel.findOne({ email, password })
         .populate("accounts")
         .exec()
+}
+
+/**
+ *
+ *
+ * @param {string} _id
+ * @param {Device} device
+ */
+export const manageDevice = async (_id: string, device: Device) => {
+    const profile = await ProfileModel.findById(_id)
+    if (profile) {
+        profile.devices.forEach(device => device.active = false)
+
+        const deviced = profile.devices.find(ite => ite.deviceId === device.deviceId)
+        if (deviced) {
+            deviced.token = device.token
+            deviced.active = true
+        }
+        else {
+            profile.devices.push(device)
+        }
+        profile.save()
+    }
 }

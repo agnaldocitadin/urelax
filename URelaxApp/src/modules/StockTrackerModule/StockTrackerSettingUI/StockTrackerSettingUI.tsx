@@ -35,7 +35,7 @@ export const StockTrackerSettingUI: FC<StockTrackerSettingUIProps> = ({}) => {
                 { showDestroyBtn ? data : <MarginBox>{data}</MarginBox>}
                 { showDestroyBtn && (
                     <DestroyButton onPress={handleDestroyStockTracker}>
-                        <TypographyMedium color={Colors.WHITE}>{ts("destroy_tracker")}</TypographyMedium>
+                        <TypographyMedium color={Colors.WHITE}>{ts("destroy_stock_tracker")}</TypographyMedium>
                     </DestroyButton>
                 )}
             </ScrollView>

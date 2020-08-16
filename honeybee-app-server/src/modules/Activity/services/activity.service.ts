@@ -90,9 +90,7 @@ const baseStockTrackerStatusTurnning = (stockTracker: StockTracker, icon: string
                 title: { 
                     text: "stock"
                 },
-                description: {
-                    text: `${investiment.description} (${investiment.stock.symbol})`
-                },
+                description: `${investiment.description} (${investiment.stock.symbol})`,
                 hidden: false
             }
         ]

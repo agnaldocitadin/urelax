@@ -14,6 +14,7 @@ import MessagingModule from './src/modules/MessagingModule'
 import { DialogMessage } from './src/modules/MessagingModule/DialogMessage'
 import NavigationModule from './src/modules/NavigationModule'
 import { Navigator } from './src/modules/NavigationModule/Navigator'
+import { NotificationStartup } from './src/modules/NotificationModule/NotificationStartup/NotificationStartup'
 import PresentationModule from './src/modules/PresentationModule'
 import SecurityModule from './src/modules/SecurityModule'
 import SettingModule from './src/modules/SettingModule'
@@ -46,6 +47,7 @@ const App = () => {
             <Navigator/>
             <IdentityStartup/>
             <BrokerStartup/>
+            <NotificationStartup/>
             <DialogMessage/>
         </Provider>
     )

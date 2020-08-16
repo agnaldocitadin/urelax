@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "emulator": "emulator @Pixel_API_29 -no-snapshot-load",
+    "pixel": "emulator @Pixel_API_29 -no-snapshot-load",
     "pixel3": "emulator @Pixel_3_API_29 -no-snapshot-load",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
@@ -30,6 +30,7 @@
     "react-i18next": "^11.5.0",
     "react-native": "^0.62.2",
     "react-native-app-intro-slider": "^4.0.4",
+    "react-native-device-info": "^5.6.4",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-modal": "^11.5.6",

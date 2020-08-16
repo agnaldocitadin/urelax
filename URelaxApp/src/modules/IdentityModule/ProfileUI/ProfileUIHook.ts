@@ -1,6 +1,7 @@
 import { API, Profile } from "honeybee-api"
 import { validations } from "js-commons"
 import { useCallback, useState } from "react"
+import { useEffectWhenReady } from "../../../core/Commons.hook"
 import MessagingModule from "../../MessagingModule"
 import SecurityModule from "../../SecurityModule"
 
@@ -11,6 +12,7 @@ export const useProfileUIHook = () => {
     const { showAPIError, showSuccess } = MessagingModule.actions()
     const { setProfile } = SecurityModule.actions()
     const [ passwordMatch, setPasswordMatch ] = useState(profile.password)
+    const [ loading, setLoading ] = useState(true)
 
     const update = useCallback((property: keyof Profile, value: any) => {
         setInput(old => ({
@@ -52,6 +54,8 @@ export const useProfileUIHook = () => {
         }
     }, [profile, input])
 
+    useEffectWhenReady(() => setLoading(false))
+
     const validFullname = validations.validateFullName(input?.name)
     const validNickname = validations.validateNickname(input?.nickname)
     const validEmail = validations.validateEmail(input?.email)
@@ -62,6 +66,7 @@ export const useProfileUIHook = () => {
 
     return {
         input,
+        loading,
         passwordMatch,
         validFullname,
         validNickname,

@@ -1,5 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
-import { updateAccount, updateProfile } from "./services"
+import { manageDevice, updateAccount, updateProfile } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -12,6 +12,7 @@ const entry: GraphQLModule = {
             accounts: [Account]
             activeAccount: String
             active: Boolean
+            devices: [Device]
             createdAt: Datetime
             updatedAt: Datetime
         }
@@ -33,7 +34,6 @@ const entry: GraphQLModule = {
             _id: ID!
             active: Boolean
             simulation: Boolean
-            devices: [Device]
             preference: Preferences
         }
     `,
@@ -55,9 +55,9 @@ const entry: GraphQLModule = {
         }
 
         input DeviceInput {
-            deviceId: String
-            token: String
-            active: Boolean
+            deviceId: String!
+            token: String!
+            active: Boolean!
         }
 
         input PreferenceInput {
@@ -71,6 +71,7 @@ const entry: GraphQLModule = {
     mutations: `
         updateProfile(id: ID!, input: ProfileInput!): Boolean
         updateAccount(id: ID!, input: AccountInput!): Boolean
+        manageDevice(id: ID!, input: DeviceInput!): Boolean
     `,
 
     resolvers: {
@@ -81,6 +82,11 @@ const entry: GraphQLModule = {
         
         updateAccount: async ({ id, input }: any) => {
             await updateAccount(id, input)
+            return true
+        },
+
+        manageDevice: async ({ id, input}: any) => {
+            await manageDevice(id, input)
             return true
         }
     }

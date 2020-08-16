@@ -32,3 +32,9 @@ export interface ProfileInput {
     accounts?: ID[]
     active?: boolean
 }
+
+export interface DeviceInput {
+    deviceId: string
+    token: string
+    active: boolean
+}

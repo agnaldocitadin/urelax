@@ -104,12 +104,12 @@ export const Navigator: FC = ({}) => {
 
                     <Drawer.Screen
                         name={Drawers.INVESTIMENTS}
-                        options={menuOptions("investiments", Icons.CASH, true)}
+                        options={menuOptions("investiments", Icons.CASH, true, { unmountOnBlur: true })}
                         component={investiments}/>
 
                     <Drawer.Screen
                         name={Drawers.ANALYSIS}
-                        options={menuOptions("analysis", Icons.CHART_LINE, true)}
+                        options={menuOptions("analysis", Icons.CHART_LINE, true, { unmountOnBlur: true })}
                         component={investimentAnalysis}/>
 
                     {/* <Drawer.Screen
@@ -119,7 +119,7 @@ export const Navigator: FC = ({}) => {
 
                     <Drawer.Screen
                         name={Drawers.ACTIVITIES}
-                        options={menuOptions("activities", Icons.ACTIVITY, true)}
+                        options={menuOptions("activities", Icons.ACTIVITY, true, { unmountOnBlur: true })}
                         component={activities}/>
 
                     <Drawer.Screen
@@ -143,8 +143,9 @@ export const Navigator: FC = ({}) => {
     )
 }
 
-const menuOptions = (label: string, icon: string, swipeable: boolean = false): DrawerNavigationOptions => {
+const menuOptions = (label: string, icon: string, swipeable: boolean = false, extra?: DrawerNavigationOptions): DrawerNavigationOptions => {
     return {
+        ...extra,
         drawerLabel: props => <TypographyMedium {...props}>{ts(label)}</TypographyMedium>,
         drawerIcon: props => <BaseIcon {...props} name={icon}/>,
         swipeEnabled: swipeable

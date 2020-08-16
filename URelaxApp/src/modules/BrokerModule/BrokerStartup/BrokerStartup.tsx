@@ -1,18 +1,16 @@
-import { Profile } from "honeybee-api"
+import { Account } from "honeybee-api"
 import { FC, useEffect } from "react"
 import BrokerModule from ".."
-import Security from "../../SecurityModule"
+import IdentityModule from "../../IdentityModule"
 import { fetchBrokerAccountsByAccount } from "../api"
 
-
 export const BrokerStartup: FC = () => {
-    const profile: Profile = Security.select("profile")
+    const account: Account = IdentityModule.select("activeAccount")
     const { setUserBrokerAccounts } = BrokerModule.actions()
     useEffect(() => {
-        if (profile?.accounts) {
-            const account = profile.accounts.find(account => account._id === profile.activeAccount)
+        if (account?._id) {
             fetchBrokerAccountsByAccount(account?._id).then(brokerAccounts => setUserBrokerAccounts(brokerAccounts))
         }    
-    }, [profile?.accounts])
+    }, [account?._id])
     return null
 }

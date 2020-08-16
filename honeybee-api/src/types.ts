@@ -55,6 +55,7 @@ export interface Profile {
     accounts?: Account[]
     activeAccount?: string
     active?: boolean
+    devices?: Device[]
     createdAt?: Date
     updatedAt?: Date
 }

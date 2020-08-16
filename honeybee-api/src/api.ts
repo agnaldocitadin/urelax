@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { APIConfiguration, CONFIG } from './core'
-import { createBrokerAccount, createStockTracker, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
+import { createBrokerAccount, createStockTracker, manageDevice, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
 import { fetchActivities, fetchAppiedInvestiments, fetchAvailableFrequencies, fetchAvailableInvestiments, fetchAvailableStrategies, fetchBrokerAccounts, fetchBrokers, fetchFinancialAnalysis, fetchFinancialHistory, fetchFinancialSummary, fetchInvestimentSuggestion, fetchStockTrackers } from "./queries"
 import { authenticate, destroyStockTracker, pauseStockTracker, playStockTracker, signup } from './rest'
 
@@ -33,7 +33,8 @@ export const API = {
     Profile: {
         signup,
         updateProfile,
-        updateAccount
+        updateAccount,
+        manageDevice
     },
 
     Activity: {
