@@ -2,6 +2,7 @@ import { Locales, ProfileInput } from "honeybee-api"
 import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
+import { toObjectId } from "../../../core/server-utils"
 import { onCreateAccount } from "../../Activity/services"
 import { Account, AccountModel, Device, Preferences, Profile, ProfileModel } from "../models"
 
@@ -9,7 +10,8 @@ const defaultPreferences: Preferences = {
     language: Locales.PT_BR,
     addStockTrackerPaused: true,
     receiveBalanceNotification: true,
-    receiveTradeNotification: true
+    receiveBuyNotification: true,
+    receiveSellNotification: true
 }
 
 /**
@@ -20,6 +22,25 @@ const defaultPreferences: Preferences = {
  */
 export const findProfileById = (id: string) => {
     return ProfileModel.findById(id).exec()
+}
+
+/**
+ *
+ *
+ * @param {{ account?: string }} options
+ * @returns
+ */
+export const findActiveDeviceToken = async (options: { account?: string }) => {
+    const { account } = options
+    const profile = await ProfileModel.find({
+        ...toObjectId("accounts", account)
+    }).exec()
+    
+    if (profile.length > 0) {
+        return profile[0].getActiveDevice().token
+    }
+
+    return null
 }
 
 /**

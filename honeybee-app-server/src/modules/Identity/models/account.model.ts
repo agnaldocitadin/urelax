@@ -3,11 +3,14 @@ import { Locales } from "honeybee-api"
 
 export class Preferences {
 
-    @prop({ required: true, enum: Locales })
+    @prop({ required: true, enum: Locales, default: Locales.PT_BR })
     language: string
     
     @prop({ required: true })
-    receiveTradeNotification: boolean
+    receiveBuyNotification: boolean
+
+    @prop({ required: true })
+    receiveSellNotification: boolean
     
     @prop({ required: true })
     receiveBalanceNotification: boolean

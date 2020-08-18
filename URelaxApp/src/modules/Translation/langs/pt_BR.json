@@ -19,6 +19,7 @@
     "ok": "Ok",
     "next": "Próximo",
     "save_changes": "Salvar alterações",
+    "find_for": "Buscar por",
 
     "yes": "Sim, faça isso!",
     "oops": "Oops!",
@@ -185,6 +186,8 @@
     "yearly": "Anual",
     "period_investiment": "Investimentos no período",
     "broker_account_detail": "Informações da conta",
+    "add_investiments": "Adicionar investimento",
+    "suggest_an_investiment": "Sugerir um investimento",
 
     "STRATEGY_ONE": "Bollinger Bands + Stochastic RSI", 
     "CLEAR": "Clear"

@@ -1,12 +1,13 @@
 import React, { FC } from 'react'
+import { ViewProps } from 'react-native'
 import styled from 'styled-components/native'
 import { Colors } from '../../theming'
 
-interface CardProps {}
+interface CardProps extends ViewProps {}
 
-export const Card: FC<CardProps> = ({ children }) => {
+export const Card: FC<CardProps> = ({ children, ...others }) => {
     return (
-        <Container>
+        <Container {...others}>
             {children}
         </Container>
     )

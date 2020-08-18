@@ -4,6 +4,7 @@ import { utils } from 'js-commons'
 import { ts } from '../../../core/i18n'
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
 import { Account } from '../../Identity/models'
+import { findActiveDeviceToken } from '../../Identity/services'
 import { Order, OrderModel, OrderSides, OrderStatus } from "../../Order/models/order.model"
 import { StockTracker } from '../../Stock/models/stock.tracker.model'
 
@@ -82,8 +83,8 @@ export const notifyOrder = async (execution: OrderExecution, profit: number, dev
  *
  * @param {StockTracker} stockTracker
  */
-export const notifyStockTrackerPause = (stockTracker: StockTracker) => {
-    const token = (<Account>stockTracker.account).getActiveDevice().token
+export const notifyStockTrackerPause = async (stockTracker: StockTracker) => {
+    const token = await findActiveDeviceToken({ account: String((<Account>stockTracker.account)._id) })
     admin.messaging().sendToDevice(token, {
         notification: {
             title: ts("stock_tracker_paused"),
@@ -104,8 +105,8 @@ export const notifyStockTrackerPause = (stockTracker: StockTracker) => {
  *
  * @param {StockTracker} stockTracker
  */
-export const notifyStockTrackerDestroy = (stockTracker: StockTracker) => {
-    const token = (<Account>stockTracker.account).getActiveDevice().token
+export const notifyStockTrackerDestroy = async (stockTracker: StockTracker) => {
+    const token = await findActiveDeviceToken({ account: String((<Account>stockTracker.account)._id) })
     admin.messaging().sendToDevice(token, {
         notification: {
             title: ts("stock_tracker_destroyed"),
