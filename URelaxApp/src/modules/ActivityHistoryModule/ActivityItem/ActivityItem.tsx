@@ -26,7 +26,6 @@ const renderDetails = (activity: Activity, color: string) => {
     return activity.details && activity.details.map((detail, key) => !detail.hidden ? 
         <Typography
             color={Colors.GRAY_3}
-            fontSize={15}
             key={key}>
             {detail.description}
         </Typography>

@@ -36,18 +36,20 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
             loading={loading}
             header={
                 <BackHeader 
-                    title={loading ? ts("loading") : stockTracker?.stockInfo?.description}
+                    title={loading ? (fail ? ts("oops") : ts("loading")) : stockTracker?.stockInfo?.description}
                     right={
-                        <ButtonHeader
-                            icon={Icons.SETTINGS} 
-                            onPress={handleSettings}/>
+                        <React.Fragment>
+                            { !fail && <ButtonHeader
+                                icon={Icons.SETTINGS} 
+                                onPress={handleSettings}/> }
+                        </React.Fragment>
                     }/>
             }>
 
             { stockTracker && !fail && 
                 <ActivityTimeline
                     activities={activities}
-                    minLengthToLoadMore={30}
+                    minLengthToLoadMore={AppConfig.QTY_INITIAL_ACTIVITIES}
                     onRefresh={handleRefresh}
                     onLoadMoreData={handleLoadMoreData}
                     onPress={handleActivityPress}

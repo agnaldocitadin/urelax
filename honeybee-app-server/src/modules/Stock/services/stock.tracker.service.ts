@@ -180,6 +180,8 @@ export const findStockTrackers = async (options: {
 export const findStockTrackerBy = (id: String): Promise<StockTracker> => {
     return StockTrackerModel.findById(id)
         .populate("account")
+        .populate("brokerAccount")
+        .populate("stockInfo")
         .exec()
 }
 

@@ -16,6 +16,7 @@ export const useAddBrokerAccountUIHook = () => {
     const { showAPIError } = MessagingModule.actions()
     const [ brokers, setBrokers ] = useState<Broker[]>([])
     const [ loading, setLoading ] = useState(true)
+    const [ fail, setFail ] = useState(true)
     
     const handleAddClearAccount = useCallback(() => {
         const account = initBrokerAccount(Brokers.CLEAR)
@@ -30,13 +31,14 @@ export const useAddBrokerAccountUIHook = () => {
             setLoading(false)
         }
         catch(error) {
-            showAPIError(error)
+            setFail(true)
         }
     })
 
     return {
         brokers,
         loading,
+        fail,
         handleAddClearAccount
     }
 }

@@ -29,6 +29,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
         frequencies,
         strategies,
         loading,
+        fail,
         selectFrequency,
         selectStrategy,
         handleChangeAutoAmountLimit,
@@ -43,6 +44,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
         <FlatLayout
             bgColor={Colors.WHITE}
             loading={loading}
+            fail={fail}
             header={<BackHeader title={ts("stock_tracker_settings")}/>}>
             
             <WizardForm

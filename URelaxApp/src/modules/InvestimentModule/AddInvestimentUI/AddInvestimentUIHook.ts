@@ -41,10 +41,12 @@ export const useAddInvestimentUIHook = () => {
     })
 
     const handleFindInvestiments = useCallback(async (description: string) => {
-        if (description?.length > 3) {
+        if (description?.length > 1) {
             const investiments = await fetchAvailableInvestiments(description)
             setInvestiments(investiments)
+            return
         }
+        setInvestiments([])
     }, [])
 
     const handleAddInvestiment = animatedCallback((investiment: BrokerInvestiment) => {

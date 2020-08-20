@@ -38,7 +38,7 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
                         title={ts("oops")}
                         message={ts("server_error")}/>
                 </ErrorMessage> }
-                { loading && <LoadContainer>
+                { !fail && loading && <LoadContainer>
                     <ActivityIndicator
                         color={indicatorColor}
                         size="large"/>
@@ -66,7 +66,7 @@ const ErrorMessage = styled.View`
 
 const Display = styled(TextIconDisplay)`
     background-color: ${Colors.WHITE};
-    border-top-color: ${Colors.BG_2};
+    border-top-color: ${Colors.GRAY_4};
     border-top-width: 1px;
     padding: 25px 50px 55px 50px;
 `

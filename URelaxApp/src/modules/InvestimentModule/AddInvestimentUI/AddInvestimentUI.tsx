@@ -66,9 +66,9 @@ export const AddInvestimentUI: FC = () => {
                     </Touchable>
                 </Cardo> }
                 
-                { !suggestion && !finding && <React.Fragment>
-                    <GenericTextIcon title="Não sabe no que investir?" message="Podemos ajudar você" icon="auto-fix" />
-                    <SuggestionBtn data={suggestionBtnData} indicatorColor={Colors.WHITE} onPress={handleSuggestion}/>
+                { !finding && <React.Fragment>
+                    <GenericTextIcon title="Vamos investir!" message="Busque pelas ações desejadas e começe investir agora mesmo." icon="auto-fix" />
+                    {/* <SuggestionBtn data={suggestionBtnData} indicatorColor={Colors.WHITE} onPress={handleSuggestion}/> */}
                 </React.Fragment>}
 
             </Container>

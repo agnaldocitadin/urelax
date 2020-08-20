@@ -23,6 +23,7 @@ export const InvestimentAnalysisUI: FC = () => {
         period,
         selectedGraph,
         loading,
+        fail,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph,
@@ -33,7 +34,8 @@ export const InvestimentAnalysisUI: FC = () => {
         <PrimaryLayout
             bgColor={Colors.WHITE}
             title={ts("analysis")}
-            loading={loading}>
+            loading={loading}
+            fail={fail}>
             <MarginBoxFlex>
                 <Head>
                     <Patrimony

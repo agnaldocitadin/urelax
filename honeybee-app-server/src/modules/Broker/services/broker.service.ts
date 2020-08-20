@@ -56,8 +56,21 @@ export const findAvailableInvestiments = (options: {
         types?: InvestimentType[]
     }): Promise<BrokerInvestiment[]> => {
 
+    const { 
+        search,
+        brokerIDs, 
+        types = [InvestimentType.STOCK]
+    } = options
+
     return BrokerInvestimentModel
-        .find({ type: { "$in": [InvestimentType.STOCK] }, active: true })
+        .find({
+            ...brokerIDs ? { _id : { "$in": brokerIDs } } : null,
+            type: { "$in": types },
+            "$or": [
+                { description : { "$regex" : new RegExp(`${search}`, 'i') }},
+                { "stock.symbol" : { "$regex" : new RegExp(`${search}`, 'i') }}
+            ]
+        })
         .populate("broker")
         .exec()
 }

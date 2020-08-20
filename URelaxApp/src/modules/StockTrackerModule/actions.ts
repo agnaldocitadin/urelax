@@ -34,7 +34,7 @@ const Actions = () => {
         selectStockTrackerID: (id: string) => {
             dispatch({ type: "SELECT_STOCKTRACKER_ID", payload: id } as DispatchType<ActionNames>)
         },
-        selectStockTracker: (stockTracker: StockTracker) => {
+        selectStockTracker: (stockTracker?: StockTracker) => {
             dispatch({ type: "SELECT_STOCKTRACKER", payload: stockTracker } as DispatchType<ActionNames>)
         },
         addStockTrackerStatements: (statements: FinancialHistory[], reset?: boolean) => {

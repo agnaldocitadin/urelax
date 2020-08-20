@@ -20,6 +20,7 @@ export const useInvestimentAnalysisUIHook = () => {
     const selectedGraph: number = Investiment.select("selectedGraphIndex")
     const [ period, setPeriod ] = useState<FinancialAnalysisPeriod>(FinancialAnalysisPeriod.DAILY)
     const [ loading, setLoading ] = useState(true)
+    const [ fail, setFail ] = useState(false)
 
     const handleAnalysisDetail = useCallback(() => {
         navigation.navigate(Routes.INVESTIMENT_ANALYSIS_DETAIL)
@@ -39,7 +40,7 @@ export const useInvestimentAnalysisUIHook = () => {
             }
         }
         catch(error) {
-            showAPIError(error)
+            setFail(true)
         }
     }, [selectedGraph, account._id])
 
@@ -70,6 +71,7 @@ export const useInvestimentAnalysisUIHook = () => {
         period,
         selectedGraph,
         loading,
+        fail,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph,

@@ -16,12 +16,14 @@ export const AddBrokerAccountUI: FC = ({}) => {
     const {
         brokers,
         loading,
+        fail,
         handleAddClearAccount
     } = useAddBrokerAccountUIHook()
 
     return (
         <FlatLayout
             loading={loading}
+            fail={fail}
             header={
                 <BackHeader title={ts("brokers")}/>
             }>

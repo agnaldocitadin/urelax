@@ -21,6 +21,7 @@ export const useStockTrackerWizardUIHook = () => {
 
     const navigation = useNavigation()
     const [ loading, setLoading ] = useState(true)
+    const [ fail, setFail ] = useState(false)
     const transient: StockTracker = StockTrackerModule.select("selectedStockTracker")
     const frequencies: Frequency[] = StockTrackerModule.select("frequencies")
     const strategies: Strategy[] = StockTrackerModule.select("strategies")
@@ -106,18 +107,23 @@ export const useStockTrackerWizardUIHook = () => {
     }, [transient])
 
     useEffectWhenReady(async () => {
-        const frequencies = await API.StockTracker.fetchAvailableFrequencies(`
-            _id
-            description
-        `)
-        setFrequencies(frequencies)
-
-        const strategies = await API.StockTracker.fetchAvailableStrategies(`
-            _id
-            description
-        `)
-        setStrategies(strategies)
-        setLoading(false)
+        try {
+            const frequencies = await API.StockTracker.fetchAvailableFrequencies(`
+                _id
+                description
+            `)
+            setFrequencies(frequencies)
+    
+            const strategies = await API.StockTracker.fetchAvailableStrategies(`
+                _id
+                description
+            `)
+            setStrategies(strategies)
+            setLoading(false)
+        }
+        catch(error) {
+            setFail(true)
+        }
     })
 
     return {
@@ -128,6 +134,7 @@ export const useStockTrackerWizardUIHook = () => {
         frequencies,
         strategies,
         loading,
+        fail,
         selectFrequency,
         selectStrategy,
         handleChangeStockAmountLimit,

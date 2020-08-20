@@ -49,7 +49,6 @@ export const useProfileUIHook = () => {
             }
         }
         catch(error) {
-            console.log(Error)
             showAPIError(error)
         }
     }, [profile, input])
