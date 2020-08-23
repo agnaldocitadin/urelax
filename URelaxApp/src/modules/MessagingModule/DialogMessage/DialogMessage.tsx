@@ -55,8 +55,8 @@ export const DialogMessage: FC<DialogMessageProps> = () => {
 }
 
 const ModalContainer = styled(Modal)`
-    width: 80%;
     margin: 0 auto;
+    width: 80%;
 `
 
 const Button = styled(InteractiveButton)`
@@ -70,5 +70,5 @@ const Container = styled.View`
 `
 
 const Display = styled(TextIconDisplay)`
-    margin: 0 15px 30px 15px;
+    margin: 0 25px 30px 25px;
 `

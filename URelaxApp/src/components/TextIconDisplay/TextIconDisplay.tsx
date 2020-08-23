@@ -41,7 +41,7 @@ const Title = styled(TypographyMedium)`
 `
 
 const Message = styled(Typography)`
-    text-align: center;
+    text-align: justify;
 `
 
 const Icon = styled(BaseIcon)`

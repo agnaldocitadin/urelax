@@ -1,4 +1,4 @@
-import { Brokers, InvestimentType, Locales, MessageTypes, StockTrackerStatus, TransactionType } from "./Enums"
+import { Brokers, InvestimentType, MessageTypes, StockTrackerStatus, TransactionType } from "./Enums"
 
 export type NotificationMessage = {
     messageType: MessageTypes
@@ -61,24 +61,25 @@ export interface Profile {
 }
 
 export interface Preferences {
-    language: Locales
-    receiveTradeNotification: boolean
-    receiveBalanceNotification: boolean
-    addStockTrackerPaused: boolean
+    language?: string
+    receiveBuyNotification?: boolean
+    receiveSellNotification?: boolean
+    receiveBalanceNotification?: boolean
+    addStockTrackerPaused?: boolean
 }
 
 export interface Device {
-    deviceId: string
-    token: string
-    active: boolean
+    deviceId?: string
+    token?: string
+    active?: boolean
 }
 
 export interface Account {
-    _id: string
-    active: boolean
-    simulation: boolean
-    devices: Device[]
-    preference: Preferences
+    _id?: string
+    active?: boolean
+    simulation?: boolean
+    devices?: Device[]
+    preference?: Preferences
 }
 
 export interface Broker {

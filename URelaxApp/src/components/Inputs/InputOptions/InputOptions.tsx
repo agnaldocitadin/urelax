@@ -55,17 +55,20 @@ export const InputOptions = <T extends {}>({
 interface OptionProps extends ViewProps {
     checked: boolean
     option: FormOptionType<any>
+    disabled?: boolean
     onPress?(): void
 }
 
-export const Option: FC<OptionProps> = ({ style, checked, option, onPress }) => (
+export const Option: FC<OptionProps> = ({ style, checked, disabled, option, onPress }) => (
     <Touchable
+        disabled={disabled}
         onPress={onPress}
         borderless={false}>
         <Content style={style}>
             <Radio 
                 value={option.value}
-                checkedColor={Colors.BLUES_3}
+                color={disabled ? Colors.GRAY_4 : "gray"}
+                checkedColor={disabled ? Colors.GRAY_4 : Colors.BLUES_3}
                 checked={checked}/>
                 {option.body}
         </Content>

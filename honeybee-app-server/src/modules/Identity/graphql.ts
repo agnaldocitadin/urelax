@@ -19,7 +19,8 @@ const entry: GraphQLModule = {
 
         type Preferences {
             language: String
-            receiveTradeNotification: Boolean
+            receiveBuyNotification: Boolean
+            receiveSellNotification: Boolean
             receiveBalanceNotification: Boolean
             addStockTrackerPaused: Boolean
         }
@@ -50,8 +51,8 @@ const entry: GraphQLModule = {
 
         input AccountInput {
             active: Boolean
-            devices: [DeviceInput]
-            preference: [PreferenceInput]
+            simulation: Boolean
+            preference: PreferenceInput
         }
 
         input DeviceInput {
@@ -62,7 +63,8 @@ const entry: GraphQLModule = {
 
         input PreferenceInput {
             language: String
-            receiveTradeNotification: Boolean
+            receiveBuyNotification: Boolean
+            receiveSellNotification: Boolean
             receiveBalanceNotification: Boolean
             addStockTrackerPaused: Boolean
         }

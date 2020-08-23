@@ -1,3 +1,4 @@
+import { useNetInfo } from '@react-native-community/netinfo'
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerNavigationOptions } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -129,7 +130,7 @@ export const Navigator: FC = ({}) => {
 
                     <Drawer.Screen
                         name={Drawers.SETTINGS}
-                        options={menuOptions("settings", Icons.SETTINGS, true)}
+                        options={menuOptions("settings", Icons.SETTINGS, true, { unmountOnBlur: true })}
                         component={settings}/>
                 </Drawer.Navigator>
             )
@@ -228,6 +229,8 @@ const AccountSwitcher: FC<any> = ({ navigation }) => {
     const profile: Profile = SecurityModule.select("profile")
     const real = profile.accounts?.find(account => !account.simulation)
     const simulation = profile.accounts?.find(account => account.simulation)
+    const netInfo = useNetInfo()
+    const online = !!netInfo.isInternetReachable
 
     const handleSwitchAccount = useCallback((account?: Account) => {
         account && setActiveAccount(account)
@@ -238,18 +241,30 @@ const AccountSwitcher: FC<any> = ({ navigation }) => {
         <React.Fragment>
             <HeaderDivider style={{ marginLeft: 20 }}>Conta</HeaderDivider>
             <AccountOption
+                disabled={!online}
                 checked={real?._id === active._id}
                 onPress={() => handleSwitchAccount(real)}
                 option={{
-                    body: <TypographyMedium color={Colors.GRAY_2}>{ts("real")}</TypographyMedium>,
+                    body: (
+                        <TypographyMedium
+                            color={online ? Colors.GRAY_2 : Colors.GRAY_4}>
+                            {ts("real")}
+                        </TypographyMedium>
+                    ),
                     value: 0
                 }} />
 
             <AccountOption
+                disabled={!online}
                 checked={simulation?._id === active._id}
                 onPress={() => handleSwitchAccount(simulation)}
                 option={{
-                    body: <TypographyMedium color={Colors.GRAY_2}>{ts("simulation")}</TypographyMedium>,
+                    body: (
+                        <TypographyMedium
+                        color={online ? Colors.GRAY_2 : Colors.GRAY_4}>
+                            {ts("simulation")}
+                        </TypographyMedium>
+                    ),
                     value: 0
                 }} />
         </React.Fragment>

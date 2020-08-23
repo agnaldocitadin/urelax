@@ -16,5 +16,5 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             ...state, 
             history: payload
         }
-    },
+    }
 })
