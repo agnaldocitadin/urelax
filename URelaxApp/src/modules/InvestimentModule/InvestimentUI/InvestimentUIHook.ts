@@ -1,3 +1,4 @@
+import { useNetInfo } from "@react-native-community/netinfo"
 import { useNavigation } from "@react-navigation/native"
 import { Account, AppliedInvestiment, InvestimentType } from "honeybee-api"
 import { arrays } from "js-commons"
@@ -19,6 +20,7 @@ export const useInvestimentUIHook = () => {
     const [ loading, setLoading ] = useState(true)
     const [ fail, setFail ] = useState(false)
     const [ refreshing, setRefreshing ] = useState(false)
+    const netInfo = useNetInfo()
 
     const handleAdd = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
 
@@ -64,6 +66,8 @@ export const useInvestimentUIHook = () => {
         loading,
         investiments,
         refreshing,
+        online: netInfo.isInternetReachable,
+        noInvestiments: (investiments.stocks || []).length === 0 && (investiments.currency || []).length === 0,
         handleRefresh,
         handleAdd,
         handleFilter,

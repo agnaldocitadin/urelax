@@ -45,17 +45,11 @@ export const useActivityListUIHook = () => {
     }, [account])
 
     const handleLoadMoreData = useCallback(async (page: number): Promise<Activity[]> => {
-        try {
-            return fetchActivities({
-                qty: AppConfig.QTY_INITIAL_ACTIVITIES,
-                accountID: account._id,
-                page
-            })
-        }
-        catch(error) {
-            showAPIError(error)
-            return Promise.reject()
-        }
+        return fetchActivities({
+            qty: AppConfig.QTY_INITIAL_ACTIVITIES,
+            accountID: account._id,
+            page
+        })
     }, [account])
 
     useEffectWhenReady(async () => {
@@ -69,6 +63,7 @@ export const useActivityListUIHook = () => {
         loading,
         handleRefresh,
         handleLoadMoreData,
-        handleActivityPress
+        handleActivityPress,
+        showAPIError
     }
 }

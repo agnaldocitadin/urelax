@@ -117,6 +117,7 @@ export const useStockTrackerPreviewUIHook = () => {
         handleSettings,
         handleRefresh,
         handleLoadMoreData,
-        handleActivityPress
+        handleActivityPress,
+        showAPIError
     }
 }

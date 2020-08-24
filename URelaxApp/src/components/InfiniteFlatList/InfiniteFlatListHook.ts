@@ -12,6 +12,7 @@ type ListState = {
 export const useInfiniteFlatListHook = <T extends {}>({ 
     onRefresh,
     onEndPageReached,
+    onLoadError,
     data,
     minLengthToLoadMore,
     numShimmerItens = 0
@@ -61,7 +62,13 @@ export const useInfiniteFlatListHook = <T extends {}>({
                         infiniteReached: noMoreData 
                     })
 
-                }).catch(() => updateState({ loading: false }))
+                }).catch((error) => {
+                    onLoadError && onLoadError(error)
+                    updateState({ 
+                        loading: false,
+                        infiniteReached: true
+                    })
+                })
         }
     }
 

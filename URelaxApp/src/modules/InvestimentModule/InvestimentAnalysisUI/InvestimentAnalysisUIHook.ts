@@ -20,6 +20,7 @@ export const useInvestimentAnalysisUIHook = () => {
     const selectedGraph: number = Investiment.select("selectedGraphIndex")
     const [ period, setPeriod ] = useState<FinancialAnalysisPeriod>(FinancialAnalysisPeriod.DAILY)
     const [ loading, setLoading ] = useState(true)
+    const [ finding, setFinding ] = useState(false)
     const [ fail, setFail ] = useState(false)
 
     const handleAnalysisDetail = useCallback(() => {
@@ -30,19 +31,26 @@ export const useInvestimentAnalysisUIHook = () => {
         selectGraphIndex(index)
     }, [analysis])
 
+    const findFinancialData =  useCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean) => {
+        setFinding(true)
+        setPeriod(period)
+        const analysis = await fetchFinancialAnalysis(account._id, period)
+        addAnalysis(analysis, true)
+        if (resetIndex) {
+            handleSelectGraph(0)
+        }
+        setFinding(false)
+    }, [account._id])
+
     const handlePeriodSelection = useCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean = true) => {
         try {
-            setPeriod(period)
-            const analysis = await fetchFinancialAnalysis(account._id, period)
-            addAnalysis(analysis, true)
-            if (resetIndex) {
-                handleSelectGraph(0)
-            }
+            await findFinancialData(period, resetIndex)
         }
         catch(error) {
-            setFail(true)
+            showAPIError(error)
+            setFinding(false)
         }
-    }, [selectedGraph, account._id])
+    }, [account._id])
 
     const handleLoadMore = useCallback((page: number) => {
         // TODO
@@ -50,8 +58,13 @@ export const useInvestimentAnalysisUIHook = () => {
     }, [account._id])
 
     useEffectWhenReady(async () => {
-        await handlePeriodSelection(period, false)
-        setLoading(false)
+        try {
+            await findFinancialData(period, false)
+            setLoading(false)
+        }
+        catch (error) {
+            setFail(true)
+        }
     }, ()=>{}, [account._id])
 
     const dataGraph = analysis.map(item => {
@@ -71,7 +84,9 @@ export const useInvestimentAnalysisUIHook = () => {
         period,
         selectedGraph,
         loading,
+        finding,
         fail,
+        noData: dataGraph.length === 0,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph,

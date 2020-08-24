@@ -6,6 +6,7 @@ import { BaseButton } from '../../../components/BaseButton'
 import { Info } from '../../../components/Info'
 import { MarginBoxFlex } from '../../../components/Layout/Layout.style'
 import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
+import { TextIconDisplay } from '../../../components/TextIconDisplay'
 import { TouchItem } from '../../../components/TouchItem'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
@@ -23,7 +24,9 @@ export const InvestimentAnalysisUI: FC = () => {
         period,
         selectedGraph,
         loading,
+        finding,
         fail,
+        noData,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph,
@@ -73,22 +76,30 @@ export const InvestimentAnalysisUI: FC = () => {
                 </Row>
 
                 <Graph>
-                    <AnalysisGraphic
+                    { noData && <TextIconDisplay
+                        style={{ flex: 1, justifyContent: "center" }}
+                        iconColor={Colors.GRAY_2}
+                        icon={"flask-empty-outline"}
+                        title={ts("oops")}
+                        message={ts("nothing_here")} />}
+                        
+                    { !noData && <AnalysisGraphic
                         data={dataGraph}
+                        loading={finding}
                         minLengthToLoadMore={20}
                         selectedIndex={selectedGraph}
                         onSelect={handleSelectGraph}
-                        onEndPageReached={handleLoadMore}/>
+                        onEndPageReached={handleLoadMore}/>}
                 </Graph>
 
             </MarginBoxFlex>
-            <ShowInvestimentDetail onPress={handleAnalysisDetail}>
+            { !noData && <ShowInvestimentDetail onPress={handleAnalysisDetail}>
                 <TypographyMedium
                     color={Colors.GRAY_1}
                     textAlign="center">
                     {ts("period_investiment")}
                 </TypographyMedium>
-            </ShowInvestimentDetail>
+            </ShowInvestimentDetail>}
         </PrimaryLayout>
     )
 }

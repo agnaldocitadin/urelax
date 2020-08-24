@@ -7,6 +7,7 @@ import { Badge } from '../../../components/Badge'
 import { BaseButton } from '../../../components/BaseButton'
 import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import { PrimaryLayout } from '../../../components/Layout/PrimaryLayout'
+import { TextIconDisplay } from '../../../components/TextIconDisplay'
 import { TouchItem } from '../../../components/TouchItem'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
@@ -20,6 +21,8 @@ export const InvestimentUI: FC = () => {
         loading,
         investiments,
         refreshing,
+        online,
+        noInvestiments,
         handleAdd,
         handleStockTracker,
         handleRefresh
@@ -37,7 +40,7 @@ export const InvestimentUI: FC = () => {
                 enabled
                 refreshing={refreshing}
                 onRefresh={handleRefresh}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                     <Patrimony>
                         <Typography
                             color={Colors.GRAY_1}
@@ -47,19 +50,30 @@ export const InvestimentUI: FC = () => {
                         <Typography textAlign="center" fontSize={28}>{utils.formatCurrency(patrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
                     </Patrimony>
                     <BtnContainer>
-                        <AddInvestimentBtn onPress={handleAdd}>
+                        { online && <AddInvestimentBtn onPress={handleAdd}>
                             <BaseIcon
                                 size={25}
                                 color={Colors.WHITE}
                                 name={"cart-outline"}/>
-                        </AddInvestimentBtn>
+                        </AddInvestimentBtn>}
                     </BtnContainer>
                     <Content>
-                        <Currency 
-                            investiments={currency} />
-                        <Stocks
-                            investiments={stocks}
-                            handle={handleStockTracker}/>
+                        {
+                            noInvestiments ?
+                                <NoInvestiments
+                                    iconColor={Colors.GRAY_2}
+                                    icon={"flask-empty-outline"}
+                                    title={ts("oops")}
+                                    message={ts("nothing_here")} />
+                            :
+                                <React.Fragment>
+                                    <Currency 
+                                        investiments={currency} />
+                                    <Stocks
+                                        investiments={stocks}
+                                        handle={handleStockTracker}/>
+                                </React.Fragment>
+                        }
                     </Content>
                 </ScrollView>
             </RefreshControl>
@@ -139,6 +153,11 @@ const Divider = styled(HeaderDivider)`
     padding: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
 `
 
+const NoInvestiments = styled(TextIconDisplay)`
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+`
 
 
 // const handleAnalysis = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS), [])

@@ -27,7 +27,8 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
         handleRefresh, 
         handleLoadMoreData,
         handleStockTrackerAction,
-        handleActivityPress
+        handleActivityPress,
+        showAPIError
     } = useStockTrackerPreviewUIHook()
 
     return (
@@ -53,6 +54,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                     onRefresh={handleRefresh}
                     onLoadMoreData={handleLoadMoreData}
                     onPress={handleActivityPress}
+                    onLoadError={showAPIError}
                     header={
                         <React.Fragment>
                             <InfoHeader>

@@ -1,6 +1,6 @@
 
 import React, { FC } from 'react'
-import { ListRenderItem } from 'react-native'
+import { ActivityIndicator, ListRenderItem } from 'react-native'
 import styled from 'styled-components/native'
 import { InfiniteFlatList, InfiniteFlatListProps } from '../../../components/InfiniteFlatList'
 import { GraphBar } from './GraphBar'
@@ -15,6 +15,7 @@ interface AnalysisGraphicPros {
     data: DataGraph[]
     minLengthToLoadMore: InfiniteFlatListProps<DataGraph>["minLengthToLoadMore"]
     selectedIndex?: number
+    loading?: boolean
     onEndPageReached?: InfiniteFlatListProps<DataGraph>["onEndPageReached"]
     onSelect?(index: number): void
 }
@@ -22,6 +23,7 @@ interface AnalysisGraphicPros {
 export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
     data,
     selectedIndex,
+    loading,
     onEndPageReached,
     onSelect
 }) => {
@@ -41,22 +43,33 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
 
     return (
         <React.Fragment>
-            <Container>
-                { data.length > 0 && <InfiniteFlatList
-                    data={data}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    minLengthToLoadMore={10}
-                    renderItem={render}
-                    onEndPageReached={onEndPageReached}
-                    align="center"
-                    inverted
-                    keyExtractor={(item, index) => `op_${index}`}/>
-                }
-            </Container>
+            { loading ? 
+                <LoadingContent>
+                    <ActivityIndicator size="large" />
+                </LoadingContent>
+            :
+                <Container>
+                    { data.length > 0 && <InfiniteFlatList
+                        data={data}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        minLengthToLoadMore={10}
+                        renderItem={render}
+                        onEndPageReached={onEndPageReached}
+                        align="center"
+                        inverted
+                        keyExtractor={(item, index) => `op_${index}`}/>
+                    }
+                </Container>
+            }
         </React.Fragment>
     )
 }
+
+const LoadingContent = styled.View`
+    justify-content: center;
+    flex: 1;
+`
 
 const Container = styled.View`
     flex-direction: row;

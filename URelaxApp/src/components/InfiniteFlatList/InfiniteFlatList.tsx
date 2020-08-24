@@ -11,6 +11,7 @@ export interface InfiniteFlatListProps<T> extends FlatListProps<T> {
     minLengthToLoadMore: number
     onRefresh?(): Promise<void>
     onEndPageReached?(page: number): Promise<T[]>
+    onLoadError?(error: any): void
 }
 
 export const InfiniteFlatList = <T extends {}>(props: InfiniteFlatListProps<T>) => {

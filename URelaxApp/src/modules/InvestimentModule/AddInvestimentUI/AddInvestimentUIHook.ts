@@ -7,6 +7,7 @@ import { animatedCallback } from "../../../core/Commons.hook"
 import { ts } from "../../../core/I18n"
 import { Colors } from "../../../theming"
 import IdentityModule from "../../IdentityModule"
+import MessagingModule from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { useStockTracker } from "../../StockTrackerModule/hook"
 import { fetchAvailableInvestiments, fetchInvestimentSuggestion } from "../api"
@@ -15,6 +16,7 @@ export const useAddInvestimentUIHook = () => {
 
     const navigation = useNavigation()
     const { initStockTrackerByInvestiment } = useStockTracker()
+    const { showAPIError } = MessagingModule.actions()
     const [ finding, showFinding ] = useState(false)
     const [ investiments, setInvestiments ] = useState<BrokerInvestiment[]>()
     const [ suggestion, setSuggestion ] = useState<BrokerInvestiment>()
@@ -41,12 +43,17 @@ export const useAddInvestimentUIHook = () => {
     })
 
     const handleFindInvestiments = useCallback(async (description: string) => {
-        if (description?.length > 1) {
-            const investiments = await fetchAvailableInvestiments(description)
-            setInvestiments(investiments)
-            return
+        try {
+            if (description?.length > 1) {
+                const investiments = await fetchAvailableInvestiments(description)
+                setInvestiments(investiments)
+                return
+            }
+            setInvestiments([])
         }
-        setInvestiments([])
+        catch (error) {
+            showAPIError(error)
+        }
     }, [])
 
     const handleAddInvestiment = animatedCallback((investiment: BrokerInvestiment) => {

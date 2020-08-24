@@ -166,6 +166,8 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = (props) => (
 const dashboard = () => (
     <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
         <Stack.Screen name={Routes.DASHBOARD} component={DashboardUI} options={defaultOptions}/>
+        <Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
+        <Stack.Screen name={Routes.STOCKTRACKER_WIZARD} component={StockTrackerWizardUI} options={defaultOptions}/>
     </Stack.Navigator>
 )
 

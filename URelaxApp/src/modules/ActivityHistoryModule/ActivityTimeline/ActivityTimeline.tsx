@@ -8,18 +8,22 @@ export interface ActivityTimelineProps {
     activities: Activity[]
     minLengthToLoadMore: number
     header?: ReactElement
+    empty?: ReactElement
     onPress(activity: Activity): void
     onRefresh?(): Promise<void>
     onLoadMoreData?(page: number): Promise<Activity[]>
+    onLoadError?(error: any): void
 }
 
 export const ActivityTimeline: FC<ActivityTimelineProps> = ({ 
     activities,
     minLengthToLoadMore,
     header,
+    empty,
     onPress, 
     onRefresh,
-    onLoadMoreData
+    onLoadMoreData,
+    onLoadError
  }) => {
 
     const render: ListRenderItem<Activity> = useCallback(({ item, index }) => {
@@ -37,8 +41,10 @@ export const ActivityTimeline: FC<ActivityTimelineProps> = ({
             onRefresh={onRefresh}
             minLengthToLoadMore={minLengthToLoadMore}
             onEndPageReached={onLoadMoreData}
+            onLoadError={onLoadError}
             renderItem={render}
             keyExtractor={(_item, index) => `tmi_${index}`}
-            ListHeaderComponent={header}/>
+            ListHeaderComponent={header}
+            ListEmptyComponent={empty}/>
     )
 }

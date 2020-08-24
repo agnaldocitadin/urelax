@@ -36,6 +36,7 @@
     "frequency": "Frequência de operação",
     "real": "Real",
     "simulation": "Simulação",
+    "start_investing": "Começar investir",
 
     "account_update": "Alteração de perfil.",
     "account_update_msg": "Deseja salvar as alterações do seu perfil?",
@@ -67,7 +68,6 @@
     "broker_accounts": "Conta de corretoras",
     "update_broker_account": "Atualizar conta de corretora",
     "add_broker_account": "Adicionar conta de corretora",
-    "nothing_here": "Oops! Nada aqui.",
     "broker_adding_tip": "Adicione os dados da conta da sua corretora no botão (+)",
     "broker_company": "Corretora",
     "broker_company_tip": "Escolha uma das corretoras disponíveis e informe os dados referente a sua conta real nesta corretora.",
@@ -190,5 +190,7 @@
     "suggest_an_investiment": "Sugerir um investimento",
 
     "STRATEGY_ONE": "Bollinger Bands + Stochastic RSI", 
-    "CLEAR": "Clear"
+    "CLEAR": "Clear",
+
+    "nothing_here": "Não temos nada para você aqui."
 }
