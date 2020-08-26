@@ -38,10 +38,10 @@ export const SettingUI: FC = ({ children }) => {
                         value={input?.receiveSellNotification}
                         onChange={handleSellNotification}/>
                         
-                    <Switch
+                    {/* <Switch
                         label="Notificar fechamento de balanço"
                         value={input?.receiveBalanceNotification}
-                        onChange={handleBalanceNotification}/>
+                        onChange={handleBalanceNotification}/> */}
                 </MarginBox>
             </ScrollView>
         </PrimaryLayout>

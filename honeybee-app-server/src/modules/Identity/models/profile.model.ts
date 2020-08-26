@@ -61,12 +61,16 @@ export class Profile {
     @prop({ default: () => new Date() })
     updatedAt?: Date
 
-    public getSimulation?() {
+    public getSimulation?(): Account {
         return <Account>this.accounts.find(account => (<Account>account).simulation)
     }
 
     public getActiveDevice?(): Device {
         return this.devices.find(device => device.active)
+    }
+
+    public getAccount?(id: string): Account {
+        return <Account>this.accounts.find(account => (<Account>account)._id.toHexString() === id)
     }
 }
 

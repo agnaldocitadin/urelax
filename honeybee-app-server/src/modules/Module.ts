@@ -19,9 +19,7 @@ export interface ModuleExport {
  * @param {Express} app
  */
 const prepare = (app: Express) => {
-    if (modulePath.prepare) {
-        modulePath.prepare(app)
-    }
+    modulePath.prepare && modulePath.prepare(app)
 }
 
 /**

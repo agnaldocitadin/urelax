@@ -1,8 +1,10 @@
 import { Profile } from 'honeybee-api'
 import React, { FC, ReactElement } from 'react'
-import { Typography } from '../../../theming'
+import { ActivityIndicator } from 'react-native'
 import { Authenticate } from '../Authenticate'
 import { useSplashAuthHook } from './SplashAuthHook'
+import styled from 'styled-components'
+import { Colors } from '../../../theming'
 
 export interface SplashAuthProps {
     email?: string
@@ -20,7 +22,7 @@ export const SplashAuth: FC<SplashAuthProps> = (props) => {
     return (
         <React.Fragment>
             { authenticating ? <React.Fragment>
-                <Typography>SplashAuth</Typography>
+                <Indicator size="large" color={Colors.WHITE}/>
                 <Authenticate
                     authType="password"
                     email={email}
@@ -31,3 +33,7 @@ export const SplashAuth: FC<SplashAuthProps> = (props) => {
         </React.Fragment>
     )
 }
+
+const Indicator = styled(ActivityIndicator)`
+    top: 60%;
+`

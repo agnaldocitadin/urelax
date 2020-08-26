@@ -16,7 +16,7 @@ export type ActionTypes = {
 const Actions = () => {
     const dispatch = useDispatch()
     return {
-        setActiveAccount: (account: Account) => {
+        setActiveAccount: (account?: Account) => {
             dispatch({ type: "SET_ACTIVE_ACCOUNT", payload: account } as DispatchType<ActionNames>)
         },
         updateActiveAccount: (account: Account) => {

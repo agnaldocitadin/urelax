@@ -1,6 +1,6 @@
 import { ActivityType } from "honeybee-api"
 import { utils } from 'js-commons'
-import { ts } from "../../../core/i18n"
+import { ts } from "../../Translation/i18n"
 import { toObjectId } from "../../../core/server-utils"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"

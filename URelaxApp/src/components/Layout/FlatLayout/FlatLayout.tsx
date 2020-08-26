@@ -47,7 +47,7 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
                         size="large"/>
                 </LoadContainer> }
             </SafeAreaView>
-            { account.simulation && <SimulationFlag>{ts("active_simulation")}</SimulationFlag>}
+            { account?.simulation && <SimulationFlag>{ts("active_simulation")}</SimulationFlag>}
         </FlatContainer>
     )
 }
@@ -60,7 +60,7 @@ const FlatContainer = styled.View<{ bgColor: string }>`
 
 const SimulationFlag = styled(TypographyMedium)`
     text-align: center;
-    background-color: ${Colors.BLUES_3};
+    background-color: ${Colors.GREEN_SUCCESS};
     color: ${Colors.WHITE};
     padding: 7px 0;
 `

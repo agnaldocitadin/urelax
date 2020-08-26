@@ -1,6 +1,6 @@
 import { set } from 'date-fns'
 import { ErrorCodes } from '../../../core/error.codes'
-import { ts } from '../../../core/i18n'
+import { ts } from '../../Translation/i18n'
 import Logger from '../../../core/Logger'
 import { StockHistory, StockHistoryModel } from '../models'
 import { STFrequencyDef } from '../trackers'

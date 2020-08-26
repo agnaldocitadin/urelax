@@ -1,8 +1,7 @@
 import { format } from "date-fns"
-import { Brokers, BrokerAccountInput } from "honeybee-api"
+import { BrokerAccountInput, Brokers } from "honeybee-api"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
-import { BrokerAccount } from "../models"
 import { BrokerHelperInterface } from "../services/broker.account.service"
 
 export const ClearHelper: BrokerHelperInterface = {

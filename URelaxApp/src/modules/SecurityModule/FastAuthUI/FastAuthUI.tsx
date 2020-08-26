@@ -9,7 +9,6 @@ export const FastAuthUI: FC<FastAuthUIProps> = () => {
     const { storage, authenticate, handleAuthSuccess, handleAuthFailure } = useFastAuthUIHook()
     return (
         <React.Fragment>
-            <Typography>FastAuthUI</Typography>
             <SplashAuth
                 authenticating={authenticate}
                 email={storage?.email}

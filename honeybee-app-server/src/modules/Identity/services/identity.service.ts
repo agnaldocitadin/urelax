@@ -31,17 +31,13 @@ export const findProfileById = (id: string) => {
  * @param {{ account?: string }} options
  * @returns
  */
-export const findActiveDeviceToken = async (options: { account?: string }) => {
+export const findProfileBy = async (options: { account?: string }) => {
     const { account } = options
-    const profile = await ProfileModel.find({
+    return ProfileModel.findOne({
         ...toObjectId("accounts", account)
-    }).exec()
-    
-    if (profile.length > 0) {
-        return profile[0].getActiveDevice().token
-    }
-
-    return null
+    })
+    .populate("accounts")
+    .exec()
 }
 
 /**

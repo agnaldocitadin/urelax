@@ -33,13 +33,13 @@ export const useStockTracker = () => {
             account,
             brokerAccount: brokerAccount,
             stockInfo: investiment,
-            status: StockTrackerStatus.RUNNING,
+            status: account.preference?.addStockTrackerPaused ? StockTrackerStatus.PAUSED : StockTrackerStatus.RUNNING,
             strategySetting: {
                 autoAmountLimit: false,
                 stockAmountLimit: 0
             }
         })
-    }, [])
+    }, [account])
 
     return {
         initStockTrackerByInvestiment,

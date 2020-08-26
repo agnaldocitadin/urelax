@@ -6,7 +6,7 @@ import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins"
 import { addProfit, addTransaction } from "../../Financial/services"
 import { Account } from "../../Identity/models"
-import { findActiveDeviceToken } from "../../Identity/services"
+import { findProfileBy } from "../../Identity/services"
 import { notifyOrder, notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
 import { Order, OrderModel, OrderSides, OrderStatus } from "../../Order/models"
 import { makeBaseOrder } from "../../Order/services"
@@ -309,8 +309,22 @@ export const processOrderExecution = async (execution: OrderExecution, stockTrac
     }
 
     onStockOrderExecution(execution, stockTracker, profit)
-    const token = await findActiveDeviceToken({ account: String((<Account>stockTracker.account)._id) })
-    notifyOrder(execution, profit, token)
+    notifyStockTrackerOrder(execution, stockTracker, profit)
+}
+
+/**
+ *
+ *
+ * @param {OrderExecution} execution
+ * @param {StockTracker} stockTracker
+ * @param {number} profit
+ */
+const notifyStockTrackerOrder = async (execution: OrderExecution, stockTracker: StockTracker, profit: number) => {
+    const accountId = String((<Account>stockTracker.account)._id)
+    const profile = await findProfileBy({ account: accountId })
+    const preferences = profile.getAccount(accountId).preference
+    const token = profile.getActiveDevice().token
+    notifyOrder(execution, profit, token, preferences)
 }
 
 /**

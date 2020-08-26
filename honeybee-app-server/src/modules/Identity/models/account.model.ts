@@ -12,6 +12,7 @@ export class Preferences {
     @prop({ required: true })
     receiveSellNotification: boolean
     
+    // Deprecated
     @prop({ required: true })
     receiveBalanceNotification: boolean
     

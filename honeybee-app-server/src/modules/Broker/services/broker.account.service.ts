@@ -1,7 +1,7 @@
 import { BrokerAccountInput, Brokers } from "honeybee-api"
 import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
-import { ts } from "../../../core/i18n"
+import { ts } from "../../Translation/i18n"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
 import { Profile } from "../../Identity/models"

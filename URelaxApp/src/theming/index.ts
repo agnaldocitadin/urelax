@@ -27,7 +27,12 @@ export const SymbolsImg = {
     VVAR3 : require("../assets/imgs/VVAR3.png"),
     ABEV3 : require("../assets/imgs/ABEV3.png"),
     LREN3 : require("../assets/imgs/LREN3.png"),
-    WEGE3 : require("../assets/imgs/WEGE3.png")
+    WEGE3 : require("../assets/imgs/WEGE3.png"),
+    GENERIC : require("../assets/imgs/generic.png")
+}
+
+export const getSymbolLogo = (symbol?: string) => {
+    return (SymbolsImg as any)[symbol || ""] || SymbolsImg.GENERIC
 }
 
 export enum Fonts {

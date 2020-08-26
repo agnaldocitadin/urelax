@@ -1,7 +1,7 @@
 import { Locales } from 'honeybee-api'
 import i18n, { TOptions } from 'i18next'
-import en_US from '../translations/en_US.json'
-import pt_BR from '../translations/pt_BR.json'
+import en_US from './langs/en_US.json'
+import pt_BR from './langs/pt_BR.json'
 
 i18n
     .init({
@@ -19,7 +19,7 @@ i18n
         }
     });
 
-export { i18n }
+export { i18n };
 
 export const tsLng = (locale: string, key: string | string[], options?: TOptions<any> | string) => {
     return i18n.getFixedT(locale)(key, options)

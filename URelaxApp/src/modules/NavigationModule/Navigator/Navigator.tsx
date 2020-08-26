@@ -277,6 +277,7 @@ const Logout: FC = (props) => {
     const { resetStorage } = StorageModule.actions()
     const { switchStack } = NavigationModule.actions()
     const { showConfirm } = MessagingModule.actions()
+    const { setActiveAccount } = IdentityModule.actions()
     return (
         <DrawerItem 
             label={props => <TypographyMedium {...props}>{ts("exit_app")}</TypographyMedium>}
@@ -285,6 +286,7 @@ const Logout: FC = (props) => {
                 showConfirm(ts("exit_app"), ts("exit_app_msg"), () => {
                     resetStorage()
                     switchStack("welcome")
+                    setActiveAccount(undefined)
                 })
             }}/>
     )

@@ -1,4 +1,4 @@
-import { ts } from "../../core/i18n"
+import { ts } from "../Translation/i18n"
 import { GraphQLModule } from "../GraphQL"
 import { createNewStockTracker, findStockTrackers, runOnCreate, updateStockTrackerById } from "./services"
 import { StrategyNames } from "./strategies"

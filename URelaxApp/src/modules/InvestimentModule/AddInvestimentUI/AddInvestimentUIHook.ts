@@ -72,7 +72,7 @@ export const useAddInvestimentUIHook = () => {
                 navigation.navigate(Routes.STOCKTRACKER_WIZARD)
                 break
         }
-    })
+    }, [appliedInvestiments])
 
     return {
         investiments,

@@ -2,8 +2,8 @@ import { Request, Response } from 'express'
 import { APIError, Locales } from 'honeybee-api'
 import { utils } from 'js-commons'
 import { ObjectId } from 'mongodb'
+import { tsLng } from '../modules/Translation/i18n'
 import { ErrorCodes } from './error.codes'
-import { tsLng } from './i18n'
 import Logger, { MessageError } from './Logger'
 
 export class DelayedAction {

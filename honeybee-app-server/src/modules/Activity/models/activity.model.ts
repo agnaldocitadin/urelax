@@ -1,7 +1,7 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import { ActivityType } from 'honeybee-api'
 import mongoose from 'mongoose'
-import { ts } from '../../../core/i18n'
+import { ts } from '../../Translation/i18n'
 import { Account } from '../../Identity/models'
 
 export class Translation {

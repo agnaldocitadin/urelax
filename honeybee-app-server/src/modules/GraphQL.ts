@@ -4,7 +4,7 @@ import { buildSchema } from 'graphql'
 import { APIError, Locales } from 'honeybee-api'
 import modulePath from '.'
 import { ErrorCodes } from '../core/error.codes'
-import { tsLng } from '../core/i18n'
+import { tsLng } from './Translation/i18n'
 import Logger, { MessageError } from '../core/Logger'
 import Router, { RouteVersion } from './Router'
 

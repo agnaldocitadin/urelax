@@ -1,10 +1,10 @@
 import admin from 'firebase-admin'
 import { MessageTypes, NotificationMessage, StockTrackerStatus } from 'honeybee-api'
 import { utils } from 'js-commons'
-import { ts } from '../../../core/i18n'
+import { ts } from '../../Translation/i18n'
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
-import { Account } from '../../Identity/models'
-import { findActiveDeviceToken } from '../../Identity/services'
+import { Account, Preferences } from '../../Identity/models'
+import { findProfileBy } from '../../Identity/services'
 import { Order, OrderModel, OrderSides, OrderStatus } from "../../Order/models/order.model"
 import { StockTracker } from '../../Stock/models/stock.tracker.model'
 
@@ -70,11 +70,15 @@ const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
  * @param {OrderExecution} execution
  * @param {string} deviceToken
  */
-export const notifyOrder = async (execution: OrderExecution, profit: number, deviceToken: string) => {
+export const notifyOrder = async (execution: OrderExecution, profit: number, deviceToken: string, preferences: Preferences) => {
     if (execution.status === OrderStatus.FILLED && !!deviceToken) {
         const order = await OrderModel.findOne({ orderBrokerId: execution.orderCode })
-        if (order.side === OrderSides.BUY) notifyBuy(deviceToken, order)
-        if (order.side === OrderSides.SELL) notifySell(deviceToken, order, profit)
+        if (order.side === OrderSides.BUY && preferences.receiveBuyNotification) {
+            notifyBuy(deviceToken, order)
+        }
+        if (order.side === OrderSides.SELL && preferences.receiveSellNotification) {
+            notifySell(deviceToken, order, profit)
+        }
     }
 }
 
@@ -84,7 +88,8 @@ export const notifyOrder = async (execution: OrderExecution, profit: number, dev
  * @param {StockTracker} stockTracker
  */
 export const notifyStockTrackerPause = async (stockTracker: StockTracker) => {
-    const token = await findActiveDeviceToken({ account: String((<Account>stockTracker.account)._id) })
+    const profile = await findProfileBy({ account: String((<Account>stockTracker.account)._id) })
+    const token = profile?.getActiveDevice().token
     admin.messaging().sendToDevice(token, {
         notification: {
             title: ts("stock_tracker_paused"),
@@ -106,7 +111,8 @@ export const notifyStockTrackerPause = async (stockTracker: StockTracker) => {
  * @param {StockTracker} stockTracker
  */
 export const notifyStockTrackerDestroy = async (stockTracker: StockTracker) => {
-    const token = await findActiveDeviceToken({ account: String((<Account>stockTracker.account)._id) })
+    const profile = await findProfileBy({ account: String((<Account>stockTracker.account)._id) })
+    const token = profile?.getActiveDevice().token
     admin.messaging().sendToDevice(token, {
         notification: {
             title: ts("stock_tracker_destroyed"),

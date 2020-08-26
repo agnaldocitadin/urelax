@@ -8,7 +8,7 @@ import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, Icons, SymbolsImg, Typography } from '../../../theming'
+import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, getSymbolLogo, Icons, Typography } from '../../../theming'
 import { ActivityTimeline } from '../../ActivityHistoryModule/ActivityTimeline'
 import { StockTrackerControlButton } from '../StockTrackerControlButton'
 import { useStockTrackerPreviewUIHook } from './StockTrackerPreviewUIHook'
@@ -73,7 +73,7 @@ export const StockTrackerPreviewUI: FC<StockTrackerPreviewUIProps> = ({}) => {
                                 </LeftColumn>
                                 <RightColumn>
                                     { stockTracker && <Image 
-                                        source={(SymbolsImg as any)[stockTracker?.stockInfo?.stock?.symbol ?? ""]}
+                                        source={getSymbolLogo(stockTracker?.stockInfo?.stock?.symbol)}
                                         resizeMode="contain"
                                         style={{ maxWidth: 100, maxHeight: 60 }}/>}
                                 </RightColumn>

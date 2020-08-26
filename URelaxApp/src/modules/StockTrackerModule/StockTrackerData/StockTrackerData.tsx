@@ -9,7 +9,7 @@ import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import AppConfig from '../../../core/AppConfig'
 import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
-import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, SymbolsImg, Typography } from '../../../theming'
+import { Colors, DEFAULT_HORIZONTAL_SPACING, DEFAULT_VERTICAL_SPACING, getSymbolLogo, Typography } from '../../../theming'
 import { StockTrackerWizardViews } from '../const'
 
 interface StockTrackerDataProps {
@@ -31,7 +31,7 @@ export const StockTrackerData: FC<StockTrackerDataProps> = ({ stockTracker, isRe
     return (
         <React.Fragment>
             <StockLogo
-                source={(SymbolsImg as any)[String(stockTracker?.stockInfo?.stock?.symbol)]}
+                source={getSymbolLogo(stockTracker?.stockInfo?.stock?.symbol)}
                 resizeMode="contain"/>
 
             <StockInfo
