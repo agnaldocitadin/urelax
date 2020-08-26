@@ -192,5 +192,6 @@
     "STRATEGY_ONE": "Bollinger Bands + Stochastic RSI", 
     "CLEAR": "Clear",
 
-    "nothing_here": "Não temos nada para você aqui."
+    "nothing_here": "Não temos nada para você aqui.",
+    "investiment_already_made": "Você já possui esse investimento! Não é possível adicioná-lo novamente."
 }

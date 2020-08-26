@@ -21,6 +21,7 @@ export const fetchAppiedInvestiments = (accountID: string): Promise<AppliedInves
         brokerAccountName
         refID
         investiment {
+            _id
             broker {
                 code
                 name

@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
-import { Account, BrokerInvestiment, InvestimentType } from "honeybee-api"
+import { Account, AppliedInvestiment, BrokerInvestiment, InvestimentType } from "honeybee-api"
 import { useCallback, useState } from "react"
+import InvestimentModule from ".."
 import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
 import { animatedCallback } from "../../../core/Commons.hook"
@@ -16,11 +17,12 @@ export const useAddInvestimentUIHook = () => {
 
     const navigation = useNavigation()
     const { initStockTrackerByInvestiment } = useStockTracker()
-    const { showAPIError } = MessagingModule.actions()
+    const { showAPIError, showError } = MessagingModule.actions()
     const [ finding, showFinding ] = useState(false)
     const [ investiments, setInvestiments ] = useState<BrokerInvestiment[]>()
     const [ suggestion, setSuggestion ] = useState<BrokerInvestiment>()
     const account: Account = IdentityModule.select("activeAccount")
+    const appliedInvestiments = InvestimentModule.select("appliedInvestiments")
 
     const [ suggestionBtnData, updateSuggestionBtn ] = useInteractiveButton({
         text: ts("suggest_an_investiment"),
@@ -57,6 +59,13 @@ export const useAddInvestimentUIHook = () => {
     }, [])
 
     const handleAddInvestiment = animatedCallback((investiment: BrokerInvestiment) => {
+
+        const alreadyAdded = appliedInvestiments.stocks.find((inv: AppliedInvestiment) => inv.investiment._id === investiment._id)
+        if (!!alreadyAdded) {
+            showError(ts("investiment_already_made"), ts("oops"))
+            return
+        }
+
         switch (investiment.type) {
             case InvestimentType.STOCK:
                 initStockTrackerByInvestiment(investiment)
