@@ -1,15 +1,14 @@
 import { DrawerActions, useNavigation } from "@react-navigation/native"
 import React, { FC, ReactElement } from "react"
 import { Colors, TypographyMedium } from "../../../theming"
-import { ButtonHeader } from "../../Header/ButtonHeader"
-import { FlatHeader } from "../../Header/FlatHeader"
-import { FlatLayout, FlatLayoutProps } from "../FlatLayout"
 import { BackHeader } from "../../Header/BackHeader"
+import { ButtonHeader } from "../../Header/ButtonHeader"
+import { FlatLayout, FlatLayoutProps } from "../FlatLayout"
 
 interface PrimaryLayoutProps extends FlatLayoutProps {
     title?: string
     titleColor?: string
-    right?: ReactElement
+    right?: ReactElement | boolean
 }
 
 export const PrimaryLayout: FC<PrimaryLayoutProps> = ({

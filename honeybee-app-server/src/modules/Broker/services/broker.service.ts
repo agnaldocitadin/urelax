@@ -2,6 +2,7 @@ import { Brokers, InvestimentType } from "honeybee-api"
 import { utils } from "js-commons"
 import mongoose from 'mongoose'
 import { toObjectId } from "../../../core/server-utils"
+import { Profile } from "../../Identity/models"
 import { BrokerInvestiment, BrokerInvestimentModel } from "../models"
 import { Broker, BrokerModel } from "../models/broker.model"
 
@@ -64,12 +65,12 @@ export const findAvailableInvestiments = (options: {
 
     return BrokerInvestimentModel
         .find({
-            ...brokerIDs ? { _id : { "$in": brokerIDs } } : null,
             type: { "$in": types },
-            "$or": [
+            ...brokerIDs ? { _id : { "$in": brokerIDs } } : null,
+            ...search ? {"$or": [
                 { description : { "$regex" : new RegExp(`${search}`, 'i') }},
                 { "stock.symbol" : { "$regex" : new RegExp(`${search}`, 'i') }}
-            ]
+            ]} : null
         })
         .populate("broker")
         .exec()

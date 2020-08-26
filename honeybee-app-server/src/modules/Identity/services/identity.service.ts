@@ -4,6 +4,7 @@ import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
 import { onCreateAccount } from "../../Activity/services"
+import { createSimulationAccounts } from "../../Broker/services"
 import { Account, AccountModel, Device, Preferences, Profile, ProfileModel } from "../models"
 
 const defaultPreferences: Preferences = {
@@ -77,17 +78,21 @@ export const createProfile = async (input: ProfileInput): Promise<Profile> => {
         active: true
     })
 
+    // First activated account
+    const activeAccount = simulation._id
+
     const profile: Profile = {
         name,
         nickname,
         email,
         password,
         accounts: [ account, simulation ],
-        activeAccount: account.id,
+        activeAccount,
         active: true
     }
     
     let _profile = await ProfileModel.create(profile)
+    await createSimulationAccounts(_profile)
     onCreateAccount(_profile)
     return _profile
 }

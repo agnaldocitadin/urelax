@@ -37,8 +37,6 @@ export const SignUpUI: FC<SignUpUIProps> = ({}) => {
         sending
     } = useSignUpUIHook()
 
-    console.log("--", formFilled)
-
     return (
         <FlatLayout
             bgColor={Colors.BLUES_2}

@@ -1,12 +1,14 @@
 import { useNavigation } from "@react-navigation/native"
-import { BrokerAccount } from "honeybee-api"
+import { Account, BrokerAccount } from "honeybee-api"
 import { useCallback } from "react"
 import BrokerModule from ".."
+import IdentityModule from "../../IdentityModule"
 import { Routes } from "../../NavigationModule/const"
 
 export const useBrokerAccountsUIHook = () => {
 
     const navigation = useNavigation()
+    const activeAccount: Account = IdentityModule.select("activeAccount")
     const accounts: BrokerAccount[] = BrokerModule.select("userBrokerAccounts")
     const { selectBrokerAccount } = BrokerModule.actions()
 
@@ -21,6 +23,7 @@ export const useBrokerAccountsUIHook = () => {
 
     return {
         accounts,
+        simulation: activeAccount.simulation,
         handleSelectBrokerAccount,
         handleAddBrokerAccount,
     }

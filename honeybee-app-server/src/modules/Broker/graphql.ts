@@ -80,7 +80,7 @@ const entry: GraphQLModule = {
     queries: `
         fetchBrokers(id: ID, code: String, active: Boolean): [Broker]
         fetchBrokerAccounts(id: ID, account: ID): [BrokerAccount]
-        fetchAvailableInvestiments(brokerIDs: [ID], search: String!, types: [InvestimentType]): [BrokerInvestiment]
+        fetchAvailableInvestiments(brokerIDs: [ID], search: String, types: [InvestimentType]): [BrokerInvestiment]
         fetchInvestimentSuggestion(account: ID): BrokerInvestiment
     `,
 

@@ -14,6 +14,7 @@ export const BrokerAccountsUI: FC = ({}) => {
     
     const { 
         accounts,
+        simulation,
         handleSelectBrokerAccount,
         handleAddBrokerAccount
     } = useBrokerAccountsUIHook()
@@ -23,7 +24,7 @@ export const BrokerAccountsUI: FC = ({}) => {
             loading={false}
             title={ts("broker_accounts")}
             right={
-                <ButtonHeader
+                !simulation && <ButtonHeader
                     color={Colors.WHITE}
                     icon={Icons.ADD_BROKER_ACCOUNT}
                     onPress={handleAddBrokerAccount}/>

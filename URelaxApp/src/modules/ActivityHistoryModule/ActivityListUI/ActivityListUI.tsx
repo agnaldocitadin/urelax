@@ -27,7 +27,7 @@ export const ActivityListUI: FC<ActivityListUIProps> = () => {
             title={ts("activities")}
             loading={loading}>
             { !fail && <ActivityTimeline
-                activities={[]}
+                activities={activities}
                 empty={
                     <TextIconDisplay
                         style={{ marginTop: "50%" }}

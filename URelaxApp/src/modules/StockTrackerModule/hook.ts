@@ -27,6 +27,7 @@ export const useStockTracker = () => {
 
     
     const initStockTrackerByInvestiment = useCallback((investiment: BrokerInvestiment) => {
+        // TODO Escolher a conta da corretora no wizard
         const brokerAccount = brokerAccounts.find(account => account.brokerCode === investiment.broker.code)
         selectStockTracker({
             account,

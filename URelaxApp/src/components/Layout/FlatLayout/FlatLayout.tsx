@@ -1,7 +1,9 @@
+import { Account } from 'honeybee-api'
 import React, { FC, ReactElement } from 'react'
 import { ActivityIndicator, SafeAreaView, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import { ts } from '../../../core/I18n'
+import IdentityModule from '../../../modules/IdentityModule'
 import { Colors, Icons, TypographyMedium } from '../../../theming'
 import { TextIconDisplay } from '../../TextIconDisplay'
 
@@ -25,6 +27,7 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
     loading,
     fail
 }) => {
+    const account: Account = IdentityModule.select("activeAccount")
     return (
         <FlatContainer bgColor={bgColor}>
             <StatusBar barStyle={barStyle} backgroundColor={bgStatusBar} />
@@ -44,6 +47,7 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
                         size="large"/>
                 </LoadContainer> }
             </SafeAreaView>
+            { account.simulation && <SimulationFlag>{ts("active_simulation")}</SimulationFlag>}
         </FlatContainer>
     )
 }
@@ -55,7 +59,9 @@ const FlatContainer = styled.View<{ bgColor: string }>`
 `
 
 const SimulationFlag = styled(TypographyMedium)`
+    text-align: center;
     background-color: ${Colors.BLUES_3};
+    color: ${Colors.WHITE};
     padding: 7px 0;
 `
 

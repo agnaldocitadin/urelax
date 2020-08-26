@@ -4,8 +4,9 @@ import { ErrorCodes } from "../../../core/error.codes"
 import { ts } from "../../../core/i18n"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
+import { Profile } from "../../Identity/models"
 import { ClearHelper } from "../helpers/clear.helper"
-import { BrokerAccountModel } from "../models/broker.account.model"
+import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
 
 export interface BrokerHelperInterface {
     code: Brokers
@@ -61,6 +62,24 @@ export const updateBrokerAccountById = async (_id: string, input: BrokerAccountI
         return true
     }
     return false
+}
+
+/**
+ *
+ *
+ * @param {Profile} profile
+ */
+export const createSimulationAccounts = async (profile: Profile) => {
+    const simulationId = profile.getSimulation()._id
+    await Promise.all(Object.values(Brokers).map(async (code) => {
+        BrokerAccountModel.create({
+            account: simulationId,
+            accountName: "0001-Simulation",
+            brokerCode: code,
+            simulation: true,
+            extraData: {}
+        } as BrokerAccount)
+    })) 
 }
 
 

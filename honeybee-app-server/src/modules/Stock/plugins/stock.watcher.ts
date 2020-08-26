@@ -1,4 +1,5 @@
 import cronstrue from 'cronstrue'
+import { InvestimentType } from 'honeybee-api'
 import schedule from 'node-schedule'
 import Logger from '../../../core/Logger'
 import { findAvailableInvestiments } from '../../Broker/services'
@@ -84,7 +85,7 @@ class StockWatcher {
      * @memberof StockWatcher
      */
     private async fetchSymbols(): Promise<string[]> {
-        const invs = await findAvailableInvestiments({})
+        const invs = await findAvailableInvestiments({ types: [InvestimentType.STOCK] })
         return Promise.resolve(invs.map(investiment => investiment.stock?.symbol))
     }
 

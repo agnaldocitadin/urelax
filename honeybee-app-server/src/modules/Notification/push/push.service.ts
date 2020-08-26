@@ -52,7 +52,7 @@ const notifySell = (deviceToken: string, order: Order, profit: number = 0) => {
                 count: order.quantity, 
                 symbol: order.stock.symbol,
                 amount: utils.formatCurrency(order.getTotalOrder(), { prefix: "R$" }),
-                profit: profit >= 0 ? "gain" : "loss",
+                profit: profit >= 0 ? ts("gain") : ts("loss"),
                 profit_value: utils.formatCurrency(profit, { prefix: "R$"})
             }),
             icon: NOTIFICATION_ICON,

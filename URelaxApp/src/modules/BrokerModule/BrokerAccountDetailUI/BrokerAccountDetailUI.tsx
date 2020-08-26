@@ -9,14 +9,15 @@ import { useBrokerAccountDetailUIHook } from './BrokerAccountDetailUIHook'
 export const BrokerAccountDetailUI: FC = ({}) => {
     
     const { 
-        account, 
+        account,
+        simulation 
     } = useBrokerAccountDetailUIHook()
 
     return (
         <FlatLayout
             bgColor={Colors.WHITE}
             header={<BackHeader title={ts("broker_account_detail")}/>}>
-            <AccountData brokerAccount={account}/>
+            <AccountData isReview={simulation} brokerAccount={account}/>
         </FlatLayout>
     )
 }

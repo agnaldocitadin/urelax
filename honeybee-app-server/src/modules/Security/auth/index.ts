@@ -33,7 +33,7 @@ const configureJWTStrategy = () => {
  */
 const applySecurity = (app: Express) => {
     if (process.env.USE_SECURITY !== "true") {
-        Logger.warn("! Server security is disabled !")
+        Logger.warn("!! WARNNING Server security is disabled !! ")
         return
     }
 
