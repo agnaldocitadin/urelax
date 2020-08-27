@@ -4,10 +4,12 @@ import { arrays } from 'js-commons'
 import mongoose from 'mongoose'
 import { BrokerAccount } from '../../Broker/models'
 import { BrokerInvestiment } from '../../Broker/models/broker.investiment.model'
-import { Account } from '../../Identity/models'
 
 export class Transaction {
 
+    @prop({ ref: BrokerInvestiment, required: true })
+    investiment: Ref<BrokerInvestiment>
+    
     @prop({ required: true })
     dateTime!: Date
 
@@ -16,42 +18,38 @@ export class Transaction {
 
     @prop({ required: true })
     value!: number
-
-    // Dados do investimento, e.g: acao, cdb, tesouro, etc
-    @prop({ ref: BrokerInvestiment, required: true })
-    investiment: Ref<BrokerInvestiment>
 }
 
 export class Profit {
+
+    @prop({ ref: BrokerInvestiment, required: true })
+    investiment!: Ref<BrokerInvestiment>
 
     @prop({ required: true, enum: ProfitType })
     type!: string
 
     @prop({ required: true })
     value!: number
+}
+
+export class Application {
 
     @prop({ ref: BrokerInvestiment, required: true })
     investiment!: Ref<BrokerInvestiment>
+    
+    @prop({ required: true })
+    amount: number
+    
+    @prop()
+    refId?: mongoose.Types.ObjectId
 }
 
-/**
- * OK
- * !!: Quem vai gerar os STATEMENT_OPENING são os rastreadores (ação, cdb, etc) que sabem da sua posição 
- * no inicio de cada dia.
- *
- * @export
- * @class FinancialHistory
- * @extends {Typegoose}
- */
 export class FinancialHistory {
 
     _id?: mongoose.Types.ObjectId
 
     @prop({ required: true })
     date!: Date
-
-    @prop({ ref: Account, required: true })
-    account!: Ref<Account>
 
     @prop({ ref: BrokerAccount, required: true })
     brokerAccount!: Ref<BrokerAccount>
@@ -62,8 +60,8 @@ export class FinancialHistory {
     @arrayProp({ _id: false, items: Profit })
     profits?: Profit[]
 
-    @prop({ required: true })
-    locked!: boolean
+    @arrayProp({ _id: false, items: Application })
+    applications?: Application[]
 
     @prop({ default: () => new Date() })
     createdAt?: Date
@@ -71,12 +69,26 @@ export class FinancialHistory {
     @prop({ default: () => new Date() })
     updatedAt?: Date
 
+    public getInvestiment?(investimentId: mongoose.Types.ObjectId) {
+        return this.applications.find(application => String(application.investiment) == String(investimentId))
+    }
+
+    public hasInvestiment?(investimentId: mongoose.Types.ObjectId) {
+        return !!this.getInvestiment(investimentId)
+    }
+
+    public getBrokerAccount?() {
+        return <BrokerAccount>this.brokerAccount
+    }
+
     public getOpeningValue?() {
+        // FIXME
         const opening = this.transactions.filter(transaction => transaction.type === TransactionType.STATEMENT_OPENING)
         return arrays.sum(opening, item => item.value)
     }
 
     public getClosingValue?() {
+        // FIXME
         return arrays.sum(this.transactions, item => item.value)
     }
 

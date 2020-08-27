@@ -64,10 +64,10 @@ const entry: GraphQLModule = {
         }
     `,
     queries: `
-        fetchFinancialHistory(account: ID!, date: Datetime, page: Int, qty: Int): [FinancialHistory]
-        fetchFinancialSummary(account: ID!, date: Datetime, page: Int, qty: Int): [FinancialSummary]
-        fetchAppiedInvestiments(account: ID!): [AppliedInvestiment]
-        fetchFinancialAnalysis(account: ID!, brokerAccount: ID, date: Datetime, page: Int, qty: Int, period: FinancialAnalysisPeriod): [FinancialAnalysis]
+        fetchFinancialHistory(brokerAccounts: [ID]!, date: Datetime, page: Int, qty: Int): [FinancialHistory]
+        fetchFinancialSummary(brokerAccounts: [ID]!, date: Datetime, page: Int, qty: Int): [FinancialSummary]
+        fetchAppiedInvestiments(brokerAccounts: [ID]!): [AppliedInvestiment]
+        fetchFinancialAnalysis(brokerAccounts: [ID]!, date: Datetime, page: Int, qty: Int, period: FinancialAnalysisPeriod): [FinancialAnalysis]
     `,
     resolvers: {
         fetchFinancialHistory: (options: any) => {
@@ -78,8 +78,8 @@ const entry: GraphQLModule = {
             return groupFinancialSummaryBy(options)
         },
 
-        fetchAppiedInvestiments: ({ account }: any) => {
-            return groupAppiedInvestimentsBy(account)
+        fetchAppiedInvestiments: ({ brokerAccounts }: any) => {
+            return groupAppiedInvestimentsBy(brokerAccounts)
         },
 
         fetchFinancialAnalysis: (options: any) => {

@@ -1,10 +1,11 @@
 import { BrokerAccountInput, Brokers } from "honeybee-api"
 import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
-import { ts } from "../../Translation/i18n"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
+import { createInvestimentAccount } from "../../Financial/services/investiment.account.service"
 import { Profile } from "../../Identity/models"
+import { ts } from "../../Translation/i18n"
 import { ClearHelper } from "../helpers/clear.helper"
 import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
 
@@ -39,7 +40,9 @@ export const createBrokerAccount = async (input: BrokerAccountInput) => {
     validate(input)
     if (helper.validateExtraData(input)) {
         await helper.loadExtraData(input)
-        return BrokerAccountModel.create(input)
+        const brokerAccount = await BrokerAccountModel.create(input)
+        createInvestimentAccount(brokerAccount._id)
+        return brokerAccount
     }
 }
 
@@ -72,13 +75,14 @@ export const updateBrokerAccountById = async (_id: string, input: BrokerAccountI
 export const createSimulationAccounts = async (profile: Profile) => {
     const simulationId = profile.getSimulation()._id
     await Promise.all(Object.values(Brokers).map(async (code) => {
-        BrokerAccountModel.create({
+        const brokerAccount = await BrokerAccountModel.create({
             account: simulationId,
             accountName: "0001-Simulation",
             brokerCode: code,
             simulation: true,
             extraData: {}
-        } as BrokerAccount)
+        })
+        createInvestimentAccount(brokerAccount._id)
     })) 
 }
 

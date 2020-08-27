@@ -29,7 +29,7 @@ class StockPriceClosing {
             .find({ status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }, qty: { "$gt": 0 }})
             .populate("stockInfo")
 
-        trackers.forEach(async tracker => {
+        await Promise.all(trackers.map(async tracker => {
             
             const todaysClosingPrice = await getLastClosingPrice(tracker.getSymbol(), today)
             const baseAmount = tracker.getQty() * tracker.getNegotiationPrice()
@@ -39,15 +39,13 @@ class StockPriceClosing {
             tracker.currentPrice = todaysClosingPrice
             tracker.save()
 
-            addProfit(
-                tracker.getAccountId(),
-                tracker.getBrokerAccountId(), 
-                tracker.getInvestimentId(), 
-                today, 
-                ProfitType.YIELD, 
-                profit
-            )
-        })
+            await addProfit(tracker.getBrokerAccountId(), today, {
+                investiment: tracker.getInvestimentId(),
+                type: ProfitType.YIELD, 
+                value: profit
+            })
+        }))
+        Logger.info("-> Closing stock price has been processed for %s tracker(s).")
     }
 }
 

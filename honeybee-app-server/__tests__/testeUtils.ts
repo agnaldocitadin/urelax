@@ -1,10 +1,9 @@
 import { mongoose } from '@typegoose/typegoose'
 import dotenv from 'dotenv-flow'
-import { TransactionType } from 'honeybee-api'
+import { ProfitType, TransactionType } from 'honeybee-api'
 import Mongoose from 'mongoose'
 import Logger from '../src/core/Logger'
-import { addTransaction } from '../src/modules/Financial/services'
-import { stockPriceClosing } from '../src/modules/Stock/trackers/stock.price.closing'
+import { addProfit, addInvestiment, addTransaction } from '../src/modules/Financial/services'
 
 
 const connectDB = async () => {
@@ -25,21 +24,43 @@ beforeAll(async () => {
     await connectDB()
 })
 
+function randomIntFromInterval(min: number, max: number) { // min and max included 
+return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 it("teste", async () => {
     jest.setTimeout(50000)
 
-    try {
-        stockPriceClosing.run()
-        // addTransaction(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), mongoose.Types.ObjectId("5f06203b5b0180844e5aa64e"), new Date(), {
-        //     dateTime: new Date(),
-        //     type: TransactionType.YIELD,
-        //     investiment: mongoose.Types.ObjectId("5f15af4242754a0949358ec0"),
-        //     value: -20
-        // })
-    }
-    catch(e) {
-        console.error(e)
-    }
+    // brokeracc 5ee657047038feff52a8f132
+    // const dc = await addInvestiment(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), new Date(), mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"))
+    // const dc = await removeInvestiment(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), new Date(), mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"))
+    const dc = await addTransaction(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), {
+        dateTime: new Date(),
+        investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"),
+        type: TransactionType.YIELD,
+        value: 500
+    })
+    // const dc = await addProfit3(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), new Date(), {
+    //     investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"),
+    //     type: ProfitType.YIELD,
+    //     value: 50
+    // })
+    console.log(dc)
+
+    // console.log(randomIntFromInterval(0, 500))
+    // try {
+    //     stockPriceClosing.run()
+    //     // addTransaction(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), mongoose.Types.ObjectId("5f06203b5b0180844e5aa64e"), new Date(), {
+    //     //     dateTime: new Date(),
+    //     //     type: TransactionType.YIELD,
+    //     //     investiment: mongoose.Types.ObjectId("5f15af4242754a0949358ec0"),
+    //     //     value: -20
+    //     // })
+    //     // financialOpening.run()
+    // }
+    // catch(e) {
+    //     console.error(e)
+    // }
 
     // console.log("sss")
 

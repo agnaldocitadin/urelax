@@ -159,13 +159,11 @@ export interface BrokerInvestiment {
     stock: StockInvestimentInfo
 }
 
-export interface FinancialHistory { //alterar p/ DailyFinancialHistory
+export interface FinancialHistory {
     _id: string
     date: Date
-    acount: Account
     brokerAccount: BrokerAccount
     transactions: Transaction[]
-    locked: boolean
     createdAt: Date
     updatedAt: Date
 }

@@ -1,13 +1,8 @@
 import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfDay, startOfWeek, subMonths, subWeeks } from 'date-fns'
-import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary, ProfitType } from 'honeybee-api'
+import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary } from 'honeybee-api'
 import { arrays, utils } from 'js-commons'
 import mongoose from 'mongoose'
-import { ErrorCodes } from '../../../core/error.codes'
-import Logger from '../../../core/Logger'
-import { toObjectId } from '../../../core/server-utils'
-import { BrokerInvestimentModel } from '../../Broker/models'
-import { StockTrackerModel } from '../../Stock/models'
-import { STOCK_TRACKER_STATUS_INACTIVE } from '../../Stock/services'
+import { BrokerInvestiment, BrokerInvestimentModel } from '../../Broker/models'
 import { FinancialHistory, FinancialHistoryModel, Profit, Transaction } from '../models'
 
 const STANDARD_QUERY_RESULT = 100
@@ -15,80 +10,113 @@ const STANDARD_QUERY_RESULT = 100
 /**
  *
  *
- * @param {mongoose.Types.ObjectId} account
  * @param {mongoose.Types.ObjectId} brokerAccount
  * @param {Date} date
  * @returns
  */
-export const initFinancialHistory = (account: mongoose.Types.ObjectId, brokerAccount: mongoose.Types.ObjectId, date: Date) => {
-    return FinancialHistoryModel.create({
-        date: startOfDay(date),
-        brokerAccount,
-        locked: false,
-        account,
-    })
-}
-
-/**
- *
- *
- * @param {mongoose.Types.ObjectId} account
- * @param {mongoose.Types.ObjectId} brokerAccount
- * @param {Date} date
- * @param {Transaction} transaction
- */
-export const addTransaction = async (account: mongoose.Types.ObjectId, brokerAccount: mongoose.Types.ObjectId, date: Date, transaction: Transaction) => {
+const prepareHistory = async (brokerAccount: mongoose.Types.ObjectId, date: Date) => {
+    const now = startOfDay(date)
     let financialHistory = await FinancialHistoryModel.findOne({ 
-        account, 
         brokerAccount, 
-        date: startOfDay(date)
+        date: now
     })
-    
-    if (!financialHistory) {
-        financialHistory = await initFinancialHistory(account, brokerAccount, date)
+
+    if (financialHistory) {
+        return financialHistory
     }
 
-    if (financialHistory?.locked) {
-        Logger.throw(ErrorCodes.UNKNOWN, "oops")
-    }
+    financialHistory = await FinancialHistoryModel.findOne({
+        brokerAccount,
+        date: { "$lt": now }
+    }).sort({ date: "desc" })
 
-    financialHistory.transactions.push(transaction)
-    return financialHistory.save()
+    if (financialHistory) {
+        return FinancialHistoryModel.create({
+            applications: financialHistory.applications,
+            brokerAccount,
+            date: now,
+        })
+    }
+    else {
+        return FinancialHistoryModel.create({
+            brokerAccount,
+            date: now
+        })   
+    }
 }
 
 /**
  *
  *
- * @param {mongoose.Types.ObjectId} account
  * @param {mongoose.Types.ObjectId} brokerAccount
- * @param {mongoose.Types.ObjectId} investiment
  * @param {Date} date
- * @param {ProfitType} type
- * @param {number} value
+ * @param {mongoose.Types.ObjectId} investiment
+ * @returns
  */
-export const addProfit = (
-    account: mongoose.Types.ObjectId,
-    brokerAccount: mongoose.Types.ObjectId,
-    investiment: mongoose.Types.ObjectId, 
-    date: Date, 
-    type: ProfitType, 
-    value: number
-    ) => {
-
-    if (value !== 0) {
-        FinancialHistoryModel.updateOne(
-            { account, brokerAccount, date: startOfDay(date) },
-            { "$push": { profits: { type, value, investiment }}}
-        ).exec()
+export const addInvestiment = async (brokerAccount: mongoose.Types.ObjectId, date: Date, investiment: mongoose.Types.ObjectId) => {
+    const history = await prepareHistory(brokerAccount, date)
+    if (!history.hasInvestiment(investiment)) {
+        history.applications.push({
+            investiment,
+            amount: 0
+        })
+        return history.save()
     }
+    return history
+}
+
+/**
+ *
+ *
+ * @param {mongoose.Types.ObjectId} brokerAccount
+ * @param {Date} date
+ * @param {mongoose.Types.ObjectId} investiment
+ */
+export const removeInvestiment = async (brokerAccount: mongoose.Types.ObjectId, date: Date, investiment: mongoose.Types.ObjectId) => {
+    FinancialHistoryModel.update(
+        { brokerAccount, date: startOfDay(date) },
+        { "$pull": { applications : { investiment: investiment }}}
+    ).exec()
+}
+
+/**
+ *
+ *
+ * @param {mongoose.Types.ObjectId} brokerAccount
+ * @param {Transaction} transaction
+ * @returns
+ */
+export const addTransaction = async (brokerAccount: mongoose.Types.ObjectId, transaction: Transaction) => {
+    const investimentId = (<BrokerInvestiment>transaction.investiment)._id
+    const history = await addInvestiment(brokerAccount, transaction.dateTime, investimentId)
+    const investiment = history.getInvestiment(investimentId)
+    investiment.amount += transaction.value
+    history.transactions.push(transaction)
+    return history.save()
+}
+
+/**
+ *
+ *
+ * @param {mongoose.Types.ObjectId} brokerAccount
+ * @param {Date} date
+ * @param {Profit} profit
+ * @returns
+ */
+export const addProfit = async (brokerAccount: mongoose.Types.ObjectId, date: Date, profit: Profit) => {
+    const investimentId = (<BrokerInvestiment>profit.investiment)._id
+    const history = await addInvestiment(brokerAccount, date, investimentId)
+    const investiment = history.getInvestiment(investimentId)
+    investiment.amount += profit.value
+    history.profits.push(profit)
+    return history.save()
 }
 
 /**
  *
  *
  * @param {{
- *     account?: mongoose.Types.ObjectId
- *     brokerAccount?: mongoose.Types.ObjectId
+ *     brokerAccounts?: mongoose.Types.ObjectId[]
  *     date?: Date
  *     page?: number
  *     qty?: number
@@ -96,24 +124,21 @@ export const addProfit = (
  * @returns {Promise<FinancialHistory[]>}
  */
 export const findFinancialHistoryBy = (options: {
-    account?: mongoose.Types.ObjectId
-    brokerAccount?: mongoose.Types.ObjectId
+    brokerAccounts?: mongoose.Types.ObjectId[]
     date?: Date
     page?: number
     qty?: number
 }): Promise<FinancialHistory[]> => {
     
     const { 
-        account, 
-        brokerAccount, 
-        date,
-        page = 0, 
-        qty = STANDARD_QUERY_RESULT 
+        qty = STANDARD_QUERY_RESULT,
+        brokerAccounts = [], 
+        page = 0,
+        date
     } = options
 
     return FinancialHistoryModel.find({
-            ...utils.nonNull("account", account),
-            ...utils.nonNull("brokerAccount", brokerAccount),
+            ...brokerAccounts.length > 0 ? { brokerAccount: { "$in": brokerAccounts } } : null,
             ...utils.nonNull("date", date)
         })
         .sort({ "date": "desc" })
@@ -125,35 +150,37 @@ export const findFinancialHistoryBy = (options: {
 /**
  *
  *
- * @param {mongoose.Types.ObjectId} account
+ * @param {mongoose.Types.ObjectId[]} brokerAccounts
  * @returns {Promise<AppliedInvestiment[]>}
  */
-export const groupAppiedInvestimentsBy = async (account: mongoose.Types.ObjectId): Promise<AppliedInvestiment[]> => {
-    const stockTackers = await StockTrackerModel.find({ 
-            account,
-            status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }
-        })
-        .populate("brokerAccount")
-        .populate({ 
-            path: "stockInfo", 
-            populate: { 
-                path: "broker"
-            }
-        })
-        .exec()
-    
-    // TODO investimento (Dinheiro)
+export const groupAppiedInvestimentsBy = async (brokerAccounts: mongoose.Types.ObjectId[]): Promise<AppliedInvestiment[]> => {
 
-    const stockInvestiments = stockTackers.map(tracker => tracker.toInvestiment())
-    return [...stockInvestiments]
+    let appliedInvestiments: AppliedInvestiment[] = []
+    await Promise.all(brokerAccounts.map(async brokerAccount => {
+        const history = await FinancialHistoryModel.findOne({ brokerAccount })
+            .populate("brokerAccount")
+            .populate("applications.investiment")
+            .sort({ "date": "desc" })
+
+        history && history.applications.forEach(applic => {
+            appliedInvestiments.push({
+                brokerAccountName: history.getBrokerAccount()?.accountName,
+                investiment: <any>applic.investiment,
+                refID: applic.refId?.toHexString(),
+                amount: applic.amount,
+                qty: 0
+            })
+        })
+    }))
+
+    return appliedInvestiments
 }
-
 
 /**
  *
  *
  * @param {{ 
- *     account: mongoose.Types.ObjectId
+ *     brokerAccounts?: mongoose.Types.ObjectId[]
  *     date?: Date
  *     page?: number
  *     qty?: number
@@ -161,7 +188,7 @@ export const groupAppiedInvestimentsBy = async (account: mongoose.Types.ObjectId
  * @returns {Promise<FinancialSummary[]>}
  */
 export const groupFinancialSummaryBy = async (options: { 
-    account: mongoose.Types.ObjectId
+    brokerAccounts?: mongoose.Types.ObjectId[]
     date?: Date
     page?: number
     qty?: number
@@ -176,7 +203,7 @@ export const groupFinancialSummaryBy = async (options: {
         return {
             patrimony: closing,
             variation: utils.percentVariation(opening, closing),
-            when: createFinancialAnalysisLabel(dailyHistory.date, FinancialAnalysisPeriod.DAILY)
+            when: defineFinancialAnalysisLabel(dailyHistory.date, FinancialAnalysisPeriod.DAILY)
         }
     })
 }
@@ -185,8 +212,7 @@ export const groupFinancialSummaryBy = async (options: {
  *
  *
  * @param {{ 
- *     account: string
- *     brokerAccount?: string
+ *     brokerAccounts: mongoose.Types.ObjectId[]
  *     period?: FinancialAnalysisPeriod
  *     date?: Date
  *     page?: number
@@ -195,8 +221,7 @@ export const groupFinancialSummaryBy = async (options: {
  * @returns {Promise<FinancialAnalysis[]>}
  */
 export const groupFinancialAnalysisBy = async (options: { 
-    account: string
-    brokerAccount?: string
+    brokerAccounts: mongoose.Types.ObjectId[]
     period?: FinancialAnalysisPeriod
     date?: Date
     page?: number
@@ -204,17 +229,17 @@ export const groupFinancialAnalysisBy = async (options: {
 }): Promise<FinancialAnalysis[]> => {
 
     const { 
-        account,
-        brokerAccount,
         period = FinancialAnalysisPeriod.DAILY,
+        qty = STANDARD_QUERY_RESULT,
+        brokerAccounts,
         date = Date.now(),
-        page = 0,
-        qty = STANDARD_QUERY_RESULT
+        page = 0
     } = options
 
     let aggregation = []
     let extraFields, match, start, end
     const _date = new Date(date)
+    const _brokerAccounts = brokerAccounts.map(id => mongoose.Types.ObjectId(String(id)))
 
     switch (period) {
         case FinancialAnalysisPeriod.DAILY:
@@ -289,8 +314,7 @@ export const groupFinancialAnalysisBy = async (options: {
     aggregation.unshift({ "$sort": { date: -1 }})
     aggregation.unshift({
         "$match": {
-            ...toObjectId("account", account),
-            ...toObjectId("brokerAccount", brokerAccount),
+            brokerAccount: { "$in" : _brokerAccounts },
             ...match ? match : null
         }
     })
@@ -305,7 +329,7 @@ export const groupFinancialAnalysisBy = async (options: {
 
     if (period === FinancialAnalysisPeriod.DAILY) {
         return history.map(item => {
-            const label = createFinancialAnalysisLabel(item.date, period)
+            const label = defineFinancialAnalysisLabel(item.date, period)
             const _history = FinancialHistoryModel.hydrate(item)
             return toFinancialAnalysis(label, _history.getOpeningValue(), _history.getClosingValue(), item.profits)
         })
@@ -317,7 +341,7 @@ export const groupFinancialAnalysisBy = async (options: {
         const allProfits = Array.from(arrayHistory).flatMap(item => item.profits)
         const firstHistory = arrays.firstElement(arrayHistory)
         const lastHistory = arrays.lastElement(arrayHistory)
-        const label = createFinancialAnalysisLabel(firstHistory.date, period)
+        const label = defineFinancialAnalysisLabel(firstHistory.date, period)
         const _first = FinancialHistoryModel.hydrate(firstHistory) 
         const _last = FinancialHistoryModel.hydrate(lastHistory)
         return toFinancialAnalysis(label, _first.getOpeningValue(), _last.getOpeningValue(), allProfits)
@@ -363,7 +387,7 @@ const toFinancialAnalysis = (label: string, opening: number, closing: number, pr
  * @param {FinancialAnalysisPeriod} period
  * @returns
  */
-const createFinancialAnalysisLabel = (date: Date, period: FinancialAnalysisPeriod): string => {
+const defineFinancialAnalysisLabel = (date: Date, period: FinancialAnalysisPeriod): string => {
     switch (period) {
         case FinancialAnalysisPeriod.DAILY:
             if (isToday(date)) return "Today"

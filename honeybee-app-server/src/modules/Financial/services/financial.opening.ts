@@ -1,10 +1,8 @@
 import cronstrue from 'cronstrue'
-import { TransactionType } from 'honeybee-api'
 import schedule from 'node-schedule'
 import Logger from "../../../core/Logger"
 import { StockTrackerModel } from '../../Stock/models'
 import { STOCK_TRACKER_STATUS_INACTIVE } from '../../Stock/services'
-import { addTransaction } from './financial.service'
 
 /**
  *
@@ -23,21 +21,29 @@ class FinancialOpening {
     }
 
     async run(): Promise<void> {
+        Logger.info("-> Financial opening started...")
         await openStockTrackerHistory()
+        await openMoneyTrackerHistory()
+        Logger.info("<- Financial opening has been processed successfully.")
     }
 }
 
 const openStockTrackerHistory = async () => {
     const today = new Date()
     const trackers = await StockTrackerModel.find({ status: { "$nin": STOCK_TRACKER_STATUS_INACTIVE }, qty: { "$gt": 0 }})
-    trackers.forEach(async tracker => {
-        addTransaction(tracker.getAccountId(), tracker.getBrokerAccountId(), today, {
-            type: TransactionType.STATEMENT_OPENING,
-            investiment: tracker.getInvestimentId(),
-            value: tracker.getNegotiationPrice() * tracker.getQty(),
-            dateTime: today
-        })
-    })
+    
+    return Promise.all(trackers.map(async tracker => {
+        // await addTransaction(tracker.getAccountId(), tracker.getBrokerAccountId(), today, {
+        //     type: TransactionType.STATEMENT_OPENING,
+        //     investiment: tracker.getInvestimentId(),
+        //     value: tracker.getNegotiationPrice() * tracker.getQty(),
+        //     dateTime: today
+        // })
+    })) 
+}
+
+const openMoneyTrackerHistory = async () => {
+    
 }
 
 export const financialOpening = FinancialOpening.build()

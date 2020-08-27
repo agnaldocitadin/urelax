@@ -23,10 +23,10 @@ it("teste", async () => {
     
     // emulator
     // let token = "f2S2VRRzb-g:APA91bFB_D42Z7UGQSC0v5Lbla3mKy0ot0JnQSC0whJi2C9x1RqqFwBR-q_roqLqw3AOAO1O19eBZkNFRxUutlI4hmz64OOnv8I0iDilY_p2VUM6Q-WGQ1omS7bGFBpgENK_0LxsuFAk"
-    let token = "f0YIqi42fj0:APA91bGpjWJb-qsCs5Ib2TSoA_VLl2Orp-EhN4lbGdjro_3OQRu9VImIfrAuhC7V8TNR_JQ8fMt9ODH6xHtT6EWzrtcaX6qONvPv8-tQ8MLqgKlPZTIcFE21mMIK83ljhkKEWV1FOpj4"
+    // let token = "f0YIqi42fj0:APA91bGpjWJb-qsCs5Ib2TSoA_VLl2Orp-EhN4lbGdjro_3OQRu9VImIfrAuhC7V8TNR_JQ8fMt9ODH6xHtT6EWzrtcaX6qONvPv8-tQ8MLqgKlPZTIcFE21mMIK83ljhkKEWV1FOpj4"
 
-    // devioce
-    // let token = "fdpOIUoPh2c:APA91bEIVT6v81wJQvumU7QJyrdWXK0ADwo3kdCapmVnxeNWFmNyMlj5v76mkGY5cuYhP7Ugpyp5lPMAvijp-T7XzLXMwCX8X8y9vBFi7QfOCpoRVSiJHlllRIEmu0TP4LuK1woesVnZ"
+    // device
+    let token = "fdpOIUoPh2c:APA91bEIVT6v81wJQvumU7QJyrdWXK0ADwo3kdCapmVnxeNWFmNyMlj5v76mkGY5cuYhP7Ugpyp5lPMAvijp-T7XzLXMwCX8X8y9vBFi7QfOCpoRVSiJHlllRIEmu0TP4LuK1woesVnZ"
     
     await admin.messaging().sendToDevice(token, {
             data: {

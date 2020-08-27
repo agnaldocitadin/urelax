@@ -4,7 +4,7 @@ import { utils } from "js-commons"
 import { onStockOrderExecution, onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins"
-import { addProfit, addTransaction } from "../../Financial/services"
+import { addInvestiment, addProfit, addTransaction, removeInvestiment } from "../../Financial/services"
 import { Account } from "../../Identity/models"
 import { findProfileBy } from "../../Identity/services"
 import { notifyOrder, notifyStockTrackerDestroy, notifyStockTrackerPause } from "../../Notification/services"
@@ -36,7 +36,8 @@ export const createNewStockTracker = async (model: StockTracker): Promise<StockT
             }
         })
         .execPopulate()
-        
+    
+    addInvestiment(savedTracker.getBrokerAccountId(), savedTracker.getInvestimentId(), savedTracker._id)
     onStockTrackerCreated(populatedTracker)
     return populatedTracker
 }
@@ -255,6 +256,7 @@ export const waitStockTrackerDestroy = async (stockTracker: StockTracker): Promi
 export const destroyStockTracker = async (stockTracker: StockTracker, sendNotification: boolean): Promise<StockTracker> => {
     stockTracker.status = StockTrackerStatus.DESTROYED
     let updatedStockTracker = await StockTrackerModel.create(stockTracker)
+    removeInvestiment(stockTracker.getBrokerAccountId(), stockTracker.getInvestimentId())
     onStockTrackerTurnedToDestroyed(updatedStockTracker)
     if (sendNotification) notifyStockTrackerDestroy(stockTracker)
     return updatedStockTracker
@@ -365,20 +367,19 @@ const processBuyOrder = async (execution: OrderExecution, stockTracker: StockTra
     const now = new Date()
     const orderValue = execution.price * execution.quantity
 
-    await addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+    await addTransaction(stockTracker.getBrokerAccountId(), {
         investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"), // TODO get the Money investiment
         type: TransactionType.TRANSFER,
         value: -orderValue,
         dateTime: now
     })
     
-    await addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+    await addTransaction(stockTracker.getBrokerAccountId(), {
         investiment: stockTracker.getInvestimentId(),
         type: TransactionType.TRANSFER,
         value: orderValue,
         dateTime: now
     })
-    
 }
 
 /**
@@ -394,28 +395,25 @@ const processSellOrder = async (execution: OrderExecution, stockTracker: StockTr
     const moneyValue = execution.price * execution.quantity
     const profitValue = moneyValue - stockValue
 
-    await addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+    await addTransaction(stockTracker.getBrokerAccountId(), {
         investiment: stockTracker.getInvestimentId(),
         type: TransactionType.TRANSFER,
         value: -stockValue,
         dateTime: now
     })
 
-    await addTransaction(stockTracker.getAccountId(), stockTracker.getBrokerAccountId(), now, {
+    addTransaction(stockTracker.getBrokerAccountId(), {
         investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"), // // TODO get the Money investiment
         type: TransactionType.TRANSFER,
         value: moneyValue,
         dateTime: now,
     })
 
-    addProfit(
-        stockTracker.getAccountId(), 
-        stockTracker.getBrokerAccountId(), 
-        stockTracker.getInvestimentId(),
-        now,
-        ProfitType.EXCHANGE, 
-        profitValue
-    )
-    
+    addProfit(stockTracker.getBrokerAccountId(), now, {
+        investiment: stockTracker.getInvestimentId(),
+        type: ProfitType.EXCHANGE,
+        value: profitValue
+    })
+
     return profitValue
 }
