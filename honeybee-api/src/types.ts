@@ -159,15 +159,6 @@ export interface BrokerInvestiment {
     stock: StockInvestimentInfo
 }
 
-export interface FinancialHistory {
-    _id: string
-    date: Date
-    brokerAccount: BrokerAccount
-    transactions: Transaction[]
-    createdAt: Date
-    updatedAt: Date
-}
-
 export interface FinancialSummary {
     when: string
     patrimony: number

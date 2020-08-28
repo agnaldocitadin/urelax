@@ -37,28 +37,6 @@ export const fetchAppiedInvestiments = (accountID: string): Promise<AppliedInves
     `)
 }
 
-export const fetchFinancialHistory = (accountID: string, page: number, qty: number, date?: Date): Promise<FinancialHistory[]> => {
-    return API.FinancialHistory.fetchFinancialHistory({ account: accountID, page, qty, date: date?.toISOString() }, `
-        _id
-        date
-        brokerAccount {
-            accountName
-        }
-        transactions {
-            dateTime
-            type
-            value
-            investiment {
-                type
-                description
-                stock {
-                    symbol
-                }
-            }
-        }
-    `)
-}
-
 export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysisPeriod): Promise<FinancialAnalysis[]> => {
     return API.FinancialHistory.fetchFinancialAnalysis({ account, period }, `
         label

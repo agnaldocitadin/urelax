@@ -1,13 +1,14 @@
-import { BrokerAccountInput, Brokers } from "honeybee-api"
+import { BrokerAccountInput, Brokers, TransactionType } from "honeybee-api"
 import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
-import { createInvestimentAccount } from "../../Financial/services/investiment.account.service"
+import { addTransaction } from "../../Financial/services"
 import { Profile } from "../../Identity/models"
 import { ts } from "../../Translation/i18n"
 import { ClearHelper } from "../helpers/clear.helper"
-import { BrokerAccount, BrokerAccountModel } from "../models/broker.account.model"
+import { BrokerAccountModel } from "../models/broker.account.model"
+import { findCurrencyByBrokerCode } from "./broker.service"
 
 export interface BrokerHelperInterface {
     code: Brokers
@@ -32,6 +33,25 @@ export const findBrokerAccounts = (options: { id: string, account: string }) => 
 /**
  *
  *
+ * @param {BrokerAccountInput} brokerAccount
+ */
+const validate = (brokerAccount: BrokerAccountInput) => {
+    if (!brokerAccount.account) {
+        Logger.throw(ErrorCodes.BROKER_ACCOUNT_USERACCOUNT_REQUIRED)
+    }
+    
+    if (!brokerAccount.accountName) {
+        Logger.throw(ErrorCodes.BROKER_ACCOUNT_NAME_REQUIRED)
+    }
+    
+    if (!brokerAccount.brokerCode) {
+        Logger.throw(ErrorCodes.BROKER_ACCOUNT_BROKERCODE_REQUIRED)
+    }
+}
+
+/**
+ *
+ *
  * @param {BrokerAccountInput} input
  * @returns
  */
@@ -40,9 +60,7 @@ export const createBrokerAccount = async (input: BrokerAccountInput) => {
     validate(input)
     if (helper.validateExtraData(input)) {
         await helper.loadExtraData(input)
-        const brokerAccount = await BrokerAccountModel.create(input)
-        createInvestimentAccount(brokerAccount._id)
-        return brokerAccount
+        return BrokerAccountModel.create(input)
     }
 }
 
@@ -50,7 +68,7 @@ export const createBrokerAccount = async (input: BrokerAccountInput) => {
  *
  *
  * @param {string} _id
- * @param {BrokerAccount} input
+ * @param {BrokerAccountInput} input
  * @returns
  */
 export const updateBrokerAccountById = async (_id: string, input: BrokerAccountInput) => {
@@ -74,7 +92,8 @@ export const updateBrokerAccountById = async (_id: string, input: BrokerAccountI
  */
 export const createSimulationAccounts = async (profile: Profile) => {
     const simulationId = profile.getSimulation()._id
-    await Promise.all(Object.values(Brokers).map(async (code) => {
+    const now = new Date()
+    await Promise.all(Object.values(Brokers).map(async code => {
         const brokerAccount = await BrokerAccountModel.create({
             account: simulationId,
             accountName: "0001-Simulation",
@@ -82,30 +101,22 @@ export const createSimulationAccounts = async (profile: Profile) => {
             simulation: true,
             extraData: {}
         })
-        createInvestimentAccount(brokerAccount._id)
+
+        const currency = await findCurrencyByBrokerCode(code)
+        addTransaction(brokerAccount._id, {
+            value: Number(process.env.INITIAL_SIMULATION_AMOUNT),
+            type: TransactionType.DESPOSIT,
+            investiment: currency._id,
+            dateTime: now
+        })
     })) 
 }
-
 
 /**
  *
  *
- * @param {BrokerAccount} brokerAccount
+ * @class BrokerAccountHelper
  */
-const validate = (brokerAccount: BrokerAccountInput) => {
-    if (!brokerAccount.account) {
-        Logger.throw(ErrorCodes.BROKER_ACCOUNT_USERACCOUNT_REQUIRED)
-    }
-    
-    if (!brokerAccount.accountName) {
-        Logger.throw(ErrorCodes.BROKER_ACCOUNT_NAME_REQUIRED)
-    }
-    
-    if (!brokerAccount.brokerCode) {
-        Logger.throw(ErrorCodes.BROKER_ACCOUNT_BROKERCODE_REQUIRED)
-    }
-}
-
 class BrokerAccountHelper {
 
     /**

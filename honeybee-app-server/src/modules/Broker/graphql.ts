@@ -1,5 +1,4 @@
 import { Brokers, InvestimentType } from 'honeybee-api'
-import mongoose from 'mongoose'
 import { GraphQLModule } from "../GraphQL"
 import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts, findBrokersBy, suggestAnInvestiment, updateBrokerAccountById } from "./services"
 
@@ -11,18 +10,14 @@ const entry: GraphQLModule = {
         }
 
         type Broker {
-            _id: ID!
             code: String
             name: String
             logo: String
-            active: Boolean
-            createdAt: Datetime
-            updatedAt: Datetime
         }
 
         type BrokerInvestiment {
             _id: ID
-            broker: Broker
+            brokerCode: String
             type: InvestimentType
             description: String
             active: Boolean
@@ -78,9 +73,9 @@ const entry: GraphQLModule = {
     `,
 
     queries: `
-        fetchBrokers(id: ID, code: String, active: Boolean): [Broker]
+        fetchBrokers(code: String): [Broker]
         fetchBrokerAccounts(id: ID, account: ID): [BrokerAccount]
-        fetchAvailableInvestiments(brokerIDs: [ID], search: String, types: [InvestimentType]): [BrokerInvestiment]
+        fetchAvailableInvestiments(brokerCodes: [String], search: String, types: [InvestimentType]): [BrokerInvestiment]
         fetchInvestimentSuggestion(account: ID): BrokerInvestiment
     `,
 
@@ -90,12 +85,8 @@ const entry: GraphQLModule = {
     `,
 
     resolvers: {
-        fetchBrokers: (options: { 
-            id: mongoose.Types.ObjectId
-            code: Brokers
-            active: boolean 
-        }) => {
-            return findBrokersBy(options)
+        fetchBrokers: ({ code }: any) => {
+            return findBrokersBy(code)
         },
 
         fetchBrokerAccounts: (options: {
@@ -115,7 +106,7 @@ const entry: GraphQLModule = {
 
         fetchAvailableInvestiments: (options: {
             search?: string
-            brokerIDs?: mongoose.Types.ObjectId[],
+            brokerCodes?: Brokers[],
             types?: InvestimentType[]
         }) => {
             return findAvailableInvestiments(options)

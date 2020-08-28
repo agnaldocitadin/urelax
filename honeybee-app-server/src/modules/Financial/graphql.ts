@@ -1,5 +1,5 @@
 import { GraphQLModule } from "../GraphQL"
-import { findFinancialHistoryBy, groupAppiedInvestimentsBy, groupFinancialAnalysisBy, groupFinancialSummaryBy } from "./services"
+import { groupAppiedInvestimentsBy, groupFinancialAnalysisBy, groupFinancialSummaryBy } from "./services"
 
 const entry: GraphQLModule = {
     types: `
@@ -22,17 +22,6 @@ const entry: GraphQLModule = {
             type: TransactionType
             value: Float
             investiment: BrokerInvestiment
-        }
-
-        type FinancialHistory {
-            _id: ID
-            date: Datetime
-            acount: Account
-            brokerAccount: BrokerAccount
-            transactions: [Transaction]
-            locked: Boolean
-            createdAt: Datetime
-            updatedAt: Datetime
         }
 
         type FinancialSummary {
@@ -64,16 +53,11 @@ const entry: GraphQLModule = {
         }
     `,
     queries: `
-        fetchFinancialHistory(brokerAccounts: [ID]!, date: Datetime, page: Int, qty: Int): [FinancialHistory]
         fetchFinancialSummary(brokerAccounts: [ID]!, date: Datetime, page: Int, qty: Int): [FinancialSummary]
         fetchAppiedInvestiments(brokerAccounts: [ID]!): [AppliedInvestiment]
         fetchFinancialAnalysis(brokerAccounts: [ID]!, date: Datetime, page: Int, qty: Int, period: FinancialAnalysisPeriod): [FinancialAnalysis]
     `,
     resolvers: {
-        fetchFinancialHistory: (options: any) => {
-            return findFinancialHistoryBy(options)
-        },
-        
         fetchFinancialSummary: (options: any) => {
             return groupFinancialSummaryBy(options)
         },

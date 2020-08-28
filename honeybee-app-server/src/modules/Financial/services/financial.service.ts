@@ -106,8 +106,6 @@ export const addTransaction = async (brokerAccount: mongoose.Types.ObjectId, tra
 export const addProfit = async (brokerAccount: mongoose.Types.ObjectId, date: Date, profit: Profit) => {
     const investimentId = (<BrokerInvestiment>profit.investiment)._id
     const history = await addInvestiment(brokerAccount, date, investimentId)
-    const investiment = history.getInvestiment(investimentId)
-    investiment.amount += profit.value
     history.profits.push(profit)
     return history.save()
 }

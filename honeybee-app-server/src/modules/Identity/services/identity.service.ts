@@ -4,7 +4,7 @@ import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
 import { onCreateAccount } from "../../Activity/services"
-import { createSimulationAccounts } from "../../Broker/services"
+import { createSimulationAccounts as createBrokerAccountsToSimulation } from "../../Broker/services"
 import { Account, AccountModel, Device, Preferences, Profile, ProfileModel } from "../models"
 
 const defaultPreferences: Preferences = {
@@ -88,7 +88,7 @@ export const createProfile = async (input: ProfileInput): Promise<Profile> => {
     }
     
     let _profile = await ProfileModel.create(profile)
-    await createSimulationAccounts(_profile)
+    await createBrokerAccountsToSimulation(_profile)
     onCreateAccount(_profile)
     return _profile
 }

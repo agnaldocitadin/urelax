@@ -1,7 +1,7 @@
-import { getModelForClass, prop, Ref } from "@typegoose/typegoose"
+import { getModelForClass, prop } from "@typegoose/typegoose"
 import { InvestimentType } from "honeybee-api"
 import mongoose from "mongoose"
-import { Broker } from "./broker.model"
+import { BrokerNames } from "./broker.names"
 
 export class StockInvestimentInfo {
     
@@ -17,8 +17,8 @@ export class BrokerInvestiment {
 
     _id?: mongoose.Types.ObjectId
 
-    @prop({ ref: Broker, required: true })
-    broker: Ref<Broker>
+    @prop({ required: true, enum: Object.values(BrokerNames).map(broker => broker.code) })
+    brokerCode: string
 
     @prop({ required: true, enum: InvestimentType })
     type!: string
