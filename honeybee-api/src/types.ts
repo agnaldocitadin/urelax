@@ -151,7 +151,7 @@ export interface StockInvestimentInfo {
 
 export interface BrokerInvestiment {
     _id: string
-    broker: Broker
+    brokerCode: String
     type: InvestimentType
     description: string
     active: boolean

@@ -95,6 +95,7 @@
     "broker_account_add_success_msg": "Sua nova conta foi cadastrada com sucesso",
 
     "stock": "Ação",
+    "currency": "Dinheiro",
     "create_stock_tracker": "Criar rastreador de ações",
     "stock_trackers": "Rastreadores",
     "update_stock_tracker": "Atualizar rastreador de ação",

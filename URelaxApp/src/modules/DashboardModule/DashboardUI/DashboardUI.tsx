@@ -105,9 +105,9 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                         <Typography
                             color={Colors.WHITE}
                             textAlign="center"
-                            fontSize={39}
+                            fontSize={36}
                             onPress={handleInvestiments}>
-                            {utils.formatCurrency(currentPatrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}
+                            {utils.formatCurrency(currentPatrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
                         </Typography>
                     </View>
                 </PatrimonyNow>

@@ -22,17 +22,17 @@ const entry: GraphQLModule = {
         }
     `,
     queries: `
-        fetchActivities(id: ID, accountID: ID, ref: ID, activityType: String, date: String, page: Int, qty: Int): [Activity]
+        fetchActivities(id: ID, accounts: [ID], ref: ID, activityType: String, date: String, page: Int, qty: Int): [Activity]
     `,
     resolvers: {
         fetchActivities: (options: {
-                id: string
-                accountID: string
-                ref: string
-                activityType: ActivityType
-                date: string
-                page: number
-                qty: number 
+                id?: string
+                accounts?: string[]
+                ref?: string 
+                activityType?: ActivityType
+                date?: string
+                page?: number
+                qty?: number
             }) => {
             return findActivitiesBy({ ...options, translate: true })
         }

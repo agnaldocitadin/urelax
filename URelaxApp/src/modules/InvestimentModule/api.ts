@@ -1,10 +1,8 @@
-import { API, AppliedInvestiment, BrokerInvestiment, FinancialAnalysis, FinancialAnalysisPeriod, FinancialHistory } from "honeybee-api"
+import { API, AppliedInvestiment, BrokerInvestiment, Brokers, FinancialAnalysis, FinancialAnalysisPeriod } from "honeybee-api"
 
 const fragment = `
     _id
-    broker {
-        code
-    }
+    brokerCode
     active
     type
     description
@@ -14,18 +12,15 @@ const fragment = `
     }
 `
 
-export const fetchAppiedInvestiments = (accountID: string): Promise<AppliedInvestiment[]> => {
-    return API.FinancialHistory.fetchAppiedInvestiments({ account: accountID }, `
+export const fetchAppiedInvestiments = (brokerAccounts: string[]): Promise<AppliedInvestiment[]> => {
+    return API.FinancialHistory.fetchAppiedInvestiments({ brokerAccounts }, `
         qty
         amount
         brokerAccountName
         refID
         investiment {
             _id
-            broker {
-                code
-                name
-            }
+            brokerCode
             type
             description
             active
@@ -37,8 +32,8 @@ export const fetchAppiedInvestiments = (accountID: string): Promise<AppliedInves
     `)
 }
 
-export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysisPeriod): Promise<FinancialAnalysis[]> => {
-    return API.FinancialHistory.fetchFinancialAnalysis({ account, period }, `
+export const fetchFinancialAnalysis = (brokerAccounts: string[], period: FinancialAnalysisPeriod): Promise<FinancialAnalysis[]> => {
+    return API.FinancialHistory.fetchFinancialAnalysis({ brokerAccounts, period }, `
         label
         amount
         variation
@@ -53,8 +48,8 @@ export const fetchFinancialAnalysis = (account: string, period: FinancialAnalysi
     `)
 }
 
-export const fetchAvailableInvestiments = (search: string, brokerIDs?: string[]): Promise<BrokerInvestiment[]> => {
-    return API.Broker.fetchAvailableInvestiments({ search, brokerIDs }, fragment)
+export const fetchAvailableInvestiments = (search: string, brokerCodes?: Brokers[]): Promise<BrokerInvestiment[]> => {
+    return API.Broker.fetchAvailableInvestiments({ search, brokerCodes }, fragment)
 }
 
 export const fetchInvestimentSuggestion = async (account: string): Promise<BrokerInvestiment> => {

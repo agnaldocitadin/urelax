@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native"
-import { Account, FinancialAnalysis, FinancialAnalysisPeriod } from "honeybee-api"
+import { Account, BrokerAccount, FinancialAnalysis, FinancialAnalysisPeriod } from "honeybee-api"
 import { useCallback, useState } from "react"
 import Investiment from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
 import { Colors } from "../../../theming"
+import BrokerModule from "../../BrokerModule"
 import Identity from "../../IdentityModule"
 import Messaging from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
@@ -18,6 +19,7 @@ export const useInvestimentAnalysisUIHook = () => {
     const account: Account = Identity.select("activeAccount")
     const analysis: FinancialAnalysis[] = Investiment.select("analysis")
     const selectedGraph: number = Investiment.select("selectedGraphIndex")
+    const brokerAccounts: BrokerAccount[] = BrokerModule.select("userBrokerAccounts")
     const [ period, setPeriod ] = useState<FinancialAnalysisPeriod>(FinancialAnalysisPeriod.DAILY)
     const [ loading, setLoading ] = useState(true)
     const [ finding, setFinding ] = useState(false)
@@ -29,18 +31,19 @@ export const useInvestimentAnalysisUIHook = () => {
 
     const handleSelectGraph = useCallback((index: number) => {
         selectGraphIndex(index)
-    }, [analysis])
+    }, [])
 
     const findFinancialData =  useCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean) => {
         setFinding(true)
         setPeriod(period)
-        const analysis = await fetchFinancialAnalysis(account._id, period)
+        const ids = brokerAccounts.map(account => account._id)
+        const analysis = await fetchFinancialAnalysis(ids, period)
         addAnalysis(analysis, true)
         if (resetIndex) {
             handleSelectGraph(0)
         }
         setFinding(false)
-    }, [account._id])
+    }, [brokerAccounts])
 
     const handlePeriodSelection = useCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean = true) => {
         try {
@@ -50,12 +53,12 @@ export const useInvestimentAnalysisUIHook = () => {
             showAPIError(error)
             setFinding(false)
         }
-    }, [account._id])
+    }, [])
 
     const handleLoadMore = useCallback((page: number) => {
         // TODO
         return Promise.resolve([] as DataGraph[])
-    }, [account._id])
+    }, [])
 
     useEffectWhenReady(async () => {
         try {
@@ -65,7 +68,7 @@ export const useInvestimentAnalysisUIHook = () => {
         catch (error) {
             setFail(true)
         }
-    }, ()=>{}, [account._id])
+    })
 
     const dataGraph = analysis.map(item => {
         return {

@@ -2,7 +2,7 @@ import { Activity, ActivityType, API } from "honeybee-api"
 
 export const fetchActivities = async (options: {
         id?: string
-        accountID?: string
+        accounts?: string[]
         ref?: string 
         activityType?: ActivityType
         date?: string

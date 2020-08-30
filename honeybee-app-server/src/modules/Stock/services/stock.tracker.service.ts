@@ -38,7 +38,7 @@ export const createNewStockTracker = async (model: StockTracker): Promise<StockT
         })
         .execPopulate()
     
-    addInvestiment(savedTracker.getBrokerAccountId(), new Date(),  savedTracker.getInvestimentId())
+    addInvestiment(savedTracker.getBrokerAccountId(), new Date(),  savedTracker.getInvestimentId(), savedTracker._id)
     onStockTrackerCreated(populatedTracker)
     return populatedTracker
 }
@@ -352,7 +352,6 @@ const updateStockTrackerOnSell = (execution: OrderExecution, stockTracker: Stock
     stockTracker.qty -= execution.quantity
     if (stockTracker.qty === 0) {
         stockTracker.buyPrice = 0
-        stockTracker.currentPrice = 0
     }
     (<DocumentType<StockTracker>>stockTracker).save()
 }
@@ -394,7 +393,7 @@ const processSellOrder = async (execution: OrderExecution, stockTracker: StockTr
 
     const now = new Date()
     const currency = await findCurrencyByBrokerCode(Brokers.CLEAR)
-    const stockValue = stockTracker.getNegotiationPrice() * execution.quantity
+    const stockValue = stockTracker.getBuyPrice() * execution.quantity
     const moneyValue = execution.price * execution.quantity
     const profitValue = moneyValue - stockValue
 

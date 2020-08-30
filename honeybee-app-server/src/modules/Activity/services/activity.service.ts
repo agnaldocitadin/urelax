@@ -1,6 +1,6 @@
+import { mongoose } from "@typegoose/typegoose"
 import { ActivityType } from "honeybee-api"
 import { utils } from 'js-commons'
-import { ts } from "../../Translation/i18n"
 import { toObjectId } from "../../../core/server-utils"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"
@@ -9,6 +9,7 @@ import { OrderModel, OrderSides, OrderStatus } from "../../Order/models"
 import { StockTracker } from "../../Stock/models/stock.tracker.model"
 import { StrategyNames } from "../../Stock/strategies"
 import { StockTrackerFrequency } from "../../Stock/trackers"
+import { ts } from "../../Translation/i18n"
 import { Activity, ActivityDetail, ActivityModel } from "../models/activity.model"
 
 enum Icons {
@@ -27,7 +28,7 @@ enum Icons {
 
 export const findActivitiesBy = (options: { 
     id?: string
-    accountID?: string
+    accounts?: string[]
     ref?: string 
     activityType?: ActivityType
     date?: string
@@ -35,10 +36,10 @@ export const findActivitiesBy = (options: {
     qty?: number
     translate?: boolean
 }): Promise<Activity[]> => {
-        
+
     const { 
         id,
-        accountID, 
+        accounts, 
         page = 0, 
         qty = Number(process.env.STANDARD_QUERY_RESULT), 
         translate,
@@ -48,9 +49,11 @@ export const findActivitiesBy = (options: {
     } = options
 
     return ActivityModel.find({
+            ...accounts ? { account: { "$in": accounts } } : null,
             ...toObjectId("_id", id),
-            ...toObjectId("account", accountID),
-            ...utils.nonNull("ref", ref)
+            ...utils.nonNull("ref", ref),
+            ...utils.nonNull("activityType", activityType),
+            ...utils.nonNull("date", date)
         })
         .sort({ createdAt: "desc" })
         .skip(page * qty)
@@ -63,9 +66,10 @@ export const findActivitiesBy = (options: {
  *
  *
  * @param {Activity} activity
+ * @returns
  */
 const createBaseActivity = (activity: Activity) => {
-    ActivityModel.create(activity)
+    return ActivityModel.create(activity)
 }
 
 /**
@@ -245,25 +249,59 @@ export const onStockOrderExecution = async (orderExecution: OrderExecution, stoc
  *
  *
  * @param {Profile} profile
+ * @returns
  */
-export const onCreateAccount = (profile: Profile) => {
+export const onCreateProfile = (profile: Profile) => {
+    return Promise.all(profile.accounts.map(async account => {
+        const activity: Activity = {
+            activityType: ActivityType.USER_ACCOUNT,
+            title: { 
+                text: "profile_created"
+            },
+            icon: Icons.ACCOUNT_CHECK,
+            account,
+            details: [
+                {
+                    hidden: false,
+                    title: { text: "name" },
+                    description: profile.name
+                },
+                {
+                    hidden: false,
+                    title: { text: "email" },
+                    description: profile.email
+                }
+            ]
+        }
+        return createBaseActivity(activity)
+    }))
+}
+
+/**
+ *
+ *
+ * @param {mongoose.Types.ObjectId} accountId
+ */
+export const onDepositForFree = (accountId: mongoose.Types.ObjectId) => {
     const activity: Activity = {
         activityType: ActivityType.USER_ACCOUNT,
-        title: { 
-            text: "profile_created"
+        account: accountId,
+        icon: Icons.CASH,
+        title: {
+            text: "account_credit"
         },
-        icon: Icons.ACCOUNT_CHECK,
-        account: profile._id,
-        details: [
-            {
-                title: { text: "name" },
-                description: profile.name
+        details: [{
+            hidden: false,
+            title: {
+                text: "account_credit"
             },
-            {
-                title: { text: "email" },
-                description: profile.email
+            description: {
+                text: "account_credit_msg",
+                args: {
+                    amount: utils.formatCurrency(Number(process.env.INITIAL_SIMULATION_AMOUNT), { prefix: "R$" })
+                }
             }
-        ]
+        }]
     }
     createBaseActivity(activity)
 }

@@ -3,6 +3,7 @@ import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
+import { onDepositForFree } from "../../Activity/services"
 import { addTransaction } from "../../Financial/services"
 import { Profile } from "../../Identity/models"
 import { ts } from "../../Translation/i18n"
@@ -109,6 +110,8 @@ export const createSimulationAccounts = async (profile: Profile) => {
             investiment: currency._id,
             dateTime: now
         })
+        
+        onDepositForFree(simulationId)
     })) 
 }
 

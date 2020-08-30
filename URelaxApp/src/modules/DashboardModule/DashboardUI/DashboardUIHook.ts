@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
-import { Account, FinancialSummary, Profile } from "honeybee-api"
+import { BrokerAccount, FinancialSummary, Profile } from "honeybee-api"
 import { useCallback, useState } from "react"
 import Dashboard from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
-import Identity from "../../IdentityModule"
+import BrokerModule from "../../BrokerModule"
 import Investiment from "../../InvestimentModule"
 import Messaging from "../../MessagingModule"
 import { Drawers, Routes } from "../../NavigationModule/const"
@@ -17,8 +17,8 @@ export const useDashboardUIHook = () => {
     const navigation = useNavigation()
     const [ refreshing, setRefreshing ] = useState(false)
     const summaries: FinancialSummary[] = Dashboard.select("history")
-    const account: Account = Identity.select("activeAccount")
     const profile: Profile = SecurityModule.select("profile")
+    const brokerAccounts: BrokerAccount[] = BrokerModule.select("userBrokerAccounts")
     const { showAPIError } = Messaging.actions()
     const { setDashboardHistory } = Dashboard.actions()
     const { selectGraphIndex } = Investiment.actions()
@@ -36,19 +36,20 @@ export const useDashboardUIHook = () => {
         setRefreshing(true)
         await refresh()
         setRefreshing(false)
-    }, [account._id])
+    }, [brokerAccounts])
 
     const refresh = useCallback(async () => {
         try {
-            const summary = await fetchFinancialSummary(account._id, INITIAL_SUMMARIES)
-            setDashboardHistory(summary || []) 
+            const ids = brokerAccounts.map(account => account._id)
+            const summary = await fetchFinancialSummary(ids, INITIAL_SUMMARIES)
+            setDashboardHistory(summary) 
         }
         catch(error) {
             showAPIError(error)
         }
-    }, [account._id])
+    }, [brokerAccounts])
 
-    useEffectWhenReady(() => refresh(), ()=>{}, [account._id])
+    useEffectWhenReady(() => refresh(), ()=>{}, [brokerAccounts])
 
     return {
         refreshing,

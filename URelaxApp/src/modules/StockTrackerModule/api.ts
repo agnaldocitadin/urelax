@@ -16,13 +16,11 @@ const stockTrackerFragment = `
         brokerCode
     }
     stockInfo {
+        brokerCode
         description
         logo
         stock {
             symbol
-        }
-        broker {
-            name
         }
     }
 `

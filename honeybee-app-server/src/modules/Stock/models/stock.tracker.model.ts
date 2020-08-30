@@ -1,5 +1,5 @@
 import { getModelForClass, mongoose, prop, Ref } from "@typegoose/typegoose"
-import { AppliedInvestiment, StockTrackerStatus } from "honeybee-api"
+import { StockTrackerStatus } from "honeybee-api"
 import { BrokerAccount, BrokerInvestiment } from "../../Broker/models"
 import { Account } from "../../Identity/models"
 import { StrategyNames } from "../strategies"
@@ -55,9 +55,6 @@ export class StockTracker {
 
     @prop({ default: 0 })
     buyPrice?: number
-    
-    @prop({ default: 0 })
-    currentPrice: number
 
     @prop({ default: () => new Date() })
     createdAt?: Date
@@ -85,15 +82,15 @@ export class StockTracker {
         return (this.qty * this.buyPrice) || 0
     }
 
-    public toInvestiment?(): AppliedInvestiment {
-        return {
-            refID: this._id.toHexString(),
-            brokerAccountName: (<BrokerAccount>this.brokerAccount).accountName,
-            amount: this.getAmount(),
-            qty: this.qty,
-            investiment: <any>this.stockInfo
-        }
-    }
+    // public toInvestiment?(): AppliedInvestiment {
+    //     return {
+    //         refID: this._id.toHexString(),
+    //         brokerAccountName: (<BrokerAccount>this.brokerAccount).accountName,
+    //         amount: this.getAmount(),
+    //         qty: this.qty,
+    //         investiment: <any>this.stockInfo
+    //     }
+    // }
 
     public isBought?() {
         return this.qty > 0
@@ -117,10 +114,6 @@ export class StockTracker {
 
     public getBuyPrice?() {
         return this.buyPrice || 0
-    }
-
-    public getNegotiationPrice?() {
-        return (this.currentPrice || this.buyPrice) || 0
     }
     
 }

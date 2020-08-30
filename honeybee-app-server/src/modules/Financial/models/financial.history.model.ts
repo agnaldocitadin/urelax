@@ -82,14 +82,11 @@ export class FinancialHistory {
     }
 
     public getOpeningValue?() {
-        // FIXME
-        const opening = this.transactions.filter(transaction => transaction.type === TransactionType.STATEMENT_OPENING)
-        return arrays.sum(opening, item => item.value)
+        return this.getClosingValue() - arrays.sum(this.transactions, item => item.value)
     }
 
     public getClosingValue?() {
-        // FIXME
-        return arrays.sum(this.transactions, item => item.value)
+        return arrays.sum(this.applications, item => item.amount)
     }
 
     public getProfit?() {

@@ -53,12 +53,15 @@ const prepareHistory = async (brokerAccount: mongoose.Types.ObjectId, date: Date
  * @param {mongoose.Types.ObjectId} investiment
  * @returns
  */
-export const addInvestiment = async (brokerAccount: mongoose.Types.ObjectId, date: Date, investiment: mongoose.Types.ObjectId) => {
+export const addInvestiment = async (brokerAccount: mongoose.Types.ObjectId, date: Date,
+    investiment: mongoose.Types.ObjectId, refId?: mongoose.Types.ObjectId) => {
+        
     const history = await prepareHistory(brokerAccount, date)
     if (!history.hasInvestiment(investiment)) {
         history.applications.push({
             investiment,
-            amount: 0
+            amount: 0,
+            refId
         })
         return history.save()
     }
@@ -136,7 +139,7 @@ export const findFinancialHistoryBy = (options: {
     } = options
 
     return FinancialHistoryModel.find({
-            ...brokerAccounts.length > 0 ? { brokerAccount: { "$in": brokerAccounts } } : null,
+            brokerAccount: { "$in": brokerAccounts },
             ...utils.nonNull("date", date)
         })
         .sort({ "date": "desc" })

@@ -1,18 +1,19 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
 import { ActivityType } from 'honeybee-api'
 import mongoose from 'mongoose'
-import { ts } from '../../Translation/i18n'
 import { Account } from '../../Identity/models'
+import { ts } from '../../Translation/i18n'
 
 export class Translation {
 
     @prop({ required: true })
     text!: string
     
-    @arrayProp({ _id: false, items: String })
-    args?: string[]
+    @arrayProp({ _id: false, items: Object })
+    args?: Object
 
     public static translate(input: Translation): string {
+        if (!input) return null
         return input.text ? ts(input.text, input.args) : String(input)
     }
 }

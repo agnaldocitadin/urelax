@@ -1,10 +1,11 @@
 import { useNetInfo } from "@react-native-community/netinfo"
 import { useNavigation } from "@react-navigation/native"
-import { Account, AppliedInvestiment, InvestimentType } from "honeybee-api"
+import { Account, AppliedInvestiment, BrokerAccount, InvestimentType } from "honeybee-api"
 import { arrays } from "js-commons"
 import { useCallback, useState } from "react"
 import InvestimentModule from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
+import BrokerModule from "../../BrokerModule"
 import Identity from "../../IdentityModule"
 import { Routes } from "../../NavigationModule/const"
 import StockTrackerModule from "../../StockTrackerModule"
@@ -15,6 +16,7 @@ export const useInvestimentUIHook = () => {
     const navigation = useNavigation()
     const account: Account = Identity.select("activeAccount")
     const investiments = InvestimentModule.select("appliedInvestiments")
+    const brokerAccounts: BrokerAccount[] = BrokerModule.select("userBrokerAccounts")
     const { selectStockTrackerID } = StockTrackerModule.actions()
     const { addAppliedInvestiment } = InvestimentModule.actions()
     const [ loading, setLoading ] = useState(true)
@@ -39,7 +41,8 @@ export const useInvestimentUIHook = () => {
 
     const refresh = useCallback(async () => {
         try {
-            const appliedInvestiments = await fetchAppiedInvestiments(account._id)
+            const ids = brokerAccounts.map(account => account._id)
+            const appliedInvestiments = await fetchAppiedInvestiments(ids)
             
             if (appliedInvestiments) {
                 const currency = appliedInvestiments.filter(inv => inv.investiment.type === InvestimentType.CURRENCY)
@@ -57,9 +60,9 @@ export const useInvestimentUIHook = () => {
         catch(error) {
             setFail(true)
         }
-    }, [account._id])
+    }, [brokerAccounts])
     
-    useEffectWhenReady(() => refresh(), ()=>{}, [account._id])
+    useEffectWhenReady(() => refresh(), ()=>{}, [brokerAccounts])
 
     return {
         fail,

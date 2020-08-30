@@ -1,17 +1,16 @@
 import { useNavigation } from "@react-navigation/native"
-import { Account, AppliedInvestiment, BrokerInvestiment, InvestimentType } from "honeybee-api"
+import { AppliedInvestiment, BrokerAccount, BrokerInvestiment, InvestimentType } from "honeybee-api"
 import { useCallback, useState } from "react"
 import InvestimentModule from ".."
-import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
 import { animatedCallback } from "../../../core/Commons.hook"
 import { ts } from "../../../core/I18n"
 import { Colors } from "../../../theming"
-import IdentityModule from "../../IdentityModule"
+import BrokerModule from "../../BrokerModule"
 import MessagingModule from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { useStockTracker } from "../../StockTrackerModule/hook"
-import { fetchAvailableInvestiments, fetchInvestimentSuggestion } from "../api"
+import { fetchAvailableInvestiments } from "../api"
 
 export const useAddInvestimentUIHook = () => {
 
@@ -21,8 +20,8 @@ export const useAddInvestimentUIHook = () => {
     const [ finding, showFinding ] = useState(false)
     const [ investiments, setInvestiments ] = useState<BrokerInvestiment[]>()
     const [ suggestion, setSuggestion ] = useState<BrokerInvestiment>()
-    const account: Account = IdentityModule.select("activeAccount")
     const appliedInvestiments = InvestimentModule.select("appliedInvestiments")
+    const brokerAccounts: BrokerAccount[] = BrokerModule.select("userBrokerAccounts")
 
     const [ suggestionBtnData, updateSuggestionBtn ] = useInteractiveButton({
         text: ts("suggest_an_investiment"),
@@ -38,16 +37,17 @@ export const useAddInvestimentUIHook = () => {
     }, [])
 
     const handleSuggestion = animatedCallback(async () => {
-        updateSuggestionBtn({ activityState: InteractiveButtonStates.PROCESSING })
-        const suggestion = await fetchInvestimentSuggestion(account._id)
-        setSuggestion(suggestion)
-        updateSuggestionBtn({ activityState: InteractiveButtonStates.NORMAL })
+        // updateSuggestionBtn({ activityState: InteractiveButtonStates.PROCESSING })
+        // const suggestion = await fetchInvestimentSuggestion(account._id)
+        // setSuggestion(suggestion)
+        // updateSuggestionBtn({ activityState: InteractiveButtonStates.NORMAL })
     })
 
     const handleFindInvestiments = useCallback(async (description: string) => {
         try {
             if (description?.length > 1) {
-                const investiments = await fetchAvailableInvestiments(description)
+                const codes = brokerAccounts.map(account => account.brokerCode)
+                const investiments = await fetchAvailableInvestiments(description, codes)
                 setInvestiments(investiments)
                 return
             }
@@ -56,7 +56,7 @@ export const useAddInvestimentUIHook = () => {
         catch (error) {
             showAPIError(error)
         }
-    }, [])
+    }, [brokerAccounts])
 
     const handleAddInvestiment = animatedCallback((investiment: BrokerInvestiment) => {
 

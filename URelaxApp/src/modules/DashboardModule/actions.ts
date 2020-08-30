@@ -15,7 +15,7 @@ export type ActionTypes = {
 const Actions = () => {
     const dispatch = useDispatch()
     return {
-        setDashboardHistory: (history: FinancialSummary[]) => {
+        setDashboardHistory: (history: FinancialSummary[] = []) => {
             dispatch({ type: "SET_DASHBOARD_HISTORY", payload: history } as DispatchType<ActionNames>)
         }
     }

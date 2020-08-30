@@ -32,12 +32,9 @@ class StockPriceClosing {
         await Promise.all(trackers.map(async tracker => {
             
             const todaysClosingPrice = await getLastClosingPrice(tracker.getSymbol(), today)
-            const baseAmount = tracker.getQty() * tracker.getNegotiationPrice()
+            const baseAmount = tracker.getQty() * tracker.getBuyPrice()
             const currentAmount = tracker.getQty() * todaysClosingPrice
             const profit = currentAmount - baseAmount
-            
-            tracker.currentPrice = todaysClosingPrice
-            tracker.save()
 
             await addProfit(tracker.getBrokerAccountId(), today, {
                 investiment: tracker.getInvestimentId(),

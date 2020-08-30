@@ -22,7 +22,6 @@ export const useStockTrackerPreviewUIHook = () => {
     const { selectStockTracker, addStockTrackerStatements, addStockTrackerActivities, updateSelectedStockTracker } = StockTrackerModule.actions()
     const stockTrackerID: string = StockTrackerModule.select("selectedStockTrackerID")
     const stockTracker: StockTracker = StockTrackerModule.select("selectedStockTracker")
-    // const history: FinancialHistory[] = StockTrackerModule.select("stockTrackerStatements")
     const activities: Activity[] = StockTrackerModule.select("stockTrackerActivities")
 
     const handleSettings = animatedCallback(() => navigation.navigate(Routes.STOCKTRACKER_SETTING), [])
@@ -47,6 +46,7 @@ export const useStockTrackerPreviewUIHook = () => {
                     break
             }
             updateSelectedStockTracker({ status: result.status } as StockTracker)
+            await refreshActivities()
         }
         catch(error) {
             showAPIError(error)
@@ -59,16 +59,18 @@ export const useStockTrackerPreviewUIHook = () => {
 
     const findStockTracker = useCallback(async () => {
         const stockTracker = await fetchStockTrackerByID(stockTrackerID)
+        await refreshActivities()
         stockTracker && selectStockTracker(stockTracker)
+    }, [stockTrackerID])
 
+    const refreshActivities = useCallback(async () => {
         const activities = await fetchActivities({
             qty: AppConfig.QTY_INITIAL_ACTIVITIES,
             ref: stockTrackerID,
             page: 0
         })
         activities && addStockTrackerActivities(activities, true)
-    }, [stockTrackerID])
-
+    }, [])
 
     const handleRefresh = useCallback(async () => {
         try {
@@ -103,7 +105,10 @@ export const useStockTrackerPreviewUIHook = () => {
         catch(error) {
             setFail(true)
         }
-    }, () => selectStockTracker(undefined))
+    }, () => {
+        selectStockTracker(undefined)
+        addStockTrackerActivities([], true)
+    })
 
     return {
         fail,
@@ -111,7 +116,6 @@ export const useStockTrackerPreviewUIHook = () => {
         btnState,
         stockTracker,
         amount: stockTracker && ((stockTracker?.buyPrice ?? 0) * (stockTracker?.qty ?? 0)) || 0,
-        // transactions: adaptStatementTimeline(history),
         activities,
         handleStockTrackerAction,
         handleSettings,

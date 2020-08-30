@@ -34,7 +34,7 @@ export const useActivityListUIHook = () => {
         try {
             let activities = await fetchActivities({
                 qty: AppConfig.QTY_INITIAL_ACTIVITIES,
-                accountID: account._id,
+                accounts: [account._id||""],
                 page: 0
             })
             addActivities(activities, true)
@@ -42,15 +42,15 @@ export const useActivityListUIHook = () => {
         catch(error) {
             setFail(true)
         }
-    }, [account])
+    }, [account._id])
 
     const handleLoadMoreData = useCallback(async (page: number): Promise<Activity[]> => {
         return fetchActivities({
             qty: AppConfig.QTY_INITIAL_ACTIVITIES,
-            accountID: account._id,
+            accounts: [account._id||""],
             page
         })
-    }, [account])
+    }, [account._id])
 
     useEffectWhenReady(async () => {
         await handleRefresh()

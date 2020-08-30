@@ -47,7 +47,7 @@ export const InvestimentUI: FC = () => {
                             textAlign="center">
                             {ts("available_to_invest")}
                         </Typography>
-                        <Typography textAlign="center" fontSize={28}>{utils.formatCurrency(patrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                        <TypographyMedium textAlign="center" fontSize={28}>{utils.formatCurrency(patrimony || 0, { prefix: AppConfig.CURRENCY_PREFIX })}</TypographyMedium>
                     </Patrimony>
                     <BtnContainer>
                         { online && <AddInvestimentBtn onPress={handleAdd}>
@@ -88,7 +88,7 @@ const Currency: FC<{ investiments: AppliedInvestiment[] }> = ({ investiments }) 
             <Touch key={key} noChevron disabled>
                 <Item>
                     <Typography>{currency.investiment?.description}</Typography>
-                    <Badge text={currency.investiment.broker.name || ""} bgColor={Colors.BLUES_3}/>
+                    <Badge text={currency.investiment.brokerCode || ""} bgColor={Colors.BLUES_3}/>
                     <Badge text={currency.brokerAccountName}/>
                 </Item>
                 <TypographyMedium>{utils.formatCurrency(currency.amount, { prefix: AppConfig.CURRENCY_PREFIX })}</TypographyMedium>
@@ -104,7 +104,7 @@ const Stocks: FC<{ investiments: AppliedInvestiment[], handle(item: AppliedInves
             <Touch key={key} onPress={() => handle(stock)}>
                 <Item>
                     <Typography>{stock.investiment?.description}</Typography>
-                    <Badge text={stock.investiment?.broker?.name} bgColor={Colors.BLUES_3}/>
+                    <Badge text={stock.investiment?.brokerCode} bgColor={Colors.BLUES_3}/>
                     <Badge text={stock.brokerAccountName}/>
                 </Item>
                 <TypographyMedium>{utils.formatCurrency(stock.amount, { prefix: AppConfig.CURRENCY_PREFIX })}</TypographyMedium>

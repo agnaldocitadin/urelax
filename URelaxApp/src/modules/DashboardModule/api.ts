@@ -1,7 +1,7 @@
 import { API } from "honeybee-api"
 
-export const fetchFinancialSummary = (account: string, qty: number) => {
-    return API.FinancialHistory.fetchFinancialSummary({ account, qty }, `
+export const fetchFinancialSummary = (brokerAccounts: string[], qty: number) => {
+    return API.FinancialHistory.fetchFinancialSummary({ brokerAccounts, qty }, `
         when
         patrimony
         variation

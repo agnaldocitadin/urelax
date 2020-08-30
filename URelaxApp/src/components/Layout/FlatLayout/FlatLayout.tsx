@@ -60,7 +60,7 @@ const FlatContainer = styled.View<{ bgColor: string }>`
 
 const SimulationFlag = styled(TypographyMedium)`
     text-align: center;
-    background-color: ${Colors.GREEN_SUCCESS};
+    background-color: ${Colors.BG_2};
     color: ${Colors.WHITE};
     padding: 7px 0;
 `

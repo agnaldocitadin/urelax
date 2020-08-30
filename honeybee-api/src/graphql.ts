@@ -64,21 +64,36 @@ export const gql = async (queryName: string, query: string) => {
  *
  *
  * @param {Object} [obj]
+ * @param {object} [howToSerialize]
  * @returns {string}
  */
-const serialize = (obj?: Object, howToSerialize?: object): string => {
+export const serialize = (obj?: Object, howToSerialize?: object): string => {
     if (!obj) return ""
 
     let serialization = ""
     Object.keys(obj).forEach(field => {
         let value = (<any>obj)[field]
         if (value == undefined || null) return
-        let toSerialize = typeof value === "object" && !(value instanceof Date)
-        if (toSerialize) serialization = serialization.concat(`${serialization.length > 0 ? SEPARATOR : ""}${field}:{${serialize(value, howToSerialize)}}`)
-        else serialization = serialization.concat(`${serialization.length > 0 ? SEPARATOR : ""}${field}:${serializeValue((<any>obj)[field], field, howToSerialize)}`)
+        if (value instanceof Date || value instanceof Array || !(value instanceof Object)) {
+            serialization = toPlain(serialization, field, serializeValue(value, field, howToSerialize))
+        }
+        else {
+            serialization = toPlain(serialization, field, `{${serialize(value, howToSerialize)}}`)
+        }
     })
-
     return serialization
+}
+
+/**
+ *
+ *
+ * @param {string} bucket
+ * @param {string} field
+ * @param {string} flatValue
+ * @returns
+ */
+const toPlain = (bucket: string, field: string, flatValue: string) => {
+    return bucket.concat(`${bucket.length > 0 ? SEPARATOR : ""}${field}:${flatValue}`)
 }
 
 /**
@@ -93,6 +108,9 @@ const serializeValue = (value: any, field: string, howToSerialize?: object) => {
         if (serialize) {
             return serialize(value)
         }
+    }
+    if (value instanceof Array) {
+        return JSON.stringify(value)
     }
     if (value instanceof Date) {
         return `"${(<Date>value).toISOString()}"`
