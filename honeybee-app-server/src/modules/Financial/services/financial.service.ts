@@ -1,4 +1,4 @@
-import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfDay, startOfWeek, subMonths, subWeeks } from 'date-fns'
+import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfDay, startOfISOWeek, subMonths, subWeeks } from 'date-fns'
 import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary } from 'honeybee-api'
 import { arrays, utils } from 'js-commons'
 import mongoose from 'mongoose'
@@ -327,55 +327,52 @@ export const groupFinancialAnalysisBy = async (options: {
     }
 
     const history: FinancialHistory[] = await FinancialHistoryModel.aggregate(aggregation)
+    // TODO merge dos historicos do mesmo dia
 
     if (period === FinancialAnalysisPeriod.DAILY) {
         return history.map(item => {
             const label = defineFinancialAnalysisLabel(item.date, period)
             const _history = FinancialHistoryModel.hydrate(item)
-            return toFinancialAnalysis(label, _history.getOpeningValue(), _history.getClosingValue(), item.profits)
+            return toFinancialAnalysis(label, _history, _history.profits)
         })
     }
 
     const groupedHistory = arrays.groupBy(history, item => (<any>item).groupMatch)
+    
     return Array.from(groupedHistory.keys()).map(group => {
         const arrayHistory = groupedHistory.get(group)
         const allProfits = Array.from(arrayHistory).flatMap(item => item.profits)
-        const firstHistory = arrays.firstElement(arrayHistory)
-        const lastHistory = arrays.lastElement(arrayHistory)
+        const firstHistory = arrays.lastElement(arrayHistory)
+        const lastHistory = arrays.firstElement(arrayHistory)
         const label = defineFinancialAnalysisLabel(firstHistory.date, period)
-        const _first = FinancialHistoryModel.hydrate(firstHistory) 
         const _last = FinancialHistoryModel.hydrate(lastHistory)
-        return toFinancialAnalysis(label, _first.getOpeningValue(), _last.getOpeningValue(), allProfits)
+        return toFinancialAnalysis(label, _last, allProfits)
     })
 }
 
-/**
- *
- *
- * @param {string} label
- * @param {number} opening
- * @param {number} closing
- * @param {Profit[]} profits
- * @returns {FinancialAnalysis}
- */
-const toFinancialAnalysis = (label: string, opening: number, closing: number, profits: Profit[]): FinancialAnalysis => {
-    const investimentGroup = arrays.groupBy(profits ?? [], item => String(item.investiment))
-    
-    const items = Array.from(investimentGroup.keys()).map(investiment => {
-        const investimentProfits = investimentGroup.get(investiment)
-        const total = arrays.sum(investimentProfits, item => item.value)
+const toFinancialAnalysis = (label: string, lastHistory: FinancialHistory, profits: Profit[]): FinancialAnalysis => {
+    const profitsByInvestiment = arrays.groupBy(profits ?? [], item => String(item.investiment))
+    const periodProfit = arrays.sum(profits, item => item.value)
+    const closing = lastHistory.getClosingValue()
+
+    const items = Array.from(profitsByInvestiment.keys()).map(investiment => {
+        const investimentProfits = profitsByInvestiment.get(investiment)
+        const profitByInvestiment = arrays.sum(investimentProfits, item => item.value)
         const investimentDB: any = BrokerInvestimentModel.findById(investiment).exec()
+        const investimentAmount = lastHistory.applications.find(app => (<BrokerInvestiment>app.investiment)._id.toHexString() === investiment)?.amount
         
         return {
-            amount: total,
-            variation: opening && (total / opening) * 100,
+            variation: (profitByInvestiment / closing) * 100,
+            profit: profitByInvestiment,
+            amount: investimentAmount,
             investiment: investimentDB
         } as FinancialAnalysisItem
     })
 
     return {
         label,
-        variation: utils.percentVariation(opening, closing),
+        variation: arrays.sum(items, item => item.variation),
+        profit: periodProfit,
         amount: closing,
         items
     }
@@ -396,7 +393,7 @@ const defineFinancialAnalysisLabel = (date: Date, period: FinancialAnalysisPerio
             return format(date, "dd/MMM")
 
         case FinancialAnalysisPeriod.WEEKLY:
-            return format(startOfWeek(date), "dd/MMM")
+            return format(startOfISOWeek(date), "dd/MMM")
 
         case FinancialAnalysisPeriod.MONTHLY:
             return format(date, "MMM/yyyy")

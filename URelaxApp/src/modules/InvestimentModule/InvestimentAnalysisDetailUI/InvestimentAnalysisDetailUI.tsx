@@ -1,9 +1,10 @@
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
+import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { Info } from '../../../components/Info'
 import { FlatLayout } from '../../../components/Layout/FlatLayout'
-import { HeaderDivider, MarginBox } from '../../../components/Layout/Layout.style'
+import { MarginBox } from '../../../components/Layout/Layout.style'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
@@ -11,9 +12,14 @@ import { Colors, Typography, TypographyMedium } from '../../../theming'
 import { PeriodBtn, Row } from '../InvestimentAnalysisUI'
 import { useInvestimentAnalysisDetailUIHook } from './InvestimentAnalysisDetailUIHook'
 
+const getLabel = (profit: number = 0) => {
+    return profit === 0 ? ts("no_variation") : (profit > 0 ? ts("gain") : ts("loss"))
+}
+
 export const InvestimentAnalysisDetailUI: FC = () => {
     
     const { 
+        profit,
         analysis,
         selectedItems,
         positiveProfit,
@@ -25,8 +31,24 @@ export const InvestimentAnalysisDetailUI: FC = () => {
     return (
         <FlatLayout
             bgColor={Colors.WHITE}
-            header={<BackHeader title={ts("period_investiment")}/>}>
+            header={<BackHeader title={`${ts("period_investiment")} (${analysis.label})`}/>}>
             <MarginBox noMarginTop>
+                <ProfitView>
+                    <Info 
+                        title={
+                            <Typography
+                                fontSize={15}
+                                textAlign="center">
+                                {getLabel(profit)}
+                            </Typography>
+                        }
+                        description={
+                            <TypographyMedium
+                                fontSize={23}>
+                                {utils.formatCurrency(profit, { prefix: AppConfig.CURRENCY_PREFIX })}
+                            </TypographyMedium>
+                        }/>
+                </ProfitView>
                 <Row>
                     <PeriodBtn
                         label={ts("gain")}
@@ -38,15 +60,17 @@ export const InvestimentAnalysisDetailUI: FC = () => {
                         selected={negativeProfit}
                         onPress={handleNegativeProfit}/>
                 </Row>
-                <HeaderDivider>{analysis.label}</HeaderDivider>
                 { selectedItems.map((item, key) => {
-                    const label = item.amount === 0 ? ts("no_variation") : (item.amount > 0 ? `${ts("gain")} of` : `${ts("loss")} of`)
                     return <Info
                         key={key}
                         title={<TypographyMedium fontSize={15}>{item.investiment?.description}</TypographyMedium>}
                         description={
                             <React.Fragment>
-                                <Typography color={Colors.GRAY_1} fontSize={14}>{label} {utils.formatCurrency(item.amount, { prefix: AppConfig.CURRENCY_PREFIX })}</Typography>
+                                <Typography
+                                    color={Colors.GRAY_1}
+                                    fontSize={14}>
+                                    {utils.formatCurrency(item.profit || 0, { prefix: AppConfig.CURRENCY_PREFIX })} ({getLabel(item.profit)})
+                                </Typography>
                                 <VariationMonitor value={item.variation} />
                             </React.Fragment>
                         }
@@ -56,3 +80,7 @@ export const InvestimentAnalysisDetailUI: FC = () => {
         </FlatLayout>
     )
 }
+
+const ProfitView = styled.View`
+    align-items: center;
+`

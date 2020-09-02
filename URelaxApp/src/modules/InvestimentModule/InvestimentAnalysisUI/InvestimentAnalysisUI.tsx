@@ -20,6 +20,7 @@ export const InvestimentAnalysisUI: FC = () => {
     const {
         dataGraph,
         patrimony,
+        profit,
         patrimonyVariation,
         period,
         selectedGraph,
@@ -42,15 +43,23 @@ export const InvestimentAnalysisUI: FC = () => {
             <MarginBoxFlex>
                 <Head>
                     <Patrimony
-                        title={<Typography color={Colors.GRAY_1}>Patrimonio total</Typography>}
+                        title={<Typography color={Colors.GRAY_1}>Lucro</Typography>}
                         description={
-                            <Typography fontSize={20} color={Colors.BLACK_2}>
+                            <TypographyMedium
+                                fontSize={20}
+                                color={Colors.BLACK_2}>
+                                {utils.formatCurrency(profit, { prefix: AppConfig.CURRENCY_PREFIX })}
+                            </TypographyMedium>
+                        }/>
+                    <Patrimony
+                        title={<Typography textAlign="right" color={Colors.GRAY_1}>Patrimônio total</Typography>}
+                        description={
+                            <Typography
+                                fontSize={20}
+                                color={Colors.BLACK_2}>
                                 {utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
                             </Typography>
                         }/>
-                    <VariationMonitor
-                        fontSize={16}
-                        value={patrimonyVariation}/>
                 </Head>
 
                 <Row>
@@ -83,13 +92,21 @@ export const InvestimentAnalysisUI: FC = () => {
                         title={ts("oops")}
                         message={ts("nothing_here")} />}
                         
-                    { !noData && <AnalysisGraphic
-                        data={dataGraph}
-                        loading={finding}
-                        minLengthToLoadMore={20}
-                        selectedIndex={selectedGraph}
-                        onSelect={handleSelectGraph}
-                        onEndPageReached={handleLoadMore}/>}
+                    { !noData && (
+                        <React.Fragment>
+                            <VariationMonitor
+                                fontSize={15}
+                                value={patrimonyVariation}/>
+                                
+                            <AnalysisGraphic
+                                data={dataGraph}
+                                loading={finding}
+                                minLengthToLoadMore={20}
+                                selectedIndex={selectedGraph}
+                                onSelect={handleSelectGraph}
+                                onEndPageReached={handleLoadMore}/>
+                        </React.Fragment>
+                    )}
                 </Graph>
 
             </MarginBoxFlex>
@@ -114,7 +131,6 @@ export const PeriodBtn: FC<{ label: string, selected?: boolean, onPress?(): void
 
 const Head = styled.View`
     justify-content: space-between;
-    align-items: center;
     flex-direction: row;
 `
 
@@ -124,6 +140,7 @@ const Patrimony = styled(Info)`
 
 const Graph = styled.View`
     flex: 1;
+    align-items: center;
 `
 
 export const Row = styled.View`

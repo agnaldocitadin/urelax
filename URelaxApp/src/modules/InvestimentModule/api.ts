@@ -36,10 +36,12 @@ export const fetchFinancialAnalysis = (brokerAccounts: string[], period: Financi
     return API.FinancialHistory.fetchFinancialAnalysis({ brokerAccounts, period }, `
         label
         amount
+        profit
         variation
         items {
             refID
             amount
+            profit
             variation
             investiment {
                 description

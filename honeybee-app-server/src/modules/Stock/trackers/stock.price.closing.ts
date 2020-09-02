@@ -30,19 +30,22 @@ class StockPriceClosing {
             .populate("stockInfo")
 
         await Promise.all(trackers.map(async tracker => {
-            
+
+            if (tracker.isSold()) return
             const todaysClosingPrice = await getLastClosingPrice(tracker.getSymbol(), today)
             const baseAmount = tracker.getQty() * tracker.getBuyPrice()
             const currentAmount = tracker.getQty() * todaysClosingPrice
             const profit = currentAmount - baseAmount
 
-            await addProfit(tracker.getBrokerAccountId(), today, {
-                investiment: tracker.getInvestimentId(),
-                type: ProfitType.YIELD, 
-                value: profit
-            })
+            if (profit !== 0) {
+                await addProfit(tracker.getBrokerAccountId(), today, {
+                    investiment: tracker.getInvestimentId(),
+                    type: ProfitType.YIELD, 
+                    value: profit
+                })
+            }
         }))
-        Logger.info("-> Closing stock price has been processed for %s tracker(s).")
+        Logger.info("-> Closing stock price has been processed for %s tracker(s).", trackers.length)
     }
 }
 

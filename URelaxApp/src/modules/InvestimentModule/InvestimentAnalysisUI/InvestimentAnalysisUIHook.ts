@@ -82,6 +82,7 @@ export const useInvestimentAnalysisUIHook = () => {
 
     return {
         dataGraph,
+        profit: graphBar?.profit || 0,
         patrimony: graphBar?.amount || 0,
         patrimonyVariation: graphBar?.variation || 0,
         period,

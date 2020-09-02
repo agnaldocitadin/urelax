@@ -184,6 +184,7 @@ export interface AppliedInvestiment {
 export interface FinancialAnalysis {
     label: string
     amount: number
+    profit: number
     variation: number
     items: FinancialAnalysisItem[]
 }
@@ -192,6 +193,7 @@ export interface FinancialAnalysis {
 export interface FinancialAnalysisItem {
     refID: string
     investiment: BrokerInvestiment
+    profit: number
     amount: number
     variation: number
 }

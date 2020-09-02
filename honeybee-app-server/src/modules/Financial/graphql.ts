@@ -41,6 +41,7 @@ const entry: GraphQLModule = {
         type FinancialAnalysis {
             label: String
             amount: Float
+            profit: Float
             variation: Float
             items: [FinancialAnalysisItem]
         }
@@ -49,6 +50,7 @@ const entry: GraphQLModule = {
             refID: ID
             investiment: BrokerInvestiment
             amount: Float
+            profit: Float
             variation: Float
         }
     `,
