@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
-import { API } from 'honeybee-api'
+import { API } from 'urelax-api'
 import actions, { TOKEN } from './actions'
 import { MODULE_NAME } from './const'
 import reducer, { select } from './reducer'

@@ -1,4 +1,4 @@
-import { API, ProfileInput } from 'honeybee-api'
+import { API, ProfileInput } from 'urelax-api'
 import { validations } from 'js-commons'
 import { useCallback, useState } from "react"
 import { Keyboard } from "react-native"

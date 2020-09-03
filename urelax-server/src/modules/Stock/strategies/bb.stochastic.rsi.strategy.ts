@@ -1,5 +1,5 @@
 import { startOfDay } from "date-fns"
-import { StockTrackerStatus } from "honeybee-api"
+import { StockTrackerStatus } from 'urelax-api'
 import { arrays } from "js-commons"
 import { ATR, BollingerBands, StochasticRSI } from "technicalindicators"
 import { BollingerBandsOutput } from "technicalindicators/declarations/volatility/BollingerBands"

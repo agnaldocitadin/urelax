@@ -1,5 +1,5 @@
 import admin from 'firebase-admin'
-import { MessageTypes, NotificationMessage, StockTrackerStatus } from 'honeybee-api'
+import { MessageTypes, NotificationMessage, StockTrackerStatus } from 'urelax-api'
 import { utils } from 'js-commons'
 import { ts } from '../../Translation/i18n'
 import { OrderExecution } from "../../Broker/plugins/broker.plugin"

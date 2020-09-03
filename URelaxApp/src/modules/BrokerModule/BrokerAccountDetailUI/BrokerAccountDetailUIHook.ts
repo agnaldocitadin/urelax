@@ -1,4 +1,4 @@
-import { Account, BrokerAccount } from "honeybee-api"
+import { Account, BrokerAccount } from 'urelax-api'
 import BrokerModule from ".."
 import IdentityModule from "../../IdentityModule"
 

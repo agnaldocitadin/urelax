@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { API, StockTracker, StockTrackerStatus } from "honeybee-api"
+import { API, StockTracker, StockTrackerStatus } from 'urelax-api'
 import * as StockTracker2 from ".."
 import { animatedCallback } from "../../../core/Commons.hook"
 import { ts } from "../../../core/I18n"

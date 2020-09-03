@@ -1,4 +1,4 @@
-import { Profile } from 'honeybee-api'
+import { Profile } from 'urelax-api'
 import React, { FC, ReactElement } from 'react'
 import { ActivityIndicator } from 'react-native'
 import { Authenticate } from '../Authenticate'

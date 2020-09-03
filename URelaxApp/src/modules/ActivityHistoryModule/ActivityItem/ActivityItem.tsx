@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { Activity } from 'honeybee-api'
+import { Activity } from 'urelax-api'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
 import { Colors, Typography, TypographyMedium } from '../../../theming'

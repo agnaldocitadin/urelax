@@ -1,4 +1,4 @@
-import { Profile } from 'honeybee-api'
+import { Profile } from 'urelax-api'
 import { FC } from 'react'
 import { useAuthenticateHook } from './AuthenticateHook'
 

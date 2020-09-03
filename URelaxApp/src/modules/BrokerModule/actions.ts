@@ -1,4 +1,4 @@
-import { BrokerAccount } from "honeybee-api"
+import { BrokerAccount } from 'urelax-api'
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 import { Routes } from "../NavigationModule/const"

@@ -1,4 +1,4 @@
-import { API, BrokerAccountExtraData } from 'honeybee-api'
+import { API, BrokerAccountExtraData } from 'urelax-api'
 import { Keyboard } from 'react-native'
 import { NavigationStackProp } from "react-navigation-stack"
 import { useDispatch, useSelector } from "react-redux"

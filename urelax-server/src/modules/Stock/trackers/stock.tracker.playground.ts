@@ -1,5 +1,5 @@
 import cronstrue from 'cronstrue'
-import { StockTrackerStatus } from 'honeybee-api'
+import { StockTrackerStatus } from 'urelax-api'
 import schedule from 'node-schedule'
 import Logger from '../../../core/Logger'
 import { StockTracker } from '../models/stock.tracker.model'

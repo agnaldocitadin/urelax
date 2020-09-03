@@ -1,4 +1,4 @@
-import { StockTrackerStatus } from 'honeybee-api'
+import { StockTrackerStatus } from 'urelax-api'
 import React, { FC } from 'react'
 import { Colors, Icons } from '../../../../core/Theme'
 import { InteractiveButton, InteractiveButtonStates } from '../../../../ui/components/InteractiveButton'

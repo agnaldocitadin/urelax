@@ -1,4 +1,4 @@
-import { Profile } from 'honeybee-api'
+import { Profile } from 'urelax-api'
 import { FC, useEffect } from 'react'
 import Identity from '..'
 import Security from '../../SecurityModule'

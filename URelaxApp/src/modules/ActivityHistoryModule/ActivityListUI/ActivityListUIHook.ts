@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { Account, Activity } from "honeybee-api"
+import { Account, Activity } from 'urelax-api'
 import { useCallback, useState } from "react"
 import ActivityHistory from ".."
 import AppConfig from "../../../core/AppConfig"

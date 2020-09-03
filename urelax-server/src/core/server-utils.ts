@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { APIError, Locales } from 'honeybee-api'
+import { APIError, Locales } from 'urelax-api'
 import { utils } from 'js-commons'
 import { ObjectId } from 'mongodb'
 import { tsLng } from '../modules/Translation/i18n'

@@ -1,5 +1,5 @@
 import { getModelForClass, mongoose, prop } from "@typegoose/typegoose"
-import { Locales } from "honeybee-api"
+import { Locales } from 'urelax-api'
 
 export class Preferences {
 

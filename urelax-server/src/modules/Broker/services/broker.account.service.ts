@@ -1,4 +1,4 @@
-import { BrokerAccountInput, Brokers, TransactionType } from "honeybee-api"
+import { BrokerAccountInput, Brokers, TransactionType } from 'urelax-api'
 import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"

@@ -1,4 +1,4 @@
-import { FinancialSummary } from "honeybee-api"
+import { FinancialSummary } from 'urelax-api'
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 

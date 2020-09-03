@@ -1,5 +1,5 @@
 import cronstrue from 'cronstrue'
-import { InvestimentType } from 'honeybee-api'
+import { InvestimentType } from 'urelax-api'
 import schedule from 'node-schedule'
 import Logger from '../../../core/Logger'
 import { findAvailableInvestiments } from '../../Broker/services'

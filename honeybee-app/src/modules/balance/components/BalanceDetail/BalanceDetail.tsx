@@ -1,4 +1,4 @@
-import { BalanceSheetHistorySummary } from 'honeybee-api'
+import { BalanceSheetHistorySummary } from 'urelax-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { View } from 'react-native'

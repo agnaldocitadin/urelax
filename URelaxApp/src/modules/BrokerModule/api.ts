@@ -1,4 +1,4 @@
-import { API, BrokerAccountInput } from "honeybee-api"
+import { API, BrokerAccountInput } from 'urelax-api'
 
 const fragment = `
     _id

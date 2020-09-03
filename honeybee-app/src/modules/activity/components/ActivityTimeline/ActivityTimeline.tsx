@@ -1,4 +1,4 @@
-import { Activity } from 'honeybee-api'
+import { Activity } from 'urelax-api'
 import React, { FC, ReactElement, useCallback } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components'

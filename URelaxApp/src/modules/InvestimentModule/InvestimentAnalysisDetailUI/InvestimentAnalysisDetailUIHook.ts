@@ -1,4 +1,4 @@
-import { FinancialAnalysis } from "honeybee-api"
+import { FinancialAnalysis } from 'urelax-api'
 import { arrays } from "js-commons"
 import { useCallback, useState } from "react"
 import Investiment from ".."

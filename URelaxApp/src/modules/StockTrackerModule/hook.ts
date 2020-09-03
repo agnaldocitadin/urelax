@@ -1,4 +1,4 @@
-import { Account, BrokerAccount, BrokerInvestiment, StockTracker, StockTrackerInput, StockTrackerStatus } from "honeybee-api"
+import { Account, BrokerAccount, BrokerInvestiment, StockTracker, StockTrackerInput, StockTrackerStatus } from 'urelax-api'
 import { useCallback } from "react"
 import StockTrackerModule from "."
 import BrokerModule from "../BrokerModule"

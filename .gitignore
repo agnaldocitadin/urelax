@@ -61,11 +61,11 @@ honeybee-app/ios/Pods/
 
 yarn.lock
 
-honeybee-api/node_modules/*
-honeybee-api/lib*
+urelax-api/node_modules/*
+urelax-api/lib*
 honeybee-app/node_modules*
-honeybee-app-server/node_modules*
-honeybee-app-server/dist*
+urelax-server/node_modules*
+urelax-server/dist*
 URelaxApp/node_modules*
 js-commons/node_modules/*
 js-commons/lib*

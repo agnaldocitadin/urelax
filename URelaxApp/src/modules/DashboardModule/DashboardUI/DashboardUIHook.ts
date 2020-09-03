@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { BrokerAccount, FinancialSummary, Profile } from "honeybee-api"
+import { BrokerAccount, FinancialSummary, Profile } from 'urelax-api'
 import { useCallback, useState } from "react"
 import Dashboard from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"

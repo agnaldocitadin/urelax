@@ -1,4 +1,4 @@
-import { Activity, BalanceSheetHistorySummary, BalanceSheetSummary } from 'honeybee-api'
+import { Activity, BalanceSheetHistorySummary, BalanceSheetSummary } from 'urelax-api'
 import { Text, View } from 'native-base'
 import React, { FC } from 'react'
 import { RefreshControl, TouchableNativeFeedback, ViewStyle } from 'react-native'

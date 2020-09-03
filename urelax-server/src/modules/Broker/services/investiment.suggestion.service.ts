@@ -1,5 +1,5 @@
 import { mongoose } from "@typegoose/typegoose"
-import { InvestimentType } from "honeybee-api"
+import { InvestimentType } from 'urelax-api'
 import { BrokerInvestiment, BrokerInvestimentModel } from "../models"
 
 export const suggestAnInvestiment = async (account: mongoose.Types.ObjectId): Promise<BrokerInvestiment> => {

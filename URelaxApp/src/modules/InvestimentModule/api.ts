@@ -1,4 +1,4 @@
-import { API, AppliedInvestiment, BrokerInvestiment, Brokers, FinancialAnalysis, FinancialAnalysisPeriod } from "honeybee-api"
+import { API, AppliedInvestiment, BrokerInvestiment, Brokers, FinancialAnalysis, FinancialAnalysisPeriod } from 'urelax-api'
 
 const fragment = `
     _id

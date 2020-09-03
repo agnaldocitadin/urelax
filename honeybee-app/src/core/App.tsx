@@ -1,4 +1,4 @@
-import { API } from 'honeybee-api'
+import { API } from 'urelax-api'
 import React from 'react'
 import 'react-native-gesture-handler'
 import { enableScreens } from 'react-native-screens'

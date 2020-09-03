@@ -1,4 +1,4 @@
-import { Locales, ProfileInput } from "honeybee-api"
+import { Locales, ProfileInput } from 'urelax-api'
 import { utils } from "js-commons"
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"

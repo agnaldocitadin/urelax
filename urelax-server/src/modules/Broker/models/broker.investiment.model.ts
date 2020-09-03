@@ -1,5 +1,5 @@
 import { getModelForClass, prop } from "@typegoose/typegoose"
-import { InvestimentType } from "honeybee-api"
+import { InvestimentType } from 'urelax-api'
 import mongoose from "mongoose"
 import { BrokerNames } from "./broker.names"
 

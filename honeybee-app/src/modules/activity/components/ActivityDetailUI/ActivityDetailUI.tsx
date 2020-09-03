@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { Activity } from 'honeybee-api'
+import { Activity } from 'urelax-api'
 import React, { FC } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { NavigationStackProp } from 'react-navigation-stack'

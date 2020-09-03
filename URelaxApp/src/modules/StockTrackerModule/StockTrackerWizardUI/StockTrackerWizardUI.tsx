@@ -1,4 +1,4 @@
-import { Frequency, Strategy } from 'honeybee-api'
+import { Frequency, Strategy } from 'urelax-api'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
 import { BackHeader } from '../../../components/Header/BackHeader'

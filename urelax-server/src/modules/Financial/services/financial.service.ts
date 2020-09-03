@@ -1,5 +1,5 @@
 import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfDay, startOfISOWeek, subMonths, subWeeks } from 'date-fns'
-import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary } from 'honeybee-api'
+import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary } from 'urelax-api'
 import { arrays, utils } from 'js-commons'
 import mongoose from 'mongoose'
 import { BrokerInvestiment, BrokerInvestimentModel } from '../../Broker/models'

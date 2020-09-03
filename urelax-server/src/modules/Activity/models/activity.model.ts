@@ -1,5 +1,5 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
-import { ActivityType } from 'honeybee-api'
+import { ActivityType } from 'urelax-api'
 import mongoose from 'mongoose'
 import { Account } from '../../Identity/models'
 import { ts } from '../../Translation/i18n'

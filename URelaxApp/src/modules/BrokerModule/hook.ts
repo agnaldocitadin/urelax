@@ -1,4 +1,4 @@
-import { Account, BrokerAccount, BrokerAccountInput, Brokers } from "honeybee-api"
+import { Account, BrokerAccount, BrokerAccountInput, Brokers } from 'urelax-api'
 import { useCallback } from "react"
 import IdentityModule from "../IdentityModule"
 

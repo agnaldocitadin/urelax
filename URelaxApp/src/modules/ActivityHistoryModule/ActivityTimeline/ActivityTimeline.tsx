@@ -1,4 +1,4 @@
-import { Activity } from 'honeybee-api'
+import { Activity } from 'urelax-api'
 import React, { FC, ReactElement, useCallback } from 'react'
 import { ListRenderItem } from 'react-native'
 import { Timeline, TimelineItem } from '../../../components/Timeline'

@@ -1,4 +1,4 @@
-import { ActivityType } from "honeybee-api"
+import { ActivityType } from 'urelax-api'
 import { GraphQLModule } from "../GraphQL"
 import { findActivitiesBy } from "./services"
 

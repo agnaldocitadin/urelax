@@ -1,5 +1,5 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native'
-import { FinancialSummary } from 'honeybee-api'
+import { FinancialSummary } from 'urelax-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { ListRenderItem, RefreshControl, View, ViewStyle } from 'react-native'

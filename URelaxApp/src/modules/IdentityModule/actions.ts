@@ -1,4 +1,4 @@
-import { Account } from "honeybee-api"
+import { Account } from 'urelax-api'
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 

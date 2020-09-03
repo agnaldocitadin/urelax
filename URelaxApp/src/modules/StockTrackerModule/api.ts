@@ -1,4 +1,4 @@
-import { API, StockTrackerInput } from "honeybee-api"
+import { API, StockTrackerInput } from 'urelax-api'
 
 const stockTrackerFragment = `
     _id

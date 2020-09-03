@@ -1,5 +1,5 @@
 
-import { FinancialHistory, Transaction } from 'honeybee-api'
+import { FinancialHistory, Transaction } from 'urelax-api'
 import React, { FC, ReactElement, useCallback } from 'react'
 import { ListRenderItem } from 'react-native'
 import { Timeline, TimelineItem, TimelineProps } from '../../../components/Timeline'

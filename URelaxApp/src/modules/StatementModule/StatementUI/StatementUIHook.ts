@@ -1,4 +1,4 @@
-import { Account, FinancialHistory } from "honeybee-api"
+import { Account, FinancialHistory } from 'urelax-api'
 import { useCallback, useState } from "react"
 import AppConfig from "../../../core/AppConfig"
 import { useEffectWhenReady } from "../../../core/Commons.hook"

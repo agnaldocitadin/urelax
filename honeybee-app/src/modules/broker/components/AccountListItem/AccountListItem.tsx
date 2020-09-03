@@ -1,4 +1,4 @@
-import { BrokerAccount } from 'honeybee-api'
+import { BrokerAccount } from 'urelax-api'
 import React, { FC } from 'react'
 import { Image, ViewStyle } from 'react-native'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'

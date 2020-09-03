@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { StockTracker } from 'honeybee-api'
+import { StockTracker } from 'urelax-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'

@@ -1,4 +1,4 @@
-import { StockTracker } from 'honeybee-api'
+import { StockTracker } from 'urelax-api'
 import { utils } from 'js-commons'
 import { Text } from 'native-base'
 import React from 'react'

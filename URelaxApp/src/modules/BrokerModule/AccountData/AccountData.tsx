@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { format } from 'date-fns'
-import { BrokerAccount } from 'honeybee-api'
+import { BrokerAccount } from 'urelax-api'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
 import BrokerModule from '..'

@@ -1,4 +1,4 @@
-import { AppliedInvestiment, FinancialAnalysis, FinancialHistory } from "honeybee-api"
+import { AppliedInvestiment, FinancialAnalysis, FinancialHistory } from 'urelax-api'
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 

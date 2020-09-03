@@ -1,7 +1,7 @@
 import { Express, Request } from 'express'
 import expressGraphql from 'express-graphql'
 import { buildSchema } from 'graphql'
-import { APIError, Locales } from 'honeybee-api'
+import { APIError, Locales } from 'urelax-api'
 import modulePath from '.'
 import { ErrorCodes } from '../core/error.codes'
 import { tsLng } from './Translation/i18n'

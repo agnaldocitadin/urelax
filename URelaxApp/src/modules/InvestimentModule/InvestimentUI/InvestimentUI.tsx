@@ -1,4 +1,4 @@
-import { AppliedInvestiment } from 'honeybee-api'
+import { AppliedInvestiment } from 'urelax-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { RefreshControl, ScrollView } from 'react-native'

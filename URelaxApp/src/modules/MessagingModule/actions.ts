@@ -1,4 +1,4 @@
-import { APIError } from "honeybee-api"
+import { APIError } from 'urelax-api'
 import { useDispatch } from "react-redux"
 import { ts } from "../../core/I18n"
 import { Colors, Icons } from "../../theming"

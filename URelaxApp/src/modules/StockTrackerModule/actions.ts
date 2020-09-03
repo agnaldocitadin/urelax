@@ -1,4 +1,4 @@
-import { Activity, FinancialHistory, Frequency, StockTracker, Strategy } from "honeybee-api"
+import { Activity, FinancialHistory, Frequency, StockTracker, Strategy } from 'urelax-api'
 import { useDispatch } from "react-redux"
 import { DispatchType } from "../AppModuleState"
 import { Routes } from "../NavigationModule/const"

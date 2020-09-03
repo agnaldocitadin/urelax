@@ -1,4 +1,4 @@
-import { UserAccount } from 'honeybee-api'
+import { UserAccount } from 'urelax-api'
 import { FC } from 'react'
 import { useAuthenticateHook } from './AuthenticateHook'
 

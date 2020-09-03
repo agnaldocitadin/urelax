@@ -1,4 +1,4 @@
-import { Profile } from "honeybee-api"
+import { Profile } from 'urelax-api'
 import { useCallback, useState } from "react"
 import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"

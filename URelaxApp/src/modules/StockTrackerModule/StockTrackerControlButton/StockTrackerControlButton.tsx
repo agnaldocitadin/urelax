@@ -1,4 +1,4 @@
-import { StockTrackerStatus } from 'honeybee-api'
+import { StockTrackerStatus } from 'urelax-api'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
 import { InteractiveButton, InteractiveButtonStates } from '../../../components/InteractiveButton'

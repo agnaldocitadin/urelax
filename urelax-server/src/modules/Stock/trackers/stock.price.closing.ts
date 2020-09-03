@@ -1,6 +1,6 @@
 import cronstrue from 'cronstrue'
 import { startOfDay } from 'date-fns'
-import { ProfitType } from 'honeybee-api'
+import { ProfitType } from 'urelax-api'
 import schedule from 'node-schedule'
 import Logger from "../../../core/Logger"
 import { addProfit } from '../../Financial/services'

@@ -1,4 +1,4 @@
-import { Strategy } from 'honeybee-api'
+import { Strategy } from 'urelax-api'
 import React, { FC } from 'react'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { ts } from '../../../../core/I18n'

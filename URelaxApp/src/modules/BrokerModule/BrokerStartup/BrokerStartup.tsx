@@ -1,4 +1,4 @@
-import { Account } from "honeybee-api"
+import { Account } from 'urelax-api'
 import { FC, useEffect } from "react"
 import BrokerModule from ".."
 import IdentityModule from "../../IdentityModule"

@@ -1,4 +1,4 @@
-import { Account } from 'honeybee-api'
+import { Account } from 'urelax-api'
 import React, { FC, ReactElement } from 'react'
 import { ActivityIndicator, SafeAreaView, StatusBar } from 'react-native'
 import styled from 'styled-components/native'

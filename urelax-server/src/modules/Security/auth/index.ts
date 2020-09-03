@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import fs from 'fs'
-import { APIError } from 'honeybee-api'
+import { APIError } from 'urelax-api'
 import passport from 'passport'
 import passportjwt from 'passport-jwt'
 import path from 'path'

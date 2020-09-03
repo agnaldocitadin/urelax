@@ -1,4 +1,4 @@
-import { API, Profile } from "honeybee-api"
+import { API, Profile } from 'urelax-api'
 import { validations } from "js-commons"
 import { useCallback, useState } from "react"
 import { useEffectWhenReady } from "../../../core/Commons.hook"

@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { Activity } from 'honeybee-api'
+import { Activity } from 'urelax-api'
 import { Icon, Text, View } from 'native-base'
 import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'

@@ -1,4 +1,4 @@
-import { FinancialHistory } from 'honeybee-api'
+import { FinancialHistory } from 'urelax-api'
 import React, { FC } from 'react'
 import { ScrollView } from 'react-native'
 import { BackHeader } from '../../../components/Header/BackHeader'

@@ -1,4 +1,4 @@
-import { FinancialSummary } from "honeybee-api"
+import { FinancialSummary } from 'urelax-api'
 import { useSelector } from "react-redux"
 import AppModuleState from "../AppModuleState"
 import { ActionTypes, ReducerState } from "./actions"

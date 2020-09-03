@@ -1,4 +1,4 @@
-import { Profile } from "honeybee-api"
+import { Profile } from 'urelax-api'
 import { useCallback, useEffect, useState } from "react"
 import NavigationModule from "../../NavigationModule"
 import Storage from "../../StorageModule"

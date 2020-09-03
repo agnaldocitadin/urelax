@@ -1,4 +1,4 @@
-import { Account, API, Preferences } from "honeybee-api"
+import { Account, API, Preferences } from 'urelax-api'
 import { useCallback } from "react"
 import IdentityModule from "../../IdentityModule"
 import MessagingModule from "../../MessagingModule"

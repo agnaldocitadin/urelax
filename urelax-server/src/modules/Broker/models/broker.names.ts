@@ -1,4 +1,4 @@
-import { Brokers } from "honeybee-api"
+import { Brokers } from 'urelax-api'
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 

@@ -1,4 +1,4 @@
-import { Broker, Brokers } from 'honeybee-api'
+import { Broker, Brokers } from 'urelax-api'
 import { useState } from 'react'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { useDispatch, useSelector } from 'react-redux'

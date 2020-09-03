@@ -1,4 +1,4 @@
-import { Brokers, InvestimentType } from 'honeybee-api'
+import { Brokers, InvestimentType } from 'urelax-api'
 import { GraphQLModule } from "../GraphQL"
 import { createBrokerAccount, findAvailableInvestiments, findBrokerAccounts, findBrokersBy, suggestAnInvestiment, updateBrokerAccountById } from "./services"
 

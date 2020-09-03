@@ -1,4 +1,4 @@
-import { BrokerAccount } from 'honeybee-api'
+import { BrokerAccount } from 'urelax-api'
 import React, { FC } from 'react'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { ts } from '../../../../core/I18n'

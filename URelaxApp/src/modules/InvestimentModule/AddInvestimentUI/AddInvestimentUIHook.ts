@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { AppliedInvestiment, BrokerAccount, BrokerInvestiment, InvestimentType } from "honeybee-api"
+import { AppliedInvestiment, BrokerAccount, BrokerInvestiment, InvestimentType } from 'urelax-api'
 import { useCallback, useState } from "react"
 import InvestimentModule from ".."
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"

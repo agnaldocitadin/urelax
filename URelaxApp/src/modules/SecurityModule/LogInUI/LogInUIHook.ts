@@ -1,4 +1,4 @@
-import { APIError, Profile } from "honeybee-api"
+import { APIError, Profile } from 'urelax-api'
 import { useCallback, useState } from "react"
 import { Keyboard } from "react-native"
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"

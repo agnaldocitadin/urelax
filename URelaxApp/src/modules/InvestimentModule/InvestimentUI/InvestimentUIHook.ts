@@ -1,6 +1,6 @@
 import { useNetInfo } from "@react-native-community/netinfo"
 import { useNavigation } from "@react-navigation/native"
-import { Account, AppliedInvestiment, BrokerAccount, InvestimentType } from "honeybee-api"
+import { Account, AppliedInvestiment, BrokerAccount, InvestimentType } from 'urelax-api'
 import { arrays } from "js-commons"
 import { useCallback, useState } from "react"
 import InvestimentModule from ".."

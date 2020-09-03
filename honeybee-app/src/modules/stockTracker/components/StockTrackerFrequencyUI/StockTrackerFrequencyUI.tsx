@@ -1,4 +1,4 @@
-import { Frequency } from 'honeybee-api'
+import { Frequency } from 'urelax-api'
 import React, { FC } from 'react'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { ts } from '../../../../core/I18n'

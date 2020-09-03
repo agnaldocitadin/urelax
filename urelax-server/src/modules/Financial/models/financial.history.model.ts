@@ -1,5 +1,5 @@
 import { arrayProp, getModelForClass, prop, Ref } from '@typegoose/typegoose'
-import { ProfitType, TransactionType } from 'honeybee-api'
+import { ProfitType, TransactionType } from 'urelax-api'
 import { arrays } from 'js-commons'
 import mongoose from 'mongoose'
 import { BrokerAccount } from '../../Broker/models'

@@ -1,4 +1,4 @@
-import { Account } from "honeybee-api"
+import { Account } from 'urelax-api'
 import { useSelector } from "react-redux"
 import AppModuleState from "../AppModuleState"
 import { ActionTypes, ReducerState } from "./actions"

@@ -1,4 +1,4 @@
-import { BalanceSheetHistorySummary, GroupBy } from 'honeybee-api'
+import { BalanceSheetHistorySummary, GroupBy } from 'urelax-api'
 import React, { FC, useCallback } from 'react'
 import styled from 'styled-components'
 import { InfiniteFlatList } from '../../../../ui/components/InfiniteFlatList'

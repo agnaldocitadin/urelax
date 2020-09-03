@@ -1,5 +1,5 @@
 import { getModelForClass, mongoose, prop, Ref } from "@typegoose/typegoose"
-import { StockTrackerStatus } from "honeybee-api"
+import { StockTrackerStatus } from 'urelax-api'
 import { BrokerAccount, BrokerInvestiment } from "../../Broker/models"
 import { Account } from "../../Identity/models"
 import { StrategyNames } from "../strategies"

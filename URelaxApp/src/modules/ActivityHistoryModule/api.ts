@@ -1,4 +1,4 @@
-import { Activity, ActivityType, API } from "honeybee-api"
+import { Activity, ActivityType, API } from 'urelax-api'
 
 export const fetchActivities = async (options: {
         id?: string

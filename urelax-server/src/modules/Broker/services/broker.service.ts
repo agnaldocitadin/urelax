@@ -1,4 +1,4 @@
-import { Brokers, InvestimentType } from "honeybee-api"
+import { Brokers, InvestimentType } from 'urelax-api'
 import { BrokerInvestiment, BrokerInvestimentModel } from "../models"
 import { BrokerNames, BrokerNamesDef } from "../models/broker.names"
 

@@ -1,5 +1,5 @@
 import { mongoose } from "@typegoose/typegoose"
-import { ActivityType } from "honeybee-api"
+import { ActivityType } from 'urelax-api'
 import { utils } from 'js-commons'
 import { toObjectId } from "../../../core/server-utils"
 import { BrokerInvestiment } from "../../Broker/models"

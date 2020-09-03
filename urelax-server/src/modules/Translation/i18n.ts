@@ -1,4 +1,4 @@
-import { Locales } from 'honeybee-api'
+import { Locales } from 'urelax-api'
 import i18n, { TOptions } from 'i18next'
 import en_US from './langs/en_US.json'
 import pt_BR from './langs/pt_BR.json'

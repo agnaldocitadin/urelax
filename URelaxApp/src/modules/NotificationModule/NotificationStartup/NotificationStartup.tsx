@@ -1,5 +1,5 @@
 import { firebase } from '@react-native-firebase/messaging'
-import { API, MessageTypes, NotificationMessage, Profile } from 'honeybee-api'
+import { API, MessageTypes, NotificationMessage, Profile } from 'urelax-api'
 import { FC, useEffect } from 'react'
 import { getUniqueId } from 'react-native-device-info'
 import SecurityModule from '../../SecurityModule'

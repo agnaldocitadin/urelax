@@ -1,6 +1,6 @@
 import dotenv from 'dotenv-flow'
 import admin from 'firebase-admin'
-import { MessageTypes } from 'honeybee-api'
+import { MessageTypes } from 'urelax-api'
 import Logger from '../src/core/Logger'
 
 beforeAll(async () => {

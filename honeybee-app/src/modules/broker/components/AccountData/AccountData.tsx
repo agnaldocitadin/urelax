@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { BrokerAccount, BrokerAccountExtraData } from 'honeybee-api'
+import { BrokerAccount, BrokerAccountExtraData } from 'urelax-api'
 import { utils } from 'js-commons'
 import React from 'react'
 import { withNavigation } from 'react-navigation'

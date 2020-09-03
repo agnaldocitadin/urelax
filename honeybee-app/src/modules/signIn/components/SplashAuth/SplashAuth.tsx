@@ -1,4 +1,4 @@
-import { UserAccount } from 'honeybee-api'
+import { UserAccount } from 'urelax-api'
 import React, { FC, ReactElement } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'

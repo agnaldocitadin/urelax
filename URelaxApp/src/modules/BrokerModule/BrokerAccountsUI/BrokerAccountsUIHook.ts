@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { Account, BrokerAccount } from "honeybee-api"
+import { Account, BrokerAccount } from 'urelax-api'
 import { useCallback } from "react"
 import BrokerModule from ".."
 import IdentityModule from "../../IdentityModule"

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { API, AppliedInvestiment, Frequency, StockTracker, Strategy } from "honeybee-api"
+import { API, AppliedInvestiment, Frequency, StockTracker, Strategy } from 'urelax-api'
 import { useCallback, useState } from "react"
 import StockTrackerModule from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
