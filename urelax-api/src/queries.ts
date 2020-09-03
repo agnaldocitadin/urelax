@@ -1,5 +1,5 @@
 import { ActivityType, StockTracker } from '.'
-import { Brokers, FinancialAnalysisPeriod, InvestimentType } from './enums'
+import { Brokers, FinancialAnalysisPeriod, InvestimentType } from './enumerations'
 import { gql, query } from './graphql'
 import { Activity, AppliedInvestiment, Broker, BrokerAccount, BrokerInvestiment, FinancialAnalysis, FinancialSummary, Frequency, Strategy } from './types'
 

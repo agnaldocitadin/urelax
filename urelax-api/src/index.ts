@@ -1,4 +1,4 @@
 export * from './api'
-export * from './enums'
+export * from './enumerations'
 export * from './types'
 export * from './inputs'

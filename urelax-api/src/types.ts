@@ -1,4 +1,4 @@
-import { Brokers, InvestimentType, MessageTypes, StockTrackerStatus, TransactionType } from "./Enums"
+import { Brokers, InvestimentType, MessageTypes, StockTrackerStatus, TransactionType } from "./enumerations"
 
 export type NotificationMessage = {
     messageType: MessageTypes

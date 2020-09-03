@@ -1,4 +1,4 @@
-import { Brokers, StockTrackerStatus } from "./enums"
+import { Brokers, StockTrackerStatus } from "./enumerations"
 import { BrokerAccountExtraData, ID } from "./types"
 
 export interface StockTrackerInput {

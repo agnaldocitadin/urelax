@@ -1,5 +1,5 @@
 {
-  "name": "URelax",
+  "name": "urelax-app",
   "version": "1.0.0-betha",
   "private": true,
   "scripts": {
@@ -24,7 +24,6 @@
     "@react-navigation/stack": "^5.4.1",
     "axios": "^0.19.2",
     "date-fns": "^2.14.0",
-    "urelax-api": "../urelax-api/",
     "i18next": "^19.4.5",
     "js-commons": "../../js-commons",
     "react": "^16.13.1",
@@ -45,7 +44,8 @@
     "react-native-vector-icons": "^6.6.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "urelax-api": "../urelax-api/"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
