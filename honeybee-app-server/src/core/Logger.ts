@@ -1,5 +1,5 @@
 import pino, { LogFn } from 'pino'
-import { ErrorCodes } from './error.codes.d'
+import { ErrorCodes } from './error.codes'
 
 export type MessageError = {
     code: ErrorCodes
@@ -21,7 +21,7 @@ const trace: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
         Pino.trace(obj, msg, ...args)
         return
     }
-    msg ? Pino.trace(obj, msg, ...args) : Pino.trace(obj)
+    msg !== undefined ? Pino.trace(obj, msg, ...args) : Pino.trace(obj)
 }
 
 const debug: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
@@ -29,7 +29,7 @@ const debug: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
         Pino.debug(obj, msg, ...args)
         return
     }
-    msg ? Pino.debug(obj, msg, ...args) : Pino.debug(obj)
+    msg !== undefined ? Pino.debug(obj, msg, ...args) : Pino.debug(obj)
 }
 
 const info: LogFn = (obj?: Object, msg?: string, ...args: any[]) => {
@@ -37,7 +37,7 @@ const info: LogFn = (obj?: Object, msg?: string, ...args: any[]) => {
         Pino.info(obj, msg, ...args)
         return
     }
-    msg ? Pino.info(obj, msg, ...args) : Pino.info(obj)
+    msg !== undefined ? Pino.info(obj, msg, ...args) : Pino.info(obj)
 }
 
 const warn: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
@@ -45,7 +45,7 @@ const warn: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
         Pino.warn(obj, msg, ...args)
         return
     }
-    msg ? Pino.warn(obj, msg, ...args) : Pino.warn(obj)
+    msg !== undefined ? Pino.warn(obj, msg, ...args) : Pino.warn(obj)
 }
 
 const error: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
@@ -53,7 +53,7 @@ const error: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
         Pino.error(obj, msg, ...args)
         return
     }
-    msg ? Pino.error(obj, msg, ...args) : Pino.error(obj)
+    msg !== undefined ? Pino.error(obj, msg, ...args) : Pino.error(obj)
 }
 
 const fatal: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
@@ -61,10 +61,10 @@ const fatal: LogFn = (obj: Object, msg?: string, ...args: any[]) => {
         Pino.fatal(obj, msg, ...args)
         return
     }
-    msg ? Pino.fatal(obj, msg, ...args) : Pino.fatal(obj)
+    msg !== undefined ? Pino.fatal(obj, msg, ...args) : Pino.fatal(obj)
 }
 
-export const Logger = {
+const Logger = {
 
     trace,
     debug,

@@ -1,7 +1,0 @@
-export enum StockTrackerStatus {
-    PAUSED = "PAUSED",
-    RUNNING = "RUNNING",
-    WAITING_PAUSE = "WAITING_PAUSE",
-    WAITING_DESTROY = "WAITING_DESTROY",
-    DESTROYED = "DESTROYED"
-}

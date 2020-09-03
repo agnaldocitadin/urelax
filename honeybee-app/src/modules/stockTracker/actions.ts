@@ -1,14 +1,6 @@
 import { Activity, BalanceSheet, StockTracker, UserAccount } from "honeybee-api"
 import { ReduxAction } from "../../reducers/Reducer"
-import { APPEND_STOCK_TRACKERS, APPEND_STOCK_TRACKER_ACTIVITIES, CLEAR_STOCK_TRACKER_PREVIEW, INIT_STOCK_TRACKER_MODULE, PREPATE_STOCK_TRACKER_TO_CREATE, REGISTER_STOCK_TRACKER_BALANCE, REMOVE_STOCK_TRACKERS, RESET_STOCK_TRACKER_MODULE, SELECT_STOCK_TRACKER, SELECT_STOCK_TRACKER_TO_UPDATE, UPDATE_MAIN_STOCK_TRACKER, UPDATE_SELECTED_STOCK_TRACKER } from "./actionTypes"
-
-export const initStockTrackerModule = (balance: BalanceSheet, activities: Activity[]): ReduxAction => ({
-    type: INIT_STOCK_TRACKER_MODULE,
-    data: {
-        balance,
-        activities
-    }
-})
+import { APPEND_STOCK_TRACKERS, APPEND_STOCK_TRACKER_ACTIVITIES, CLEAR_STOCK_TRACKER_PREVIEW, PREPATE_STOCK_TRACKER_TO_CREATE, REGISTER_STOCK_TRACKER_BALANCE, REMOVE_STOCK_TRACKERS, RESET_STOCK_TRACKER_MODULE, SELECT_STOCK_TRACKER, SELECT_STOCK_TRACKER_TO_UPDATE, UPDATE_MAIN_STOCK_TRACKER, UPDATE_SELECTED_STOCK_TRACKER } from "./actionTypes"
 
 export const selectStockTracker = (stockTracker: StockTracker): ReduxAction => ({
     type: SELECT_STOCK_TRACKER,
@@ -58,9 +50,9 @@ export const appendStockTrackerActivities = (activities: Activity[], position: "
     }
 })
 
-export const registerStockTrackerBalance = (balance: BalanceSheet): ReduxAction => ({
+export const registerStockTrackerBalance = (balances: BalanceSheet[]): ReduxAction => ({
     type: REGISTER_STOCK_TRACKER_BALANCE,
-    data: balance
+    data: balances
 })
 
 export const clearStockTrackerPreview = (): ReduxAction => ({

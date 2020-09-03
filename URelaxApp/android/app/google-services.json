@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "30354002551",
+    "firebase_url": "https://urelax-5abcb.firebaseio.com",
+    "project_id": "urelax-5abcb",
+    "storage_bucket": "urelax-5abcb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30354002551:android:2980fb181bdda636aaac72",
+        "android_client_info": {
+          "package_name": "com.urelax"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30354002551-170t12j1o3ns7kd54o6r5lo5v9bgtt43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvlFoPsx9CIyT6kcQBGtLy0xtXy5rc5aY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30354002551-170t12j1o3ns7kd54o6r5lo5v9bgtt43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

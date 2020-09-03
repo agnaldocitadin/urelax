@@ -1,4 +1,4 @@
-import { Brokers, MessageTypes, StockTrackerStatus } from "./Enums"
+import { Brokers, InvestimentType, MessageTypes, StockTrackerStatus, TransactionType } from "./Enums"
 
 export type NotificationMessage = {
     messageType: MessageTypes
@@ -13,24 +13,73 @@ export type APIError = {
 
 export type GroupBy = "day" | "week" | "month" | "year"
 
-export interface Preferences {
-    receiveTradeNotification: boolean
-    receiveBalanceNotification: boolean
-    addStockTrackerPaused: boolean
+export interface ID extends String {}
+
+export interface StockTracker {
+    _id?: string
+    account?: Account
+    brokerAccount?: BrokerAccount
+    strategy?: string
+    strategySetting?: StrategySetting
+    status?: StockTrackerStatus
+    frequency?: string
+    lastFrequencyUpdate?: Date
+    stockInfo?: BrokerInvestiment
+    qty?: number
+    buyPrice?: number
+    createdAt?: Date
+    updatedAt?: Date
 }
 
-export interface UserAccount {
+export interface Strategy {
+    _id: ID
+    description: string
+}
+
+export interface Frequency {
+    _id: ID
+    description: string
+}
+
+export interface StrategySetting {
+    stockAmountLimit?: number
+    autoAmountLimit?: boolean
+}
+
+export interface Profile {
     _id?: string
     name?: string
     nickname?: string
-    passwd?: string
     email?: string
+    password?: string
+    accounts?: Account[]
+    activeAccount?: string
     active?: boolean
-    deviceToken?: string
-    simulation?: boolean
-    simulationAccountId?: string
-    preferences?: Preferences
+    devices?: Device[]
     createdAt?: Date
+    updatedAt?: Date
+}
+
+export interface Preferences {
+    language?: string
+    receiveBuyNotification?: boolean
+    receiveSellNotification?: boolean
+    receiveBalanceNotification?: boolean
+    addStockTrackerPaused?: boolean
+}
+
+export interface Device {
+    deviceId?: string
+    token?: string
+    active?: boolean
+}
+
+export interface Account {
+    _id?: string
+    active?: boolean
+    simulation?: boolean
+    devices?: Device[]
+    preference?: Preferences
 }
 
 export interface Broker {
@@ -39,101 +88,22 @@ export interface Broker {
     name?: string
     logo?: string
     active?: boolean
-}
-
-export interface Stock {
-    _id?: string
-    symbol?: string
-    description?: string
-    active?: boolean
-    stockLot?: number
-}
-
-export interface StockTracker {
-    _id?: string
-    userAccount?: UserAccount
-    brokerAccount?: BrokerAccount
-    strategy?: Strategy
-    stock?: Stock
-    status?: string
-    active?: boolean
-    frequency?: Frequency
-    stockAmountLimit?: number
-    autoAmountLimit?: boolean
     createdAt?: Date
+    updatedAt?: Date
 }
 
-export interface Strategy {
-    _id?: string
-    description?: string
-    file?: string
-    impl?: string
-}
-
-export interface Activity {
-    _id?: string
-    userAccount: UserAccount
-    activityType: string
-    ref: string
-    icon: string
-    dateTime: Date
-    title: string
-    details: ActivityDetail[]
-}
-
-export interface ActivityDetail {
-    title: string
-    description: string
-    hidden: boolean
-}
-
-export interface Frequency {
-    _id?: string
-    description?: string
-}
-
-export interface StockSheet {
-    symbol: string
-    qty: number
-    averagePrice: number
-}
-
-export interface BalanceSheet {
+export interface Investiment {
     _id: string
-    userAccount: UserAccount
-    brokerAccount: any //FIXME
-    createdAt: Date
-    initialAmount: number
-    currentAmount: number
-    stocks: StockSheet[]
+    type: string
+    description: string
+    active: boolean
+    logo: string
+    stock: StockInvestimentInfo
 }
 
-export interface BalanceSheetSummary {
-    amount?: number
-    amountVariation?: number
-    credits?: number
-    creditVariation?: number
-    stocks?: number
-    stockVariation?: number
-}
-
-export interface BalanceSheetHistorySummary {
-    label?: string
-    amount?: number
-    amountVariation?: number
-    credits?: number
-    creditVariation?: number
-    stocks?: number
-    stockVariation?: number
-}
-
-export interface BrokerAccount {
-    _id?: string
-    userAccount?: UserAccount
-    accountName?: string
-    brokerCode?: Brokers
-    extraData?: BrokerAccountExtraData
-    createdAt?: Date
+export interface StockInvestimentInfo {
+    symbol: string
+    stockLot: number
 }
 
 export interface BrokerAccountExtraData {
@@ -142,6 +112,88 @@ export interface BrokerAccountExtraData {
     platformUID?: string
     sessionId?: string
     cpf?: string
-    passwd?: string
+    password?: string
     birthdate?: Date
+}
+
+export interface BrokerAccount {
+    _id: string
+    account: Account
+    accountName: string
+    brokerCode: Brokers
+    extraData: BrokerAccountExtraData
+    simulation: boolean
+    createdAt: Date
+    updatedAt: Date
+}
+
+export interface Activity {
+    _id: string
+    account: Account
+    activityType: string
+    ref: string
+    icon: string
+    title: string
+    details: ActivityDetail[]
+    createdAt: Date
+}
+
+export interface ActivityDetail {
+    title: string
+    description: string
+    hidden: boolean
+}
+
+export interface StockInvestimentInfo {
+    symbol: string
+    stockLot: number
+}
+
+export interface BrokerInvestiment {
+    _id: string
+    brokerCode: String
+    type: InvestimentType
+    description: string
+    active: boolean
+    logo: string
+    stock: StockInvestimentInfo
+}
+
+export interface FinancialSummary {
+    when: string
+    patrimony: number
+    variation: number
+}
+
+export interface Transaction {
+    dateTime: Date
+    type: TransactionType
+    value: number
+    investiment: BrokerInvestiment
+}
+
+export interface AppliedInvestiment {
+    brokerAccountName: string
+    investiment: BrokerInvestiment
+    refID: string
+    qty: number
+    amount: number
+}
+
+// Corresponde 1 barra do gráfico
+export interface FinancialAnalysis {
+    label: string
+    amount: number
+    profit: number
+    variation: number
+    items: FinancialAnalysisItem[]
+}
+
+// Corresponde as movimentações de cada investimento de 1 barra do grafico
+export interface FinancialAnalysisItem {
+    refID: string
+    investiment: BrokerInvestiment
+    profit: number
+    amount: number
+    variation: number
 }

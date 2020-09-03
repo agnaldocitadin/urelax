@@ -20,6 +20,7 @@ interface CashDisplayProps {
     variation?: number
     variationSize?: number
     variationColor?: string
+    showVariation?: boolean
     loading?: boolean
     style?: ViewStyle
 }
@@ -34,6 +35,7 @@ export const CashDisplay: FC<CashDisplayProps> = ({
     variation = 0,
     variationSize = 14,
     variationColor = Colors.WHITE,
+    showVariation = true,
     loading,
     style
 }) => {
@@ -51,7 +53,7 @@ export const CashDisplay: FC<CashDisplayProps> = ({
                         color={valueColor}>
                         {utils.formatCurrency(value, { prefix: AppConfig.CURRENCY_PREFIX }) }
                     </SCreditValue>
-                    { !loading && <VariationMonitor
+                    { showVariation && !loading && <VariationMonitor
                         value={variation}
                         fontSize={variationSize}
                         textColor={variationColor}/>}

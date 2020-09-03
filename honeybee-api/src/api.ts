@@ -1,123 +1,74 @@
-import { utils } from 'js-commons'
-import { StockTrackerStatus } from './Enums'
-import { activateSimulationAccount, createBrokerAccount, createStockTracker, createUserAccount, updateBrokerAccount, updateStockTracker, updateUserAccount, updateUserPreferences } from './mutations'
-import { fetchActiveBrokers, fetchActiveStockTrackersQuery, fetchAvailableFrequencies, fetchAvailableStrategies, fetchAvailableSymbols, fetchBalanceSheet, fetchBalanceSheetByUserQuery, fetchBalanceSheetHistoriesByUserQuery, fetchBrokerAccountByUserQuery, fetchBrokerAccountQuery, fetchBrokerByCode, fetchStockTrackerActivitiesQuery, fetchUserAccountQuery, fetchUserActivitiesQuery } from './queries'
-import { APIError, UserAccount } from "./types"
-
-interface APIConfiguration {
-    serverURI: string
-    graphqlURI: string
-}
-
-export const CONFIG = {} as APIConfiguration
+import axios from 'axios'
+import { APIConfiguration, CONFIG } from './core'
+import { createBrokerAccount, createStockTracker, manageDevice, updateAccount, updateBrokerAccount, updateProfile, updateStockTracker } from "./mutations"
+import { fetchActivities, fetchAppiedInvestiments, fetchAvailableFrequencies, fetchAvailableInvestiments, fetchAvailableStrategies, fetchBrokerAccounts, fetchBrokers, fetchFinancialAnalysis, fetchFinancialSummary, fetchInvestimentSuggestion, fetchStockTrackers } from "./queries"
+import { authenticate, destroyStockTracker, pauseStockTracker, playStockTracker, signup } from './rest'
 
 const configure = (conf: APIConfiguration) => {
-    CONFIG["serverURI"] = conf.serverURI,
-    CONFIG["graphqlURI"] = conf.graphqlURI
+    CONFIG["baseURL"] = conf.baseURL
+    CONFIG["requestTimeout"] = conf.requestTimeout
+    CONFIG["requestInterceptor"] = conf.requestInterceptor
+    CONFIG["responseInterceptor"] = conf.responseInterceptor
 }
 
-export const OFFLINE: APIError = { code: "API_OFFLINE" }
+const init = (conf: APIConfiguration) => {
+    configure(conf)
+    CONFIG["axiosInstante"] = axios.create({
+        baseURL: CONFIG.baseURL,
+        timeout: CONFIG.requestTimeout,
+        responseType: "json",
+        headers: {
+            "Content-Type": "application/json;charset=UTF-8", 
+            "Accept-Encoding": "gzip, deflate"
+        }
+    })
 
-/**
- *
- *
- * @param {string} [email]
- * @param {string} [passwd]
- * @param {boolean} [simulation=false]
- * @returns {Promise<{user: UserAccount, token: string}>}
- */
-const authenticate = async (email?: string, passwd?: string, simulation: boolean = false): Promise<{user: UserAccount, token: string}> => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/authenticate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, passwd, simulation })
-    }), OFFLINE)
-    return handleResponse(res)
-}
-
-/**
- *
- *
- * @param {string} id
- * @returns
- */
-const playStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/playStockTracker`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
-    }), OFFLINE)
-    return handleResponse(res)
-}
-
-/**
- *
- *
- * @param {string} id
- * @returns
- */
-const pauseStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/pauseStockTracker`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
-    }), OFFLINE)
-    return handleResponse(res)
-}
-
-/**
- *
- *
- * @param {string} id
- * @returns
- */
-const destroyStockTracker = async (id: string): Promise<{ status: StockTrackerStatus }> => {
-    let res: Response = await utils.timedPromise(fetch(`${CONFIG.serverURI}/destroyStockTracker`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
-    }), OFFLINE)
-    return handleResponse(res)
+    CONFIG.requestInterceptor && CONFIG.axiosInstante.interceptors.request.use(CONFIG.requestInterceptor)
+    CONFIG.responseInterceptor && CONFIG.axiosInstante.interceptors.response.use(CONFIG.responseInterceptor)
 }
 
 export const API = {
-    configure,
+    init,
 
-    // API
-    authenticate,
-    playStockTracker,
-    pauseStockTracker,
-    destroyStockTracker,
+    Profile: {
+        signup,
+        updateProfile,
+        updateAccount,
+        manageDevice
+    },
 
-    // query
-    fetchAvailableSymbols,
-    fetchActiveBrokers,
-    fetchBrokerByCode,
-    fetchAvailableStrategies,
-    fetchAvailableFrequencies,
-    fetchUserAccountQuery,
-    fetchActiveStockTrackersQuery,
-    fetchStockTrackerActivitiesQuery,
-    fetchUserActivitiesQuery,
-    fetchBrokerAccountQuery,
-    fetchBrokerAccountByUserQuery,
-    fetchBalanceSheet,
-    fetchBalanceSheetByUserQuery,
-    fetchBalanceSheetHistoriesByUserQuery,
+    Activity: {
+        fetchActivities
+    },
 
-    // mutation
-    createUserAccount,
-    createStockTracker,
-    createBrokerAccount,
-    updateUserAccount,
-    updateUserPreferences,
-    updateBrokerAccount,
-    updateStockTracker,
-    activateSimulationAccount
-}
+    Security: {
+        authenticate
+    },
 
-const handleResponse = async (res: Response) => {
-    let json = await res.json()
-    if (!res.ok) throw json
-    return json
+    FinancialHistory: {
+        fetchFinancialSummary,
+        fetchAppiedInvestiments,
+        fetchFinancialAnalysis
+    },
+
+    StockTracker: {
+        playStockTracker,
+        pauseStockTracker,
+        destroyStockTracker,
+        fetchStockTrackers,
+        createStockTracker,
+        updateStockTracker,
+        fetchAvailableFrequencies,
+        fetchAvailableStrategies
+    },
+
+    Broker: {
+        fetchBrokers,
+        fetchBrokerAccounts,
+        createBrokerAccount,
+        updateBrokerAccount,
+        fetchAvailableInvestiments,
+        fetchInvestimentSuggestion
+    }
+    
 }

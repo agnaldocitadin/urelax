@@ -1,5 +1,4 @@
-import { utils } from 'js-commons'
-import { CONFIG, OFFLINE } from "./api"
+import { baseRoute, CONFIG, OFFLINE } from "./core"
 
 const SEPARATOR = ","
 
@@ -11,8 +10,8 @@ const SEPARATOR = ","
  * @param {string} [fields]
  * @returns {string}
  */
-export const mutation = (name: string, params?: object, fields?: string): string => {
-    const _params = serialize(params)
+export const mutation = (name: string, params?: object, fields?: string, howToSerialize?: object): string => {
+    const _params = serialize(params, howToSerialize)
     return `mutation{${name}${_params ? `(${_params})` : ""}${fields ? `{${fields}}` : ""}}`
 }
 
@@ -24,8 +23,8 @@ export const mutation = (name: string, params?: object, fields?: string): string
  * @param {string} [fields]
  * @returns {string}
  */
-export const query = (name: string, params?: object, fields?: string): string => {
-    const _params = serialize(params)
+export const query = (name: string, params?: object, fields?: string, howToSerialize?: object): string => {
+    const _params = serialize(params, howToSerialize)
     return `query{${name}${_params ? `(${_params})` : ""}${fields ? `{${fields}}` : ""}}`
 }
 
@@ -37,43 +36,64 @@ export const query = (name: string, params?: object, fields?: string): string =>
  * @returns
  */
 export const gql = async (queryName: string, query: string) => {
-    console.log("query:", query)
-    const response: Response = await utils.timedPromise(fetch(CONFIG.graphqlURI, {
-        method: "POST",
-        headers: { 
-            "Content-Type": "application/json;charset=UTF-8", 
-            "Accept-Encoding": "gzip, deflate"
-        },
-        body: JSON.stringify({ query })
-    }), OFFLINE)
-
-    const json = await response.json()
-    console.log("gql response:", json)
-    if (json.errors) {
-        throw json.errors[0]
+    console.debug("Query:", query)
+    try {
+        let response = await CONFIG.axiosInstante.post(baseRoute("/graphql", true), JSON.stringify({ query }))
+        let json = response.data
+        let result = json.data[queryName]
+        console.debug("Result:", result)
+        return result
     }
-    return json.data[queryName]
+    catch(e) {
+        if (!e.response) {
+            throw OFFLINE
+        }
+
+        let { data } = e.response
+        if (data && data.errors) {
+            throw data.errors[0]
+        }
+
+        if (data) {
+            throw data
+        }
+    }
 }
 
 /**
  *
  *
  * @param {Object} [obj]
+ * @param {object} [howToSerialize]
  * @returns {string}
  */
-const serialize = (obj?: Object): string => {
+export const serialize = (obj?: Object, howToSerialize?: object): string => {
     if (!obj) return ""
 
     let serialization = ""
     Object.keys(obj).forEach(field => {
         let value = (<any>obj)[field]
         if (value == undefined || null) return
-        let toSerialize = typeof value === "object" && !(value instanceof Date)
-        if (toSerialize) serialization = serialization.concat(`${serialization.length > 0 ? SEPARATOR : ""}${field}:{${serialize(value)}}`)
-        else serialization = serialization.concat(`${serialization.length > 0 ? SEPARATOR : ""}${field}:${serializeValue((<any>obj)[field])}`)
+        if (value instanceof Date || value instanceof Array || !(value instanceof Object)) {
+            serialization = toPlain(serialization, field, serializeValue(value, field, howToSerialize))
+        }
+        else {
+            serialization = toPlain(serialization, field, `{${serialize(value, howToSerialize)}}`)
+        }
     })
-
     return serialization
+}
+
+/**
+ *
+ *
+ * @param {string} bucket
+ * @param {string} field
+ * @param {string} flatValue
+ * @returns
+ */
+const toPlain = (bucket: string, field: string, flatValue: string) => {
+    return bucket.concat(`${bucket.length > 0 ? SEPARATOR : ""}${field}:${flatValue}`)
 }
 
 /**
@@ -82,7 +102,16 @@ const serialize = (obj?: Object): string => {
  * @param {*} value
  * @returns
  */
-const serializeValue = (value: any) => {
+const serializeValue = (value: any, field: string, howToSerialize?: object) => {
+    if (howToSerialize) {
+        let serialize = (<any>howToSerialize)[field]
+        if (serialize) {
+            return serialize(value)
+        }
+    }
+    if (value instanceof Array) {
+        return JSON.stringify(value)
+    }
     if (value instanceof Date) {
         return `"${(<Date>value).toISOString()}"`
     }

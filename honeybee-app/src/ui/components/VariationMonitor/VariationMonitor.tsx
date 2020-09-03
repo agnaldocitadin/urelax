@@ -2,7 +2,7 @@
 import { utils } from 'js-commons'
 import { Icon, Text, View } from 'native-base'
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { Colors, Icons, Theme } from '../../../core/Theme'
 
 interface VariationMonitorProps {
@@ -21,7 +21,7 @@ export const VariationMonitor: FC<VariationMonitorProps> = ({
     <Display>
         <DisplayIcon 
             type={Theme.ICON_PACK} 
-            name={value >= 0 ? Icons.ARROW_UP : Icons.ARROW_DOWN} 
+            name={value === 0 ? Icons.ARROW_RIGHT : (value >= 0 ? Icons.ARROW_UP : Icons.ARROW_DOWN)} 
             fontSize={fontSize} 
             color={iconColor}/>
 

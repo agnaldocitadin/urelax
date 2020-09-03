@@ -1,20 +1,18 @@
-import { utils } from 'js-commons'
 import React, { FC, useCallback } from 'react'
 import { NavigationStackProp } from 'react-navigation-stack'
 import styled from 'styled-components'
-import AppConfig from '../../../../core/AppConfig'
 import { ts } from '../../../../core/I18n'
 import { Colors, Icons } from '../../../../core/Theme'
+import { CashDisplay } from '../../../../ui/components/CashDisplay'
 import { BackHeader } from '../../../../ui/components/Header/BackHeader'
 import { ButtonHeader } from '../../../../ui/components/Header/ButtonHeader'
 import { InfiniteFlatList } from '../../../../ui/components/InfiniteFlatList'
-import { Info } from '../../../../ui/components/Info'
 import { FlatLayout } from '../../../../ui/components/Layout/FlatLayout'
 import { GenericTextIcon } from '../../../../ui/components/Layout/Layout.style'
 import { StockTrackerListItem } from '../StockTrackerListItem'
 import { useStockTrackerListUIHook } from './StockTrackerListUIHook'
 
-const RENDER_SHIMMERS = 7
+const RENDER_SHIMMERS = 4
 
 interface StockTrackerListUIProps {
     navigation: NavigationStackProp
@@ -28,12 +26,14 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
         stockTrackers,
         stockAmount,
         handleAddStockTracker, 
-        handleStockTrackerPreview
+        handleStockTrackerPreview,
+        handleStockAmount
     } = useStockTrackerListUIHook(navigation)
     
     const renderStockTracker = useCallback(({ item }: any) => (
         <StockTrackerListItem 
-            stockTracker={item} 
+            stockTracker={item}
+            amount={handleStockAmount(item)}
             onStockTrackerPress={handleStockTrackerPreview} 
             loading={loading}/>
     ), [loading])
@@ -48,7 +48,7 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
 
             { !fail && <InfiniteFlatList
                 showShimmer={loading}
-                numShimmerItens={4}
+                numShimmerItens={RENDER_SHIMMERS}
                 minLengthToLoadMore={20}
                 data={stockTrackers}
                 renderItem={renderStockTracker}
@@ -60,22 +60,26 @@ export const StockTrackerListUI: FC<StockTrackerListUIProps> = ({ navigation }) 
                         message={ts("stock_trackers_adding_tip")}/>
                 }
                 ListHeaderComponent={
-                    (loading || hasData) ? <StockAmount
+                    (loading || hasData) ? 
+                    <StockAmount
                         loading={loading}
-                        name={ts("stock_amount")}
-                        value={utils.formatCurrency(stockAmount, { prefix: AppConfig.CURRENCY_PREFIX })}
-                        valueFontSize={25}/> : null
+                        label={ts("stock_amount")}
+                        value={stockAmount}
+                        valueSize={25}
+                        showVariation={false}/>
+                    : null
                 }/>}
             
         </FlatLayout>
     )
 }
 
-const StockAmount = styled(Info)`
+const StockAmount = styled(CashDisplay)`
     background-color: ${Colors.WHITE};
     border-bottom-color: ${Colors.BG_3};
     border-bottom-width: 1px;
     align-items: center;
     margin: 0 auto;
+    padding: 20px 0;
     width: 100%;
 `

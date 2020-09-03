@@ -9,8 +9,8 @@ import { States } from "../../../../reducers/Reducer"
 import { selectActivity } from "../../../activity"
 import { setLastActivityOnDashboard } from "../../../dashboard"
 import { showAPIError } from "../../../message"
-import { appendStockTrackerActivities, clearStockTrackerPreview, initStockTrackerModule, selectStockTrackerToUpdate, updateMainStockTracker } from "../../actions"
-import { fetchStockTrackerActivitiesQuery, fetchStockTrackerBalance } from "../../api"
+import { appendStockTrackerActivities, clearStockTrackerPreview, selectStockTrackerToUpdate, updateMainStockTracker } from "../../actions"
+import { fetchStockTrackerActivitiesQuery } from "../../api"
 
 export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) => {
 
@@ -18,16 +18,17 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
     const [ fail, setFail] = useState(false)
     const stockTracker = useSelector((state: States) => state.STOCK_TRACKER.selectedStockTracker || {})
     const { selectedStockTrackerActivities, balanceSheet } = useSelector((state: States) => state.STOCK_TRACKER)
-    const userAccountId = useSelector((state: States) => state.SIGNIN.authenticatedUser._id || "")
 
     const findStockBalance = useCallback(() => {
-        let stock = balanceSheet?.stocks.find(stock => stock.symbol === stockTracker?.stock?.symbol)
-        
-        if (stock) {
-            return {
-                amount: (stock?.averagePrice * stock?.qty),
-                averagePrice: stock.averagePrice,
-                quantity: stock.qty
+        if (balanceSheet) {
+            let stock = balanceSheet[0]?.stocks.find(stock => stock.symbol === stockTracker?.stock?.symbol)
+            
+            if (stock) {
+                return {
+                    amount: ((stock?.lastAvailablePrice || 0) * stock?.qty),
+                    averagePrice: stock.averagePrice || 0,
+                    quantity: stock.qty
+                }
             }
         }
 
@@ -94,9 +95,8 @@ export const useStockTrackerPreviewUIHook = (navigation: NavigationStackProp) =>
 
     useEffectWhenReady(async () => {
         try {
-            let balance = await fetchStockTrackerBalance(userAccountId, stockTracker.brokerAccount?._id)
             let activities = await fetchStockTrackerActivitiesQuery(stockTracker?._id || "", 0, AppConfig.QTY_INITIAL_ACTIVITIES)
-            dispatch(initStockTrackerModule(balance[0], activities))
+            dispatch(appendStockTrackerActivities(activities, "begin", true))
         }
         catch(error) {
             setFail(true)

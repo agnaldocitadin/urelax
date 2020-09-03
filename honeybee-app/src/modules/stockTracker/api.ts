@@ -44,6 +44,7 @@ export const fetchStockTrackerBalance = async (userAccountId: string, brokerAcco
         stocks {
             symbol
             qty
+            lastAvailablePrice
             averagePrice
         }
     `, brokerAccountId)

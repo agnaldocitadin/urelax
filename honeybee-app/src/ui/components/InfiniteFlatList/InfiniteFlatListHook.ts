@@ -14,7 +14,6 @@ export const useInfiniteFlatListHook = ({
     onEndPageReached,
     data,
     minLengthToLoadMore,
-    showShimmer,
     numShimmerItens = 0
 }: InfiniteFlatListProps<{}>) => {
 
@@ -28,7 +27,7 @@ export const useInfiniteFlatListHook = ({
 
     const updateState = useCallback((state: ListState) => setListState(old => ({ ...old, ...state })), [listState])
 
-    const qty = useCallback(() => {
+    const pseudos = useCallback(() => {
         let objs = []
         for (let i = 0; i < numShimmerItens; i++) objs.push({})
         return objs
@@ -41,7 +40,7 @@ export const useInfiniteFlatListHook = ({
                 .then(() => updateState({ refreshing: false }))
                 .catch(() => updateState({ refreshing: false }))
         }
-    }, [])
+    }, [onRefresh])
 
     const handleEndReached = () => {
         const isLoadMore = !listState.infiniteReached && listState.internalData?.length >= minLengthToLoadMore && onEndPageReached && !listState.loading
@@ -69,10 +68,11 @@ export const useInfiniteFlatListHook = ({
     useEffect(() => updateState({ internalData: data || [], infiniteReached: false }), [data])
     
     return {
-        internalData: showShimmer ? qty() : listState.internalData,
+        internalData: listState.internalData,
         loading: listState.loading,
         refreshing: listState.refreshing,
         handleRefresh: onRefresh ? handleRefresh : undefined,
-        handleEndReached
+        handleEndReached,
+        pseudos
     }
 }

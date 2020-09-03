@@ -11,11 +11,42 @@ export enum StockTrackerStatus {
     DESTROYED = "DESTROYED"
 }
 
+export enum ActivityType {
+    STOCK_TRACKER = "STOCK_TRACKER",
+    USER_ACCOUNT = "USER_ACCOUNT"
+}
+
 export enum MessageTypes {
     STOCK_TRACKER_STATUS = "STOCK_TRACKER_STATUS",
+    STOCK_TRACKER_ORDER = "STOCK_TRACKER_ORDER",
 }
 
 export enum Brokers {
     CLEAR = "CLEAR"
     // Add new brokers here ...
+}
+
+export enum TransactionType {
+    // START_OF_DAY = "START_OF_DAY", // Utilizado apenas para representar o inicio do dia na listagem de transações
+    STATEMENT_OPENING = "STATEMENT_OPENING", //Incluído sempre que o histórico do dia for iniciado (posição de cada do investimento no dia anterior)
+    DESPOSIT = "DESPOSIT", // Depósito em dinheiro na conta da corretora
+    TRANSFER = "TRANSFER", // Transferencia de entrada de valor (compra/venda ação, cdb, tesouro, etc)
+    YIELD = "YIELD"
+}
+
+export enum ProfitType {
+    YIELD = "YIELD",
+    EXCHANGE = "EXCHANGE"
+}
+
+export enum InvestimentType {
+    STOCK = "STOCK",
+    CURRENCY = "CURRENCY"
+}
+
+export enum FinancialAnalysisPeriod {
+    DAILY = "DAILY",
+    WEEKLY = "WEEKLY",
+    MONTHLY = "MONTHLY",
+    YEARLY = "YEARLY"
 }

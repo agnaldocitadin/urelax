@@ -1,19 +1,78 @@
-import { gql, query } from "./graphql"
-import { Activity, BalanceSheet, BalanceSheetHistorySummary, BalanceSheetSummary, Broker, BrokerAccount, Frequency, GroupBy, Stock, StockTracker, Strategy, UserAccount } from "./types"
+import { ActivityType, StockTracker } from '.'
+import { Brokers, FinancialAnalysisPeriod, InvestimentType } from './enums'
+import { gql, query } from './graphql'
+import { Activity, AppliedInvestiment, Broker, BrokerAccount, BrokerInvestiment, FinancialAnalysis, FinancialSummary, Frequency, Strategy } from './types'
 
-export const fetchAvailableSymbols = (fields: string): Promise<Stock[]> => {
-     const name = "fetchAvailableSymbols"
-     return gql(name, query(name, {}, fields))
+export const fetchActivities = (options: { 
+     id?: string, 
+     accounts?: string[],
+     ref?: string, 
+     activityType?: ActivityType, 
+     date?: string, 
+     page?: number, 
+     qty?: number }, 
+     fields: string): Promise<Activity[]> => {
+     const name = "fetchActivities"
+     return gql(name, query(name, options, fields))
 }
 
-export const fetchActiveBrokers = (fields: string): Promise<Broker[]> => {
-     const name = "fetchActiveBrokers"
-     return gql(name, query(name, {}, fields))
+export const fetchBrokers = (options: { id?: string, code?: String, active?: boolean }, fields: string): Promise<Broker[]> => {
+     const name = "fetchBrokers"
+     return gql(name, query(name, options, fields))
 }
 
-export const fetchBrokerByCode = (brokerCode: string, fields: string): Promise<Broker> => {
-     const name = "fetchBrokerByCode"
-     return gql(name, query(name, { brokerCode }, fields))
+export const fetchBrokerAccounts = (options: { id?: string, account?: string }, fields: string): Promise<BrokerAccount[]> => {
+     const name = "fetchBrokerAccounts"
+     return gql(name, query(name, options, fields))
+}
+
+export const fetchStockTrackers = (options: { 
+     id?: string, 
+     account?: string, 
+     status?: String, 
+     frequency?: String, 
+     page?: number, 
+     qty?: number }, 
+     fields: string): Promise<StockTracker[]> => {
+     const name = "fetchStockTrackers"
+     return gql(name, query(name, options, fields))
+}
+
+export const fetchFinancialSummary = (options: { 
+     brokerAccounts?: string[]
+     date?: string
+     page?: number
+     qty?: number }, 
+     fields: string): Promise<FinancialSummary[]> => {
+     const name = "fetchFinancialSummary"
+     return gql(name, query(name, options, fields))
+}
+
+export const fetchFinancialAnalysis = (options: {
+     brokerAccounts?: string[]
+     date?: string
+     page?: number
+     qty?: number
+     period: FinancialAnalysisPeriod
+     }, fields: string): Promise<FinancialAnalysis[]> => {
+     const name = "fetchFinancialAnalysis"
+     return gql(name, query(name, options, fields, {
+          period: (value: FinancialAnalysisPeriod) => value
+     }))
+}
+
+export const fetchAppiedInvestiments = (options: { brokerAccounts: string[] }, fields: string): Promise<AppliedInvestiment[]> => {
+     const name = "fetchAppiedInvestiments"
+     return gql(name, query(name, options, fields))
+}
+
+export const fetchAvailableInvestiments = (options: { 
+     brokerCodes?: Brokers[]
+     search?: string
+     types?: InvestimentType[]
+     }, fields: string): Promise<BrokerInvestiment[]> => {
+     const name = "fetchAvailableInvestiments"
+     return gql(name, query(name, options, fields))
 }
 
 export const fetchAvailableStrategies = (fields: string): Promise<Strategy[]> => {
@@ -26,47 +85,7 @@ export const fetchAvailableFrequencies = (fields: string): Promise<Frequency[]> 
      return gql(name, query(name, {}, fields))
 }
 
-export const fetchUserAccountQuery = (userAccountId: string, fields: string): Promise<UserAccount> => {
-     const name = "fetchUserAccountQuery"
-     return gql(name, query(name, { userAccountId }, fields))
-}
-
-export const fetchActiveStockTrackersQuery = (userAccountId: string, fields: string): Promise<StockTracker[]> => {
-     const name = "fetchActiveStockTrackersQuery"
-     return gql(name, query(name, { userAccountId }, fields))
-}
-
-export const fetchStockTrackerActivitiesQuery = (stockTrackerId: string, date: Date, page: number, qty: number, fields: string): Promise<Activity[]> => {
-     const name = "fetchStockTrackerActivitiesQuery"
-     return gql(name, query(name, { stockTrackerId, date, page, qty }, fields))
-}
-
-export const fetchUserActivitiesQuery = (userAccountId: string, date: Date, page: number, qty: number, fields: string): Promise<Activity[]> => {
-     const name = "fetchUserActivitiesQuery"
-     return gql(name, query(name, { userAccountId, date, page, qty }, fields))
-}
-
-export const fetchBrokerAccountQuery = (brokerAccountId: string, fields: string): Promise<BrokerAccount> => {
-     const name = "fetchBrokerAccountQuery"
-     return gql(name, query(name, { brokerAccountId }, fields))
-}
-
-export const fetchBrokerAccountByUserQuery = (userAccountId: string, fields: string): Promise<BrokerAccount[]> => {
-     const name = "fetchBrokerAccountByUserQuery"
-     return gql(name, query(name, { userAccountId }, fields))
-}
-
-export const fetchBalanceSheet = (userAccountId: string, fields: string, brokerAccountId?: string): Promise<BalanceSheet[]> => {
-     const name = "fetchBalanceSheet"
-     return gql(name, query(name, { userAccountId, brokerAccountId }, fields))
-}
-
-export const fetchBalanceSheetByUserQuery = (userAccountId: string, fields: string): Promise<BalanceSheetSummary> => {
-     const name = "fetchBalanceSheetByUserQuery"
-     return gql(name, query(name, { userAccountId }, fields))
-}
-
-export const fetchBalanceSheetHistoriesByUserQuery = (userAccountId: string, date: Date, page: number, qty: number, groupBy: GroupBy, fields: string): Promise<BalanceSheetHistorySummary[]> => {
-     const name = "fetchBalanceSheetHistoriesByUserQuery"
-     return gql(name, query(name, { userAccountId, date, page, qty, groupBy }, fields))
+export const fetchInvestimentSuggestion = (options: { account: string }, fields: string): Promise<BrokerInvestiment> => {
+     const name = "fetchInvestimentSuggestion"
+     return gql(name, query(name, options, fields))
 }

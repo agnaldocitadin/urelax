@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:windowTranslucentStatus">true</item> 
+        <!-- <item name="android:windowLightStatusBar">true</item> -->
+        
+        <!-- Faz o layout não redimensionar com o teclado ativo [TRUE]-->
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+</resources>

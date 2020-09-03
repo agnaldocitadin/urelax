@@ -1,6 +1,5 @@
 import { BalanceSheetHistorySummary, GroupBy } from 'honeybee-api'
 import React, { FC, useCallback } from 'react'
-import { View } from 'react-native'
 import styled from 'styled-components'
 import { InfiniteFlatList } from '../../../../ui/components/InfiniteFlatList'
 import { Touchable } from '../../../../ui/components/Touchable'
@@ -9,6 +8,7 @@ import { BalanceHistoryItem } from '../BalanceHistoryItem'
 interface BalanceHistoryTimelineProps {
     balances: BalanceSheetHistorySummary[]
     minLengthToLoadMore: number
+    numShimmerItens?: number
     grouping?: GroupBy
     loading?: boolean
     onRefresh?(): Promise<void>
@@ -19,11 +19,11 @@ interface BalanceHistoryTimelineProps {
 export const BalanceHistoryTimeline: FC<BalanceHistoryTimelineProps> = ({ 
     balances, 
     onRefresh, 
-    minLengthToLoadMore, 
+    minLengthToLoadMore,
+    numShimmerItens,
     onLoadMoreData,
     onPress,
-    loading,
-    grouping = "day"
+    loading
 }) => {
     
     const maxAmount = balances.reduce((max, value) => value.amount && value.amount > max ? value.amount : max, 0)
@@ -42,7 +42,7 @@ export const BalanceHistoryTimeline: FC<BalanceHistoryTimelineProps> = ({
     return (
         <InfiniteFlatList
             showShimmer={loading}
-            numShimmerItens={8}
+            numShimmerItens={numShimmerItens}
             data={balances}
             onRefresh={onRefresh}
             minLengthToLoadMore={minLengthToLoadMore}
@@ -58,8 +58,4 @@ const STouchable = styled(Touchable)`
 
 const SBalanceHistoryItem = styled(BalanceHistoryItem)`
     flex: 1;
-`
-
-const ShimmerBody = styled(View)`
-    padding: 18px 20px;
 `

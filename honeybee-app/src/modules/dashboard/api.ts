@@ -4,11 +4,8 @@ export const fetchCurrentBalanceSheetByUser = async (userAccountId?: string): Pr
     if (!userAccountId) return Promise.reject("userAccountId not provided")
     return API.fetchBalanceSheetByUserQuery(userAccountId, `
         amount
-        amountVariation
         credits
-        creditVariation
         stocks
-        stockVariation
     `)
 }
 
@@ -16,8 +13,13 @@ export const fetchLastBalancesSheets = async (userAccountId?: string, qty: numbe
     if (!userAccountId) return Promise.reject("userAccountId not provided")
     return API.fetchBalanceSheetHistoriesByUserQuery(userAccountId, new Date(), 0, qty, "day", `
         label
+        profit
         amount
         amountVariation
+        credits
+        creditVariation
+        stocks
+        stockVariation
     `)
 }
 

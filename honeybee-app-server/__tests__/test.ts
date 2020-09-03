@@ -1,15 +1,17 @@
+import dotenv from 'dotenv-flow'
 import admin from 'firebase-admin'
+import { MessageTypes } from 'honeybee-api'
 import Logger from '../src/core/Logger'
 
 beforeAll(async () => {
-    // dotenv.config()
+    dotenv.config()
     // await connectDB()
-    let acc = require('../honeybee-app-firebase-adminsdk-9mcrd-c508a87661.json')
+    let acc = require('../src/modules/Notification/push/urelax-5abcb-firebase-adminsdk-oezxo-f31915072b.json')
     let app = admin.initializeApp({
         credential: admin.credential.cert(acc),
-        databaseURL: "https://honeybee-app.firebaseio.com"
+        databaseURL: process.env.FIREBASE_DATABASE_URL
     })
-    // Logger.info(app)
+    Logger.info("URL", process.env.FIREBASE_DATABASE_URL)
 })
 
 it("teste", async () => {
@@ -18,13 +20,18 @@ it("teste", async () => {
     // let token = "fPllQznjycw:APA91bFcsXgsc4_rzPqYmjK7Oqn94fN00oIgC2GPesRYYd09MQRxC9NeLUtda0gz8DrmkbNpEH-W9_DhVQfGAq-xvBZyVv3-LRHarY16WMJ8d_aR41J9x5pDG-wyNNXWNvpH1A3xxa2d"
     // let token = "eV4iZKNqqKo:APA91bGK0-_XcnzaBDX72pt-7Ke2IVHouGydwsNJAUrIhTFxplGk4uv7Iwn_PP8FnNj3s3m1GBfM25oE2SvEPTOxb493Xtgge1KlV0HKtPeN8M1rtk3PClud3OwZoE16Thc9wBMq-l8s"
     // let token = "e-voJwC_I-w:APA91bFFGbD8sYGn6ohFY88rkx7CEyxUo8NDPJ7v6BeEqz7gi2rTToCFQlndgChrzhZzpPPk0xV_U2L6pLIDzPP9Id9VG_MrXSl4U7N9ebUGFE-lhBu5bUlBl0BXMuk1piSg565CqTxz"
-    let token = "cV3QFdjTu70:APA91bG-gQ-xaKT8xbKDjDNMkS7vheAQmT_wvK7rSCls0lY3vr_gq0STPVQlOQ9IPc4LqMHcBzZ9HGfg2RD-TxEAFGyzUf3ZFtaTZDo8SFhvJdEAaWqHVFy8qLiZUD41gA5bT9sYLHhl"
+    
+    // emulator
+    // let token = "f2S2VRRzb-g:APA91bFB_D42Z7UGQSC0v5Lbla3mKy0ot0JnQSC0whJi2C9x1RqqFwBR-q_roqLqw3AOAO1O19eBZkNFRxUutlI4hmz64OOnv8I0iDilY_p2VUM6Q-WGQ1omS7bGFBpgENK_0LxsuFAk"
+    // let token = "f0YIqi42fj0:APA91bGpjWJb-qsCs5Ib2TSoA_VLl2Orp-EhN4lbGdjro_3OQRu9VImIfrAuhC7V8TNR_JQ8fMt9ODH6xHtT6EWzrtcaX6qONvPv8-tQ8MLqgKlPZTIcFE21mMIK83ljhkKEWV1FOpj4"
+
+    // device
+    let token = "fdpOIUoPh2c:APA91bEIVT6v81wJQvumU7QJyrdWXK0ADwo3kdCapmVnxeNWFmNyMlj5v76mkGY5cuYhP7Ugpyp5lPMAvijp-T7XzLXMwCX8X8y9vBFi7QfOCpoRVSiJHlllRIEmu0TP4LuK1woesVnZ"
+    
     await admin.messaging().sendToDevice(token, {
-            // data: {
-            //     messageType: "BEE_STATUS",
-            //     beeId: "5df963b6be8a8d53cc812a8e",
-            //     status: StockTrackerStatus.DESTROYED
-            // },
+            data: {
+                messageType: MessageTypes.STOCK_TRACKER_ORDER
+            },
             notification: {
                 title: "Compra de ações",
                 body: "500 ações em Azul Linhas Aéreas (AZUL4) no valor total de R$ 25.514,22.",

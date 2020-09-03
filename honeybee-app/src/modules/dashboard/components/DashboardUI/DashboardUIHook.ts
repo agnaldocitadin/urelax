@@ -1,4 +1,5 @@
 import { BalanceSheetHistorySummary } from "honeybee-api"
+import { useCallback, useState } from "react"
 import { NavigationStackProp } from "react-navigation-stack"
 import { useDispatch, useSelector } from "react-redux"
 import { animatedCallback, useEffectWhenReady } from "../../../../hooks/Commons.hook"
@@ -11,6 +12,8 @@ import { fetchCurrentBalanceSheetByUser, fetchLastBalancesSheets, fetchLastUserA
 export const useDashboardUIHook = (navigation: NavigationStackProp) => {
 
     const dispatch = useDispatch()
+
+    const [ refreshing, setRefreshing ] = useState(false)
 
     const { nickname, _id } = useSelector((state: States) => state.SIGNIN.authenticatedUser)
     
@@ -31,29 +34,39 @@ export const useDashboardUIHook = (navigation: NavigationStackProp) => {
 
     const handleNicknameTouch = animatedCallback(() => navigation.navigate(Routes.AccountUI))
 
-    useEffectWhenReady(async () => {
+    const handleRefresh = useCallback(async () => {
+        setRefreshing(true)
+        await refresh()
+        setRefreshing(false)
+    }, [])
+
+    const refresh = useCallback(async () => {
         try {
-            let balance = await fetchCurrentBalanceSheetByUser(_id)
-            let history = await fetchLastBalancesSheets(_id, 13)
+            let balanceSummary = await fetchCurrentBalanceSheetByUser(_id)
+            let historySummary = await fetchLastBalancesSheets(_id, 4)
             let activity = await fetchLastUserActivity(_id)
-            dispatch(initDashboardData(balance, history, activity))
+            dispatch(initDashboardData(balanceSummary, historySummary, activity))
         }
         catch(error) {
             navigation.navigate(Routes.FastAuthFailureUI)
         }
-    })
+    }, [_id])
+
+    useEffectWhenReady(() => refresh())
 
     return {
         nickname,
         balanceSummary,
-        balanceHistorySummary,
+        balanceHistorySummary: balanceHistorySummary.slice(0, 1)[0],
         lastActivity,
         noBalances: balanceHistorySummary.length === 0,
+        refreshing,
         handleActivities,
         handleBalances,
         handleStockTracker,
         handleSetting,
         handleNicknameTouch,
-        handleBalancePress
+        handleBalancePress,
+        handleRefresh
     }
 }

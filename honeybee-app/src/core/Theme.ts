@@ -14,7 +14,8 @@ export const SymbolsImg = {
     BBAS3 : require("../assets/imgs/BBAS3.png"),
     VVAR3 : require("../assets/imgs/VVAR3.png"),
     ABEV3 : require("../assets/imgs/ABEV3.png"),
-    LREN3 : require("../assets/imgs/LREN3.png")
+    LREN3 : require("../assets/imgs/LREN3.png"),
+    WEGE3 : require("../assets/imgs/WEGE3.png")
 }
 
 export const BrokerImg = {
@@ -47,6 +48,7 @@ export enum Icons {
     CAMERA = "camera",
     ARROW_UP = "arrow-up",
     ARROW_DOWN = "arrow-down",
+    ARROW_RIGHT = "arrow-right",
     CHEVRON_RIGHT = "chevron-right",
     ALERT_CIRCLE = "alert-circle",
     CHECK_CIRCLE = "check-circle",

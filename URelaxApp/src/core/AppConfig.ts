@@ -1,0 +1,15 @@
+
+const URL_SERVER = "http://192.168.0.219:3002"
+
+// Use it!
+export default {
+
+    TIMEOUT: 10000,
+    URL_REST_SERVER: URL_SERVER,
+
+    MIN_USER_CHARS: 5,
+    MIN_PASSWD_CHARS: 6,
+    CURRENCY_PREFIX: "R$",
+
+    QTY_INITIAL_ACTIVITIES: 15
+}

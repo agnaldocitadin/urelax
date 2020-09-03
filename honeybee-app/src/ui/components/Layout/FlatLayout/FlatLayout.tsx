@@ -50,7 +50,7 @@ const FlatContainer: any = styled(Container)`
 `
 
 const SimulationFlag = styled(Text)`
-    background-color: ${Colors.GRAY_3};
+    background-color: ${Colors.BLUES_3};
     font-family: ${Theme.FONT_REGULAR};
     color: ${Colors.WHITE};
     font-size: 14px;

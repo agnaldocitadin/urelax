@@ -66,6 +66,7 @@ honeybee-api/lib*
 honeybee-app/node_modules*
 honeybee-app-server/node_modules*
 honeybee-app-server/dist*
+URelaxApp/node_modules*
 js-commons/node_modules/*
 js-commons/lib*
 js-commons/yarn.lock
