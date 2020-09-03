@@ -18,7 +18,8 @@ const getLabel = (profit: number = 0) => {
 
 export const InvestimentAnalysisDetailUI: FC = () => {
     
-    const { 
+    const {
+        label,
         profit,
         analysis,
         selectedItems,
@@ -31,7 +32,7 @@ export const InvestimentAnalysisDetailUI: FC = () => {
     return (
         <FlatLayout
             bgColor={Colors.WHITE}
-            header={<BackHeader title={`${ts("period_investiment")} (${analysis.label})`}/>}>
+            header={<BackHeader title={`${ts("profits")} (${analysis.label})`}/>}>
             <MarginBox noMarginTop>
                 <ProfitView>
                     <Info 
@@ -39,7 +40,7 @@ export const InvestimentAnalysisDetailUI: FC = () => {
                             <Typography
                                 fontSize={15}
                                 textAlign="center">
-                                {getLabel(profit)}
+                                {label}
                             </Typography>
                         }
                         description={

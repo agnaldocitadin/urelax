@@ -1,9 +1,6 @@
-import { mongoose } from '@typegoose/typegoose'
 import dotenv from 'dotenv-flow'
-import { ProfitType, TransactionType } from 'honeybee-api'
 import Mongoose from 'mongoose'
 import Logger from '../src/core/Logger'
-import { addProfit, addInvestiment, addTransaction } from '../src/modules/Financial/services'
 
 
 const connectDB = async () => {
@@ -28,24 +25,68 @@ function randomIntFromInterval(min: number, max: number) { // min and max includ
 return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+const SEPARATOR = ","
+export const serialize = (obj?: Object, howToSerialize?: object): string => {
+    if (!obj) return ""
+
+    let serialization = ""
+    Object.keys(obj).forEach(field => {
+        let value = (<any>obj)[field]
+        if (value == undefined || null) return
+        if (value instanceof Date || value instanceof Array || !(value instanceof Object)) {
+            serialization = toPlain(serialization, field, serializeValue(value, field, howToSerialize))
+        }
+        else {
+            serialization = toPlain(serialization, field, `{${serialize(value, howToSerialize)}}`)
+        }
+    })
+    return serialization
+}
+const toPlain = (bucket: string, field: string, flatValue: string) => {
+    return bucket.concat(`${bucket.length > 0 ? SEPARATOR : ""}${field}:${flatValue}`)
+}
+const serializeValue = (value: any, field: string, howToSerialize?: object) => {
+    if (howToSerialize) {
+        let serialize = (<any>howToSerialize)[field]
+        if (serialize) {
+            return serialize(value)
+        }
+    }
+    if (value instanceof Array) {
+        return JSON.stringify(value)
+    }
+    if (value instanceof Date) {
+        return `"${(<Date>value).toISOString()}"`
+    }
+    if (typeof value === "string") {
+        return `"${value}"`
+    }
+    return value
+}
+
+
 it("teste", async () => {
     jest.setTimeout(50000)
+
+    const res = serialize({ nome: "agnaldo", data: ["abc", "def"], opa: { a:1, b:2 }})
+    console.log(res)
+    // console.log(JSON.stringify({ nome: "agnaldo", data: ["abc", "def"] }))
 
     // brokeracc 5ee657047038feff52a8f132
     // const dc = await addInvestiment(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), new Date(), mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"))
     // const dc = await removeInvestiment(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), new Date(), mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"))
-    const dc = await addTransaction(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), {
-        dateTime: new Date(),
-        investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"),
-        type: TransactionType.YIELD,
-        value: 500
-    })
+    // const dc = await addTransaction(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), {
+    //     dateTime: new Date(),
+    //     investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"),
+    //     type: TransactionType.YIELD,
+    //     value: 500
+    // })
     // const dc = await addProfit3(mongoose.Types.ObjectId("5ee657047038feff52a8f132"), new Date(), {
     //     investiment: mongoose.Types.ObjectId("5ee7d11cb2443a3db2c320d3"),
     //     type: ProfitType.YIELD,
     //     value: 50
     // })
-    console.log(dc)
+    // console.log(dc)
 
     // console.log(randomIntFromInterval(0, 500))
     // try {

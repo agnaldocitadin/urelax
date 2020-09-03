@@ -148,6 +148,7 @@
     "no_variation": "Sem variação",
     "gain": "Lucro",
     "loss": "Perda",
+    "result": "Resultado",
     "balance_from": "Balanço de {{period}}",
     "activities": "Atividades",
 
@@ -185,7 +186,7 @@
     "weekly": "Semanal",
     "monthly": "Mensal",
     "yearly": "Anual",
-    "period_investiment": "Investimentos no período",
+    "profits": "Rendimentos",
     "broker_account_detail": "Informações da conta",
     "add_investiments": "Adicionar investimento",
     "suggest_an_investiment": "Sugerir um investimento",

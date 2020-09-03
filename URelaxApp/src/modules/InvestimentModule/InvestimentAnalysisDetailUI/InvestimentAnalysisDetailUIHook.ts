@@ -2,6 +2,7 @@ import { FinancialAnalysis } from "honeybee-api"
 import { arrays } from "js-commons"
 import { useCallback, useState } from "react"
 import Investiment from ".."
+import { ts } from "../../../core/I18n"
 
 export const useInvestimentAnalysisDetailUIHook = () => {
 
@@ -21,8 +22,20 @@ export const useInvestimentAnalysisDetailUIHook = () => {
     }
 
     const its = items()
+    
+    let label
+    if (positiveProfit && !negativeProfit) {
+        label = ts("gain")
+    }
+    else if (!positiveProfit && negativeProfit) {
+        label = ts("loss")
+    }
+    else {
+        label = ts("result")
+    }
 
     return {
+        label,
         profit: arrays.sum(its, item => item.profit),
         analysis: analysis[selectedGraph],
         selectedItems: items(),

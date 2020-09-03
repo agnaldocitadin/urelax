@@ -1,22 +1,24 @@
 import { useNavigation } from "@react-navigation/native"
-import { Account, BrokerAccount, FinancialAnalysis, FinancialAnalysisPeriod } from "honeybee-api"
+import { BrokerAccount, FinancialAnalysis, FinancialAnalysisPeriod } from "honeybee-api"
 import { useCallback, useState } from "react"
 import Investiment from ".."
 import { useEffectWhenReady } from "../../../core/Commons.hook"
-import { Colors } from "../../../theming"
+import { ts } from "../../../core/I18n"
 import BrokerModule from "../../BrokerModule"
-import Identity from "../../IdentityModule"
 import Messaging from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { fetchFinancialAnalysis } from "../api"
 import { DataGraph } from "./AnalysisGraphic"
+
+const getLabel = (profit: number = 0) => {
+    return profit === 0 ? ts("no_variation") : (profit > 0 ? ts("gain") : ts("loss"))
+}
 
 export const useInvestimentAnalysisUIHook = () => {
 
     const navigation = useNavigation()
     const { showAPIError } = Messaging.actions()
     const { addAnalysis, selectGraphIndex } = Investiment.actions()
-    const account: Account = Identity.select("activeAccount")
     const analysis: FinancialAnalysis[] = Investiment.select("analysis")
     const selectedGraph: number = Investiment.select("selectedGraphIndex")
     const brokerAccounts: BrokerAccount[] = BrokerModule.select("userBrokerAccounts")
@@ -73,8 +75,7 @@ export const useInvestimentAnalysisUIHook = () => {
     const dataGraph = analysis.map(item => {
         return {
             label: item.label,
-            value: item.amount,
-            color: Colors.BLUES_3      
+            value: item.profit
         } as DataGraph
     })
 
@@ -82,6 +83,7 @@ export const useInvestimentAnalysisUIHook = () => {
 
     return {
         dataGraph,
+        label: getLabel(graphBar?.profit),
         profit: graphBar?.profit || 0,
         patrimony: graphBar?.amount || 0,
         patrimonyVariation: graphBar?.variation || 0,

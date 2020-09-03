@@ -18,6 +18,7 @@ import { useInvestimentAnalysisUIHook } from './InvestimentAnalysisUIHook'
 export const InvestimentAnalysisUI: FC = () => {
     
     const {
+        label,
         dataGraph,
         patrimony,
         profit,
@@ -40,10 +41,10 @@ export const InvestimentAnalysisUI: FC = () => {
             title={ts("analysis")}
             loading={loading}
             fail={fail}>
-            <MarginBoxFlex>
+            <MarginBoxFlex noMarginBottom>
                 <Head>
                     <Patrimony
-                        title={<Typography color={Colors.GRAY_1}>Lucro</Typography>}
+                        title={<Typography color={Colors.GRAY_1}>{label}</Typography>}
                         description={
                             <TypographyMedium
                                 fontSize={20}
@@ -98,7 +99,7 @@ export const InvestimentAnalysisUI: FC = () => {
                                 fontSize={15}
                                 value={patrimonyVariation}/>
                                 
-                            <AnalysisGraphic
+                            <GraphComponent
                                 data={dataGraph}
                                 loading={finding}
                                 minLengthToLoadMore={20}
@@ -112,9 +113,8 @@ export const InvestimentAnalysisUI: FC = () => {
             </MarginBoxFlex>
             { !noData && <ShowInvestimentDetail onPress={handleAnalysisDetail}>
                 <TypographyMedium
-                    color={Colors.GRAY_1}
-                    textAlign="center">
-                    {ts("period_investiment")}
+                    color={Colors.GRAY_1}>
+                    {ts("profits")}
                 </TypographyMedium>
             </ShowInvestimentDetail>}
         </PrimaryLayout>
@@ -141,6 +141,10 @@ const Patrimony = styled(Info)`
 const Graph = styled.View`
     flex: 1;
     align-items: center;
+`
+
+const GraphComponent = styled(AnalysisGraphic)`
+    margin-top: ${DEFAULT_VERTICAL_SPACING}px;
 `
 
 export const Row = styled.View`
