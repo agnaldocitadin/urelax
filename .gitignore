@@ -57,16 +57,10 @@ buck-out/
 *.jsbundle
 
 # CocoaPods
-honeybee-app/ios/Pods/
-
-yarn.lock
+urelax-app/ios/Pods/
 
 urelax-api/node_modules/*
 urelax-api/lib*
-honeybee-app/node_modules*
 urelax-server/node_modules*
 urelax-server/dist*
 urelax-app/node_modules*
-js-commons/node_modules/*
-js-commons/lib*
-js-commons/yarn.lock
