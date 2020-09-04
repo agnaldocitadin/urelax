@@ -1,10 +1,10 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native'
-import { FinancialSummary } from 'urelax-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { ListRenderItem, RefreshControl, View, ViewStyle } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import styled from 'styled-components/native'
+import { FinancialSummary } from 'urelax-api'
 import { BaseButton } from '../../../components/BaseButton'
 import { ButtonHeader } from '../../../components/Header/ButtonHeader'
 import { FlatHeader } from '../../../components/Header/FlatHeader'
@@ -13,7 +13,7 @@ import { SRoundedBox } from '../../../components/Layout/Layout.style'
 import { VariationMonitor } from '../../../components/VariationMonitor'
 import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
-import { BaseIcon, Colors, Typography, TypographyMedium } from '../../../theming'
+import { Colors, Typography, TypographyMedium } from '../../../theming'
 import { useDashboardUIHook } from './DashboardUIHook'
 interface HomeDashboardProps {}
 
@@ -178,35 +178,4 @@ const StartInvesting = styled(BaseButton)`
 
 const CenteredView = styled.View`
     align-items: center;
-`
-
-const Menu = styled(BaseIcon)`
-    border-radius: 50px;
-    bottom: 10px;
-    background-color: ${Colors.BLUES_4};
-    padding: 15px;
-    color: ${Colors.WHITE};
-`
-
-const Menu2 = styled(BaseIcon)`
-    padding: 15px;
-    color: ${Colors.WHITE};
-`
-
-const Bar = styled.View`
-    /* border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
-    background-color: ${Colors.GRAY_4};
-    border-top-width: 1px;
-    border-left-width: 1px;
-    border-color: ${Colors.GRAY_4}; */
-    height: 50px;
-    position: absolute;
-    top: 25px;
-    right: 0;
-    z-index: 2;
-    /* width: 100%; */
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
 `

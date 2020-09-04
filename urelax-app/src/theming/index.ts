@@ -68,7 +68,7 @@ export enum Colors {
 export enum Icons {
     BACK = "chevron-left",
     MENU = "menu",
-    SETTINGS = "settings-outline",
+    SETTINGS = "tune",
     CLOSE = "window-close",
     EYE_OFF_OUTLINE = "eye-off-outline",
     EYE_OUTLINE = "eye-outline",
