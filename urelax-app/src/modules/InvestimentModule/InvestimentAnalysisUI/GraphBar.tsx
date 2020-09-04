@@ -80,14 +80,20 @@ const BarDownContent = styled.View`
 `
 
 const BarUp = styled.View<{ value: number, color: string, selected?: boolean }>`
-    border-top-width: 3px;
+    border-color: ${({ selected, color }) => selected ? color : Colors.BG_2};
     background-color: ${Colors.GRAY_4};
-    border-color: ${({ selected, color }) => selected ? color : Colors.GRAY_4};
     height: ${({ value }) => value}%;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-width: 3px;
     width: 75%;
 `
 
 const BarDown = styled(BarUp)`
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     border-bottom-width: 3px;
     border-top-width: 0;
 `

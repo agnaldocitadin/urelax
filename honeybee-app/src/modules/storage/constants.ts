@@ -1,1 +1,0 @@
-export const STORAGE_MODULE_NAME = 'STORAGE'

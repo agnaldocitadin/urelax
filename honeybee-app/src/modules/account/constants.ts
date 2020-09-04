@@ -1,1 +1,0 @@
-export const ACCOUNT_MODULE_NAME = 'ACCOUNT'

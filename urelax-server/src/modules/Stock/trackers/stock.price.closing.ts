@@ -1,7 +1,7 @@
 import cronstrue from 'cronstrue'
 import { startOfDay } from 'date-fns'
-import { ProfitType } from 'urelax-api'
 import schedule from 'node-schedule'
+import { ProfitType } from 'urelax-api'
 import Logger from "../../../core/Logger"
 import { addProfit } from '../../Financial/services'
 import { StockTrackerModel } from '../models'

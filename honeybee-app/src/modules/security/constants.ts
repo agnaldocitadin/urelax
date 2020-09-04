@@ -1,1 +1,0 @@
-export const SECURITY_MODULE_NAME = 'SECURITY'

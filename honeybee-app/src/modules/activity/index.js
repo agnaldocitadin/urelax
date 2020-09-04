@@ -1,5 +1,0 @@
-export * from './actions'
-export * from './constants'
-export * from './reducer'
-export { ActivityListUI } from './components/ActivityListUI'
-export { ActivityDetailUI } from './components/ActivityDetailUI'
