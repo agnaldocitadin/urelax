@@ -300,39 +300,3 @@ const DrawerContent = styled(DrawerContentScrollView)`
 const AccountOption = styled(Option)`
     padding: 10px ${DEFAULT_HORIZONTAL_SPACING}px;
 `
-
-{/* <Stack.Screen name={Routes.INVESTIMENT} component={InvestimentUI} options={defaultOptions}/>
-<Stack.Screen name={Routes.ADD_INVESTIMENT} component={AddInvestimentUI} options={defaultOptions}/>
-<Stack.Screen name={Routes.INVESTIMENT_FILTER} component={FilterUI} options={defaultOptions}/>
-<Stack.Screen name={Routes.INVESTIMENT_ANALYSIS} component={InvestimentAnalysisUI} options={defaultOptions}/>
-<Stack.Screen name={Routes.INVESTIMENT_ANALYSIS_DETAIL} component={InvestimentAnalysisDetailUI} options={defaultOptions}/>
-<Stack.Screen name={Routes.STOCKTRACKER_PREVIEW} component={StockTrackerPreviewUI} options={defaultOptions}/>
-<Stack.Screen name={Routes.STOCKTRACKER_REVIEW} component={StockTrackerReviewUI} options={defaultOptions}/>
-
-<Stack.Screen name={Routes.STOCKTRACKER_WIZARD} component={StockTrackerWizardUI} options={defaultOptions}/> */}
-
-// const Conta: FC<DrawerContentComponentProps> = (props) => {
-//     return (
-//         <View style={{ flex: 1 }}>
-//             <DrawerContentScrollView {...props}>
-//                 <DrawerItemList {...props} activeBackgroundColor="white" activeTintColor="black" itemStyle={{
-//                     borderRadius: 0, marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0
-//                 }}/>
-//             </DrawerContentScrollView>
-//             <DrawerItem
-//                 activeBackgroundColor="white"
-//                 // activeTintColor="red"
-//                 icon={({color, size}) => (
-//                     <BaseIcon 
-//                     name="account-check-outline" 
-//                     color={color}
-//                     size={size}
-//                     />
-//                 )}
-//                 label={"sdf"}
-//                 style={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginTop: 0, marginBottom: 0 }}
-//                 onPress={() => {props.navigation.navigate('Opa 2')}}
-//             />
-//         </View>
-//     )
-// }

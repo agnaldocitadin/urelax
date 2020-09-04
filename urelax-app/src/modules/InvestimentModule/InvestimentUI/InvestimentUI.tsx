@@ -1,8 +1,8 @@
-import { AppliedInvestiment } from 'urelax-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { RefreshControl, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
+import { AppliedInvestiment } from 'urelax-api'
 import { Badge } from '../../../components/Badge'
 import { BaseButton } from '../../../components/BaseButton'
 import { HeaderDivider } from '../../../components/Layout/Layout.style'
@@ -158,19 +158,3 @@ const NoInvestiments = styled(TextIconDisplay)`
     justify-content: center;
     align-items: center;
 `
-
-
-// const handleAnalysis = useCallback(() => navigation.navigate(Routes.INVESTIMENT_ANALYSIS), [])
-// const handleStatements = useCallback(() => navigation.navigate(Routes.STATEMENT), [])
-{/* <BaseButton onPress={handleAdd}>
-<Typography>ADD</Typography>
-</BaseButton>
-<BaseButton onPress={handleAnalysis}>
-<Typography>ANALYSIS</Typography>
-</BaseButton>
-<BaseButton onPress={handleStatements}>
-<Typography>STATEMENTS</Typography>
-</BaseButton>
-<BaseButton onPress={() => nav.navigate(Routes.ACTIVITY_LIST)}>
-<Typography>ACTIVITIES</Typography>
-</BaseButton> */}

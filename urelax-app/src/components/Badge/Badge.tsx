@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { Colors, Typography } from '../../theming'
 
 interface BadgeProps {
-    text: string
+    text?: string
     color?: string
     bgColor?: string
     style?: TextStyle
@@ -16,6 +16,7 @@ export const Badge: FC<BadgeProps> = ({
     style,
     text
 }) => {
+    if (!text) return null
     return (
         <Container>
             <Text style={style} color={color} bgColor={bgColor}>{text}</Text>
