@@ -1,4 +1,4 @@
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const Dotenv = require('dotenv-webpack')
 const common = require('./webpack.common.js')
 const nodeExternals = require('webpack-node-externals')
