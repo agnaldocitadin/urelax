@@ -8,7 +8,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/',
-        filename: 'server.entrypoint.js'
+        filename: 'urelax.server.bundle.js'
     },
     target: 'node',
     node: {

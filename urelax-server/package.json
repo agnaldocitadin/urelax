@@ -47,15 +47,15 @@
     "scripts": {
         "build:dev": "webpack -w --config webpack.dev.js",
         "build:release": "webpack -p --progress --config webpack.prod.js",
-        "nodewatch": "SET \"NODE_ENV=development\" & nodemon --inspect ./dist/server.entrypoint.js",
-        "standalone": "SET \"NODE_ENV=development\" & node ./dist/server.entrypoint.js",
+        "nodewatch": "SET \"NODE_ENV=development\" & nodemon --inspect ./dist/urelax.server.bundle.js",
+        "standalone": "SET \"NODE_ENV=development\" & node ./dist/urelax.server.bundle.js",
         "startdb": "mongod --quiet -dbpath D:\\development\\MongoDB\\Server\\4.0\\data",
         "backupdb": "mongodump --host=localhost:27017 --db=honeybee --verbose --out ./dist/",
         "restoredb": "mongorestore --host=localhost:27017 --db=honeybee --verbose ./dist/investing-bot/",
         "start": "concurrently --kill-others yarn:build:dev yarn:nodewatch",
         "test": "jest --detectOpenHandles",
         "test:debug": "node --inspect ./node_modules/jest/bin/jest.js --runInBand --detectOpenHandles",
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+        "lint": "eslint ./src --ext .js,.ts"
     },
     "dependencies": {
         "bcrypt": "^5.0.0",
@@ -64,9 +64,9 @@
         "cronstrue": "^1.100.0",
         "date-fns": "^2.16.1",
         "express": "^4.17.1",
-        "express-graphql": "^0.9.0",
+        "express-graphql": "^0.11.0",
         "firebase-admin": "^9.1.1",
-        "graphql": "^14.6.0",
+        "graphql": "^15.3.0",
         "i18next": "^19.7.0",
         "js-commons": "../../js-commons",
         "jsonwebtoken": "^8.5.1",

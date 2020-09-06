@@ -1,12 +1,12 @@
 import { Express, Request } from 'express'
-import expressGraphql from 'express-graphql'
-import { buildSchema } from 'graphql'
-import { APIError, Locales } from 'urelax-api'
+import { graphqlHTTP } from 'express-graphql'
+import { buildSchema, GraphQLError } from 'graphql'
+import { Locales } from 'urelax-api'
 import modulePath from '.'
 import { ErrorCodes } from '../core/error.codes'
-import { tsLng } from './Translation/i18n'
 import Logger, { MessageError } from '../core/Logger'
 import Router, { RouteVersion } from './Router'
+import { tsLng } from './Translation/i18n'
 
 export interface GraphQLModule {
     types?: string
@@ -75,26 +75,38 @@ const initGraphQLSchema = async (app: Express) => {
         ${mutations.trim().length > 0 ? `type Mutation {${mutations}}` : ""}
     `)
 
-    const graphqlMiddleware = expressGraphql((request: Request) => ({
+    const graphqlMiddleware = graphqlHTTP((request: Request) => ({
         schema,
         rootValue: resolvers,
-        graphiql: true,
-        customFormatErrorFn: (err: Error) => {
+        pretty: true,
+        graphiql: process.env.GRAPHQL_EDITOR_ACTIVE === "true",
+        customFormatErrorFn: (error: GraphQLError) => {
             const lang: Locales = <Locales>request.get("language")
             try {
-                let me: MessageError = JSON.parse(err.message)
+                let me: MessageError = JSON.parse(error.message)
                 let translated = tsLng(lang, me.code, me.args)
-                Logger.print(err, Logger.error)
-                return { code: me.code, message: translated } as APIError
+                Logger.print(error, Logger.error)
+                return {
+                    code: me.code,
+                    message: translated
+                }
             }
             catch(e) {
-                Logger.error(err)
-                return { code: ErrorCodes.UNKNOWN, message: err.message } as APIError
+                Logger.error(error)
+                return {
+                    code: ErrorCodes.UNKNOWN,
+                    message: error.message
+                }
             }
         }
     }))
 
-    Router.addRoute({ route: "/graphql", version: RouteVersion.V1, secure: true }, graphqlMiddleware)
+    Router.addRoute({ 
+        route: "/graphql",
+        version: RouteVersion.V1,
+        secure: true
+    }, graphqlMiddleware)
+    
     Logger.info("GrapQL Schema done.")
 }
 
