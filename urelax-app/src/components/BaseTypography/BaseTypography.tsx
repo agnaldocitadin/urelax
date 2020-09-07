@@ -32,6 +32,6 @@ const Typography = styled.Text<{ textAlign?: "left" | "center" | "right" }>`
 `
 
 const ShimmerName = styled(ShimmerPlaceHolder)<{ height?: number }>`
-    height: ${({ height }) => `${height || 0 * 1.35}`}px;
-    margin: 3px 0;
+    /* height: ${({ height }) => `${height || 0 * 1.35}`}px; */
+    /* margin: 3px 0; */
 `
