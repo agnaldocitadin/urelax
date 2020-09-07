@@ -3,6 +3,7 @@ import { BrokerAccountInput, Brokers } from 'urelax-api'
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { BrokerHelperInterface } from "../services/broker.account.service"
+import fetch from 'node-fetch'
 
 export const ClearHelper: BrokerHelperInterface = {
     code: Brokers.CLEAR,
@@ -52,6 +53,7 @@ export const ClearHelper: BrokerHelperInterface = {
  * @returns {Promise<{ authCookie: string, sessionId: string }>}
  */
 const getCredentials = async (cpf: string, password: string, birthdate: Date): Promise<{ authCookie: string, sessionId: string }> => {
+    // FIXME It's not working.
     try {
         const requestBody = `refer=&identificationNumber=${cpf}&password=${password}&dob=${format(birthdate, "dd/MM/yyyy")}`
         const response = await fetch("https://www.clear.com.br/pit/signin/Do?controller=SignIn", {

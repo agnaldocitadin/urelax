@@ -1,14 +1,15 @@
 import { useNetInfo } from '@react-native-community/netinfo'
-import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerNavigationOptions } from '@react-navigation/drawer'
-import { NavigationContainer } from '@react-navigation/native'
+import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerNavigationOptions } from '@react-navigation/drawer'
+import { CommonActions, DrawerActions, NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { FC, useCallback } from 'react'
-import { View } from 'react-native'
+import React, { FC, ReactElement, useCallback } from 'react'
+import { TouchableNativeFeedback, View } from 'react-native'
 import styled from 'styled-components/native'
 import { Account, Profile } from 'urelax-api'
 import NavigationModule from '..'
 import { Option } from '../../../components/Inputs/InputOptions'
 import { HeaderDivider } from '../../../components/Layout/Layout.style'
+import { Touchable } from '../../../components/Touchable'
 import { ts } from '../../../core/I18n'
 import { BaseIcon, Colors, DEFAULT_HORIZONTAL_SPACING, Icons, TypographyMedium } from '../../../theming'
 import { ActivityDetailUI } from '../../ActivityHistoryModule/ActivityDetailUI'
@@ -113,11 +114,6 @@ export const Navigator: FC = ({}) => {
                         options={menuOptions("analysis", Icons.CHART_LINE, true, { unmountOnBlur: true })}
                         component={investimentAnalysis}/>
 
-                    {/* <Drawer.Screen
-                        name={Drawers.STATEMENTS}
-                        options={menuOptions("statement", Icons.STATEMENTS, true)}
-                        component={statements}/> */}
-
                     <Drawer.Screen
                         name={Drawers.ACTIVITIES}
                         options={menuOptions("activities", Icons.ACTIVITY, true, { unmountOnBlur: true })}
@@ -143,25 +139,6 @@ export const Navigator: FC = ({}) => {
         </NavigationContainer>
     )
 }
-
-const menuOptions = (label: string, icon: string, swipeable: boolean = false, extra?: DrawerNavigationOptions): DrawerNavigationOptions => {
-    return {
-        ...extra,
-        drawerLabel: props => <TypographyMedium {...props}>{ts(label)}</TypographyMedium>,
-        drawerIcon: props => <BaseIcon {...props} name={icon}/>,
-        swipeEnabled: swipeable
-    }
-}
-
-const CustomDrawerContent: FC<DrawerContentComponentProps> = (props) => (
-    <View style={{ flex: 1 }}>
-        <DrawerContent {...props}>
-            <DrawerItemList {...props}/>
-            <AccountSwitcher {...props}/>
-        </DrawerContent>
-        <Logout {...props}/>
-    </View>
-)
 
 const dashboard = () => (
     <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
@@ -225,6 +202,76 @@ const settings = () => (
     </Stack.Navigator>
 )
 
+const CustomDrawerContent: FC<DrawerContentComponentProps> = (props) => (
+    <View style={{ flex: 1 }}>
+        <DrawerContent {...props}>
+            <AppDrawer {...props}/>
+            <AccountSwitcher {...props}/>
+        </DrawerContent>
+        <Logout {...props}/>
+    </View>
+)
+
+const menuOptions = (label: string, icon: string, swipeable: boolean = false, extra?: DrawerNavigationOptions): DrawerNavigationOptions => {
+    return {
+        ...extra,
+        drawerLabel: ts(label),
+        drawerIcon: props => <DrawerIcon {...props} name={icon}/>,
+        swipeEnabled: swipeable
+    }
+}
+
+const AppDrawer: FC<any> = ({ state, descriptors, navigation }) => {
+    return (state.routes.map((route: any, i: number) => {
+        const focused = i === state.index;
+        const { drawerLabel, drawerIcon } = descriptors[route.key].options;
+        const color = focused ? Colors.BLUES_4 : Colors.GRAY_1;
+
+        return (
+            <BaseDrawerItem
+                key={i}
+                focused={focused}
+                color={color}
+                label={drawerLabel}
+                icon={drawerIcon}
+                onPress={() => {
+                    navigation.dispatch({
+                        ...(focused ? DrawerActions.closeDrawer() : CommonActions.navigate(route.name)),
+                        target: state.key,
+                    })
+                }}/>
+        )
+    }) as React.ReactNode) as React.ReactElement
+}
+
+interface BaseDrawerItemProps {
+    focused?: boolean
+    color?: string
+    label: string
+    icon(options: any): ReactElement,
+    onPress(): void
+}
+const BaseDrawerItem: FC<BaseDrawerItemProps> = ({ 
+    focused, 
+    color = Colors.GRAY_1, 
+    icon, 
+    label, 
+    onPress 
+}) => {
+    return (
+        <Touchable
+            delayPressIn={0}
+            borderless={false}
+            useForeground={TouchableNativeFeedback.canUseNativeForeground()}
+            onPress={onPress}>
+            <DrawerItemContent>
+                {icon({ size: 24, focused, color })}
+                <TypographyMedium color={color}>{label}</TypographyMedium>
+            </DrawerItemContent>
+        </Touchable>
+    )
+}
+
 const AccountSwitcher: FC<any> = ({ navigation }) => {
     const { setActiveAccount } = IdentityModule.actions()
     const active: Account = IdentityModule.select("activeAccount")
@@ -273,15 +320,15 @@ const AccountSwitcher: FC<any> = ({ navigation }) => {
     )
 }
 
-const Logout: FC = (props) => {
+const Logout: FC = () => {
     const { resetStorage } = StorageModule.actions()
     const { switchStack } = NavigationModule.actions()
     const { showConfirm } = MessagingModule.actions()
     const { setActiveAccount } = IdentityModule.actions()
     return (
-        <DrawerItem 
-            label={props => <TypographyMedium {...props}>{ts("exit_app")}</TypographyMedium>}
-            icon={props => <BaseIcon {...props} name={Icons.LOGOUT}/>}
+        <BaseDrawerItem
+            label={ts("exit_app")}
+            icon={props => <DrawerIcon {...props} name={Icons.LOGOUT}/>}
             onPress={() => {
                 showConfirm(ts("exit_app"), ts("exit_app_msg"), () => {
                     resetStorage()
@@ -291,6 +338,16 @@ const Logout: FC = (props) => {
             }}/>
     )
 }
+
+const DrawerItemContent = styled.View`
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 0;
+`
+
+const DrawerIcon = styled(BaseIcon)`
+    margin: 0 20px;
+`
 
 const DrawerContent = styled(DrawerContentScrollView)`
     border-color: ${Colors.GRAY_4};
