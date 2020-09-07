@@ -16,10 +16,9 @@ export interface BaseTypographyProps extends TextProps {
 export const BaseTypography: FC<BaseTypographyProps> = ({ children, loading, shimmerColor, ...others }) => {
     return (
         <ShimmerName
-            autoRun 
             visible={!loading} 
             isInteraction={false}
-            colorShimmer={shimmerColor}
+            shimmerColors={shimmerColor}
             height={others.fontSize}>
             <Typography {...others}>
                 { children }

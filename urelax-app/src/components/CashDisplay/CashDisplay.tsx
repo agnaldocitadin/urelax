@@ -4,8 +4,7 @@ import { View, ViewStyle } from 'react-native'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import styled from 'styled-components/native'
 import AppConfig from '../../core/AppConfig'
-import { Colors, Typography } from '../../theming'
-import { SHIMMER_COLORS } from '../Layout/Layout.style'
+import { Colors, SHIMMER_COLORS, Typography } from '../../theming'
 import { VariationMonitor } from '../VariationMonitor'
 
 interface CashDisplayProps {
@@ -44,7 +43,10 @@ export const CashDisplay: FC<CashDisplayProps> = ({
                 color={labelColor}>
                 {label}
             </Typography>
-            <Shimmer autoRun isInteraction={false} visible={!loading} colorShimmer={SHIMMER_COLORS}>
+            <Shimmer
+                isInteraction={false}
+                visible={!loading}
+                shimmerColors={SHIMMER_COLORS}>
                 <SCreditValueView>
                     <Typography
                         fontSize={valueSize} 
