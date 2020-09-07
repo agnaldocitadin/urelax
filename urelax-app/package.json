@@ -7,7 +7,6 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "pixel": "emulator @Pixel_API_29 -no-snapshot-load",
-    "pixel3": "emulator @Pixel_3_API_29 -no-snapshot-load",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
@@ -28,7 +27,7 @@
     "js-commons": "../../js-commons",
     "react": "^16.13.1",
     "react-i18next": "^11.7.2",
-    "react-native": "^0.62.2",
+    "react-native": "0.63.2",
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-device-info": "^6.0.2",
     "react-native-gesture-handler": "^1.8.0",
@@ -48,13 +47,13 @@
     "urelax-api": "../urelax-api/"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/runtime": "^7.6.2",
+    "@babel/core": "^7.8.4",
+    "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/axios": "^0.14.0",
     "@types/date-fns": "^2.6.0",
     "@types/jest": "^26.0.13",
-    "@types/react-native": "^0.62.0",
+    "@types/react-native": "^0.63.2",
     "@types/react-native-app-intro-slider": "^3.0.1",
     "@types/react-native-linear-gradient": "^2.4.0",
     "@types/react-native-text-input-mask": "^0.7.4",
