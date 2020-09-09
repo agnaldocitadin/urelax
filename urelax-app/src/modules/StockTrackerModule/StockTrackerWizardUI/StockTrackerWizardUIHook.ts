@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native"
-import { API, AppliedInvestiment, Frequency, StockTracker, Strategy } from 'urelax-api'
 import { useCallback, useState } from "react"
+import { API, AppliedInvestiment, Frequency, StockTracker, Strategy } from 'urelax-api'
 import StockTrackerModule from ".."
-import { useEffectWhenReady } from "../../../core/Commons.hook"
+import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import InvestimentModule from "../../InvestimentModule"
 import { Routes } from "../../NavigationModule/const"
 import { createStockTracker, updateStockTracker } from "../api"
@@ -31,7 +31,7 @@ export const useStockTrackerWizardUIHook = () => {
     const { addAppliedInvestiment } = InvestimentModule.actions()
     const { convertToStockTrackerInput } = useStockTracker()
     
-    const selectFrequency = useCallback((frequency: Frequency) => {
+    const selectFrequency = animatedCallback((frequency: Frequency) => {
         transient["frequency"] = String(frequency._id)
         updateSelectedStockTracker(transient)
     }, [transient])

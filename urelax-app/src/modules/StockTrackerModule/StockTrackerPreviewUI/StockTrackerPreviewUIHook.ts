@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
-import { Activity, API, StockTracker, StockTrackerStatus } from 'urelax-api'
 import { useCallback, useState } from "react"
+import { Activity, API, StockTracker, StockTrackerStatus } from 'urelax-api'
 import StockTrackerModule from ".."
 import { InteractiveButtonStates } from "../../../components/InteractiveButton"
 import AppConfig from "../../../core/AppConfig"
@@ -26,10 +26,10 @@ export const useStockTrackerPreviewUIHook = () => {
 
     const handleSettings = animatedCallback(() => navigation.navigate(Routes.STOCKTRACKER_SETTING), [])
 
-    const handleActivityPress = useCallback((activity: Activity) => {
+    const handleActivityPress = animatedCallback((activity: Activity) => {
         selectActivity(activity)
         navigation.navigate(Routes.ACTIVITY_DETAIL)
-    }, [])
+    })
 
     const handleStockTrackerAction = animatedCallback(async () => {
         setBtnState(InteractiveButtonStates.PROCESSING)

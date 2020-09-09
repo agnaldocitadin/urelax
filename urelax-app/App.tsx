@@ -41,16 +41,14 @@ const store = AppModules.register([
     SettingModule
 ])
     
-const App = () => {
-    return (
-        <Provider store={store}>
-            <Navigator/>
-            <IdentityStartup/>
-            <BrokerStartup/>
-            <NotificationStartup/>
-            <DialogMessage/>
-        </Provider>
-    )
-}
+const App = () => (
+    <Provider store={store}>
+        <Navigator/>
+        <IdentityStartup/>
+        <BrokerStartup/>
+        <NotificationStartup/>
+        <DialogMessage/>
+    </Provider>
+)
 
 export default App

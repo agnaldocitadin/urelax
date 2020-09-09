@@ -1,8 +1,8 @@
-import { useNavigation } from "@react-navigation/native"
-import { BrokerAccount, FinancialSummary, Profile } from 'urelax-api'
+import { DrawerActions, useNavigation } from "@react-navigation/native"
 import { useCallback, useState } from "react"
+import { BrokerAccount, FinancialSummary, Profile } from 'urelax-api'
 import Dashboard from ".."
-import { useEffectWhenReady } from "../../../core/Commons.hook"
+import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import BrokerModule from "../../BrokerModule"
 import Investiment from "../../InvestimentModule"
 import Messaging from "../../MessagingModule"
@@ -25,7 +25,9 @@ export const useDashboardUIHook = () => {
 
     const handleInvestiments = useCallback(() => navigation.navigate(Drawers.INVESTIMENTS), [])
     
-    const handleStartInvesting = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
+    const handleStartInvesting = animatedCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT))
+
+    const toogleDrawer = animatedCallback(() => navigation.dispatch(DrawerActions.toggleDrawer()))
 
     const handleAnalysis = useCallback((index: number) => {
         selectGraphIndex(index + 1)
@@ -60,5 +62,6 @@ export const useDashboardUIHook = () => {
         handleStartInvesting,
         handleAnalysis,
         handleRefresh,
+        toogleDrawer
     }
 }

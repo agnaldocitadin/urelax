@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
-import { AppliedInvestiment, BrokerAccount, BrokerInvestiment, InvestimentType } from 'urelax-api'
 import { useCallback, useState } from "react"
+import { AppliedInvestiment, BrokerAccount, BrokerInvestiment, InvestimentType } from 'urelax-api'
 import InvestimentModule from ".."
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
 import { animatedCallback } from "../../../core/Commons.hook"
@@ -30,11 +30,11 @@ export const useAddInvestimentUIHook = () => {
         iconColor: Colors.WHITE,
     })
 
-    const handleSearch = useCallback((isFinding: boolean) => {
+    const handleSearch = animatedCallback((isFinding: boolean) => {
         showFinding(isFinding)
         setSuggestion(undefined)
         if (!isFinding) setInvestiments([])
-    }, [])
+    })
 
     const handleSuggestion = animatedCallback(async () => {
         // updateSuggestionBtn({ activityState: InteractiveButtonStates.PROCESSING })

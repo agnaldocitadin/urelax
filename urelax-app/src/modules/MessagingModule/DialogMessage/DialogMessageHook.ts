@@ -1,4 +1,3 @@
-import { useCallback } from "react"
 import { animatedCallback } from "../../../core/Commons.hook"
 import Actions from "../actions"
 import { select } from "../reducer"
@@ -9,7 +8,7 @@ export const useDialogMessageHook = () => {
     const payload = select("payload")
     const visible = select("visible")
 
-    const handleCloseDialog = useCallback(() => close(), [])
+    const handleCloseDialog = animatedCallback(() => close())
 
     const handleButtonAction = animatedCallback(async () => {
         payload.buttonAction && await payload.buttonAction()

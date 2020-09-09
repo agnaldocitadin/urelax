@@ -1,4 +1,3 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { ListRenderItem, RefreshControl, View, ViewStyle } from 'react-native'
@@ -19,7 +18,6 @@ interface HomeDashboardProps {}
 
 export const DashboardUI: FC<HomeDashboardProps> = () => {
     
-    const navigation = useNavigation()
     const {
         nickname,
         refreshing,
@@ -28,7 +26,8 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
         handleInvestiments,
         handleStartInvesting,
         handleAnalysis,
-        handleRefresh
+        handleRefresh,
+        toogleDrawer
     } = useDashboardUIHook()
 
     const renderSummary: ListRenderItem<FinancialSummary> = ({ item, index }) => {
@@ -79,7 +78,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                     borderBottomWidth={0}
                     right={
                         <ButtonHeader
-                            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                            onPress={toogleDrawer}
                             icon={"dots-horizontal"}
                             color={Colors.WHITE}/>
                     }/>

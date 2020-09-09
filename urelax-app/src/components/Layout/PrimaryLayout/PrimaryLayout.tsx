@@ -1,5 +1,6 @@
 import { DrawerActions, useNavigation } from "@react-navigation/native"
 import React, { FC, ReactElement } from "react"
+import { animatedCallback } from "../../../core/Commons.hook"
 import { Colors, TypographyMedium } from "../../../theming"
 import { BackHeader } from "../../Header/BackHeader"
 import { ButtonHeader } from "../../Header/ButtonHeader"
@@ -19,6 +20,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
     ...others
 }) => {
     const navigation = useNavigation()
+    const toogleDrawer = animatedCallback(() => navigation.dispatch(DrawerActions.toggleDrawer()))
     return (
         <FlatLayout 
             {...others}
@@ -39,7 +41,7 @@ export const PrimaryLayout: FC<PrimaryLayoutProps> = ({
                         <React.Fragment>
                             { right }
                             <ButtonHeader
-                                onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                                onPress={toogleDrawer}
                                 icon={"dots-horizontal"}
                                 color={Colors.WHITE}/>
                         </React.Fragment>

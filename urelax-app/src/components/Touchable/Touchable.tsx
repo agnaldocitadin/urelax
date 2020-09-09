@@ -23,6 +23,17 @@ export const Touchable: FC<TouchableProps> = ({
     onLongPress,
     ...others
 }) => (
+    // <Pressable
+    //     // onPress={() => {
+    //     //     console.log("press")
+    //     //     onPress && onPress()
+    //     // }}
+    //     // onPressIn={() => console.log("pressin")}
+    //     // onPressOut={() => console.log("pressout")}
+    //     // onLongPress={() => console.log("longpress")}
+    //     {...others}>
+    //     {children}
+    // </Pressable>
     <TouchableNativeFeedback
         disabled={disabled}
         background={TouchableNativeFeedback.Ripple(feedbackColor, borderless)} 

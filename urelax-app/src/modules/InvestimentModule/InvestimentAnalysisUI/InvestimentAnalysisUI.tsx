@@ -111,7 +111,7 @@ export const InvestimentAnalysisUI: FC = () => {
                 </Graph>
 
             </MarginBoxFlex>
-            { !noData && <ShowInvestimentDetail onPress={handleAnalysisDetail}>
+            { !noData && <ShowInvestimentDetail onPress={handleAnalysisDetail} delayPressIn={0}>
                 <TypographyMedium
                     color={Colors.GRAY_1}>
                     {ts("profits")}

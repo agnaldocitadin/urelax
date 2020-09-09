@@ -10,6 +10,7 @@ import NavigationModule from '..'
 import { Option } from '../../../components/Inputs/InputOptions'
 import { HeaderDivider } from '../../../components/Layout/Layout.style'
 import { Touchable } from '../../../components/Touchable'
+import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from '../../../core/I18n'
 import { BaseIcon, Colors, DEFAULT_HORIZONTAL_SPACING, Icons, TypographyMedium } from '../../../theming'
 import { ActivityDetailUI } from '../../ActivityHistoryModule/ActivityDetailUI'
@@ -90,7 +91,7 @@ export const Navigator: FC = ({}) => {
             stackRoutes = (
                 <Drawer.Navigator 
                     drawerContent={props => <CustomDrawerContent {...props}/>}
-                    drawerType="slide"
+                    drawerType="back"
                     drawerPosition="right"
                     backBehavior="initialRoute">
                         
@@ -222,6 +223,14 @@ const menuOptions = (label: string, icon: string, swipeable: boolean = false, ex
 }
 
 const AppDrawer: FC<any> = ({ state, descriptors, navigation }) => {
+
+    const fire = animatedCallback((focused: boolean, route: string) => {
+        navigation.dispatch({
+            ...(focused ? DrawerActions.closeDrawer() : CommonActions.navigate(route)),
+            target: state.key,
+        })
+    })
+
     return (state.routes.map((route: any, i: number) => {
         const focused = i === state.index;
         const { drawerLabel, drawerIcon } = descriptors[route.key].options;
@@ -229,17 +238,12 @@ const AppDrawer: FC<any> = ({ state, descriptors, navigation }) => {
 
         return (
             <BaseDrawerItem
-                key={i}
+                key={route.name}
                 focused={focused}
                 color={color}
                 label={drawerLabel}
                 icon={drawerIcon}
-                onPress={() => {
-                    navigation.dispatch({
-                        ...(focused ? DrawerActions.closeDrawer() : CommonActions.navigate(route.name)),
-                        target: state.key,
-                    })
-                }}/>
+                onPress={() => fire(focused, route.name)}/>
         )
     }) as React.ReactNode) as React.ReactElement
 }
@@ -260,7 +264,6 @@ const BaseDrawerItem: FC<BaseDrawerItemProps> = ({
 }) => {
     return (
         <Touchable
-            delayPressIn={0}
             borderless={false}
             useForeground={TouchableNativeFeedback.canUseNativeForeground()}
             onPress={onPress}>

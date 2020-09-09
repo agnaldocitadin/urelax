@@ -1,6 +1,7 @@
 
 import { useNavigation } from '@react-navigation/native'
 import React, { FC } from 'react'
+import { animatedCallback } from '../../../core/Commons.hook'
 import { Colors, Icons, Typography } from '../../../theming'
 import { ButtonHeader } from '../ButtonHeader'
 import { FlatHeader, FlatHeaderProps } from '../FlatHeader'
@@ -19,7 +20,7 @@ export const BackHeader: FC<BackHeaderProps> = ({
     ...others
 }) => {
     const navigation = useNavigation()
-    const handleBack = () => navigation.goBack()
+    const handleBack = animatedCallback(() => navigation.goBack())
     
     return (
         <FlatHeader 

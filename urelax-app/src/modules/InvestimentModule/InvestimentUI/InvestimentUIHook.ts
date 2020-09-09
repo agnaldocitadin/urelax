@@ -1,10 +1,10 @@
 import { useNetInfo } from "@react-native-community/netinfo"
 import { useNavigation } from "@react-navigation/native"
-import { Account, AppliedInvestiment, BrokerAccount, InvestimentType } from 'urelax-api'
 import { arrays } from "js-commons"
 import { useCallback, useState } from "react"
+import { Account, AppliedInvestiment, BrokerAccount, InvestimentType } from 'urelax-api'
 import InvestimentModule from ".."
-import { useEffectWhenReady } from "../../../core/Commons.hook"
+import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import BrokerModule from "../../BrokerModule"
 import Identity from "../../IdentityModule"
 import { Routes } from "../../NavigationModule/const"
@@ -24,20 +24,20 @@ export const useInvestimentUIHook = () => {
     const [ refreshing, setRefreshing ] = useState(false)
     const netInfo = useNetInfo()
 
-    const handleAdd = useCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT), [])
+    const handleAdd = animatedCallback(() => navigation.navigate(Routes.ADD_INVESTIMENT))
 
-    const handleFilter = useCallback(() => navigation.navigate(Routes.INVESTIMENT_FILTER), [])
+    const handleFilter = animatedCallback(() => navigation.navigate(Routes.INVESTIMENT_FILTER))
 
-    const handleStockTracker = useCallback((item: AppliedInvestiment) => {
+    const handleStockTracker = animatedCallback((item: AppliedInvestiment) => {
         selectStockTrackerID(item.refID)
         navigation.navigate(Routes.STOCKTRACKER_PREVIEW)
-    }, [])
+    })
 
     const handleRefresh = useCallback(async () => {
         setRefreshing(true)
         await refresh()
         setRefreshing(false)
-    }, [account._id])
+    }, [brokerAccounts, account._id])
 
     const refresh = useCallback(async () => {
         try {
@@ -57,7 +57,7 @@ export const useInvestimentUIHook = () => {
             }
             setLoading(false)
         }
-        catch(error) {
+        catch(error) {  
             setFail(true)
         }
     }, [brokerAccounts])

@@ -1,7 +1,8 @@
 import { useBackHandler } from '@react-native-community/hooks'
-import React, { FC, useCallback, useState } from "react"
+import React, { FC, useState } from "react"
 import { ViewStyle } from "react-native"
 import styled from "styled-components/native"
+import { animatedCallback } from '../../core/Commons.hook'
 import { Colors, DEFAULT_VERTICAL_SPACING } from "../../theming"
 import { InteractiveButton, InteractiveButtonData } from "../InteractiveButton"
 import { Wizard, WizardProps } from "../Wizard"
@@ -34,7 +35,7 @@ export const WizardForm: FC<WizardFormProps> = ({
     const [ index, setIndex ] = useState(0)
     const disabled = isButtonDisabled(others.sequence[index]) ?? true
 
-    const handleNext = useCallback(async () => {
+    const handleNext = animatedCallback(async () => {
         if (others.sequence[index] === finishViewName) {
             onFlowEnded && onFlowEnded()
             return
