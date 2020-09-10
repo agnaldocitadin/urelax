@@ -26,6 +26,7 @@ export const useInvestimentAnalysisUIHook = () => {
     const [ loading, setLoading ] = useState(true)
     const [ finding, setFinding ] = useState(false)
     const [ fail, setFail ] = useState(false)
+    const [ refreshing, setRefreshing ] = useState(false)
 
     const handleAnalysisDetail = animatedCallback(() => {
         navigation.navigate(Routes.INVESTIMENT_ANALYSIS_DETAIL)
@@ -62,7 +63,7 @@ export const useInvestimentAnalysisUIHook = () => {
         return Promise.resolve([] as DataGraph[])
     }, [])
 
-    useEffectWhenReady(async () => {
+    const refresh = useCallback(async () => {
         try {
             await findFinancialData(period, false)
             setLoading(false)
@@ -70,7 +71,15 @@ export const useInvestimentAnalysisUIHook = () => {
         catch (error) {
             setFail(true)
         }
-    })
+    }, [period])
+
+    const handleRefresh = useCallback(async () => {
+        setRefreshing(true)
+        await refresh()
+        setRefreshing(false)
+    }, [brokerAccounts, period])
+
+    useEffectWhenReady(() => refresh())
 
     const dataGraph = analysis.map(item => {
         return {
@@ -93,9 +102,11 @@ export const useInvestimentAnalysisUIHook = () => {
         finding,
         fail,
         noData: dataGraph.length === 0,
+        refreshing,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph,
-        handleLoadMore
+        handleLoadMore,
+        handleRefresh
     }
 }

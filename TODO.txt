@@ -9,8 +9,20 @@ Done:
 - Configuração inicial: novo rastreador pausado = false
 - Botão salvar rastreador não está mostrando activityindicator
 - Senha nos detalhes da conta de corretora nao está oculta
+- Detalhes da conta das corretoras estão desalinhados
+- analise de investimento não atualiza quando altera conta
+- refresh da tela de investimentos está zuado quando troca de conta (e dá um refresh)
+- botão "adicionar investimento" esta visivel apenas na metade superior
+- vermelho dos input text não ficou bom
+- analise de investimento não dá "refresh"
+- Está alterando o valor dos rastreadores mesmo sem salvar a configuração
+- Alinhar primeiras atividades na base da tela
+- configuração do app não está recarregando quando trocar de conta
+- icones do input está ruim de clicar
 
 Doing:
+- Botão "voltar" no wizard deve voltar para o item anterior (está voltando a tela)
+- Quando estiver na ultima tela do wizar, "voltar" deve voltar a tela.
 
 
 Ready:
@@ -18,23 +30,11 @@ Ready:
 - Traduzir códigos de erro
 - Switcher tá meio bugado quando é tocado
 - Resetar módulos quando fazer logout
-- vermelho dos input text não ficou bom
 - fazer layout acompanhar o teclado
-- icones do input está ruim de clicar
-- botão "adicionar investimento" esta visivel apenas na metade superior
-- analise de investimento não dá "refresh"
-- Botão "voltar" no wizard deve voltar para o item anterior (está voltando a tela)
-- Quando estiver na ultima tela do wizar, "voltar" deve voltar a tela.
 - Mostrar data das atividades como (hoje, ontem, segunda, terça, quarta, etc)
-- Está alterando o valor dos rastreadores mesmo sem salvar a configuração
-- Alinhar primeiras atividades na base da tela
-- Detalhes da conta das corretoras estão desalinhados
-- configuração do app não está recarregando quando trocar de conta
 - mostrar shimmer na tela de investimentos quando trocar de conta
-- analise de investimento não atualiza quando altera conta
 - login na Clear não está funcionando.
 - Quando remove um rastreador não está removendo da tela de investimentos.
-- refresh da tela de investimentos está zuado quando troca de conta (e dá um refresh)
 - criptografar senhas dos profiles
 - Cadastrar todas as ações para utilização
 - Revisar estados offline

@@ -2,7 +2,7 @@ import { useNetInfo } from '@react-native-community/netinfo'
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerNavigationOptions } from '@react-navigation/drawer'
 import { CommonActions, DrawerActions, NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { FC, ReactElement, useCallback } from 'react'
+import React, { FC, ReactElement } from 'react'
 import { TouchableNativeFeedback, View } from 'react-native'
 import styled from 'styled-components/native'
 import { Account, Profile } from 'urelax-api'
@@ -284,9 +284,9 @@ const AccountSwitcher: FC<any> = ({ navigation }) => {
     const netInfo = useNetInfo()
     const online = !!netInfo.isInternetReachable
 
-    const handleSwitchAccount = useCallback((account?: Account) => {
+    const handleSwitchAccount = animatedCallback((account?: Account) => {
         account && setActiveAccount(account)
-        navigation.closeDrawer()
+        navigation.navigate(Routes.DASHBOARD)
     }, [profile])
 
     return (

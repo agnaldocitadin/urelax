@@ -62,7 +62,7 @@ export const useInvestimentUIHook = () => {
         }
     }, [brokerAccounts])
     
-    useEffectWhenReady(() => refresh(), ()=>{}, [brokerAccounts])
+    useEffectWhenReady(() => refresh())
 
     return {
         fail,

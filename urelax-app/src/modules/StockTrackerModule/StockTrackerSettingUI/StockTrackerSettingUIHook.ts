@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native"
 import { API, StockTracker, StockTrackerStatus } from 'urelax-api'
 import * as StockTracker2 from ".."
 import { animatedCallback } from "../../../core/Commons.hook"
@@ -9,7 +8,6 @@ import { isDisabled } from "../StockTrackerControlButton"
 
 export const useStockTrackerSettingUIHook = () => {
 
-    const navigation = useNavigation()
     const { showConfirm, showAPIError, showSuccess, showCustomMessage } = Messaging.actions()
     const { updateSelectedStockTracker } = StockTracker2.default.actions()
     const stockTracker: StockTracker = StockTracker2.default.select("selectedStockTracker")

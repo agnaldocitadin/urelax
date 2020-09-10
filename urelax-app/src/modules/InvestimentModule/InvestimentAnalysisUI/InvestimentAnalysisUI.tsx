@@ -1,7 +1,8 @@
-import { FinancialAnalysisPeriod } from 'urelax-api'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
+import { RefreshControl } from 'react-native'
 import styled from 'styled-components/native'
+import { FinancialAnalysisPeriod } from 'urelax-api'
 import { BaseButton } from '../../../components/BaseButton'
 import { Info } from '../../../components/Info'
 import { MarginBoxFlex } from '../../../components/Layout/Layout.style'
@@ -29,10 +30,12 @@ export const InvestimentAnalysisUI: FC = () => {
         finding,
         fail,
         noData,
+        refreshing,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph,
-        handleLoadMore
+        handleLoadMore,
+        handleRefresh
     } = useInvestimentAnalysisUIHook()
 
     return (
@@ -41,76 +44,83 @@ export const InvestimentAnalysisUI: FC = () => {
             title={ts("analysis")}
             loading={loading}
             fail={fail}>
+                    
             <MarginBoxFlex noMarginBottom>
-                <Head>
-                    <Patrimony
-                        title={<Typography color={Colors.GRAY_1}>{label}</Typography>}
-                        description={
-                            <TypographyMedium
-                                fontSize={20}
-                                color={Colors.BLACK_2}>
-                                {utils.formatCurrency(profit, { prefix: AppConfig.CURRENCY_PREFIX })}
-                            </TypographyMedium>
-                        }/>
-                    <Patrimony
-                        title={<Typography textAlign="right" color={Colors.GRAY_1}>Patrimônio total</Typography>}
-                        description={
-                            <Typography
-                                fontSize={20}
-                                color={Colors.BLACK_2}>
-                                {utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
-                            </Typography>
-                        }/>
-                </Head>
+                <RefreshControl
+                    style={{ flex: 1 }}
+                    enabled
+                    refreshing={refreshing}
+                    onRefresh={handleRefresh}>
+                    <Head>
+                        <Patrimony
+                            title={<Typography color={Colors.GRAY_1}>{label}</Typography>}
+                            description={
+                                <TypographyMedium
+                                    fontSize={20}
+                                    color={Colors.BLACK_2}>
+                                    {utils.formatCurrency(profit, { prefix: AppConfig.CURRENCY_PREFIX })}
+                                </TypographyMedium>
+                            }/>
+                        <Patrimony
+                            title={<Typography textAlign="right" color={Colors.GRAY_1}>Patrimônio total</Typography>}
+                            description={
+                                <Typography
+                                    fontSize={20}
+                                    color={Colors.BLACK_2}>
+                                    {utils.formatCurrency(patrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
+                                </Typography>
+                            }/>
+                    </Head>
 
-                <Row>
-                    <PeriodBtn 
-                        label={ts("daily")}
-                        selected={period === FinancialAnalysisPeriod.DAILY}
-                        onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.DAILY)}/>
+                    <Row>
+                        <PeriodBtn 
+                            label={ts("daily")}
+                            selected={period === FinancialAnalysisPeriod.DAILY}
+                            onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.DAILY)}/>
 
-                    <PeriodBtn
-                        label={ts("weekly")}
-                        selected={period === FinancialAnalysisPeriod.WEEKLY}
-                        onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.WEEKLY)}/>
+                        <PeriodBtn
+                            label={ts("weekly")}
+                            selected={period === FinancialAnalysisPeriod.WEEKLY}
+                            onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.WEEKLY)}/>
 
-                    <PeriodBtn
-                        label={ts("monthly")}
-                        selected={period === FinancialAnalysisPeriod.MONTHLY}
-                        onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.MONTHLY)}/>
+                        <PeriodBtn
+                            label={ts("monthly")}
+                            selected={period === FinancialAnalysisPeriod.MONTHLY}
+                            onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.MONTHLY)}/>
 
-                    <PeriodBtn
-                        label={ts("yearly")}
-                        selected={period === FinancialAnalysisPeriod.YEARLY}
-                        onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.YEARLY)}/>
-                </Row>
+                        <PeriodBtn
+                            label={ts("yearly")}
+                            selected={period === FinancialAnalysisPeriod.YEARLY}
+                            onPress={() => handlePeriodSelection(FinancialAnalysisPeriod.YEARLY)}/>
+                    </Row>
 
-                <Graph>
-                    { noData && <TextIconDisplay
-                        style={{ flex: 1, justifyContent: "center" }}
-                        iconColor={Colors.GRAY_2}
-                        icon={"flask-empty-outline"}
-                        title={ts("oops")}
-                        message={ts("nothing_here")} />}
-                        
-                    { !noData && (
-                        <React.Fragment>
-                            <VariationMonitor
-                                fontSize={15}
-                                value={patrimonyVariation}/>
-                                
-                            <GraphComponent
-                                data={dataGraph}
-                                loading={finding}
-                                minLengthToLoadMore={20}
-                                selectedIndex={selectedGraph}
-                                onSelect={handleSelectGraph}
-                                onEndPageReached={handleLoadMore}/>
-                        </React.Fragment>
-                    )}
-                </Graph>
+                    <Graph>
+                        { noData && <TextIconDisplay
+                            style={{ flex: 1, justifyContent: "center" }}
+                            iconColor={Colors.GRAY_2}
+                            icon={"flask-empty-outline"}
+                            title={ts("oops")}
+                            message={ts("nothing_here")} />}
+                            
+                        { !noData && (
+                            <React.Fragment>
+                                <VariationMonitor
+                                    fontSize={15}
+                                    value={patrimonyVariation}/>
 
+                                <GraphComponent
+                                    data={dataGraph}
+                                    loading={finding}
+                                    minLengthToLoadMore={20}
+                                    selectedIndex={selectedGraph}
+                                    onSelect={handleSelectGraph}
+                                    onEndPageReached={handleLoadMore}/>
+                            </React.Fragment>
+                        )}
+                    </Graph>
+                </RefreshControl>
             </MarginBoxFlex>
+            
             { !noData && <ShowInvestimentDetail onPress={handleAnalysisDetail} delayPressIn={0}>
                 <TypographyMedium
                     color={Colors.GRAY_1}>

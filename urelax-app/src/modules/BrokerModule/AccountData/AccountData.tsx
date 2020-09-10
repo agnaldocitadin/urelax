@@ -64,7 +64,8 @@ export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview = fa
                 description={<Description>{format(new Date(birthdate), "dd/MM/yyyy")}</Description>}
                 onPress={!isReview ? handleBirthdate : undefined}/>}
             
-            { brokerAccount.createdAt && <AccountInfo
+            { brokerAccount.createdAt && <AccountInfo 
+                isReview={isReview}
                 title={<Title>{ts("created_at")}</Title>}
                 description={<Description>{format(new Date(brokerAccount.createdAt), "dd/MM/yyyy 'at' HH:mm")}</Description>}/>}
             

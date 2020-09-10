@@ -75,7 +75,6 @@ export const AddInvestimentUI: FC = () => {
                 
                 { !finding && <React.Fragment>
                     <GenericTextIcon title="Vamos investir!" message="Busque pelas ações desejadas e começe investir agora mesmo." icon="auto-fix" />
-                    {/* <SuggestionBtn data={suggestionBtnData} indicatorColor={Colors.WHITE} onPress={handleSuggestion}/> */}
                 </React.Fragment>}
 
             </Container>
@@ -85,10 +84,6 @@ export const AddInvestimentUI: FC = () => {
 
 const Container = styled.View`
     flex: 1;
-`
-
-const SuggestionBtn = styled(InteractiveButton)`
-    background-color: ${Colors.BLUES_1};
 `
 
 const Input = styled(InputTextBase)`

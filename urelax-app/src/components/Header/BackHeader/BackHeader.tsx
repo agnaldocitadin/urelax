@@ -10,6 +10,7 @@ export interface BackHeaderProps extends FlatHeaderProps {
     title?: string
     titleColor?: string
     backColor?: string
+    onBack?(): void
 }
 
 export const BackHeader: FC<BackHeaderProps> = ({ 
@@ -17,6 +18,7 @@ export const BackHeader: FC<BackHeaderProps> = ({
     titleColor,
     backColor = Colors.GRAY_2,
     center,
+    onBack,
     ...others
 }) => {
     const navigation = useNavigation()
@@ -30,7 +32,7 @@ export const BackHeader: FC<BackHeaderProps> = ({
                 <ButtonHeader 
                     color={backColor} 
                     icon={Icons.BACK} 
-                    onPress={handleBack}/>
+                    onPress={onBack || handleBack}/>
             }
         />
     )

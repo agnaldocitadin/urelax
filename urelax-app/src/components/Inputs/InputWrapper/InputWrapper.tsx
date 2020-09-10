@@ -62,7 +62,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
 }
 
 const Container = styled.View<{ invalid?: boolean }>`
-    background-color: ${({ invalid }) => invalid ? Colors.RED_ERROR : Colors.TRANSPARENT};
+    background-color: ${({ invalid }) => invalid ? "rgba(256, 0, 0, .35)" : Colors.TRANSPARENT};
     border-color: ${Colors.GRAY_4};
     border-width: 1px;
     border-radius: 5px;
