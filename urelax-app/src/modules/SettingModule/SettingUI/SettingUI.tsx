@@ -13,7 +13,6 @@ export const SettingUI: FC = ({ children }) => {
         input,
         handleBuyNotification,
         handleSellNotification,
-        handleBalanceNotification,
         handleAddStockTrackerPaused
     } = useSettingUIHook()
 

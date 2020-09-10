@@ -59,7 +59,10 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                                 <MarginBox>
                                     <SFormTitle>{ts("broker_account_birthdate")}</SFormTitle>
                                     <SFormDescription>{ts("broker_account_birthdate_tip")}</SFormDescription>
-                                    <InputDatetime dateValue={birthdate} onChangeDate={handleChangeBirthdate}/>
+                                    <InputDatetime
+                                        dateValue={birthdate}
+                                        onChangeDate={handleChangeBirthdate}
+                                        dateFormat="dd/MM/yyyy"/>
                                 </MarginBox>
                             </WizardView>
                         )

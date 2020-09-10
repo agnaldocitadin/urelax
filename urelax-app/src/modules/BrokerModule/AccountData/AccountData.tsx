@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native'
 import { format } from 'date-fns'
-import { BrokerAccount } from 'urelax-api'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
+import { BrokerAccount } from 'urelax-api'
 import BrokerModule from '..'
 import { Info } from '../../../components/Info'
 import { animatedCallback } from '../../../core/Commons.hook'
@@ -55,7 +55,7 @@ export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview = fa
             { password && <AccountInfo
                 isReview={isReview}
                 title={<Title>{ts("broker_account_password")}</Title>}
-                description={<Description>{password}</Description>}
+                description={<Description>{password.replace(/./g, "*")}</Description>}
                 onPress={!isReview ? handlePassword : undefined}/>}
 
             { birthdate && <AccountInfo

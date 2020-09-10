@@ -9,7 +9,7 @@ import { Account, AccountModel, Device, Preferences, Profile, ProfileModel } fro
 
 const defaultPreferences: Preferences = {
     language: Locales.PT_BR,
-    addStockTrackerPaused: true,
+    addStockTrackerPaused: false,
     receiveBalanceNotification: true,
     receiveBuyNotification: true,
     receiveSellNotification: true

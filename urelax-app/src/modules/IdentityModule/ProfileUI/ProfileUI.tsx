@@ -39,7 +39,7 @@ export const ProfileUI: FC = ({ children }) => {
             title={ts("profile")}
             bgColor={Colors.WHITE}>
             { !loading && <ScrollViewForm>
-                <ProfilePhoto>
+                {/* <ProfilePhoto>
                     <Image 
                         source={Images.PROFILE}
                         style={{ maxWidth: 100, maxHeight: 100, borderRadius: 50 }}/>
@@ -48,7 +48,7 @@ export const ProfileUI: FC = ({ children }) => {
                         <Camera name={Icons.CAMERA} size={20} color={Colors.WHITE}/>
                         <Typography color={Colors.WHITE}>Change</Typography>
                     </ChangePhotoBtn>
-                </ProfilePhoto>
+                </ProfilePhoto> */}
                 <MarginBox>
 
                 <InputText

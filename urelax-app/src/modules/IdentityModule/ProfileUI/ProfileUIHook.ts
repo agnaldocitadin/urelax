@@ -1,9 +1,10 @@
-import { API, Profile } from 'urelax-api'
 import { validations } from "js-commons"
 import { useCallback, useState } from "react"
-import { useEffectWhenReady } from "../../../core/Commons.hook"
+import { API, Profile } from 'urelax-api'
+import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import MessagingModule from "../../MessagingModule"
 import SecurityModule from "../../SecurityModule"
+import { ts } from "../../../core/I18n"
 
 export const useProfileUIHook = () => {
 
@@ -27,7 +28,7 @@ export const useProfileUIHook = () => {
     const handlePassword = useCallback((text: string) => update("password", text), [])
     const handlePasswordConfirm = useCallback((text: string) => setPasswordMatch(text), [])
 
-    const handleSaveProfile = useCallback(async () => {
+    const handleSaveProfile = animatedCallback(async () => {
         try {
             const { name, nickname, email, password } = input
             if (await API.Profile.updateProfile(profile._id ?? "", {
@@ -45,7 +46,7 @@ export const useProfileUIHook = () => {
                     password
                 })
 
-                showSuccess("profile", "salvo com sucesso!")
+                showSuccess(ts("success"), ts("profile_updated"))
             }
         }
         catch(error) {

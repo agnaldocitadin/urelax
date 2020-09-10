@@ -33,8 +33,15 @@ export const AddInvestimentUI: FC = () => {
             bgColor={Colors.WHITE}
             header={
                 <BackHeader
-                    title={ts("add_investiments")}
-                    center={finding && <Input placeholder={ts("find_for")} autoFocus onChangeText={handleFindInvestiments}/>}
+                    center={
+                        finding 
+                        ? <Input 
+                            placeholder={ts("find_for")}
+                            autoFocus onChangeText={handleFindInvestiments}/> 
+                        : <Typography
+                            fontSize={14}
+                            onPress={handleSearch}>{ ts("add_investiments") }</Typography>
+                    }
                     right={
                         finding
                             ? <ButtonHeader

@@ -2,8 +2,11 @@ import { useNavigation } from "@react-navigation/native"
 import { useCallback, useState } from "react"
 import { API, AppliedInvestiment, Frequency, StockTracker, Strategy } from 'urelax-api'
 import StockTrackerModule from ".."
+import { InteractiveButtonData, InteractiveButtonStates } from "../../../components/InteractiveButton"
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
+import { ts } from "../../../core/I18n"
 import InvestimentModule from "../../InvestimentModule"
+import MessagingModule from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { createStockTracker, updateStockTracker } from "../api"
 import { StockTrackerWizardViews } from "../const"
@@ -22,6 +25,7 @@ export const useStockTrackerWizardUIHook = () => {
     const navigation = useNavigation()
     const [ loading, setLoading ] = useState(true)
     const [ fail, setFail ] = useState(false)
+    const [ btnFormData, setBtnFormData ] = useState<InteractiveButtonData>({ text: ts("next") })
     const transient: StockTracker = StockTrackerModule.select("selectedStockTracker")
     const frequencies: Frequency[] = StockTrackerModule.select("frequencies")
     const strategies: Strategy[] = StockTrackerModule.select("strategies")
@@ -29,6 +33,7 @@ export const useStockTrackerWizardUIHook = () => {
     const viewToEdit: StockTrackerWizardViews = StockTrackerModule.select("viewToEdit")
     const { setStrategies, setFrequencies, updateSelectedStockTracker } = StockTrackerModule.actions()
     const { addAppliedInvestiment } = InvestimentModule.actions()
+    const { showAPIError } = MessagingModule.actions()
     const { convertToStockTrackerInput } = useStockTracker()
     
     const selectFrequency = animatedCallback((frequency: Frequency) => {
@@ -56,21 +61,41 @@ export const useStockTrackerWizardUIHook = () => {
     }, [transient])
 
     const handleFinish = useCallback(async () => {
-        const input = convertToStockTrackerInput(transient)
-        if (edit) {
-            await updateStockTracker(transient._id || "", input)
-        }
-        else {
-            const stockTracker = await createStockTracker(input)
-            const newInvestiment: AppliedInvestiment = {
-                brokerAccountName: stockTracker.brokerAccount?.accountName ?? "",
-                investiment: stockTracker.stockInfo as any,
-                refID: String(stockTracker._id),
-                amount: 0,
-                qty: 0
+        try {
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.PROCESSING 
+            }))
+            
+            const input = convertToStockTrackerInput(transient)
+            if (edit) {
+                await updateStockTracker(transient._id || "", input)
             }
-
-            addAppliedInvestiment({ stocks: [newInvestiment] })
+            else {
+                const stockTracker = await createStockTracker(input)
+                const newInvestiment: AppliedInvestiment = {
+                    brokerAccountName: stockTracker.brokerAccount?.accountName ?? "",
+                    investiment: stockTracker.stockInfo as any,
+                    refID: String(stockTracker._id),
+                    amount: 0,
+                    qty: 0
+                }
+    
+                addAppliedInvestiment({ stocks: [newInvestiment] })
+            }
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.NORMAL,
+                text: ts("done")
+            }))
+        }
+        catch (error) {
+            showAPIError(error)
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.NORMAL
+            }))
+            throw error
         }
     }, [edit, transient])
 
@@ -130,6 +155,7 @@ export const useStockTrackerWizardUIHook = () => {
         sequence: edit ? [String(viewToEdit), String(StockTrackerWizardViews.DONE)] : viewsSequence,
         titleDone: edit ? "stock_tracker_updated" : "stock_tracker_created",
         messageDone: edit ? "stock_tracker_updated_msg" : "stock_tracker_created_msg",
+        btnFormData,
         transient,
         frequencies,
         strategies,

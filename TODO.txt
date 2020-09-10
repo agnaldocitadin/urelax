@@ -1,3 +1,19 @@
+Done:
+- Conferir todas as entradas de tradução, remover não utilizadas e traduzir o restante.
+- remover foto do profile
+- Mensagem de sucesso do profile não está legal.
+- formatar componente de data no formato pt_BR
+- Alterar descrição das atividades "Stock Tracker" para rastreadores
+- na tela de adicionar investimento, mostrar input de busca quando clicar em "adicionar investimento"
+- Traduzir botoes do wizard rastreadores
+- Configuração inicial: novo rastreador pausado = false
+- Botão salvar rastreador não está mostrando activityindicator
+- Senha nos detalhes da conta de corretora nao está oculta
+
+Doing:
+
+
+Ready:
 - mostrar shimmer no dashboard quando inicia e altera entre simulação/real
 - Traduzir códigos de erro
 - Switcher tá meio bugado quando é tocado
@@ -7,28 +23,18 @@
 - icones do input está ruim de clicar
 - botão "adicionar investimento" esta visivel apenas na metade superior
 - analise de investimento não dá "refresh"
-- na tela de adicionar investimento, mostrar input de busca quando clicar em "adicionar investimento"
-- Traduzir botoes do wizard rastreadores
 - Botão "voltar" no wizard deve voltar para o item anterior (está voltando a tela)
 - Quando estiver na ultima tela do wizar, "voltar" deve voltar a tela.
 - Mostrar data das atividades como (hoje, ontem, segunda, terça, quarta, etc)
 - Está alterando o valor dos rastreadores mesmo sem salvar a configuração
 - Alinhar primeiras atividades na base da tela
 - Detalhes da conta das corretoras estão desalinhados
-- Configuração inicial: novo rastreador pausado = false
 - configuração do app não está recarregando quando trocar de conta
 - mostrar shimmer na tela de investimentos quando trocar de conta
 - analise de investimento não atualiza quando altera conta
-- formatar componente de data no formato pt_BR
-- Botão salvar rastreador não está mostrando activityindicator
 - login na Clear não está funcionando.
 - Quando remove um rastreador não está removendo da tela de investimentos.
 - refresh da tela de investimentos está zuado quando troca de conta (e dá um refresh)
-- Alterar descrição das atividades "Stock Tracker" para rastreadores
-- Senha nos detalhes da conta de corretora nao está oculta
 - criptografar senhas dos profiles
-- Mensagem de sucesso do profile não está legal.
-- Conferir todas as entradas de tradução, remover não utilizadas e traduzir o restante.
-- remover foto do profile
 - Cadastrar todas as ações para utilização
-- 
+- Revisar estados offline
