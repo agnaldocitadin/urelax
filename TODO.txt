@@ -21,13 +21,13 @@ Done:
 - icones do input está ruim de clicar
 
 Doing:
-- Botão "voltar" no wizard deve voltar para o item anterior (está voltando a tela)
-- Quando estiver na ultima tela do wizar, "voltar" deve voltar a tela.
+- Traduzir códigos de erro
 
 
 Ready:
+- Botão "voltar" no wizard deve voltar para o item anterior (está voltando a tela)
+- Quando estiver na ultima tela do wizar, "voltar" deve voltar a tela.
 - mostrar shimmer no dashboard quando inicia e altera entre simulação/real
-- Traduzir códigos de erro
 - Switcher tá meio bugado quando é tocado
 - Resetar módulos quando fazer logout
 - fazer layout acompanhar o teclado

@@ -1,6 +1,5 @@
 import { set } from 'date-fns'
 import { ErrorCodes } from '../../../core/error.codes'
-import { ts } from '../../Translation/i18n'
 import Logger from '../../../core/Logger'
 import { StockHistory, StockHistoryModel } from '../models'
 import { STFrequencyDef } from '../trackers'
@@ -110,5 +109,9 @@ export const getLastClosingPrice = async (symbol: string, date: Date): Promise<n
         return lastPrice.closingPrice
     }
 
-    Logger.throw(ErrorCodes.LAST_PRICE_NOT_FOUND, ts("last_price_not_found", { symbol, date }))
+    Logger.throw({
+        code: ErrorCodes.LAST_PRICE_NOT_FOUND,
+        message: `Last price not found. ${symbol} : ${date}`,
+        args: { symbol, date }
+    })
 }

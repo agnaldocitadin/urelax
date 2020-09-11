@@ -1,6 +1,5 @@
 import { Brokers } from 'urelax-api'
 import { ErrorCodes } from "../../../../core/error.codes"
-import { ts } from "../../../Translation/i18n"
 import Logger from "../../../../core/Logger"
 import { BrokerAccount } from "../../models/broker.account.model"
 import { ClearConnection } from "./clear.connection"
@@ -11,7 +10,13 @@ export const ClearConnectionPool = {
 
     getConnection: (account: BrokerAccount): ClearConnection => {
         if (account.brokerCode !== Brokers.CLEAR) {
-            Logger.throw(ErrorCodes.IS_NOT_VALID_CLEAR_ACCOUNT, ts("not_valid_clear_account", { id: account._id }))
+            Logger.throw({
+                code: ErrorCodes.IS_NOT_VALID_CLEAR_ACCOUNT,
+                message: `Account ID ${account._id} is not a valid Clear account.`,
+                args: {
+                    id: account._id
+                }
+            })
         }
 
         const ID = account._id.toString()

@@ -1,9 +1,9 @@
 import { format } from "date-fns"
+import fetch from 'node-fetch'
 import { BrokerAccountInput, Brokers } from 'urelax-api'
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { BrokerHelperInterface } from "../services/broker.account.service"
-import fetch from 'node-fetch'
 
 export const ClearHelper: BrokerHelperInterface = {
     code: Brokers.CLEAR,
@@ -12,19 +12,31 @@ export const ClearHelper: BrokerHelperInterface = {
         const { cpf, signature, password, birthdate } = brokerAccount.extraData || {}
 
         if (!cpf) {
-            Logger.throw(ErrorCodes.UNKNOWN, "cpf")
+            Logger.throw({
+                code: ErrorCodes.UNKNOWN,
+                message: "cpf"
+            })
         }
 
         if (!signature) {
-            Logger.throw(ErrorCodes.UNKNOWN, "singature")
+            Logger.throw({
+                code: ErrorCodes.UNKNOWN,
+                message: "singature"
+            })
         }
 
         if (!password) {
-            Logger.throw(ErrorCodes.UNKNOWN, "password")
+            Logger.throw({
+                code: ErrorCodes.UNKNOWN,
+                message: "password"
+            })
         }
 
         if (!birthdate) {
-            Logger.throw(ErrorCodes.UNKNOWN, "birthdate")
+            Logger.throw({
+                code: ErrorCodes.UNKNOWN,
+                message: "birthdate"
+            })
         }
 
         return true
@@ -84,9 +96,15 @@ const getCredentials = async (cpf: string, password: string, birthdate: Date): P
             }
         }
 
-        Logger.throw(ErrorCodes.CLEAR_CREDENTIALS_FAIL, "Invalid Clear account credentials")
+        Logger.throw({
+            code: ErrorCodes.CLEAR_CREDENTIALS_FAIL,
+            message: "Invalid Clear account credentials"
+        })
     }
     catch(error) {
-        Logger.throw(ErrorCodes.UNKNOWN, error.message)
+        Logger.throw({
+            code: ErrorCodes.UNKNOWN,
+            message: error.message
+        })
     }
 }

@@ -21,6 +21,6 @@ export class StrategyNames {
     static convert(id: String): StrategyNamesDef {
         const value = Object.values(StrategyNames).find(f => f._id === id)
         if (value) return value
-        Logger.throw(ErrorCodes.STRATEGY_NOT_FOUND)
+        Logger.throw({ code: ErrorCodes.STRATEGY_NOT_FOUND })
     }
 }

@@ -93,7 +93,7 @@ export class ClearPlugin extends BaseBrokerPlugin {
      * @memberof ClearAdapter
      */
     private buyDayTrade(order: Order): Promise<string> {
-        return Logger.throw(ErrorCodes.NOT_IMPLEMENTED)
+        return Logger.throw({ code: ErrorCodes.NOT_IMPLEMENTED})
     }
 
     /**
@@ -105,7 +105,7 @@ export class ClearPlugin extends BaseBrokerPlugin {
      * @memberof ClearAdapter
      */
     private sellDayTrade(order: Order): Promise<string> {
-        return Logger.throw(ErrorCodes.NOT_IMPLEMENTED)
+        return Logger.throw({ code: ErrorCodes.NOT_IMPLEMENTED})
     }
 
     /**

@@ -3,7 +3,6 @@ import protobufjs from 'protobufjs'
 import { ErrorCodes } from '../../../../core/error.codes'
 import Logger from '../../../../core/Logger'
 import { OrderStatus } from '../../../Order/models/order.model'
-import { ts } from '../../../Translation/i18n'
 import './bcl.proto'
 import './Contract.proto'
 
@@ -20,7 +19,7 @@ export const ClearEnums = {
         convert: (type) => {
             let option = ClearEnums.ExchangeOrderType[type]
             if (option) return option
-            Logger.throw(ErrorCodes.EXCHANGEORDERTYPE_INVALID, ts("exchangeordertype_invalid", { type }))
+            Logger.throw({ code: ErrorCodes.EXCHANGEORDERTYPE_INVALID, message: `ExchangeOrderType ${type} doesn't exist.`, args: {type}})
         }
     },
 
@@ -31,7 +30,7 @@ export const ClearEnums = {
         convert: (orderSide) => {
             let option = ClearEnums.ExchangeOrderSide[orderSide]
             if (option) return option
-            Logger.throw(ErrorCodes.EXCHANGEORDERSIDE_INVALID, ts("exchangeorderside_invalid", { orderSide }))
+            Logger.throw({ code: ErrorCodes.EXCHANGEORDERSIDE_INVALID, message: `ExchangeOrderSide ${orderSide} doesn't exist.`, args: {orderSide}})
         }
     },
 
@@ -44,7 +43,7 @@ export const ClearEnums = {
 
         convert: (status) => {
             let option = Object.keys(ClearEnums.ClearOrderStatus).find(k => ClearEnums.ClearOrderStatus[k].code === status)
-            if (!option) Logger.throw(ErrorCodes.ORDERSTATUS_INVALID, ts("orderstatus_invalid", { status }))
+            if (!option) Logger.throw({ code: ErrorCodes.ORDERSTATUS_INVALID, message: `OrderStatus ${status} not found.`, args: {status}})
             return option
         }
     },
@@ -56,7 +55,11 @@ export const ClearEnums = {
         convert: (platform) => {
             let option = ClearEnums.Module[platform]
             if (option) return option
-            Logger.throw(ErrorCodes.MODULE_INVALID, ts("module_invalid", { platform }))
+            Logger.throw({
+                code: ErrorCodes.MODULE_INVALID,
+                message: `Module ${platform} doesn't exist.`,
+                args: { platform }
+            })
         }
     },
 }

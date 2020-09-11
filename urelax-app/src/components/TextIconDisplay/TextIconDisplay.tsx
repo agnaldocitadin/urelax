@@ -25,8 +25,8 @@ export const TextIconDisplay: FC<TextIconDisplayProps> = ({
     return (
         <Content style={style}>
             <Icon size={50} name={icon} color={iconColor}/>
-            {title && <Title fontSize={17} color={titleColor}>{title}</Title>}
-            {message && <Message fontSize={14} color={messageColor}>{message}</Message>}
+            {title && <Title fontSize={18} color={titleColor}>{title}</Title>}
+            {message && <Message fontSize={15} color={messageColor}>{message}</Message>}
         </Content>
     )
 }

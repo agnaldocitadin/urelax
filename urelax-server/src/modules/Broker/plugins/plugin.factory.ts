@@ -1,6 +1,5 @@
 import { ObjectID } from 'mongodb'
 import { ErrorCodes } from '../../../core/error.codes'
-import { ts } from '../../Translation/i18n'
 import Logger from '../../../core/Logger'
 import { BrokerAccount } from '../models/broker.account.model'
 import { BrokerPlugin } from './broker.plugin'
@@ -39,7 +38,14 @@ export const PluginFactory = {
 
         const AdapterImpl = adapters.get(brokerAccount.brokerCode)
         if (AdapterImpl) return new AdapterImpl(brokerAccount._id)
-        Logger.throw(ErrorCodes.BROKER_ADAPTER_NOT_FOUND, ts("broker_adapter_not_found", { code: brokerAccount.brokerCode }))
+        
+        Logger.throw({
+            code: ErrorCodes.BROKER_ADAPTER_NOT_FOUND,
+            message: `No broker adapter found to ${brokerAccount.brokerCode}.`,
+            args: { 
+                brokerCode: brokerAccount.brokerCode
+            }
+        })
     }
 
 }
