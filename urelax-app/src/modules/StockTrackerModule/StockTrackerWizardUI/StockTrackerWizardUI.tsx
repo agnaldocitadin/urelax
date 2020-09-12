@@ -55,7 +55,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                 onValidate={handleValidation}
                 onFlowEnded={handleFlowEnded}
                 isButtonDisabled={handleDisableButton}
-                buttonData={btnFormData}
+                nextButtonData={btnFormData}
                 views={[
                     {
                         id: String(StockTrackerWizardViews.FREQUENCY),
@@ -96,7 +96,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                     {
                         id: String(StockTrackerWizardViews.TRANSACTION),
                         view: (
-                            <WizardView icon={Icons.CASH}>
+                            <WizardView icon={Icons.CASH} scrollable>
                                 <MarginBox noMarginTop>
                                     <SFormTitle>{ts("stock_tracker_transaction_amount")}</SFormTitle>
                                     <SFormDescription>{ts("stock_tracker_transaction_amount_tip")}</SFormDescription>

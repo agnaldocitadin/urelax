@@ -5,6 +5,8 @@
     "WAITING_DESTROY": "Aguardando ser destruída",
     "DESTROYED": "Destruída",
 
+    "API_OFFLINE": "Parece que você está sem acesso à internet. Verifique sua conexão está ok!",
+
     "today": "Hoje",
     "yesterday": "Ontem",
     "monday": "Segunda",
@@ -27,6 +29,7 @@
     "4H" : "4 horas",
 
     "ok": "Ok",
+    "previous": "Anterior",
     "next": "Próximo",
     "done": "Concluído",
     "find_for": "Buscar por",
@@ -94,6 +97,8 @@
     "stock_amount": "Valor em ações",
     "stock_tracker_updated": "Rastreador atualizado!",
     "stock_tracker_updated_msg": "Seu rastreador foi atualizado com sucesso.",
+    "stock_tracker_created": "Rastreador adicionado!",
+    "stock_tracker_created_msg": "Seu novo rastreador foi criado com sucesso.",
 
     "no_variation": "Sem variação",
     "gain": "Lucro",

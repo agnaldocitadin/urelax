@@ -93,7 +93,7 @@ const Actions = () => {
         },
 
         showAPIError: (apiError: APIError) => {
-            return showError(apiError.message || `ERROR: ${apiError.code}`)
+            return showError(apiError.message || ts(apiError.code))
         }
     }
 }

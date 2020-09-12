@@ -50,7 +50,7 @@ export const BrokerAccountWizardUI: FC<BrokerAccountWizardUIProps> = () => {
                 onValidate={handleValidation}
                 onFlowEnded={handleFlowEnded}
                 isButtonDisabled={handleDisableButton}
-                buttonData={btnFormData}
+                nextButtonData={btnFormData}
                 views={[
                     {
                         id: String(BrokerAccountWizardViews.BIRTHDATE),

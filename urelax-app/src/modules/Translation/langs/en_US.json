@@ -5,6 +5,18 @@
     "WAITING_DESTROY": "Aguardando ser destruída",
     "DESTROYED": "Destruída",
 
+    "API_OFFLINE": "Parece que você está sem acesso à internet. Verifique sua conexão está ok!",
+
+    "today": "Hoje",
+    "yesterday": "Ontem",
+    "monday": "Segunda",
+    "tuesday": "Terça",
+    "wednesday": "Quarta",
+    "thursday": "Quinta",
+    "friday": "Sexta",
+    "saturday": "Sábado",
+    "sunday": "",
+
     "1M" : "1 minuto",
     "3M" : "3 minutos",
     "5M" : "5 minutos",
@@ -17,8 +29,11 @@
     "4H" : "4 horas",
 
     "ok": "Ok",
+    "previous": "Anterior",
     "next": "Próximo",
+    "done": "Concluído",
     "find_for": "Buscar por",
+    "success": "Sucesso!",
 
     "yes": "Sim, faça isso!",
     "oops": "Oops!",
@@ -52,6 +67,10 @@
     "broker_account_signature_tip": "Qual é sua assinatura eletrônica?",
     "broker_account_password": "Senha da conta",
     "broker_account_password_tip": "Qual é sua senha de acesso da sua conta lá na corretora?",
+    "broker_account_update_success": "Conta alterada",
+    "broker_account_update_success_msg": "Sua conta foi alterada com sucesso",
+    "broker_account_add_success": "Conta cadastrada",
+    "broker_account_add_success_msg": "Sua nova conta foi cadastrada com sucesso",
 
     "stock": "Ação",
     "currency": "Dinheiro",
@@ -76,6 +95,10 @@
     "stock_tracker_wait_destroyed": "Rastreador aguardando ser destruído!",
     "stock_tracker_wait_destroyed_msg": "Identificamos que este rastreador ainda possui ativos comprados. Ele será removido assim que identificar uma boa oportunidade de venda e realizar a operação.",
     "stock_amount": "Valor em ações",
+    "stock_tracker_updated": "Rastreador atualizado!",
+    "stock_tracker_updated_msg": "Seu rastreador foi atualizado com sucesso.",
+    "stock_tracker_created": "Rastreador adicionado!",
+    "stock_tracker_created_msg": "Seu novo rastreador foi criado com sucesso.",
 
     "no_variation": "Sem variação",
     "gain": "Lucro",
@@ -120,5 +143,6 @@
     "CLEAR": "Clear",
 
     "nothing_here": "Não temos nada para você aqui.",
-    "investiment_already_made": "Você já possui esse investimento! Não é possível adicioná-lo novamente."
+    "investiment_already_made": "Você já possui esse investimento! Não é possível adicioná-lo novamente.",
+    "profile_updated": "Seus dados foram alterados com sucesso."
 }

@@ -108,6 +108,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                             loading={!ready}
                             textAlign="center"
                             color={Colors.WHITE}
+                            shimmerColor={[Colors.BLUES_1, Colors.WHITE, Colors.BLUES_1]}
                             onPress={handleInvestiments}>
                             {utils.formatCurrency(currentPatrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
                         </Typography>

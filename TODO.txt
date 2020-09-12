@@ -26,16 +26,16 @@ Done:
 - Quando remove um rastreador não está removendo da tela de investimentos.
 - mostrar shimmer no dashboard quando inicia e altera entre simulação/real
 - mostrar shimmer na tela de investimentos quando trocar de conta
+- Botão "voltar" no wizard deve voltar para o item anterior (está voltando a tela)
+- Quando estiver na ultima tela do wizar, "voltar" deve voltar a tela.
+- fazer layout acompanhar o teclado
+- Revisar estados offline
 
 Doing:
 
 
 
 Ready:
-- Botão "voltar" no wizard deve voltar para o item anterior (está voltando a tela)
-- Quando estiver na ultima tela do wizar, "voltar" deve voltar a tela.
-- fazer layout acompanhar o teclado
 - login na Clear não está funcionando.
 - criptografar senhas dos profiles
 - Cadastrar todas as ações para utilização
-- Revisar estados offline

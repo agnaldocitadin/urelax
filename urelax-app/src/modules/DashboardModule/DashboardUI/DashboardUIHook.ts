@@ -1,5 +1,5 @@
 import { DrawerActions, useNavigation } from "@react-navigation/native"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { BrokerAccount, FinancialSummary, Profile } from 'urelax-api'
 import Dashboard from ".."
 import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
@@ -54,6 +54,8 @@ export const useDashboardUIHook = () => {
             setReady(true)
         }
     }, [brokerAccounts])
+
+    useEffect(() => setReady(false), [brokerAccounts])
 
     useEffectWhenReady(
         () => refresh(),
