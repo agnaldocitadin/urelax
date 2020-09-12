@@ -5,6 +5,16 @@
     "WAITING_DESTROY": "Aguardando ser destruída",
     "DESTROYED": "Destruída",
 
+    "today": "Hoje",
+    "yesterday": "Ontem",
+    "monday": "Segunda",
+    "tuesday": "Terça",
+    "wednesday": "Quarta",
+    "thursday": "Quinta",
+    "friday": "Sexta",
+    "saturday": "Sábado",
+    "sunday": "",
+
     "1M" : "1 minuto",
     "3M" : "3 minutos",
     "5M" : "5 minutos",

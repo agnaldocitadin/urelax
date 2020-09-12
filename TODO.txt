@@ -19,22 +19,23 @@ Done:
 - Alinhar primeiras atividades na base da tela
 - configuração do app não está recarregando quando trocar de conta
 - icones do input está ruim de clicar
+- Traduzir códigos de erro
+- Mostrar data das atividades como (hoje, ontem, segunda, terça, quarta, etc)
+- Switcher tá meio bugado quando é tocado
+- Resetar módulos quando fazer logout
+- Quando remove um rastreador não está removendo da tela de investimentos.
+- mostrar shimmer no dashboard quando inicia e altera entre simulação/real
+- mostrar shimmer na tela de investimentos quando trocar de conta
 
 Doing:
-- Traduzir códigos de erro
+
 
 
 Ready:
 - Botão "voltar" no wizard deve voltar para o item anterior (está voltando a tela)
 - Quando estiver na ultima tela do wizar, "voltar" deve voltar a tela.
-- mostrar shimmer no dashboard quando inicia e altera entre simulação/real
-- Switcher tá meio bugado quando é tocado
-- Resetar módulos quando fazer logout
 - fazer layout acompanhar o teclado
-- Mostrar data das atividades como (hoje, ontem, segunda, terça, quarta, etc)
-- mostrar shimmer na tela de investimentos quando trocar de conta
 - login na Clear não está funcionando.
-- Quando remove um rastreador não está removendo da tela de investimentos.
 - criptografar senhas dos profiles
 - Cadastrar todas as ações para utilização
 - Revisar estados offline

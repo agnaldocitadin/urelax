@@ -28,6 +28,15 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             }
         }
     },
+    REMOVE_APPLIED_INVESTIMENTS: (state: ReducerState, payload: any): ReducerState => {
+        const stocks = state.appliedInvestiments.stocks?.filter(i => i.refID !== payload.refId)
+        state.appliedInvestiments["stocks"] = stocks
+
+        return {
+            ...state,
+            appliedInvestiments: { ...state.appliedInvestiments }
+        }
+    },
     ADD_HISTORY: (state: ReducerState, payload: any): ReducerState => {
         return {
             ...state, 

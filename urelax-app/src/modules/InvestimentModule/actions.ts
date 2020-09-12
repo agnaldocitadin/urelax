@@ -1,5 +1,5 @@
-import { AppliedInvestiment, FinancialAnalysis, FinancialHistory } from 'urelax-api'
 import { useDispatch } from "react-redux"
+import { AppliedInvestiment, FinancialAnalysis, FinancialHistory } from 'urelax-api'
 import { DispatchType } from "../AppModuleState"
 
 type ActionNames = keyof ActionTypes
@@ -24,6 +24,7 @@ export interface ReducerState {
 
 export type ActionTypes = {
     ADD_APPLIED_INVESTIMENTS(state: ReducerState, payload: any): ReducerState
+    REMOVE_APPLIED_INVESTIMENTS(state: ReducerState, payload: any): ReducerState
     ADD_HISTORY(state: ReducerState, payload: any): ReducerState
     SELECT_EVENT(state: ReducerState, payload: any): ReducerState
     ADD_ANALYSIS(state: ReducerState, payload: any): ReducerState
@@ -35,6 +36,9 @@ const Actions = () => {
     return {
         addAppliedInvestiment: (investiments: Investiments, reset?: boolean) => {
             dispatch({ type: "ADD_APPLIED_INVESTIMENTS", payload: { investiments, reset }} as DispatchType<ActionNames>)
+        },
+        removeAppliedInvestiment: (refId?: string) => {
+            dispatch({ type: "REMOVE_APPLIED_INVESTIMENTS", payload: { refId }} as DispatchType<ActionNames>)
         },
         addHistory: (history: FinancialHistory[], reset?: boolean) => {
             dispatch({ type: "ADD_HISTORY", payload: { history, reset }} as DispatchType<ActionNames>)

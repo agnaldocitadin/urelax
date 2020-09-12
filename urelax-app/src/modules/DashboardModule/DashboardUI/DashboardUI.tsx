@@ -14,6 +14,7 @@ import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, Typography, TypographyMedium } from '../../../theming'
 import { useDashboardUIHook } from './DashboardUIHook'
+
 interface HomeDashboardProps {}
 
 export const DashboardUI: FC<HomeDashboardProps> = () => {
@@ -23,6 +24,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
         refreshing,
         currentPatrimony,
         summaries,
+        ready,
         handleInvestiments,
         handleStartInvesting,
         handleAnalysis,
@@ -102,9 +104,10 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                             {ts("patrimony_amount")}
                         </Typography>
                         <Typography
-                            color={Colors.WHITE}
-                            textAlign="center"
                             fontSize={36}
+                            loading={!ready}
+                            textAlign="center"
+                            color={Colors.WHITE}
                             onPress={handleInvestiments}>
                             {utils.formatCurrency(currentPatrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
                         </Typography>

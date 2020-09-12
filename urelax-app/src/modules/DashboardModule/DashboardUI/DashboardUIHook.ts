@@ -16,6 +16,7 @@ export const useDashboardUIHook = () => {
 
     const navigation = useNavigation()
     const [ refreshing, setRefreshing ] = useState(false)
+    const [ ready, setReady ] = useState(false)
     const summaries: FinancialSummary[] = Dashboard.select("history")
     const profile: Profile = SecurityModule.select("profile")
     const brokerAccounts: BrokerAccount[] = BrokerModule.select("userBrokerAccounts")
@@ -44,16 +45,24 @@ export const useDashboardUIHook = () => {
         try {
             const ids = brokerAccounts.map(account => account._id)
             const summary = await fetchFinancialSummary(ids, INITIAL_SUMMARIES)
-            setDashboardHistory(summary) 
+            setDashboardHistory(summary)
         }
         catch(error) {
             showAPIError(error)
         }
+        finally {
+            setReady(true)
+        }
     }, [brokerAccounts])
 
-    useEffectWhenReady(() => refresh(), ()=>{}, [brokerAccounts])
+    useEffectWhenReady(
+        () => refresh(),
+        ()=> setDashboardHistory(undefined),
+        [brokerAccounts]
+    )
 
     return {
+        ready,
         refreshing,
         nickname: profile.nickname,
         currentPatrimony: summaries[0]?.patrimony || 0,

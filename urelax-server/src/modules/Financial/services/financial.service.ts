@@ -1,7 +1,7 @@
 import { endOfDay, format, getMonth, getWeek, getYear, isToday, isYesterday, lastDayOfMonth, lastDayOfWeek, startOfDay, startOfISOWeek, subMonths, subWeeks } from 'date-fns'
-import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary } from 'urelax-api'
 import { arrays, utils } from 'js-commons'
 import mongoose from 'mongoose'
+import { AppliedInvestiment, FinancialAnalysis, FinancialAnalysisItem, FinancialAnalysisPeriod, FinancialSummary } from 'urelax-api'
 import { BrokerInvestiment, BrokerInvestimentModel } from '../../Broker/models'
 import { FinancialHistory, FinancialHistoryModel, Profit, Transaction } from '../models'
 
@@ -76,7 +76,8 @@ export const addInvestiment = async (brokerAccount: mongoose.Types.ObjectId, dat
  * @param {mongoose.Types.ObjectId} investiment
  */
 export const removeInvestiment = async (brokerAccount: mongoose.Types.ObjectId, date: Date, investiment: mongoose.Types.ObjectId) => {
-    FinancialHistoryModel.update(
+    await prepareHistory(brokerAccount, date)
+    FinancialHistoryModel.updateOne(
         { brokerAccount, date: startOfDay(date) },
         { "$pull": { applications : { investiment: investiment }}}
     ).exec()

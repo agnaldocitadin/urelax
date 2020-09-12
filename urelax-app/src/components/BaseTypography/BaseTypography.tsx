@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { TextProps, TextStyle } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import styled from 'styled-components/native'
 
@@ -15,23 +16,19 @@ export interface BaseTypographyProps extends TextProps {
 
 export const BaseTypography: FC<BaseTypographyProps> = ({ children, loading, shimmerColor, ...others }) => {
     return (
-        <ShimmerName
+        <ShimmerPlaceHolder
             visible={!loading} 
             isInteraction={false}
+            height={others.fontSize}
             shimmerColors={shimmerColor}
-            height={others.fontSize}>
+            LinearGradient={LinearGradient}>
             <Typography {...others}>
                 { children }
             </Typography>
-        </ShimmerName>       
+        </ShimmerPlaceHolder>       
     )
 }
 
 const Typography = styled.Text<{ textAlign?: "left" | "center" | "right" }>`
     text-align: ${({ textAlign }) => textAlign || "left"};
-`
-
-const ShimmerName = styled(ShimmerPlaceHolder)<{ height?: number }>`
-    /* height: ${({ height }) => `${height || 0 * 1.35}`}px; */
-    /* margin: 3px 0; */
 `

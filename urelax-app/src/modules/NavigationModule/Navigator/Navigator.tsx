@@ -328,6 +328,7 @@ const Logout: FC = () => {
     const { switchStack } = NavigationModule.actions()
     const { showConfirm } = MessagingModule.actions()
     const { setActiveAccount } = IdentityModule.actions()
+    const { setProfile } = SecurityModule.actions()
     return (
         <BaseDrawerItem
             label={ts("exit_app")}
