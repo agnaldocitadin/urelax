@@ -1,7 +1,8 @@
-import { format } from 'date-fns'
-import { Activity } from 'urelax-api'
+import { format, isThisISOWeek, isToday, isYesterday } from 'date-fns'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
+import { Activity } from 'urelax-api'
+import { ts } from '../../../core/I18n'
 import { Colors, Typography, TypographyMedium } from '../../../theming'
 
 interface ActivityItemProps {
@@ -16,11 +17,27 @@ export const ActivityItem: FC<ActivityItemProps> = ({ activity, color = Colors.B
             {renderDetails(activity, color)}
         </LeftContent>
         <RightContent>
-            { activity.createdAt && <TypoDate color={Colors.GRAY_1}>{format(new Date(activity.createdAt), "dd/MMM")}</TypoDate>}
+            { activity.createdAt && <TypoDate color={Colors.GRAY_1}>{dateLabel(new Date(activity.createdAt))}</TypoDate>}
             { activity.createdAt && <TypoDate color={Colors.GRAY_1}>{format(new Date(activity.createdAt), "HH:mm")}</TypoDate>}
         </RightContent>
     </React.Fragment>
 )
+
+const dateLabel = (date: Date) => {
+    if (isToday(date)) {
+        return ts("today")
+    }
+
+    if (isYesterday(date)) {
+        return ts("yesterday")
+    }
+
+    if (isThisISOWeek(date)) {
+        return ts(format(date, "EEEE").toLocaleLowerCase())
+    }
+    
+    return format(date, "dd/MMM")
+}
 
 const renderDetails = (activity: Activity, color: string) => {
     return activity.details && activity.details.map((detail, key) => !detail.hidden ? 
@@ -43,5 +60,5 @@ const RightContent = styled.View`
 const TypoDate = styled(Typography)`
     font-size: 12px;
     text-align: right;
-    width: 70px;
+    width: 73px;
 `

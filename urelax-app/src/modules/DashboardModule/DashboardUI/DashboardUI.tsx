@@ -1,4 +1,3 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { utils } from 'js-commons'
 import React, { FC } from 'react'
 import { ListRenderItem, RefreshControl, View, ViewStyle } from 'react-native'
@@ -15,20 +14,22 @@ import AppConfig from '../../../core/AppConfig'
 import { ts } from '../../../core/I18n'
 import { Colors, Typography, TypographyMedium } from '../../../theming'
 import { useDashboardUIHook } from './DashboardUIHook'
+
 interface HomeDashboardProps {}
 
 export const DashboardUI: FC<HomeDashboardProps> = () => {
     
-    const navigation = useNavigation()
     const {
         nickname,
         refreshing,
         currentPatrimony,
         summaries,
+        ready,
         handleInvestiments,
         handleStartInvesting,
         handleAnalysis,
-        handleRefresh
+        handleRefresh,
+        toogleDrawer
     } = useDashboardUIHook()
 
     const renderSummary: ListRenderItem<FinancialSummary> = ({ item, index }) => {
@@ -79,7 +80,7 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                     borderBottomWidth={0}
                     right={
                         <ButtonHeader
-                            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                            onPress={toogleDrawer}
                             icon={"dots-horizontal"}
                             color={Colors.WHITE}/>
                     }/>
@@ -103,9 +104,11 @@ export const DashboardUI: FC<HomeDashboardProps> = () => {
                             {ts("patrimony_amount")}
                         </Typography>
                         <Typography
-                            color={Colors.WHITE}
-                            textAlign="center"
                             fontSize={36}
+                            loading={!ready}
+                            textAlign="center"
+                            color={Colors.WHITE}
+                            shimmerColor={[Colors.BLUES_1, Colors.WHITE, Colors.BLUES_1]}
                             onPress={handleInvestiments}>
                             {utils.formatCurrency(currentPatrimony, { prefix: AppConfig.CURRENCY_PREFIX })}
                         </Typography>

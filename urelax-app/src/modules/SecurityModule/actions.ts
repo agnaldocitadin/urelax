@@ -22,7 +22,7 @@ const Actions = () => {
             TOKEN = token
         },
         setProfile: (profile: Profile) => {
-            dispatch({ type: "SET_PROFILE",payload: profile } as DispatchType<ActionNames>)
+            dispatch({ type: "SET_PROFILE", payload: profile } as DispatchType<ActionNames>)
         }
     }
 }

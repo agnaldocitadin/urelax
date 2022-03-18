@@ -1,7 +1,7 @@
-import { Account } from 'urelax-api'
 import React, { FC, ReactElement } from 'react'
-import { ActivityIndicator, SafeAreaView, StatusBar } from 'react-native'
+import { ActivityIndicator, KeyboardAvoidingView, Platform, SafeAreaView, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
+import { Account } from 'urelax-api'
 import { ts } from '../../../core/I18n'
 import IdentityModule from '../../../modules/IdentityModule'
 import { Colors, Icons, TypographyMedium } from '../../../theming'
@@ -29,26 +29,32 @@ export const FlatLayout: FC<FlatLayoutProps> = ({
 }) => {
     const account: Account = IdentityModule.select("activeAccount")
     return (
-        <FlatContainer bgColor={bgColor}>
-            <StatusBar barStyle={barStyle} backgroundColor={bgStatusBar} />
-            <SafeAreaView style={{ flex: 1 }}>
-                { header }
-                { !loading && !fail && children }
-                { fail && <ErrorMessage>
-                    <Display
-                        icon={Icons.HEART_BROKEN}
-                        iconColor={Colors.RED_ERROR}
-                        title={ts("oops")}
-                        message={ts("server_error")}/>
-                </ErrorMessage> }
-                { !fail && loading && <LoadContainer>
-                    <ActivityIndicator
-                        color={indicatorColor}
-                        size="large"/>
-                </LoadContainer> }
-            </SafeAreaView>
-            { account?.simulation && <SimulationFlag>{ts("active_simulation")}</SimulationFlag>}
-        </FlatContainer>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}>
+        
+            <FlatContainer bgColor={bgColor}>
+                <StatusBar barStyle={barStyle} backgroundColor={bgStatusBar} />
+                <SafeAreaView style={{ flex: 1 }}>
+                    { header }
+                    { !loading && !fail && children }
+                    { fail && <ErrorMessage>
+                        <Display
+                            icon={Icons.HEART_BROKEN}
+                            iconColor={Colors.RED_ERROR}
+                            title={ts("oops")}
+                            message={ts("server_error")}/>
+                    </ErrorMessage> }
+                    { !fail && loading && <LoadContainer>
+                        <ActivityIndicator
+                            color={indicatorColor}
+                            size="large"/>
+                    </LoadContainer> }
+                </SafeAreaView>
+                { account?.simulation && <SimulationFlag>{ts("active_simulation")}</SimulationFlag>}
+            </FlatContainer>
+
+        </KeyboardAvoidingView>
     )
 }
 

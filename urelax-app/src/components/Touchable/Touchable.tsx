@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
-import { TouchableNativeFeedback } from 'react-native'
+import { TouchableNativeFeedback, TouchableNativeFeedbackProps } from 'react-native'
 import { Colors } from '../../theming'
 
-export interface TouchableProps {
+export interface TouchableProps extends TouchableNativeFeedbackProps {
     feedbackColor?: string
     disabled?: boolean
     borderless?: boolean
@@ -20,15 +20,28 @@ export const Touchable: FC<TouchableProps> = ({
     onPress, 
     onPressIn, 
     onPressOut, 
-    onLongPress 
+    onLongPress,
+    ...others
 }) => (
+    // <Pressable
+    //     // onPress={() => {
+    //     //     console.log("press")
+    //     //     onPress && onPress()
+    //     // }}
+    //     // onPressIn={() => console.log("pressin")}
+    //     // onPressOut={() => console.log("pressout")}
+    //     // onLongPress={() => console.log("longpress")}
+    //     {...others}>
+    //     {children}
+    // </Pressable>
     <TouchableNativeFeedback
         disabled={disabled}
         background={TouchableNativeFeedback.Ripple(feedbackColor, borderless)} 
         onPress={onPress}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
-        onLongPress={onLongPress}>
+        onLongPress={onLongPress}
+        {...others}>
         { children }
     </TouchableNativeFeedback>
 )

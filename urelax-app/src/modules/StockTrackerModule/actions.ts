@@ -1,5 +1,5 @@
-import { Activity, FinancialHistory, Frequency, StockTracker, Strategy } from 'urelax-api'
 import { useDispatch } from "react-redux"
+import { Activity, Frequency, StockTracker, Strategy } from 'urelax-api'
 import { DispatchType } from "../AppModuleState"
 import { Routes } from "../NavigationModule/const"
 import { StockTrackerWizardViews } from "./const"
@@ -9,7 +9,6 @@ type ActionNames = keyof ActionTypes
 export interface ReducerState {
     selectedStockTrackerID?: string
     selectedStockTracker?: StockTracker
-    stockTrackerStatements: FinancialHistory[]
     stockTrackerActivities: Activity[]
     frequencies?: Frequency[]
     strategies?: Strategy[]
@@ -21,7 +20,6 @@ export type ActionTypes = {
     SELECT_STOCKTRACKER_ID(state: ReducerState, payload: any): ReducerState
     SELECT_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
     UPDATE_SELECTED_STOCKTRACKER(state: ReducerState, payload: any): ReducerState
-    ADD_STOCKTRACKER_STATEMENTS(state: ReducerState, payload: any): ReducerState
     ADD_STOCKTRACKER_ACTIVITIES(state: ReducerState, payload: any): ReducerState
     SET_STRATEGIES(state: ReducerState, payload: any): ReducerState
     SET_FREQUENCIES(state: ReducerState, payload: any): ReducerState
@@ -36,9 +34,6 @@ const Actions = () => {
         },
         selectStockTracker: (stockTracker?: StockTracker) => {
             dispatch({ type: "SELECT_STOCKTRACKER", payload: stockTracker } as DispatchType<ActionNames>)
-        },
-        addStockTrackerStatements: (statements: FinancialHistory[], reset?: boolean) => {
-            dispatch({ type: "ADD_STOCKTRACKER_STATEMENTS", payload: { statements, reset } } as DispatchType<ActionNames>)
         },
         addStockTrackerActivities: (activities: Activity[], reset?: boolean) => {
             dispatch({ type: "ADD_STOCKTRACKER_ACTIVITIES", payload: { activities, reset } } as DispatchType<ActionNames>)

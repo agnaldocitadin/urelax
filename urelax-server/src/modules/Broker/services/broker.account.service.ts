@@ -1,12 +1,11 @@
-import { BrokerAccountInput, Brokers, TransactionType } from 'urelax-api'
 import { utils } from "js-commons"
+import { BrokerAccountInput, Brokers, TransactionType } from 'urelax-api'
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
 import { onDepositForFree } from "../../Activity/services"
 import { addTransaction } from "../../Financial/services"
 import { Profile } from "../../Identity/models"
-import { ts } from "../../Translation/i18n"
 import { ClearHelper } from "../helpers/clear.helper"
 import { BrokerAccountModel } from "../models/broker.account.model"
 import { findCurrencyByBrokerCode } from "./broker.service"
@@ -38,15 +37,15 @@ export const findBrokerAccounts = (options: { id: string, account: string }) => 
  */
 const validate = (brokerAccount: BrokerAccountInput) => {
     if (!brokerAccount.account) {
-        Logger.throw(ErrorCodes.BROKER_ACCOUNT_USERACCOUNT_REQUIRED)
+        Logger.throw({ code: ErrorCodes.BROKER_ACCOUNT_USERACCOUNT_REQUIRED})
     }
     
     if (!brokerAccount.accountName) {
-        Logger.throw(ErrorCodes.BROKER_ACCOUNT_NAME_REQUIRED)
+        Logger.throw({ code: ErrorCodes.BROKER_ACCOUNT_NAME_REQUIRED})
     }
     
     if (!brokerAccount.brokerCode) {
-        Logger.throw(ErrorCodes.BROKER_ACCOUNT_BROKERCODE_REQUIRED)
+        Logger.throw({ code: ErrorCodes.BROKER_ACCOUNT_BROKERCODE_REQUIRED})
     }
 }
 
@@ -135,7 +134,10 @@ class BrokerAccountHelper {
     static convert(code: string): BrokerHelperInterface {
         const value = Object.values(BrokerAccountHelper).find(helper => helper.code === code)
         if (value) return value
-        Logger.throw(ErrorCodes.BROKERCODE_UNKNOWN, ts("brokercode_invalid"))
+        Logger.throw({ 
+            code: ErrorCodes.BROKERCODE_UNKNOWN,
+            message: "Broker code not defined or invalid."
+        })
     }
 
 }

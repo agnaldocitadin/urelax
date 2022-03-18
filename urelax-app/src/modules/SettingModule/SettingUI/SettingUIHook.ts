@@ -9,6 +9,7 @@ export const useSettingUIHook = () => {
     const { updateActiveAccount } = IdentityModule.actions()
     const { showAPIError } = MessagingModule.actions()
 
+    // FIXME quando altera o account, tem que alterar no profile tbm.
     const update = useCallback(async (property: keyof Preferences, value: any) => {
         const backup: Account = Object.assign({}, account)
         try {

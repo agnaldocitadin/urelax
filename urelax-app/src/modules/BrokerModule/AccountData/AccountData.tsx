@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native'
 import { format } from 'date-fns'
-import { BrokerAccount } from 'urelax-api'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
+import { BrokerAccount } from 'urelax-api'
 import BrokerModule from '..'
 import { Info } from '../../../components/Info'
 import { animatedCallback } from '../../../core/Commons.hook'
@@ -55,7 +55,7 @@ export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview = fa
             { password && <AccountInfo
                 isReview={isReview}
                 title={<Title>{ts("broker_account_password")}</Title>}
-                description={<Description>{password}</Description>}
+                description={<Description>{password.replace(/./g, "*")}</Description>}
                 onPress={!isReview ? handlePassword : undefined}/>}
 
             { birthdate && <AccountInfo
@@ -64,7 +64,8 @@ export const AccountData: FC<AccountDataProps> = ({ brokerAccount, isReview = fa
                 description={<Description>{format(new Date(birthdate), "dd/MM/yyyy")}</Description>}
                 onPress={!isReview ? handleBirthdate : undefined}/>}
             
-            { brokerAccount.createdAt && <AccountInfo
+            { brokerAccount.createdAt && <AccountInfo 
+                isReview={isReview}
                 title={<Title>{ts("created_at")}</Title>}
                 description={<Description>{format(new Date(brokerAccount.createdAt), "dd/MM/yyyy 'at' HH:mm")}</Description>}/>}
             
@@ -82,5 +83,5 @@ const Title = styled(Typography)`
 `
 
 const Description = styled(Typography)`
-    font-size: 14px;
+    font-size: 15px;
 `

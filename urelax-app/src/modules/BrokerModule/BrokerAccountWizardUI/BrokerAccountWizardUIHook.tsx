@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native"
-import { BrokerAccount, Brokers } from 'urelax-api'
 import { validations } from "js-commons"
 import { useCallback, useState } from "react"
+import { BrokerAccount, Brokers } from 'urelax-api'
 import BrokerModule from ".."
 import { InteractiveButtonData, InteractiveButtonStates } from "../../../components/InteractiveButton"
+import { ts } from "../../../core/I18n"
 import MessagingModule from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { createBrokerAccount, updateBrokerAccount } from "../api"
@@ -34,7 +35,7 @@ export const useBrokerAccountWizardUIHook = () => {
     const transient: BrokerAccount = BrokerModule.select("selectedBrokerAccount")
     const edit: boolean = BrokerModule.select("edit")
     const viewToEdit: boolean = BrokerModule.select("viewToEdit")
-    const [ btnFormData, setBtnFormData ] = useState<InteractiveButtonData>({ text: "Próximo" })
+    const [ btnFormData, setBtnFormData ] = useState<InteractiveButtonData>({ text: ts("next") })
 
     const handleChangeBirthdate = useCallback((date: Date) => {
         transient.extraData["birthdate"] = date
@@ -109,7 +110,7 @@ export const useBrokerAccountWizardUIHook = () => {
             setBtnFormData(old => ({
                 ...old,
                 activityState: InteractiveButtonStates.NORMAL,
-                text: "Feito!"
+                text: ts("done")
             }))
         }
         catch(error) {

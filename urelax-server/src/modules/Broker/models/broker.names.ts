@@ -21,6 +21,6 @@ export class BrokerNames {
     static convert(code: String | Brokers): BrokerNamesDef {
         const value = Object.values(BrokerNames).find(f => f.code === code)
         if (value) return value
-        Logger.throw(ErrorCodes.STRATEGY_NOT_FOUND)
+        Logger.throw({ code: ErrorCodes.STRATEGY_NOT_FOUND })
     }
 }

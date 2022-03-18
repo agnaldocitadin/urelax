@@ -37,6 +37,6 @@ export const ActivityDetailUI: FC<ActivityDetailUIProps> = () => {
 const ActivityInfo: FC<{ title: string, description: string, onPress?(): void }> = ({ title, description, onPress }) => {
     return <Info 
         title={<Typography color={Colors.GRAY_1}>{title}</Typography>}
-        description={<Typography fontSize={14}>{description}</Typography>}
+        description={<Typography fontSize={15}>{description}</Typography>}
         onPress={onPress}/>
 }

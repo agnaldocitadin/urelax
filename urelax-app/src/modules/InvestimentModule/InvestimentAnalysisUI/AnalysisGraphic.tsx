@@ -45,7 +45,7 @@ export const AnalysisGraphic: FC<AnalysisGraphicPros> = ({
         <React.Fragment>
             { loading ? 
                 <LoadingContent>
-                    <ActivityIndicator size="large" />
+                    <ActivityIndicator size="large" color="gray"/>
                 </LoadingContent>
             :
                 <Container style={style}>

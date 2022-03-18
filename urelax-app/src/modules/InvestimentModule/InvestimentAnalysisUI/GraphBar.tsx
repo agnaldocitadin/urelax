@@ -15,7 +15,9 @@ interface GraphBarPros {
 
 export const GraphBar: FC<GraphBarPros> = ({ value, mainLabel, label, onPress, index, selected }) => {
     return (
-        <Touchable borderless={false} onPressOut={() => onPress && onPress(index)}>
+        <Touchable
+            borderless={false}
+            onPressOut={() => onPress && onPress(index)}>
             <Container>
                 <Bars>
                     <BarUpContent>

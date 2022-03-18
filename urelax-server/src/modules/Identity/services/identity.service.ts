@@ -1,5 +1,5 @@
-import { Locales, ProfileInput } from 'urelax-api'
 import { utils } from "js-commons"
+import { Locales, ProfileInput } from 'urelax-api'
 import { ErrorCodes } from "../../../core/error.codes"
 import Logger from "../../../core/Logger"
 import { toObjectId } from "../../../core/server-utils"
@@ -9,7 +9,7 @@ import { Account, AccountModel, Device, Preferences, Profile, ProfileModel } fro
 
 const defaultPreferences: Preferences = {
     language: Locales.PT_BR,
-    addStockTrackerPaused: true,
+    addStockTrackerPaused: false,
     receiveBalanceNotification: true,
     receiveBuyNotification: true,
     receiveSellNotification: true
@@ -100,7 +100,10 @@ export const createProfile = async (input: ProfileInput): Promise<Profile> => {
  */
 const validateProfile = async (profile: ProfileInput) => {
     if (await ProfileModel.exists({ email: profile.email })) {
-        Logger.throw(ErrorCodes.PROFILE_EMAIL_DUPLICATED)
+        Logger.throw({
+            code: ErrorCodes.PROFILE_EMAIL_DUPLICATED,
+            args: { email: profile.email }
+        })
     }
 }
 

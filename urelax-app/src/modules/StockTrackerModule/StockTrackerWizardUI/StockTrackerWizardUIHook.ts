@@ -1,9 +1,12 @@
 import { useNavigation } from "@react-navigation/native"
-import { API, AppliedInvestiment, Frequency, StockTracker, Strategy } from 'urelax-api'
 import { useCallback, useState } from "react"
+import { API, AppliedInvestiment, Frequency, StockTracker, Strategy } from 'urelax-api'
 import StockTrackerModule from ".."
-import { useEffectWhenReady } from "../../../core/Commons.hook"
+import { InteractiveButtonData, InteractiveButtonStates } from "../../../components/InteractiveButton"
+import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
+import { ts } from "../../../core/I18n"
 import InvestimentModule from "../../InvestimentModule"
+import MessagingModule from "../../MessagingModule"
 import { Routes } from "../../NavigationModule/const"
 import { createStockTracker, updateStockTracker } from "../api"
 import { StockTrackerWizardViews } from "../const"
@@ -22,6 +25,7 @@ export const useStockTrackerWizardUIHook = () => {
     const navigation = useNavigation()
     const [ loading, setLoading ] = useState(true)
     const [ fail, setFail ] = useState(false)
+    const [ btnFormData, setBtnFormData ] = useState<InteractiveButtonData>({ text: ts("next") })
     const transient: StockTracker = StockTrackerModule.select("selectedStockTracker")
     const frequencies: Frequency[] = StockTrackerModule.select("frequencies")
     const strategies: Strategy[] = StockTrackerModule.select("strategies")
@@ -29,50 +33,71 @@ export const useStockTrackerWizardUIHook = () => {
     const viewToEdit: StockTrackerWizardViews = StockTrackerModule.select("viewToEdit")
     const { setStrategies, setFrequencies, updateSelectedStockTracker } = StockTrackerModule.actions()
     const { addAppliedInvestiment } = InvestimentModule.actions()
+    const { showAPIError } = MessagingModule.actions()
     const { convertToStockTrackerInput } = useStockTracker()
-    
-    const selectFrequency = useCallback((frequency: Frequency) => {
-        transient["frequency"] = String(frequency._id)
-        updateSelectedStockTracker(transient)
-    }, [transient])
+    const [ original, setInput ] = useState(Object.assign({}, transient))
 
-    const selectStrategy = useCallback((strategy: Strategy) => {
-        transient["strategy"] = String(strategy._id)
-        updateSelectedStockTracker(transient)
-    }, [transient])
+    const update = useCallback((property: keyof StockTracker, value: any) => {
+        setInput(old => ({
+            ...old,
+            [property]: value
+        }))
+    }, [original])
+    
+    const selectFrequency = animatedCallback((frequency: Frequency) => update("frequency", String(frequency._id)), [])
+    const selectStrategy = useCallback((strategy: Strategy) => update("strategy", String(strategy._id)), [])
 
     const handleChangeStockAmountLimit = useCallback((value: number) => {
-        if (transient.strategySetting) {
-            transient.strategySetting["stockAmountLimit"] = value
-            updateSelectedStockTracker(transient)
+        if (original.strategySetting) {
+            update("strategySetting", { ...original.strategySetting, stockAmountLimit: value })
         }
-    }, [transient])
+    }, [original])
 
     const handleChangeAutoAmountLimit = useCallback((value: boolean) => {
-        if (transient.strategySetting) {
-            transient.strategySetting["autoAmountLimit"] = value
-            updateSelectedStockTracker(transient)
+        if (original.strategySetting) {
+            update("strategySetting", { ...original.strategySetting, autoAmountLimit: value })
         } 
-    }, [transient])
+    }, [original])
 
     const handleFinish = useCallback(async () => {
-        const input = convertToStockTrackerInput(transient)
-        if (edit) {
-            await updateStockTracker(transient._id || "", input)
-        }
-        else {
-            const stockTracker = await createStockTracker(input)
-            const newInvestiment: AppliedInvestiment = {
-                brokerAccountName: stockTracker.brokerAccount?.accountName ?? "",
-                investiment: stockTracker.stockInfo as any,
-                refID: String(stockTracker._id),
-                amount: 0,
-                qty: 0
+        try {
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.PROCESSING 
+            }))
+            
+            const input = convertToStockTrackerInput(original)
+            if (edit) {
+                await updateStockTracker(original._id || "", input)
+                updateSelectedStockTracker(original)
             }
-
-            addAppliedInvestiment({ stocks: [newInvestiment] })
+            else {
+                const stockTracker = await createStockTracker(input)
+                const newInvestiment: AppliedInvestiment = {
+                    brokerAccountName: stockTracker.brokerAccount?.accountName ?? "",
+                    investiment: stockTracker.stockInfo as any,
+                    refID: String(stockTracker._id),
+                    amount: 0,
+                    qty: 0
+                }
+    
+                addAppliedInvestiment({ stocks: [newInvestiment] })
+            }
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.NORMAL,
+                text: ts("done")
+            }))
         }
-    }, [edit, transient])
+        catch (error) {
+            showAPIError(error)
+            setBtnFormData(old => ({
+                ...old,
+                activityState: InteractiveButtonStates.NORMAL
+            }))
+            throw error
+        }
+    }, [edit, original])
 
     const handleValidation = useCallback((index: number) => {
         return true
@@ -88,7 +113,7 @@ export const useStockTrackerWizardUIHook = () => {
             frequency,
             strategy,
             strategySetting
-        } = transient
+        } = original
 
         switch (view) {
             case String(StockTrackerWizardViews.FREQUENCY):
@@ -104,7 +129,7 @@ export const useStockTrackerWizardUIHook = () => {
                 return false
         }
         
-    }, [transient])
+    }, [original])
 
     useEffectWhenReady(async () => {
         try {
@@ -130,7 +155,8 @@ export const useStockTrackerWizardUIHook = () => {
         sequence: edit ? [String(viewToEdit), String(StockTrackerWizardViews.DONE)] : viewsSequence,
         titleDone: edit ? "stock_tracker_updated" : "stock_tracker_created",
         messageDone: edit ? "stock_tracker_updated_msg" : "stock_tracker_created_msg",
-        transient,
+        btnFormData,
+        transient: original,
         frequencies,
         strategies,
         loading,

@@ -77,6 +77,6 @@ export class StockTrackerFrequency {
     static convert(type: String): STFrequencyDef {
         const value = Object.values(StockTrackerFrequency).find(f => f.type === type)
         if (value) return value
-        Logger.throw(ErrorCodes.FREQUENCY_NOT_FOUND)
+        Logger.throw({ code: ErrorCodes.FREQUENCY_NOT_FOUND })
     }
 }

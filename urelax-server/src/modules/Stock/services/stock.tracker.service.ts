@@ -1,6 +1,6 @@
 import { DocumentType } from "@typegoose/typegoose"
-import { Brokers, ProfitType, StockTrackerInput, StockTrackerStatus, TransactionType } from 'urelax-api'
 import { utils } from "js-commons"
+import { Brokers, ProfitType, StockTrackerInput, StockTrackerStatus, TransactionType } from 'urelax-api'
 import { onStockOrderExecution, onStockTrackerCreated, onStockTrackerTurnedToDestroyed, onStockTrackerTurnedToPaused, onStockTrackerTurnedToRunning } from "../../Activity/services"
 import { BrokerInvestiment } from "../../Broker/models"
 import { OrderExecution } from "../../Broker/plugins"

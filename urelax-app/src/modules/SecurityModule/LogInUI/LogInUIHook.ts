@@ -1,6 +1,6 @@
-import { APIError, Profile } from 'urelax-api'
 import { useCallback, useState } from "react"
 import { Keyboard } from "react-native"
+import { APIError, Profile } from 'urelax-api'
 import { useInteractiveButton } from "../../../components/InteractiveButton/InteractiveButtonHook"
 import { animatedCallback } from "../../../core/Commons.hook"
 import { ts } from "../../../core/I18n"

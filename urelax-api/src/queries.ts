@@ -16,7 +16,7 @@ export const fetchActivities = (options: {
      return gql(name, query(name, options, fields))
 }
 
-export const fetchBrokers = (options: { id?: string, code?: String, active?: boolean }, fields: string): Promise<Broker[]> => {
+export const fetchBrokers = (options: { code?: String }, fields: string): Promise<Broker[]> => {
      const name = "fetchBrokers"
      return gql(name, query(name, options, fields))
 }

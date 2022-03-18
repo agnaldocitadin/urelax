@@ -1,3 +1,4 @@
+import { TOptions } from 'i18next'
 import pino, { LogFn } from 'pino'
 import { ErrorCodes } from './error.codes'
 
@@ -73,7 +74,22 @@ const Logger = {
     error,
     fatal,
 
-    throw: (code: ErrorCodes, message?: string, args?: any[]) => {
+    /**
+     * Throws an error message.
+     * * The param "message" is printed on the server console only. It doesn't need to be translated.
+     *
+     * @param {{ 
+     *         code: ErrorCodes, 
+     *         message?: string, 
+     *         args?: TOptions<any>
+     *     }} options
+     */
+    throw: (options: { 
+        code: ErrorCodes, 
+        message?: string, 
+        args?: TOptions<any>
+    }) => {
+        const { code, message, args } = options
         const error: MessageError = { code, message, args }
         throw Error(JSON.stringify(error))
     },

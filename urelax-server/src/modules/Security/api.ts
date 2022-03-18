@@ -29,7 +29,10 @@ export const registerAPI = (app: Express) => {
                 return res.json({ profile, token })
             }
             
-            Logger.throw(ErrorCodes.USER_NOT_AUTHORIZED, "User not authorized")
+            Logger.throw({ 
+                code: ErrorCodes.USER_NOT_AUTHORIZED,
+                message: "User not authorized"
+            })
         }, 401)
     })
 }

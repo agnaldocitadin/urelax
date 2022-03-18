@@ -4,7 +4,6 @@ import { ActionTypes, ReducerState } from "./actions"
 import { MODULE_NAME } from "./const"
 
 const INITIAL_STATE: ReducerState = {
-    stockTrackerStatements: [],
     stockTrackerActivities: []
 }
 
@@ -22,12 +21,6 @@ export default AppModuleState.createReducer<ActionTypes>(INITIAL_STATE, {
             ...state,
             edit: false,
             selectedStockTracker: payload
-        }
-    },
-    ADD_STOCKTRACKER_STATEMENTS: (state: ReducerState, payload: any): ReducerState => {
-        return {
-            ...state,
-            stockTrackerStatements: payload.reset ? payload.statements : [...state.stockTrackerStatements, ...payload.statements]
         }
     },
     ADD_STOCKTRACKER_ACTIVITIES: (state: ReducerState, payload: any): ReducerState => {

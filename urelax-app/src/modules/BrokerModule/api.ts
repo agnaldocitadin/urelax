@@ -30,7 +30,7 @@ export const updateBrokerAccount = (id: string, input: BrokerAccountInput) => {
 }
 
 export const fetchBrokers = () => {
-    return API.Broker.fetchBrokers({ active: true }, `
+    return API.Broker.fetchBrokers({}, `
         code
         name
         logo

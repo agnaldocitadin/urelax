@@ -1,7 +1,8 @@
-import { FinancialAnalysis } from 'urelax-api'
 import { arrays } from "js-commons"
-import { useCallback, useState } from "react"
+import { useState } from "react"
+import { FinancialAnalysis } from 'urelax-api'
 import Investiment from ".."
+import { animatedCallback } from '../../../core/Commons.hook'
 import { ts } from "../../../core/I18n"
 
 export const useInvestimentAnalysisDetailUIHook = () => {
@@ -11,9 +12,9 @@ export const useInvestimentAnalysisDetailUIHook = () => {
     const [ positiveProfit, setPositiveProfit ] = useState(false)
     const [ negativeProfit, setNegativeProfit ] = useState(false)
 
-    const handlePositiveProfit = useCallback(() => setPositiveProfit(old => !old), [])
+    const handlePositiveProfit = animatedCallback(() => setPositiveProfit(old => !old))
 
-    const handleNegativeProfit = useCallback(() => setNegativeProfit(old => !old), [])
+    const handleNegativeProfit = animatedCallback(() => setNegativeProfit(old => !old))
 
     const items = () => {
         return analysis[selectedGraph].items.filter(item => {

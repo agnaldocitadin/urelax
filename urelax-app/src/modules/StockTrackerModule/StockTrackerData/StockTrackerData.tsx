@@ -100,7 +100,7 @@ const Title = styled(Typography)`
 `
 
 const Description = styled(Typography)`
-    font-size: 14px;
+    font-size: 15px;
 `
 
 const Divider = styled(HeaderDivider)<{ isReview?: boolean }>`

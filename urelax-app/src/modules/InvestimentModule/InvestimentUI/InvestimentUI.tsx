@@ -83,7 +83,7 @@ export const InvestimentUI: FC = () => {
 
 const Currency: FC<{ investiments: AppliedInvestiment[] }> = ({ investiments }) => (
     <React.Fragment>
-        { investiments?.length > 0 && <Divider>{ts("currency")}</Divider> }
+        { investiments?.length > 0 && <FirstDivider>{ts("currency")}</FirstDivider> }
         { investiments?.map((currency, key) => (
             <Touch key={key} noChevron disabled>
                 <Item>
@@ -133,16 +133,14 @@ const Item = styled.View`
 
 const AddInvestimentBtn = styled(BaseButton)`
     background-color: ${Colors.BLUES_2};
-    border-radius: 30px;
-    height: 60px;
-    width: 60px;
+    border-radius: 35px;
+    height: 70px;
+    width: 70px;
 `
 
 const BtnContainer = styled.View`
     align-items: center;
-    position: absolute;
-    width: 100%;
-    top: 130px;
+    transform: translateY(-33px);
 `
 
 const Touch = styled(TouchItem)`
@@ -151,6 +149,10 @@ const Touch = styled(TouchItem)`
 
 const Divider = styled(HeaderDivider)`
     padding: 0 ${DEFAULT_HORIZONTAL_SPACING}px;
+`
+
+const FirstDivider = styled(Divider)`
+    margin-top: 0;
 `
 
 const NoInvestiments = styled(TextIconDisplay)`

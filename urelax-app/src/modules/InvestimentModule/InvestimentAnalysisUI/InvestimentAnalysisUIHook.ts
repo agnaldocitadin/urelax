@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native"
-import { BrokerAccount, FinancialAnalysis, FinancialAnalysisPeriod } from 'urelax-api'
 import { useCallback, useState } from "react"
+import { BrokerAccount, FinancialAnalysis, FinancialAnalysisPeriod } from 'urelax-api'
 import Investiment from ".."
-import { useEffectWhenReady } from "../../../core/Commons.hook"
+import { animatedCallback, useEffectWhenReady } from "../../../core/Commons.hook"
 import { ts } from "../../../core/I18n"
 import BrokerModule from "../../BrokerModule"
 import Messaging from "../../MessagingModule"
@@ -26,14 +26,15 @@ export const useInvestimentAnalysisUIHook = () => {
     const [ loading, setLoading ] = useState(true)
     const [ finding, setFinding ] = useState(false)
     const [ fail, setFail ] = useState(false)
+    const [ refreshing, setRefreshing ] = useState(false)
 
-    const handleAnalysisDetail = useCallback(() => {
+    const handleAnalysisDetail = animatedCallback(() => {
         navigation.navigate(Routes.INVESTIMENT_ANALYSIS_DETAIL)
-    }, [])
+    })
 
-    const handleSelectGraph = useCallback((index: number) => {
+    const handleSelectGraph = animatedCallback((index: number) => {
         selectGraphIndex(index)
-    }, [])
+    })
 
     const findFinancialData =  useCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean) => {
         setFinding(true)
@@ -47,7 +48,7 @@ export const useInvestimentAnalysisUIHook = () => {
         setFinding(false)
     }, [brokerAccounts])
 
-    const handlePeriodSelection = useCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean = true) => {
+    const handlePeriodSelection = animatedCallback(async (period: FinancialAnalysisPeriod, resetIndex: boolean = true) => {
         try {
             await findFinancialData(period, resetIndex)
         }
@@ -55,14 +56,14 @@ export const useInvestimentAnalysisUIHook = () => {
             showAPIError(error)
             setFinding(false)
         }
-    }, [])
+    })
 
     const handleLoadMore = useCallback((page: number) => {
         // TODO
         return Promise.resolve([] as DataGraph[])
     }, [])
 
-    useEffectWhenReady(async () => {
+    const refresh = useCallback(async () => {
         try {
             await findFinancialData(period, false)
             setLoading(false)
@@ -70,7 +71,15 @@ export const useInvestimentAnalysisUIHook = () => {
         catch (error) {
             setFail(true)
         }
-    })
+    }, [period])
+
+    const handleRefresh = useCallback(async () => {
+        setRefreshing(true)
+        await refresh()
+        setRefreshing(false)
+    }, [brokerAccounts, period])
+
+    useEffectWhenReady(() => refresh())
 
     const dataGraph = analysis.map(item => {
         return {
@@ -93,9 +102,11 @@ export const useInvestimentAnalysisUIHook = () => {
         finding,
         fail,
         noData: dataGraph.length === 0,
+        refreshing,
         handlePeriodSelection,
         handleAnalysisDetail,
         handleSelectGraph,
-        handleLoadMore
+        handleLoadMore,
+        handleRefresh
     }
 }

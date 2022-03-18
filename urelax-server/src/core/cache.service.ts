@@ -39,7 +39,7 @@ const CacheService = () => {
          * @param {mongoose.Model<any>} model
          */
         save: (entity: any, model: mongoose.Model<any>) => {
-            if (!entity._doc) Logger.throw(ErrorCodes.ENTITY_NOT_PROVIDED)
+            if (!entity._doc) Logger.throw({ code: ErrorCodes.ENTITY_NOT_PROVIDED })
             model.updateOne({ _id: entity._id }, { ...(<any>entity)._doc }).exec()
         },
 

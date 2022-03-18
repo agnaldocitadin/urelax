@@ -1,6 +1,6 @@
-import { Frequency, Strategy } from 'urelax-api'
 import React, { FC } from 'react'
 import styled from 'styled-components/native'
+import { Frequency, Strategy } from 'urelax-api'
 import { BackHeader } from '../../../components/Header/BackHeader'
 import { CurrencyInput } from '../../../components/Inputs/CurrencyInput'
 import { InputOptions, InputTextOption } from '../../../components/Inputs/InputOptions'
@@ -30,6 +30,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
         strategies,
         loading,
         fail,
+        btnFormData,
         selectFrequency,
         selectStrategy,
         handleChangeAutoAmountLimit,
@@ -54,6 +55,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                 onValidate={handleValidation}
                 onFlowEnded={handleFlowEnded}
                 isButtonDisabled={handleDisableButton}
+                nextButtonData={btnFormData}
                 views={[
                     {
                         id: String(StockTrackerWizardViews.FREQUENCY),
@@ -94,7 +96,7 @@ export const StockTrackerWizardUI: FC<StockTrackerWizardProps> = ({}) => {
                     {
                         id: String(StockTrackerWizardViews.TRANSACTION),
                         view: (
-                            <WizardView icon={Icons.CASH}>
+                            <WizardView icon={Icons.CASH} scrollable>
                                 <MarginBox noMarginTop>
                                     <SFormTitle>{ts("stock_tracker_transaction_amount")}</SFormTitle>
                                     <SFormDescription>{ts("stock_tracker_transaction_amount_tip")}</SFormDescription>

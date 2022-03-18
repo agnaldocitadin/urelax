@@ -1,6 +1,7 @@
 
 import { useNavigation } from '@react-navigation/native'
 import React, { FC } from 'react'
+import { animatedCallback } from '../../../core/Commons.hook'
 import { Colors, Icons, Typography } from '../../../theming'
 import { ButtonHeader } from '../ButtonHeader'
 import { FlatHeader, FlatHeaderProps } from '../FlatHeader'
@@ -9,6 +10,7 @@ export interface BackHeaderProps extends FlatHeaderProps {
     title?: string
     titleColor?: string
     backColor?: string
+    onBack?(): void
 }
 
 export const BackHeader: FC<BackHeaderProps> = ({ 
@@ -16,10 +18,11 @@ export const BackHeader: FC<BackHeaderProps> = ({
     titleColor,
     backColor = Colors.GRAY_2,
     center,
+    onBack,
     ...others
 }) => {
     const navigation = useNavigation()
-    const handleBack = () => navigation.goBack()
+    const handleBack = animatedCallback(() => navigation.goBack())
     
     return (
         <FlatHeader 
@@ -29,7 +32,7 @@ export const BackHeader: FC<BackHeaderProps> = ({
                 <ButtonHeader 
                     color={backColor} 
                     icon={Icons.BACK} 
-                    onPress={handleBack}/>
+                    onPress={onBack || handleBack}/>
             }
         />
     )
