@@ -11,6 +11,8 @@ interface WizardChild {
 }
 
 export interface WizardProps {
+    defaultColor?: string
+    selectedColor?: string
     index: number
     views: WizardChild[]
     sequence: string[]
@@ -21,7 +23,9 @@ export const Wizard: FC<WizardProps> = ({
     style,
     index = 0,
     views,
-    sequence
+    sequence,
+    defaultColor = Colors.BG_4,
+    selectedColor = Colors.BLUES_1
 }) => {
 
     const viewName = sequence[index]
@@ -37,33 +41,57 @@ export const Wizard: FC<WizardProps> = ({
                         
                         let state = WizardState.NOT_SELECTED
                         let labelColor
+                        let leftLineColor = String(Colors.TRANSPARENT)
+                        let rightLineColor = String(Colors.TRANSPARENT)
                         
                         if (index > viewIndex) {
                             state = WizardState.REACHED
-                            labelColor = Colors.BG_4
+                            labelColor = defaultColor
+                            rightLineColor = selectedColor
+
+                            if (viewIndex !== 0) {
+                                leftLineColor = selectedColor
+                            }
                         }
 
                         if (index === viewIndex) {
                             state = WizardState.SELECTED
-                            labelColor= Colors.BLUES_1
+                            labelColor= selectedColor
+                            if (sequence.length - 1 !== viewIndex) {
+                                rightLineColor = defaultColor
+                            }
+                            
+                            if (viewIndex !== 0) {
+                                leftLineColor = selectedColor
+                            }
                         }
-
+                        
                         if (index < viewIndex) {
                             state = WizardState.NOT_SELECTED
-                            labelColor = Colors.BG_4
+                            labelColor = defaultColor
+                            leftLineColor = defaultColor
+                            if (sequence.length - 1 !== viewIndex) {
+                                rightLineColor = defaultColor
+                            }
                         }
-
-                        const hiddenLeftLine = viewIndex === 0 || state === WizardState.NOT_SELECTED
-                        const hiddenRightLine = sequence.length - 1 === viewIndex || state !== WizardState.REACHED
 
                         return (
                             <Box key={`view_${viewName}`}>
                                 <IconBox>
-                                    <Line hidden={hiddenLeftLine}/>
-                                    <WizardIcon state={state} icon={icon}/>
-                                    <Line hidden={hiddenRightLine}/>
+                                    <Line color={leftLineColor}/>
+                                    <WizardIcon
+                                        primaryColor={selectedColor}
+                                        thirdColor={defaultColor}
+                                        state={state}
+                                        icon={icon}/>
+                                    <Line color={rightLineColor}/>
                                 </IconBox>
-                                { label && <Label color={labelColor} textAlign="center">{label}</Label>}
+                                { label && <Label 
+                                    color={labelColor}
+                                    textAlign="center">
+                                        {label}
+                                    </Label>
+                                }
                             </Box>
                         )
                     })
@@ -76,8 +104,8 @@ export const Wizard: FC<WizardProps> = ({
     )
 }
 
-const Line = styled.View<{ hidden: boolean }>`
-    background-color: ${({ hidden }) => hidden ? Colors.TRANSPARENT : Colors.BLUES_1};
+const Line = styled.View<{ color: string }>`
+    background-color: ${({ color }) => color};
     height: 3px;
     flex: 1;
 `

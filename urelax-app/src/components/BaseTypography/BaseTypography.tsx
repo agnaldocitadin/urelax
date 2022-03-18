@@ -16,10 +16,9 @@ export interface BaseTypographyProps extends TextProps {
 export const BaseTypography: FC<BaseTypographyProps> = ({ children, loading, shimmerColor, ...others }) => {
     return (
         <ShimmerName
-            autoRun 
             visible={!loading} 
             isInteraction={false}
-            colorShimmer={shimmerColor}
+            shimmerColors={shimmerColor}
             height={others.fontSize}>
             <Typography {...others}>
                 { children }
@@ -33,6 +32,6 @@ const Typography = styled.Text<{ textAlign?: "left" | "center" | "right" }>`
 `
 
 const ShimmerName = styled(ShimmerPlaceHolder)<{ height?: number }>`
-    height: ${({ height }) => `${height || 0 * 1.35}`}px;
-    margin: 3px 0;
+    /* height: ${({ height }) => `${height || 0 * 1.35}`}px; */
+    /* margin: 3px 0; */
 `

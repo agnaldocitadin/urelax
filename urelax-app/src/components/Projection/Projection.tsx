@@ -2,8 +2,7 @@ import React, { FC } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import styled from 'styled-components/native'
-import { Colors } from '../../theming'
-import { SHIMMER_COLORS } from '../Layout/Layout.style'
+import { Colors, SHIMMER_COLORS } from '../../theming'
 
 interface ProjectionProps {
     value: number
@@ -12,7 +11,10 @@ interface ProjectionProps {
 }
 
 export const Projection: FC<ProjectionProps> = ({ value, reference, loading }) => (
-    <Shimmer autoRun isInteraction={false} visible={!loading} colorShimmer={SHIMMER_COLORS}>
+    <Shimmer
+        isInteraction={false}
+        visible={!loading}
+        shimmerColors={SHIMMER_COLORS}>
         <SProjectionTrack/>
         <SProjection 
             start={{x: 0, y: 0}} 
